@@ -1,0 +1,29 @@
+name,output,flag,username,timestamp
+угшщцйгу,Hello угшщцйгу!,,,2023-07-18 12:22:21.987244
+Далее,qs,sq,2,,,,2023-07-18 14:21:53.247854
+Тарифы,qs,sq,2,"<table border=""1"" class=""dataframe"">
+  <thead>
+    <tr style=""text-align: right;"">
+      <th></th>
+      <th>Tarif1</th>
+      <th>Tarif2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30</td>
+      <td>60</td>
+    </tr>
+  </tbody>
+</table>",,,2023-07-18 14:22:02.518577

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Table</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var changed_cells = {};  // Начальный объект для хранения измененных ячеек
+
+        $('table').on('change', 'input', function() {  // Отслеживаем изменения в input'ах внутри таблицы
+            var $input = $(this);
+            var row_index = $input.closest('tr').index();  // Получаем индекс строки
+            var cell_text = $input.val();  // Получаем новое значение
+
+            if (!changed_cells[row_index]) {  // Если для этой строки ещё нет изменений в объекте
+                changed_cells[row_index] = [];  // создаем для неё массив
+            }
+            changed_cells[row_index].push(cell_text);  // Добавляем значение в массив для этой строки
+        });
+    </script>
+</head>
+<body>
+<form id = "myForm" method="POST">
+    <input hidden id="row_index" name="row_index" value="">
+    <input hidden id="cell_text" name="cell_text" value="">
+{{ tables|safe }} <!-- здесь отображается таблица -->
+<button type="submit" class="btn btn-primary" name="save">Сохранить изменения</button> <!-- кнопка "сохранить" -->
+</form>
+</body>
+</html>
