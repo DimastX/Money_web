@@ -8,28 +8,93 @@
     <div class="container">
         <form method="POST">
             <div class="form-group">
-                <label>Field 4:</label>
-                <select class="form-control" name="field4">
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
+                <label>Комплектация:</label>
+                <select class="form-control" name="Compl">
+                    <option>-</option>
+                    <option>Закупка Starline</option>
+                    <option>Давальческая (россыпь)</option>
+                    <option>Давальческая (заводская упаковка)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Field 5:</label>
-                <select class="form-control" name="field5">
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
+                <label>Трафареты:</label>
+                <select class="form-control" name="Traf">
+                    <option>-</option>
+                    <option>Давальческие</option>
+                    <option>Разрабатывает Starline</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Field 6:</label>
-                <select class="form-control" name="field6">
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
+                <label>Мультизаготовка:</label>
+                <select class="form-control" name="multi">
+                    <option>-</option>
+                    <option>Давальческая</option>
+                    <option>Разрабатывает Starline</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label>Производство:</label>
+                <select class="form-control" name="prod">
+                    <option>-</option>
+                    <option>Победит 1</option>
+                    <option>Победит 5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Производилось ранее?</label>
+                <select class="form-control" name="prev">
+                    <option>-</option>
+                    <option>Да</option>
+                    <option>Нет</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Количество сторон:</label>
+                <select class="form-control" name="sides">
+                    <option>-</option>
+                    <option>Односторонняя</option>
+                    <option>Двусторонняя</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Количество сторон SMD:</label>
+                <select class="form-control" name="sides_SMD">
+                    <option>-</option>
+                    <option>Односторонняя</option>
+                    <option>Двусторонняя</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Количество сторон THT:</label>
+                <select class="form-control" name="sides_THT">
+                    <option>-</option>
+                    <option>Односторонняя</option>
+                    <option>Двусторонняя</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Количество сторон лакировки:</label>
+                <select class="form-control" name="sides_var">
+                    <option>-</option>
+                    <option>Односторонняя</option>
+                    <option>Двусторонняя</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Ширина:</label>
+                <input type="number" class="form-control" name="width" value="{{ session['second_form']['width'] if session.get('second_form') else '' }}">
+            </div>
+            <div class="form-group">
+                <label>Длина:</label>
+                <input type="number" class="form-control" name="length" value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
+            </div>
+            <div class="form-group">
+                <label>Количество плат по Y:</label>
+                <input type="number" class="form-control" name="width_num" value="{{ session['second_form']['width_num'] if session.get('second_form') else '' }}">
+            </div>
+            <div class="form-group">
+                <label>Количество плат по X:</label>
+                <input type="number" class="form-control" name="length_num" value="{{ session['second_form']['length_num'] if session.get('second_form') else '' }}">
             </div>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="back">Назад</button>

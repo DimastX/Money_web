@@ -89,3 +89,14 @@
 	border-radius: 0 0 20px 0;
 
 }
+
+table {
+
+	width: 100%;
+
+	border: none;
+
+	margin-bottom: 20px;
+
+	border-collapse: separate;
+}
