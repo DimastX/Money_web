@@ -57,16 +57,24 @@ def tariffs():
             else:
                 msg = 'Неправильный пароль'
                 flash(msg)
-        if 'save' in request.form:
-            df = pd.read_csv('data/tarifs.csv')
-            df.iloc[int(request.form['row_index'])][1] = request.form['cell_text']  # редактируем второй столбец
-            df.to_csv('data/tarifs.csv', index=False)  # сохраняем обратно в csv
-            return render_template('tariffs.html', tables=[df.to_html(classes='table', index=False, header="true")])  # возвращаемся к просмотру
     return render_template('tariffs.html', tables=[df.to_html(classes='table', index=False, header="true")])
 
 @app.route('/edittable', methods=['POST', 'GET'])
 def edittable():
     df = readdata()
+    # Если это POST-запрос с данными для обновления таблицы
+    if request.method == 'POST':
+        # Извлекаем данные из формы и обновляем ячейки во 2-м столбце
+        if 'save' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Стоимость, руб/ч"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/tarifs.csv', index=False)
+            # Сохраняем обновленный df
+            return redirect(url_for('tariffs'))
+    return render_template('edittable.html', df = df, tables=[df.to_html(classes='table', index=False, header="true")])
+"""    df = readdata()
     if request.method == 'POST':
         if 'save' in request.form:
             #df = pd.read_csv('data/tarifs.csv')
@@ -78,8 +86,14 @@ def edittable():
                 print(df)
             df.to_csv('data/tarifs.csv', index=False)  # сохраняем обратно в csv
             return render_template('tariffs.html', tables=[df.to_html(classes='table', index=False, header="true")])  # возвращаемся к просмотру
-    return render_template('edittable.html', tables=[df.to_html(classes='table', index=False, header="true")])
+    return render_template('edittable.html', tables=[df.to_html(classes='table', index=False, header="true")])"""
 
+@app.route('/update_table', methods=['POST'])
+def update_table():
+    for key, value in request.form.items():
+        row, col = map(int, key.split('-'))
+        df.iloc[row, col] = value
+    return redirect('/tarrifs')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
