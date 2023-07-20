@@ -71,7 +71,7 @@ def edittable():
                     row = int(key[3:])  # извлекаем номер строки из имени
                     df["Стоимость, руб/ч"][row] = request.form[key]  # обновляем значение ячейки
             df.to_csv('data/tarifs.csv', index=False)
-            # Сохраняем обновленный df
+            # Сохраняем обновленный dfв
             return redirect(url_for('tariffs'))
     return render_template('edittable.html', df = df, tables=[df.to_html(classes='table', index=False, header="true")])
 """    df = readdata()
