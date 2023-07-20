@@ -3,99 +3,214 @@
 <head>
     <title>Second Page</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
 </head>
 <body>
     <div class="container">
         <form method="POST">
-            <div class="form-group">
-                <label>Комплектация:</label>
-                <select class="form-control" name="Compl">
-                    <option>-</option>
-                    <option>Закупка Starline</option>
-                    <option>Давальческая (россыпь)</option>
-                    <option>Давальческая (заводская упаковка)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Трафареты:</label>
-                <select class="form-control" name="Traf">
-                    <option>-</option>
-                    <option>Давальческие</option>
-                    <option>Разрабатывает Starline</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Мультизаготовка:</label>
-                <select class="form-control" name="multi">
-                    <option>-</option>
-                    <option>Давальческая</option>
-                    <option>Разрабатывает Starline</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Производство:</label>
-                <select class="form-control" name="prod">
-                    <option>-</option>
-                    <option>Победит 1</option>
-                    <option>Победит 5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Производилось ранее?</label>
-                <select class="form-control" name="prev">
-                    <option>-</option>
-                    <option>Да</option>
-                    <option>Нет</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Количество сторон:</label>
-                <select class="form-control" name="sides">
-                    <option>-</option>
-                    <option>Односторонняя</option>
-                    <option>Двусторонняя</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Количество сторон SMD:</label>
-                <select class="form-control" name="sides_SMD">
-                    <option>-</option>
-                    <option>Односторонняя</option>
-                    <option>Двусторонняя</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Количество сторон THT:</label>
-                <select class="form-control" name="sides_THT">
-                    <option>-</option>
-                    <option>Односторонняя</option>
-                    <option>Двусторонняя</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Количество сторон лакировки:</label>
-                <select class="form-control" name="sides_var">
-                    <option>-</option>
-                    <option>Односторонняя</option>
-                    <option>Двусторонняя</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Ширина:</label>
-                <input type="number" class="form-control" name="width" value="{{ session['second_form']['width'] if session.get('second_form') else '' }}">
-            </div>
-            <div class="form-group">
-                <label>Длина:</label>
-                <input type="number" class="form-control" name="length" value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
-            </div>
-            <div class="form-group">
-                <label>Количество плат по Y:</label>
-                <input type="number" class="form-control" name="width_num" value="{{ session['second_form']['width_num'] if session.get('second_form') else '' }}">
-            </div>
-            <div class="form-group">
-                <label>Количество плат по X:</label>
-                <input type="number" class="form-control" name="length_num" value="{{ session['second_form']['length_num'] if session.get('second_form') else '' }}">
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Комплектация:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Comp" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "1" %} checked {% endif %} {% endif %}>
+                                Давальческая (россыпью)
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Comp"
+                                       {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Разрабатывает (в заводской упаковке)
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Comp"
+                                       {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "3" %} checked {% endif %} {% endif %} value="3">
+                                Разрабатывает Starline
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Ширина:</label>
+                            <input type="number" class="form-control" name="width" value="{{ session['second_form']['width'] if session.get('second_form') else '' }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Трафареты:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Traf" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['Traf'] == "1" %} checked {% endif %} {% endif %}>
+                                Давальческие
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Traf"
+                                       {% if session.get('second_form')%} {% if session['second_form']['Traf'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Разрабатывает Starline
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Длина:</label>
+                            <input type="number" class="form-control" name="length" value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Мультизаготовка:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="multi" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['multi'] == "1" %} checked {% endif %} {% endif %}>
+                                Давальческая
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="multi"
+                                       {% if session.get('second_form')%} {% if session['second_form']['multi'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Разрабатывает Starline
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Количество плат по Y:</label>
+                            <input type="number" class="form-control" name="width_num" value="{{ session['second_form']['width_num'] if session.get('second_form') else '' }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Производство:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="prod" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['prod'] == "1" %} checked {% endif %} {% endif %}>
+                                Победит 1
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="prod"
+                                       {% if session.get('second_form')%} {% if session['second_form']['prod'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Победит 5
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Количество плат по X:</label>
+                            <input type="number" class="form-control" name="length_num" value="{{ session['second_form']['length_num'] if session.get('second_form') else '' }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Производилось ранее?</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="prev" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['prev'] == "1" %} checked {% endif %} {% endif %}>
+                                Да
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="prev"
+                                       {% if session.get('second_form')%} {% if session['second_form']['prev'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Нет
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Количество сторон:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides'] == "1" %} checked {% endif %} {% endif %}>
+                                Односторонняя
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Двусторонняя
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Количество сторон SMD:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_SMD" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "1" %} checked {% endif %} {% endif %}>
+                                Односторонняя
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_SMD"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Двусторонняя
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Количество сторон THT:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_THT" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_THT'] == "1" %} checked {% endif %} {% endif %}>
+                                Односторонняя
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_THT"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_THT'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Двусторонняя
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                <div class="form-group">
+                    <label>Количество сторон лакировки:</label>
+                    <br>
+                    <label>
+                        <input type="radio" name="sides_var" value="1"
+                               {% if session.get('second_form')%} {% if session['second_form']['sides_var'] == "1" %} checked {% endif %} {% endif %}>
+                        Односторонняя
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="sides_var"
+                               {% if session.get('second_form')%} {% if session['second_form']['sides_var'] == "2" %} checked {% endif %} {% endif %} value="2">
+                        Двусторонняя
+                    </label>
+                </div>
+                    </td>
+                </tr>
+            </table>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
