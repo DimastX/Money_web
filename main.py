@@ -39,7 +39,7 @@ def second():
         elif 'back' in request.form:
             return redirect(url_for('home'))
         elif 'next' in request.form:
-            return redirect(url_for('third'))
+            return redirect(url_for('works'))
     return render_template('second.html')
 
 
@@ -74,19 +74,6 @@ def edittable():
             # Сохраняем обновленный dfв
             return redirect(url_for('tariffs'))
     return render_template('edittable.html', df = df, tables=[df.to_html(classes='table', index=False, header="true")])
-"""    df = readdata()
-    if request.method == 'POST':
-        if 'save' in request.form:
-            #df = pd.read_csv('data/tarifs.csv')
-            if request.form['row_index'] != "":
-                row = int(request.form['row_index'])
-                data = request.form['cell_text']
-                #df.drop([row], axis=0, inplace=True)
-                df["Стоимость, руб/ч"][row] = data  # редактируем второй столбец
-                print(df)
-            df.to_csv('data/tarifs.csv', index=False)  # сохраняем обратно в csv
-            return render_template('tariffs.html', tables=[df.to_html(classes='table', index=False, header="true")])  # возвращаемся к просмотру
-    return render_template('edittable.html', tables=[df.to_html(classes='table', index=False, header="true")])"""
 
 @app.route('/update_table', methods=['POST'])
 def update_table():
@@ -95,5 +82,14 @@ def update_table():
         df.iloc[row, col] = value
     return redirect('/tarrifs')
 
+
+@app.route('/works', methods=['GET', 'POST'])
+def works():
+    if request.method == 'POST':
+        session['second_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'second'
+            return redirect(url_for('tariffs'))
+    return render_template('works.html')
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)

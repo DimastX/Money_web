@@ -15,19 +15,19 @@
                             <label>Комплектация:</label>
                             <br>
                             <label>
-                                <input type="radio" name="Comp" value="1"
+                                <input type="radio" name="Comp" value="1" title="+10% к входному контролю \n +15% к входному контролю"
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "1" %} checked {% endif %} {% endif %}>
                                 Давальческая (россыпью)
                             </label>
                             <br>
                             <label>
-                                <input type="radio" name="Comp"
+                                <input type="radio" name="Comp" title="+10% к входному контролю"
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "2" %} checked {% endif %} {% endif %} value="2">
                                 Разрабатывает (в заводской упаковке)
                             </label>
                             <br>
                             <label>
-                                <input type="radio" name="Comp"
+                                <input type="radio" name="Comp" title="Надбавочного коэффициента нет"
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "3" %} checked {% endif %} {% endif %} value="3">
                                 Разрабатывает Starline
                             </label>
