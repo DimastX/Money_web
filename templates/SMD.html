@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <!-- вывод flash-сообщений -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        <form id = "myForm" method="POST">
+            <fieldset>
+                <legend>Автоматический поверхностный монтаж SMT</legend>
+                <div class="form-group">
+                    <input type="checkbox" id="SMD" name="SMD" value="1"
+                           {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD'] == "1" %} checked="checked" {% endif %} {% endif %}>
+                    <label for="SMD">Выполнять автоматический поверхностный монтаж SMT? </label>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+        </form>
+    </div>
+</body>
+</html>

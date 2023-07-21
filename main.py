@@ -45,15 +45,15 @@ def second():
                     and (request.form['width_num']!="") and (request.form['length_num']!="") \
                     and (request.form['multi']!="") and ('Traf' in request.form):
                 if request.form['Traf'] =="1":
-                    return redirect(url_for('works'))
+                    return redirect(url_for('smd'))
                 if ('sides_SMD' in request.form) and ('Traf_value' in request.form):
                     if (request.form['Traf'] == "2") and (request.form['sides_SMD']!="") and \
                              (request.form['Traf_value']!=""):
-                        return redirect(url_for('works'))
+                        return redirect(url_for('smd'))
                 if ('sides_SMD' in request.form) and ('Traf_value2' in request.form):
                     if (request.form['Traf'] == "2") and (request.form['sides_SMD']!="") and \
                              (request.form['Traf_value2']!=""):
-                        return redirect(url_for('works'))
+                        return redirect(url_for('smd'))
                     else:
                         msg = 'Заполните все поля'
                         flash(msg)
@@ -106,13 +106,37 @@ def update_table():
     return redirect('/tarrifs')
 
 
-@app.route('/works', methods=['GET', 'POST'])
-def works():
+@app.route('/SMD', methods=['GET', 'POST'])
+def smd():
     if request.method == 'POST':
-        session['second_form'] = request.form
+        session['SMD_form'] = request.form
         if 'tariffs' in request.form:
-            session['last_page'] = 'second'
+            session['last_page'] = 'smd'
             return redirect(url_for('tariffs'))
-    return render_template('works.html')
+        if 'back' in request.form:
+            return redirect(url_for('second'))
+        if 'next' in request.form:
+            if not ('SMD' in request.form):
+                return redirect(url_for('tht'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('SMD.html')
+
+@app.route('/THT', methods=['GET', 'POST'])
+def tht():
+    if request.method == 'POST':
+        session['tht_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'tht'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('second'))
+        if 'next' in request.form:
+            if request.rorm['tht'] == False:
+                return redirect(url_for('THT'))
+    return render_template('THT.html')
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
