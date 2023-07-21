@@ -31,6 +31,7 @@ def home():
 
 @app.route('/second', methods=['GET', 'POST'])
 def second():
+    msg = ""
     if request.method == 'POST':
         session['second_form'] = request.form
         if 'tariffs' in request.form:
@@ -39,7 +40,29 @@ def second():
         elif 'back' in request.form:
             return redirect(url_for('home'))
         elif 'next' in request.form:
-            return redirect(url_for('works'))
+            if (request.form['Comp']!="") and (request.form['prod']!="") and (request.form['prev']!="") \
+                    and (request.form['width']!="") and (request.form['length']!="") \
+                    and (request.form['width_num']!="") and (request.form['length_num']!="") \
+                    and (request.form['multi']!="") and ('Traf' in request.form):
+                if request.form['Traf'] =="1":
+                    return redirect(url_for('works'))
+                if ('sides_SMD' in request.form) and ('Traf_value' in request.form):
+                    if (request.form['Traf'] == "2") and (request.form['sides_SMD']!="") and \
+                             (request.form['Traf_value']!=""):
+                        return redirect(url_for('works'))
+                if ('sides_SMD' in request.form) and ('Traf_value2' in request.form):
+                    if (request.form['Traf'] == "2") and (request.form['sides_SMD']!="") and \
+                             (request.form['Traf_value2']!=""):
+                        return redirect(url_for('works'))
+                    else:
+                        msg = 'Заполните все поля'
+                        flash(msg)
+                else:
+                    msg = 'Заполните все поля'
+                    flash(msg)
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
     return render_template('second.html')
 
 

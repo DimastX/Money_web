@@ -90,6 +90,11 @@
 
 }
 
+td {
+    vertical-align: top;
+    padding-right: 30px;
+}
+
 table {
 
 	width: 100%;
@@ -99,4 +104,8 @@ table {
 	margin-bottom: 20px;
 
 	border-collapse: separate;
+}
+
+.inner-table {
+  width: 100%;
 }
