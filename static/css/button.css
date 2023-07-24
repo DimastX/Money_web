@@ -18,3 +18,8 @@
 .alert .closebtn:hover {
     color: black;
 }
+
+.disable_section {
+  pointer-events: none;
+  opacity: 0.4;
+}

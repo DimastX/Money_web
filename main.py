@@ -131,7 +131,7 @@ def tht():
             session['last_page'] = 'tht'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
-            return redirect(url_for('second'))
+            return redirect(url_for('smd'))
         if 'next' in request.form:
             if request.rorm['tht'] == False:
                 return redirect(url_for('THT'))
