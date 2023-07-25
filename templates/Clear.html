@@ -4,6 +4,7 @@
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -29,8 +30,53 @@
                 </div>
             </fieldset>
             <div class="form-group" id="Clear_off">
-                <label>Test:</label>
-                <input type="text" class="form-control" name="Clear_1" value="{{ session['Clear_form']['Clear_1'] if session.get('Clear_form') else '' }}">
+                <label>Выберите программу отмывки</label>
+                <br>
+                <label>
+                    <input type="radio" name="Clear_type" value="1"
+                           {% if session.get('Clear_form')%} {% if session['Clear_form']['Clear'] == "1" %} checked {% endif %} {% endif %}>
+                    Укороченная
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="Clear_type"
+                           {% if session.get('Clear_form')%} {% if session['Clear_form']['Clear'] == "2" %} checked {% endif %} {% endif %} value="2">
+                    Полная
+                </label>
+                <br>
+            </div>
+            <div class="container">
+                <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>{{ df.columns[0] }}</th>
+                                <th>{{ df.columns[1] }}</th>
+                            </tr>
+                        </thead>
+                        {% for row in df.iterrows(): %}
+                        <tr>
+                            {% for cell in row[1] %}
+                            <td>
+                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                    <input {% if edit == "0" %} disabled {% endif %}
+                                           type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                {% else %} <!-- Если это не второй столбец -->
+                                    {{ cell }}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <label>Пароль:</label>
+                <input type="password" class="form-control" name="password">
+                <button type="submit" class="btn btn-primary" name="save">Изменить</button>
+                <br>
+                <button {% if edit == "0" %} disabled {% endif %}
+                        type="submit" class="btn btn-primary" name="save2">Сохранить</button>
             </div>
             <br>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>

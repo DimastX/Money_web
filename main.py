@@ -2,11 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import pandas as pd
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
-
+password = '1234'
 
 def readdata():
     return pd.read_csv('data/tarifs.csv')
-
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -74,8 +73,7 @@ def tariffs():
         if 'back' in request.form:
             return redirect(url_for(session['last_page']))
         elif 'check' in request.form:
-            if request.form['password'] == '1234':
-                #return render_template('edittable.html', tables=[df.to_html(classes='table', index=False, header="true")])
+            if request.form['password'] == password:
                 return redirect(url_for('edittable'))
             else:
                 msg = 'Неправильный пароль'
@@ -229,13 +227,27 @@ def test():
 
 @app.route('/clear', methods=['GET', 'POST'])
 def clear():
+    edit = "0"
+    df = pd.read_csv('data/Clear.csv')
     if request.method == 'POST':
         session['clear_form'] = request.form
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
         if 'tariffs' in request.form:
             session['last_page'] = 'clear'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
             return redirect(url_for('test'))
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/Clear.csv', index=False)
         if 'next' in request.form:
             if not ('Clear' in request.form):
                 return redirect(url_for('ICT'))
@@ -244,7 +256,7 @@ def clear():
             else:
                 msg = 'Заполните все поля'
                 flash(msg)
-    return render_template('Clear.html')
+    return render_template('Clear.html', df = df, edit=edit)
 
 
 @app.route('/ICT', methods=['GET', 'POST'])
