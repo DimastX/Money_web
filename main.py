@@ -108,6 +108,7 @@ def update_table():
 
 @app.route('/SMD', methods=['GET', 'POST'])
 def smd():
+    fields = 0
     if request.method == 'POST':
         session['SMD_form'] = request.form
         if 'tariffs' in request.form:
@@ -116,7 +117,12 @@ def smd():
         if 'back' in request.form:
             return redirect(url_for('second'))
         if 'next' in request.form:
+            for key in request.form:
+                if request.form[key] == '':
+                    fields += 1
             if not ('SMD' in request.form):
+                return redirect(url_for('tht'))
+            elif fields == 1:
                 return redirect(url_for('tht'))
             else:
                 msg = 'Заполните все поля'
@@ -125,17 +131,254 @@ def smd():
 
 @app.route('/THT', methods=['GET', 'POST'])
 def tht():
+    fields = 0
     if request.method == 'POST':
-        session['tht_form'] = request.form
+        session['THT_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'tht'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
             return redirect(url_for('smd'))
         if 'next' in request.form:
-            if request.rorm['tht'] == False:
-                return redirect(url_for('THT'))
+            if not ('THT' in request.form):
+                return redirect(url_for('wave'))
+            elif request.form.__len__() == 3:
+                return redirect(url_for('wave'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
     return render_template('THT.html')
+
+@app.route('/wave', methods=['GET', 'POST'])
+def wave():
+    if request.method == 'POST':
+        session['wave_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'wave'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('tht'))
+        if 'next' in request.form:
+            if not ('Wave' in request.form):
+                return redirect(url_for('HRL'))
+            elif request.form.__len__() == 3:
+                return redirect(url_for('HRL'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Wave.html')
+
+@app.route('/HRL', methods=['GET', 'POST'])
+def HRL():
+    if request.method == 'POST':
+        session['HRL_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'HRL'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('wave'))
+        if 'next' in request.form:
+            if not ('HRL' in request.form):
+                return redirect(url_for('hand'))
+            elif request.form.__len__() == 3:
+                return redirect(url_for('hand'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('HRL.html')
+
+@app.route('/hand', methods=['GET', 'POST'])
+def hand():
+    if request.method == 'POST':
+        session['hand_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'hand'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('HRL'))
+        if 'next' in request.form:
+            if not ('Hand' in request.form):
+                return redirect(url_for('test'))
+            elif request.form.__len__() == 3:
+                return redirect(url_for('test'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Hand.html')
+
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    if request.method == 'POST':
+        session['test_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'test'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('hand'))
+        if 'next' in request.form:
+            if not ('Hand' in request.form):
+                return redirect(url_for('clear'))
+            elif request.form.__len__() == 3:
+                return redirect(url_for('clear'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Test.html')
+
+
+@app.route('/clear', methods=['GET', 'POST'])
+def clear():
+    if request.method == 'POST':
+        session['clear_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'clear'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('test'))
+        if 'next' in request.form:
+            if not ('Clear' in request.form):
+                return redirect(url_for('ICT'))
+            elif request.form.__len__() == 3:
+                return redirect(url_for('ICT'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Clear.html')
+
+
+@app.route('/ICT', methods=['GET', 'POST'])
+def ICT():
+    if request.method == 'POST':
+        session['ICT_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'ICT'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('clear'))
+        if 'next' in request.form:
+            if not ('Clear' in request.form):
+                return redirect(url_for('handv'))
+            elif request.form.__len__() == 3:
+                return redirect(url_for('handv'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('ICT.html')
+
+@app.route('/Handv', methods=['GET', 'POST'])
+def handv():
+    if request.method == 'POST':
+        session['Handv_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'Handv'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('ICT'))
+        if 'next' in request.form:
+            if not ('Handv' in request.form):
+                return redirect(url_for('sep'))
+            elif request.form.__len__() == 3:
+                return redirect(url_for('sep'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Handv.html')
+
+@app.route('/separation', methods=['GET', 'POST'])
+def sep():
+    fields = 0
+    if request.method == 'POST':
+        session['sep_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'sep'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('handv'))
+        if 'next' in request.form:
+            for key in request.form:
+                if request.form[key] == '':
+                    fields += 1
+            if not ('Sep' in request.form):
+                return redirect(url_for('xray'))
+            elif fields == 1:
+                return redirect(url_for('xray'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Sep.html')
+
+
+@app.route('/xray', methods=['GET', 'POST'])
+def xray():
+    fields = 0
+    if request.method == 'POST':
+        session['xray_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'xray'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('sep'))
+        if 'next' in request.form:
+            for key in request.form:
+                if request.form[key] == '':
+                    fields += 1
+            if not ('Xray' in request.form):
+                return redirect(url_for('mech'))
+            elif fields == 1:
+                return redirect(url_for('mech'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Xray.html')
+
+
+@app.route('/mech', methods=['GET', 'POST'])
+def mech():
+    fields = 0
+    if request.method == 'POST':
+        session['mech_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'mech'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('xray'))
+        if 'next' in request.form:
+            for key in request.form:
+                if request.form[key] == '':
+                    fields += 1
+            if not ('xray' in request.form):
+                return redirect(url_for('add'))
+            elif fields == 1:
+                return redirect(url_for('add'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Mech.html')
+
+
+@app.route('/additional', methods=['GET', 'POST'])
+def add():
+    fields = 0
+    if request.method == 'POST':
+        session['add_form'] = request.form
+        if 'tariffs' in request.form:
+            session['last_page'] = 'add'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('mech'))
+        if 'next' in request.form:
+            for key in request.form:
+                if request.form[key] == '':
+                    fields += 1
+            if not ('Add' in request.form):
+                return redirect(url_for('tht'))
+            elif fields == 1:
+                return redirect(url_for('tht'))
+            else:
+                msg = 'Заполните все поля'
+                flash(msg)
+    return render_template('Add.html')
 
 
 if __name__ == '__main__':

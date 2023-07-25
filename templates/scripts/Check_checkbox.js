@@ -1,7 +1,7 @@
-function check() {
-  if (document.getElementById("SMD").checked) {
-    document.getElementById("SMD_off").classList.remove('disable_section')
+function check(master, slave) {
+  if (document.getElementById(master).checked) {
+    document.getElementById(slave).classList.remove('disable_section')
   } else {
-    document.getElementById("SMD_off").classList.add('disable_section')
+    document.getElementById(slave).classList.add('disable_section')
   }
 }

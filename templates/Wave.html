@@ -21,16 +21,16 @@
     <div class="container">
         <form id = "myForm" method="POST">
             <fieldset>
-                <legend>Селективная пайка THT</legend>
+                <legend>Волновая пайка</legend>
                 <div class="form-group">
-                    <input type="checkbox" id="THT" name="THT" value="1" onclick="check('THT', 'THT_off')"
-                           {% if session.get('THT_form')%} {% if session['THT_form']['THT'] %} checked="checked" {% endif %} {% endif %}>
-                    <label for="THT">Выполнять cелективную пайку THT? </label>
+                    <input type="checkbox" id="Wave" name="Wave" value="1" onclick="check('Wave', 'Wave_off')"
+                           {% if session.get('Wave_form')%} {% if session['Wave_form']['Wave'] %} checked="checked" {% endif %} {% endif %}>
+                    <label for="Wave">Выполнять волновую пайку? </label>
                 </div>
             </fieldset>
-            <div class="form-group" id="THT_off">
+            <div class="form-group" id="Wave_off">
                 <label>Test:</label>
-                <input type="text" class="form-control" name="THT_1" value="{{ session['THT_form']['THT_1'] if session.get('THT_form') else '' }}">
+                <input type="text" class="form-control" name="Wave_1" value="{{ session['Wave_form']['Wave_1'] if session.get('Wave_form') else '' }}">
             </div>
             <br>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
@@ -40,7 +40,7 @@
     </div>
     <script>
         window.onload = function(){
-            check('THT', 'THT_off');
+            check('Wave', 'Wave_off');
         }
         function check(master, slave) {
           if (document.getElementById(master).checked) {

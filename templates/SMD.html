@@ -29,8 +29,8 @@
                 </div>
             </fieldset>
             <div class="form-group" id="SMD_off">
-                <label>Заказчик:</label>
-                <input type="text" class="form-control" name="field1" value="{{ session['home_form']['field1'] if session.get('home_form') else '' }}">
+                <label>Test:</label>
+                <input type="text" class="form-control" name="SMD_1" value="{{ session['SMD_form']['SMD_1'] if session.get('SMD_form') else '' }}">
             </div>
             <br>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
@@ -39,6 +39,9 @@
         </form>
     </div>
     <script>
+        window.onload = function(){
+            check('SMD', 'SMD_off');
+        }
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
