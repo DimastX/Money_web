@@ -20,7 +20,7 @@ def home():
                 return redirect(url_for('second'))
             else:
                 msg = 'Заполните все поля'
-                #return render_template('home.html', msg=msg)
+                #return render_template('home.html', msg=msg)ss
                 flash(msg)
         elif 'clear-session-button' in request.form:
             session.clear()
