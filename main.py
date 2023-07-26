@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pandas as pd
+import calculations_money as cm
+
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 password = '1234'
@@ -95,13 +98,6 @@ def edittable():
             # Сохраняем обновленный dfв
             return redirect(url_for('tariffs'))
     return render_template('edittable.html', df = df, tables=[df.to_html(classes='table', index=False, header="true")])
-
-@app.route('/update_table', methods=['POST'])
-def update_table():
-    for key, value in request.form.items():
-        row, col = map(int, key.split('-'))
-        df.iloc[row, col] = value
-    return redirect('/tarrifs')
 
 
 @app.route('/SMD', methods=['GET', 'POST'])
@@ -228,6 +224,9 @@ def test():
 @app.route('/clear', methods=['GET', 'POST'])
 def clear():
     edit = "0"
+    data = cm.clear_calculations(session, df)
+    session['Calculations']['number_multi'] = data[0]
+    session['Calculations']['number_items'] = data[1]
     df = pd.read_csv('data/Clear.csv')
     if request.method == 'POST':
         session['Clear_form'] = request.form
