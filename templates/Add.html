@@ -24,7 +24,7 @@
                 <legend>Дополнительные работы</legend>
                 <div class="form-group">
                     <input type="checkbox" id="Add" name="Add" value="1" onclick="check('Add', 'Add_off')"
-                           {% if session.get('Add_form')%} {% if session['Add_form']['Add'] %} checked="checked" {% endif %} {% endif %}>
+                           {% if session.get('Add_form') %} {% if session['Add_form']['Add'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Add">Есть дополнительные работы? </label>
                 </div>
             </fieldset>

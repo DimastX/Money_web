@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Количество сторон SMD:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_SMD" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "1" %} checked {% endif %} {% endif %}>
+                                Односторонняя
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_SMD"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Двусторонняя
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Количество сторон THT:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_THT" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_THT'] == "1" %} checked {% endif %} {% endif %}>
+                                Односторонняя
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_THT"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_THT'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Двусторонняя
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label>Количество сторон лакировки:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_var" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_var'] == "1" %} checked {% endif %} {% endif %}>
+                                Односторонняя
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="sides_var"
+                                       {% if session.get('second_form')%} {% if session['second_form']['sides_var'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Двусторонняя
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <!-- вывод flash-сообщений -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        <form id = "myForm" method="POST">
+            <fieldset>
+                <legend>Селективная пайка THT</legend>
+                <div class="form-group">
+                    <input type="checkbox" id="THT" name="THT" value="{{ session['THT_form']['THT'] if session.get('SMD_form') else '' }}">
+                    <label for="THT">Выполнять cелективную пайку THT? </label>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+        </form>
+    </div>
+</body>
+</html>

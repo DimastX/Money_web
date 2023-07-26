@@ -150,7 +150,7 @@ def tht():
 @app.route('/wave', methods=['GET', 'POST'])
 def wave():
     if request.method == 'POST':
-        session['wave_form'] = request.form
+        session['Wave_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'wave'
             return redirect(url_for('tariffs'))
@@ -188,7 +188,7 @@ def HRL():
 @app.route('/hand', methods=['GET', 'POST'])
 def hand():
     if request.method == 'POST':
-        session['hand_form'] = request.form
+        session['Hand_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'hand'
             return redirect(url_for('tariffs'))
@@ -208,7 +208,7 @@ def hand():
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     if request.method == 'POST':
-        session['test_form'] = request.form
+        session['Test_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'test'
             return redirect(url_for('tariffs'))
@@ -230,7 +230,7 @@ def clear():
     edit = "0"
     df = pd.read_csv('data/Clear.csv')
     if request.method == 'POST':
-        session['clear_form'] = request.form
+        session['Clear_form'] = request.form
         if 'save' in request.form:
             if request.form['password'] == password:
                 edit = "1"
@@ -301,7 +301,7 @@ def handv():
 def sep():
     fields = 0
     if request.method == 'POST':
-        session['sep_form'] = request.form
+        session['Sep_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'sep'
             return redirect(url_for('tariffs'))
@@ -325,7 +325,7 @@ def sep():
 def xray():
     fields = 0
     if request.method == 'POST':
-        session['xray_form'] = request.form
+        session['Xray_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'xray'
             return redirect(url_for('tariffs'))
@@ -349,7 +349,7 @@ def xray():
 def mech():
     fields = 0
     if request.method == 'POST':
-        session['mech_form'] = request.form
+        session['Mech_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'mech'
             return redirect(url_for('tariffs'))
@@ -373,7 +373,7 @@ def mech():
 def add():
     fields = 0
     if request.method == 'POST':
-        session['add_form'] = request.form
+        session['Add_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'add'
             return redirect(url_for('tariffs'))
