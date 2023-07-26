@@ -38,14 +38,14 @@
                             <label>Выберите программу отмывки</label>
                             <br>
                             <label>
-                                <input type="radio" name="Clear_type" value="1"
-                                    {% if session.get('Clear_form')%} {% if session['Clear_form']['Clear'] == "1" %} checked {% endif %} {% endif %}>
+                                <input type="radio" name="Clear_type" value="1" onclick="multiply()"
+                                    {% if session.get('Clear_form')%} {% if session['Clear_form']['Clear_type'] == "1" %} checked {% endif %} {% endif %}>
                                 Укороченная
                             </label>
                             <br>
                             <label>
-                                <input type="radio" name="Clear_type"
-                                    {% if session.get('Clear_form')%} {% if session['Clear_form']['Clear'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                <input type="radio" name="Clear_type" onclick="multiply()"
+                                    {% if session.get('Clear_form')%} {% if session['Clear_form']['Clear_type'] == "2" %} checked {% endif %} {% endif %} value="2">
                                 Полная
                             </label>
                             <br>
@@ -54,7 +54,20 @@
                     <td>
                         <div class="form-group">
                             <label>Количество заготовок в отмывке</label>
-                            <input type="number" name="number" disabled value="{{ session}}">
+                            <input type="number" name="number_multi" id="number_multi" disabled value="{{ data[0]}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Количество плат в мультизаготовке</label>
+                            <input type="number" name="number_item" id="number_item" disabled 
+                                value="{{ data[1] }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Времени на отмывку</label>
+                            <input name="time" id="time" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Стоимость отмывки одной платы</label>
+                            <input name="costs" id="costs" disabled>
                         </div>
                     </td>
                 </tr>
@@ -134,6 +147,7 @@
     <script>
         window.onload = function(){
             check('Clear', 'Clear_off');
+            multiply();
         }
         function check(master, slave) {
           if (document.getElementById(master).checked) {
@@ -141,6 +155,26 @@
           } else {
             document.getElementById(slave).classList.add('disable_section')
           }
+        }
+        
+        
+        const opt = document.getElementsByName("Clear_type");
+        const number_multi = document.getElementById("number_multi");
+        const number_items = document.getElementById("number_items");
+        function multiply(){
+            const num1 = parseInt(number_multi.value);
+            const num2 = parseInt(number_item.value);
+            var result = parseFloat({{ session['home_form']['field3'] }}) / parseFloat(num1 * num2); 
+            if (opt[0].checked){
+                result = Math.ceil(result * parseFloat({{ df['Значение'][0] }}) * parseFloat({{ df['Значение'][4] }}) / 60);
+            } else if(opt[1].checked){
+                result = Math.ceil(result * parseFloat({{ df['Значение'][1] }}) * parseFloat({{ df['Значение'][4] }}) / 60);
+            } else {
+                result = 0;
+            }
+            var costs = result * parseFloat({{ df2['Стоимость, руб/ч'][12]}}) / parseFloat({{ session['home_form']['field3'] }})
+            document.getElementById("time").value = result + " ч";
+            document.getElementById("costs").value = parseInt(costs) + " руб";
         }
     </script>
 </body>

@@ -224,10 +224,9 @@ def test():
 @app.route('/clear', methods=['GET', 'POST'])
 def clear():
     edit = "0"
-    data = cm.clear_calculations(session, df)
-    session['Calculations']['number_multi'] = data[0]
-    session['Calculations']['number_items'] = data[1]
     df = pd.read_csv('data/Clear.csv')
+    df2 = readdata()
+    data = cm.clear_calculations(session, df)
     if request.method == 'POST':
         session['Clear_form'] = request.form
         if 'save' in request.form:
@@ -255,7 +254,7 @@ def clear():
             else:
                 msg = 'Заполните все поля'
                 flash(msg)
-    return render_template('Clear.html', df = df, edit=edit)
+    return render_template('Clear.html', df = df, edit=edit, data=data, df2=df2)
 
 
 @app.route('/ICT', methods=['GET', 'POST'])
