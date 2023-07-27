@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Session Data</title>
+</head>
+<body>
+    <h1>Session Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in session_data %}
+                <tr>
+                    <td>{{ data['key'] }}</td>
+                    <td>{{ data['value'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('download') }}" class="btn btn-primary">Download CSV</a>
+</body>
+</html>

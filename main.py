@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, Response
+from flask_table import Table, Col
 import pandas as pd
 import calculations_money as cm
-
+import io
+import csv
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -321,15 +323,18 @@ def sep():
                     df["Значение"][row] = request.form[key]  # обновляем значение ячейки
             df.to_csv('data/Sep.csv', index=False)
         if 'next' in request.form:
-            for key in request.form:
-                if request.form[key] == '':
-                    fields += 1
             if not ('Sep' in request.form):
                 return redirect(url_for('xray'))
-            elif fields == 1:
-                return redirect(url_for('xray'))
+            elif 'Sep_type' in request.form:
+                if request.form['Sep_type'] == 1:
+                    if 'jumpers' in request.form:
+                        return redirect(url_for('xray'))
+                    else:
+                        flash('Заполните количество перемычек')
+                else:    
+                    return redirect(url_for('xray'))
             else:
-                msg = 'Заполните все поля'
+                msg = 'Выберите тип разделения'
                 flash(msg)
     return render_template('Sep.html', df=df, edit=edit, time=time)
 
@@ -397,13 +402,43 @@ def add():
                 if request.form[key] == '':
                     fields += 1
             if not ('Add' in request.form):
-                return redirect(url_for('tht'))
+                return redirect(url_for('session_data'))
             elif fields == 1:
-                return redirect(url_for('tht'))
+                return redirect(url_for('session_data'))
             else:
                 msg = 'Заполните все поля'
                 flash(msg)
     return render_template('Add.html')
+
+@app.route('/session_data')
+def session_data():
+    # Отображаем данные из объекта session на странице
+    session_data = []
+    for key, value in session.items():
+        session_data.append({'key': key, 'value': value})
+    return render_template('session_data.html', session_data=session_data)
+
+@app.route('/download')
+def download():
+    # Создаем CSV-файл на сервере
+    csv_data = create_csv()
+
+    # Отправляем файл в качестве вложения для скачивания
+    response = Response(csv_data, mimetype='text/csv')
+    response.headers['Content-Disposition'] = 'attachment; filename=session_data.csv'
+    return response
+
+def create_csv():
+    # Создаем объект io.StringIO для записи CSV-файла в память
+    csv_buffer = io.StringIO()
+
+    # Записываем таблицу в CSV-файл
+    writer = csv.writer(csv_buffer)
+    writer.writerow(['Field', 'Value'])
+    for key, value in session.items():
+        writer.writerow([key, value])
+
+    return csv_buffer.getvalue()
 
 
 if __name__ == '__main__':
