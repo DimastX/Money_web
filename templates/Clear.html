@@ -26,7 +26,7 @@
             <fieldset>
                 <legend>Отмывка</legend>
                 <div class="form-group">
-                    <input type="checkbox" id="Clear" name="Clear" value="1" onclick="check('Clear', 'Clear_off')"
+                    <input type="checkbox" id="Clear" name="Clear" value="1" onclick="check_all('Clear', 'Clear_off')" 
                            {% if session.get('Clear_form')%} {% if session['Clear_form']['Clear'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Clear">Выполнять отмывку? </label>
                 </div>
@@ -53,8 +53,12 @@
                     </td>
                     <td>
                         <div class="form-group">
+                            <label>Количество плат в отмывке</label>
+                            <input type="number" name="number_pcb" id="number_pcb" disabled value="{{ data[2]}}">
+                        </div>
+                        <div class="form-group">
                             <label>Количество заготовок в отмывке</label>
-                            <input type="number" name="number_multi" id="number_multi" disabled value="{{ data[0]}}">
+                            <input type="number" name="number_multi" id="number_multi" disabled value="{{ data[0] }}">
                         </div>
                         <div class="form-group">
                             <label>Количество плат в мультизаготовке</label>
@@ -68,6 +72,10 @@
                         <div class="form-group">
                             <label>Стоимость отмывки одной платы</label>
                             <input name="costs" id="costs" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Стоимость отмывки партии</label>
+                            <input name="costs_all" id="costs_all" disabled>
                         </div>
                     </td>
                 </tr>
@@ -146,8 +154,7 @@
     </div>
     <script>
         window.onload = function(){
-            check('Clear', 'Clear_off');
-            multiply();
+            check_all('Clear', 'Clear_off');
         }
         function check(master, slave) {
           if (document.getElementById(master).checked) {
@@ -161,20 +168,31 @@
         const opt = document.getElementsByName("Clear_type");
         const number_multi = document.getElementById("number_multi");
         const number_items = document.getElementById("number_items");
+        const number_smallitems = document.getElementById("number_pcb");
+        const chckbx = document.getElementById("Clear")
         function multiply(){
+            const num = parseInt(number_smallitems.value)
             const num1 = parseInt(number_multi.value);
             const num2 = parseInt(number_item.value);
-            var result = parseFloat({{ session['home_form']['field3'] }}) / parseFloat(num1 * num2); 
-            if (opt[0].checked){
-                result = Math.ceil(result * parseFloat({{ df['Значение'][0] }}) * parseFloat({{ df['Значение'][4] }}) / 60);
-            } else if(opt[1].checked){
-                result = Math.ceil(result * parseFloat({{ df['Значение'][1] }}) * parseFloat({{ df['Значение'][4] }}) / 60);
+            const master = chckbx.checked
+            var result = parseFloat({{ session['home_form']['field3'] }}) / parseFloat(num); 
+            if (opt[0].checked && master){
+                result = result * parseFloat({{ df['Значение'][0] }}) * parseFloat({{ df['Значение'][4] }}) / 60;
+            } else if(opt[1].checked && master){
+                result = result * parseFloat({{ df['Значение'][1] }}) * parseFloat({{ df['Значение'][4] }}) / 60;
             } else {
                 result = 0;
             }
-            var costs = result * parseFloat({{ df2['Стоимость, руб/ч'][12]}}) / parseFloat({{ session['home_form']['field3'] }})
+            result = Number(result).toFixed(2)
+            var costs = result * parseInt({{ df2['Стоимость, руб/ч'][12]}})
             document.getElementById("time").value = result + " ч";
-            document.getElementById("costs").value = parseInt(costs) + " руб";
+            document.getElementById("costs").value = Math.ceil(costs / parseFloat({{ session['home_form']['field3'] }})) + " руб";
+            document.getElementById("costs_all").value = Math.ceil(costs) + " руб";
+        }
+
+        function check_all(master, slave){
+            check(master, slave)
+            multiply()
         }
     </script>
 </body>
