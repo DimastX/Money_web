@@ -3,7 +3,10 @@
 <head>
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -23,14 +26,105 @@
             <fieldset>
                 <legend>Разделение</legend>
                 <div class="form-group">
-                    <input type="checkbox" id="Sep" name="Sep" value="1" onclick="check('Sep', 'Sep_off')"
+                    <input type="checkbox" id="Sep" name="Sep" value="1" onclick="check_all('Sep', 'Sep_off')"
                            {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Sep">Выполнять разделение? </label>
                 </div>
             </fieldset>
-            <div class="form-group" id="Sep_off">
-                <label>Test:</label>
-                <input type="text" class="form-control" name="Sep_1" value="{{ session['Sep_form']['Sep_1'] if session.get('Sep_form') else '' }}">
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group" id="Sep_off">
+                            <label>Выберите способ разделения</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Sep_type" value="1" id="Scrab" onclick="time_calculation()"
+                                    {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep_type'] == "1" %} checked {% endif %} {% endif %}>
+                                Скрайбирование
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Sep_type" id="jump" onclick="time_calculation()"
+                                    {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep_type'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Перемычки
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Sep_type" id="SAR" onclick="time_calculation()"
+                                    {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep_type'] == "3" %} checked {% endif %} {% endif %} value="3">
+                                SAR
+                            </label>
+                            <div class="form-group" id="jumpers" style="display:none">
+                                <label>Количество перемычек:</label>
+                                <input type="number" class="form-control" name="jumpers" id="jumpers_num" min="1" step="1" onclick="time_calculation()" onkeyup="time_calculation()"
+                                    value="{{ session['Sep_form']['jumpers'] if session.get('Sep_form') else '' }}"></input>
+                            </div>
+                            <br>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Время на разделение одного ПУ</label>
+                            <input class="form-control" name="time" id="time" disabled></input>
+                        </div>
+                        <div class="form-group">
+                            <label>Время на разделение мультизаготовки</label>
+                            <input class="form-control" name="time_multi" id="time_multi" disabled></input>
+                        </div>
+                        <div class="form-group">
+                            <label>Время на разделение партии</label>
+                            <input class="form-control" name="time_all" id="time_all" disabled></input>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Данные для разделения
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div>
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>{{ df.columns[0] }}</th>
+                                                <th>{{ df.columns[1] }}</th>
+                                            </tr>
+                                        </thead>
+                                        {% for row in df.iterrows(): %}
+                                        <tr>
+                                            {% for cell in row[1] %}
+                                            <td>
+                                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                    <input {% if edit == "0" %} disabled {% endif %}
+                                                        type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                {% else %} <!-- Если это не второй столбец -->
+                                                    {{ cell }}
+                                                {% endif %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                                <label>Пароль:</label>
+                                <input type="password" class="form-control" name="password">                
+                                <br>
+                                <button {% if edit != "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save">Изменить</button>
+                                <button {% if edit == "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save2">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <br>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
@@ -39,15 +133,71 @@
         </form>
     </div>
     <script>
+        const opt = document.getElementsByName("Sep_type");
+        const chckbx = document.getElementById("Sep")
+        const num = document.getElementById("jumpers_num")
         window.onload = function(){
             check('Sep', 'Sep_off');
+            checkOption('jump', 'jumpers');
+            time_calculation();
         }
+
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
           } else {
             document.getElementById(slave).classList.add('disable_section')
           }
+        }
+
+        document.getElementById('jump').addEventListener('change', function() {
+            checkOption('jump', 'jumpers');
+        });
+        document.getElementById('Scrab').addEventListener('change', function() {
+            checkOption('jump', 'jumpers');
+        });
+        document.getElementById('SAR').addEventListener('change', function() {
+            checkOption('jump', 'jumpers');
+        });
+        document.getElementById('time').addEventListener('change', function() {
+            time_calculation();
+        });
+
+        function time_calculation(){
+            let time = 0;
+            const number = num.value;
+            if (chckbx.checked){
+                if(opt[0].checked){
+                    time = parseFloat({{ time[0] }});
+                } else if(opt[1].checked){
+                    time = parseFloat({{ time[1] }}) * Number(number) / parseFloat({{ time[4] }});
+                } else if(opt[2].checked){
+                    time = parseFloat({{ time[2] }});
+                } else {
+                    time = 0;
+                }
+            }
+            time = Math.ceil(time)
+            document.getElementById("time").value = time + " c";
+            let time_multi = Math.ceil(time * parseFloat({{ time[4] }}))
+            document.getElementById("time_multi").value = time_multi + " c";
+            let time_all = Math.ceil(time_multi * parseFloat({{ time[3] }}) / 3600)
+            document.getElementById("time_all").value = time_all + " ч";
+        }
+
+        function check_all(master, slave){
+            check(master, slave);
+            time_calculation();
+        }
+        function checkOption(optionId, fieldId) {
+            var radioOption1 = document.getElementById(optionId);
+            var extraField = document.getElementById(fieldId);
+
+            if(radioOption1.checked) {
+                extraField.style.display = 'block';
+            } else {
+                extraField.style.display = 'none';
+            }
         }
     </script>
 </body>

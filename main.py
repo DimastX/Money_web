@@ -42,10 +42,10 @@ def second():
         elif 'back' in request.form:
             return redirect(url_for('home'))
         elif 'next' in request.form:
-            if (request.form['Comp']!="") and (request.form['prod']!="") and (request.form['prev']!="") \
+            if ('Comp' in request.form) and ('prod' in request.form) and ('prev' in request.form) \
                     and (request.form['width']!="") and (request.form['length']!="") \
                     and (request.form['width_num']!="") and (request.form['length_num']!="") \
-                    and (request.form['multi']!="") and ('Traf' in request.form):
+                    and ('multi' in request.form) and ('Traf' in request.form):
                 if request.form['Traf'] =="1":
                     return redirect(url_for('smd'))
                 if ('sides_SMD' in request.form) and ('Traf_value' in request.form):
@@ -249,10 +249,10 @@ def clear():
         if 'next' in request.form:
             if not ('Clear' in request.form):
                 return redirect(url_for('ICT'))
-            elif request.form.__len__() == 3:
+            elif 'Clear_type' in request.form:
                 return redirect(url_for('ICT'))
             else:
-                msg = 'Заполните все поля'
+                msg = 'Выберите программу отмывки'
                 flash(msg)
     return render_template('Clear.html', df = df, edit=edit, data=data, df2=df2)
 
@@ -297,14 +297,29 @@ def handv():
 
 @app.route('/separation', methods=['GET', 'POST'])
 def sep():
+    df = pd.read_csv('data/Sep.csv')
     fields = 0
+    edit = "0"
+    time = cm.sep_calculations(session, df)
     if request.method == 'POST':
         session['Sep_form'] = request.form
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
         if 'tariffs' in request.form:
             session['last_page'] = 'sep'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
             return redirect(url_for('handv'))
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/Sep.csv', index=False)
         if 'next' in request.form:
             for key in request.form:
                 if request.form[key] == '':
@@ -316,7 +331,7 @@ def sep():
             else:
                 msg = 'Заполните все поля'
                 flash(msg)
-    return render_template('Sep.html')
+    return render_template('Sep.html', df=df, edit=edit, time=time)
 
 
 @app.route('/xray', methods=['GET', 'POST'])
