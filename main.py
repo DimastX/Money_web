@@ -263,7 +263,7 @@ def handv():
     if request.method == 'POST':
         session['Handv_form'] = request.form
         if 'tariffs' in request.form:
-            session['last_page'] = 'Handv'
+            session['last_page'] = 'handv'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
             return redirect(url_for('clear'))
