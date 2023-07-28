@@ -309,7 +309,7 @@ def sep():
             if request.form['password'] == password:
                 edit = "1"
             else:
-                msg = 'Неверный пароль'
+                msg = 'Правильно заполните поля'
                 flash(msg)
         if 'tariffs' in request.form:
             session['last_page'] = 'sep'
@@ -414,8 +414,14 @@ def add():
 def session_data():
     # Отображаем данные из объекта session на странице
     session_data = []
+    i = 0
     for key, value in session.items():
         session_data.append({'key': key, 'value': value})
+        session_data[i]['value'] = str(session_data[i]['value']).translate(str.maketrans('{}', "  "))
+        session_data[i]['value'] = str(session_data[i]['value']).replace(',', "<br>")
+        print(session_data[i]['value'])
+        i=i+1
+
     return render_template('session_data.html', session_data=session_data)
 
 @app.route('/download')

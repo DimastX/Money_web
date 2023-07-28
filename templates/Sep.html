@@ -65,15 +65,15 @@
                     <td>
                         <div class="form-group">
                             <label>Время на разделение одного ПУ</label>
-                            <input class="form-control" name="time" id="time" disabled></input>
+                            <input class="form-control" name="time" id="time" readonly></input>
                         </div>
                         <div class="form-group">
                             <label>Время на разделение мультизаготовки</label>
-                            <input class="form-control" name="time_multi" id="time_multi" disabled></input>
+                            <input class="form-control" name="time_multi" id="time_multi" readonly></input>
                         </div>
                         <div class="form-group">
                             <label>Время на разделение партии</label>
-                            <input class="form-control" name="time_all" id="time_all" disabled></input>
+                            <input class="form-control" name="time_all" id="time_all" readonly></input>
                         </div>
                     </td>
                 </tr>
@@ -115,12 +115,15 @@
                                     </table>
                                 </div>
                                 <label>Пароль:</label>
-                                <input type="password" class="form-control" name="password">                
+                                <input type="password" class="form-control" name="password" 
+                                        onkeydown="return event.key != 'Enter';">                
                                 <br>
                                 <button {% if edit != "0" %} disabled {% endif %}
-                                        type="submit" class="btn btn-primary" name="save">Изменить</button>
+                                        type="submit" class="btn btn-primary" name="save" 
+                                        onkeydown="return event.key != 'Enter';">Изменить</button>
                                 <button {% if edit == "0" %} disabled {% endif %}
-                                        type="submit" class="btn btn-primary" name="save2">Сохранить</button>
+                                        type="submit" class="btn btn-primary" name="save2" 
+                                        onkeydown="return event.key != 'Enter';">Сохранить</button>
                             </div>
                         </div>
                     </div>
@@ -181,7 +184,7 @@
             document.getElementById("time").value = time + " c";
             let time_multi = Math.ceil(time * parseFloat({{ time[4] }}))
             document.getElementById("time_multi").value = time_multi + " c";
-            let time_all = Math.ceil(time_multi * parseFloat({{ time[3] }}) / 3600)
+            let time_all = (time_multi * parseFloat({{ time[3] }}) / 3600).toFixed(1)
             document.getElementById("time_all").value = time_all + " ч";
         }
 
@@ -199,6 +202,11 @@
                 extraField.style.display = 'none';
             }
         }
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
