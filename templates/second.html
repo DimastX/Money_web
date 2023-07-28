@@ -83,57 +83,61 @@
                                     <table margin="0">
                                         <tr>
                                             <td>
-                                                <label>Количество сторон SMD:</label>
-                                                <br>
-                                                <label>
-                                                    <input type="radio" name="sides_SMD" value="1"
-                                                           {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "1" %} checked {% endif %} {% endif %}>
-                                                    Односторонняя
-                                                </label>
-                                                <br>
-                                                <label>
-                                                    <input type="radio" name="sides_SMD"
-                                                           {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                                    Двусторонняя
-                                                </label>
+                                                <div class="form-group">
+                                                    <label>Количество сторон SMD:</label>
+                                                    <br>
+                                                    <label>
+                                                        <input type="radio" name="sides_SMD" value="1"
+                                                            {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "1" %} checked {% endif %} {% endif %}>
+                                                        Односторонняя
+                                                    </label>
+                                                    <br>
+                                                    <label>
+                                                        <input type="radio" name="sides_SMD"
+                                                            {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                                        Двусторонняя
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>
-                                                <label>Выбор стоимости:</label>
-                                                <br>
-                                                <label>
-                                                    <input type="radio" name="Trafs_costs_select" value="1" id="Trafs_costs_select1"
-                                                           {% if session.get('second_form')%} {% if session['second_form']['Trafs_costs_select'] == "1" %} checked {% endif %} {% endif %}>
-                                                    Тарифная
-                                                </label>
-                                                <br>
-                                                <label>
-                                                    <input type="radio" name="Trafs_costs_select" id="Trafs_costs_select2"
-                                                           {% if session.get('second_form')%} {% if session['second_form']['Trafs_costs_select'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                                    Ручная
-                                                </label>
-                                                <div class="form-group" id="Traf_costs1" style="display:none; margin: 10px">
-                                                    <label>Стоимость трафарета</label>
+                                                <div class="form-group">
+                                                    <label>Выбор стоимости:</label>
                                                     <br>
-                                                    <select name="Traf_value2">
-                                                        <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "1" %} selected {% endif %} {% endif %}
-                                                                value="1" >
-                                                            Простой трафарет - 15.000 руб
-                                                        </option>
-                                                        <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "2" %} selected {% endif %} {% endif %}
-                                                                value="2">
-                                                            Средний трафарет - 30.000 руб
-                                                        </option>
-                                                        <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "3" %} selected {% endif %} {% endif %}
-                                                                value="3">
-                                                            Сложный трафарет - 100.000 руб
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group" id="Traf_costs2" style="display:none; margin: 10px">
-                                                    <label>Стоимость трафарета</label>
-                                                    <input type="number" class="form-control" name="Traf_value"
-                                                           value="{{ session['second_form']['Traf_value'] if session.get('second_form') else '' }}"
-                                                           placeholder="За 1 шт." min="0" step="1000">
+                                                    <label>
+                                                        <input type="radio" name="Trafs_costs_select" value="1" id="Trafs_costs_select1"
+                                                            {% if session.get('second_form')%} {% if session['second_form']['Trafs_costs_select'] == "1" %} checked {% endif %} {% endif %}>
+                                                        Тарифная
+                                                    </label>
+                                                    <br>
+                                                    <label>
+                                                        <input type="radio" name="Trafs_costs_select" id="Trafs_costs_select2"
+                                                            {% if session.get('second_form')%} {% if session['second_form']['Trafs_costs_select'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                                        Ручная
+                                                    </label>
+                                                    <div class="form-group" id="Traf_costs1" style="display:none; margin: 10px">
+                                                        <label>Стоимость трафарета</label>
+                                                        <br>
+                                                        <select name="Traf_value2" class="form-control">
+                                                            <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "1" %} selected {% endif %} {% endif %}
+                                                                    value="1" >
+                                                                Простой трафарет - 15.000 руб
+                                                            </option>
+                                                            <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "2" %} selected {% endif %} {% endif %}
+                                                                    value="2">
+                                                                Средний трафарет - 30.000 руб
+                                                            </option>
+                                                            <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "3" %} selected {% endif %} {% endif %}
+                                                                    value="3">
+                                                                Сложный трафарет - 100.000 руб
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group" id="Traf_costs2" style="display:none; margin: 10px">
+                                                        <label>Стоимость трафарета</label>
+                                                        <input type="number" class="form-control" name="Traf_value"
+                                                            value="{{ session['second_form']['Traf_value'] if session.get('second_form') else '' }}"
+                                                            placeholder="За 1 шт." min="0" step="1000">
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -179,9 +183,16 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <label>Количество плат по Y:</label>
-                            <input type="number" class="form-control" name="width_num" min ="1"
-                                value="{{ session['second_form']['width_num'] if session.get('second_form') else '' }}">
+                            <div class="form-group">
+                                <label>Количество плат по Y:</label>
+                                <input type="number" class="form-control" name="width_num" id="width_num" min ="1"
+                                    value="{{ session['second_form']['width_num'] if session.get('second_form') else '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Количество плат по X:</label>
+                                <input type="number" min="1" class="form-control" name="length_num" id="length_num"
+                                    value="{{ session['second_form']['length_num'] if session.get('second_form') else '' }}">
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -205,9 +216,12 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <label>Количество плат по X:</label>
-                            <input type="number" min="1" class="form-control" name="length_num" 
-                                value="{{ session['second_form']['length_num'] if session.get('second_form') else '' }}">
+                            <label>Всего плат:</label>
+                            <input type="number" min="1" class="form-control" name="pc" id ="pc" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Всего мультизаготовок:</label>
+                            <input type="number" min="1" class="form-control" name="multi" id ="multi" readonly>
                         </div>
                     </td>
                 </tr>
@@ -218,6 +232,8 @@
         </form>
     </div>
     <script>
+        let num_x = document.getElementById('length_num');
+        let num_y = document.getElementById('width_num');
         function checkOption(optionId, fieldId) {
             var radioOption1 = document.getElementById(optionId);
             var extraField = document.getElementById(fieldId);
@@ -233,6 +249,7 @@
             checkOption('Traf_Y', 'Traf_costs');
             checkOption('Trafs_costs_select1', 'Traf_costs1');
             checkOption('Trafs_costs_select2', 'Traf_costs2');
+            pc_number();
         }
         document.getElementById('Traf_Y').addEventListener('change', function() {
             checkOption('Traf_Y', 'Traf_costs');
@@ -257,6 +274,21 @@
         document.getElementById('Trafs_costs_select1').addEventListener('change', function() {
             checkOption('Trafs_costs_select2', 'Traf_costs2');
         });
+        
+        document.getElementById('length_num').addEventListener('change', function() {
+            pc_number();
+        });
+        
+        document.getElementById('width_num').addEventListener('change', function() {
+            pc_number();
+        });
+
+        function pc_number(){
+            const pc_x = parseInt(num_x.value);
+            const pc_y = parseInt(num_y.value);
+            document.getElementById('pc').value = pc_x * pc_y;
+            document.getElementById('multi').value = Math.ceil({{session['home_form']['field3']}} / (pc_x * pc_y));
+        }
     </script>
 </body>
 </html>

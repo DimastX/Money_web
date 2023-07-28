@@ -54,28 +54,28 @@
                     <td>
                         <div class="form-group">
                             <label>Количество плат в отмывке</label>
-                            <input type="number" name="number_pcb" id="number_pcb" readonly value="{{ data[2]}}">
+                            <input type="number" name="number_pcb" id="number_pcb" class="form-control" readonly value="{{ data[2]}}">
                         </div>
                         <div class="form-group">
                             <label>Количество заготовок в отмывке</label>
-                            <input type="number" name="number_multi" id="number_multi" readonly value="{{ data[0] }}">
+                            <input type="number" name="number_multi" id="number_multi" class="form-control" readonly value="{{ data[0] }}">
                         </div>
                         <div class="form-group">
                             <label>Количество плат в мультизаготовке</label>
-                            <input type="number" name="number_item" id="number_item" readonly 
+                            <input type="number" name="number_item" id="number_item" class="form-control" readonly 
                                 value="{{ data[1] }}">
                         </div>
                         <div class="form-group">
                             <label>Времени на отмывку</label>
-                            <input name="time" id="time" readonly>
+                            <input name="time" id="time" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Стоимость отмывки одной платы</label>
-                            <input name="costs" id="costs" readonly>
+                            <input name="costs" id="costs" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Стоимость отмывки партии</label>
-                            <input name="costs_all" id="costs_all" readonly>
+                            <input name="costs_all" id="costs_all" class="form-control" readonly>
                         </div>
                     </td>
                 </tr>
@@ -171,7 +171,7 @@
         const number_smallitems = document.getElementById("number_pcb");
         const chckbx = document.getElementById("Clear")
         function multiply(){
-            const num = parseInt(number_smallitems.value)
+            const num = parseInt(number_smallitems.value);
             const num1 = parseInt(number_multi.value);
             const num2 = parseInt(number_item.value);
             const master = chckbx.checked

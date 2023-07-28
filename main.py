@@ -354,61 +354,29 @@ def xray():
                 if request.form[key] == '':
                     fields += 1
             if not ('Xray' in request.form):
-                return redirect(url_for('mech'))
+                return redirect(url_for('add'))
             elif fields == 1:
-                return redirect(url_for('mech'))
+                return redirect(url_for('add'))
             else:
                 msg = 'Заполните все поля'
                 flash(msg)
     return render_template('Xray.html')
 
 
-@app.route('/mech', methods=['GET', 'POST'])
-def mech():
-    fields = 0
-    if request.method == 'POST':
-        session['Mech_form'] = request.form
-        if 'tariffs' in request.form:
-            session['last_page'] = 'mech'
-            return redirect(url_for('tariffs'))
-        if 'back' in request.form:
-            return redirect(url_for('xray'))
-        if 'next' in request.form:
-            for key in request.form:
-                if request.form[key] == '':
-                    fields += 1
-            if not ('xray' in request.form):
-                return redirect(url_for('add'))
-            elif fields == 1:
-                return redirect(url_for('add'))
-            else:
-                msg = 'Заполните все поля'
-                flash(msg)
-    return render_template('Mech.html')
-
-
 @app.route('/additional', methods=['GET', 'POST'])
 def add():
     fields = 0
+    df2 = readdata()
     if request.method == 'POST':
         session['Add_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'add'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
-            return redirect(url_for('mech'))
+            return redirect(url_for('xray'))
         if 'next' in request.form:
-            for key in request.form:
-                if request.form[key] == '':
-                    fields += 1
-            if not ('Add' in request.form):
-                return redirect(url_for('session_data'))
-            elif fields == 1:
-                return redirect(url_for('session_data'))
-            else:
-                msg = 'Заполните все поля'
-                flash(msg)
-    return render_template('Add.html')
+            return redirect(url_for('session_data'))
+    return render_template('Add.html', df2=df2)
 
 @app.route('/session_data')
 def session_data():

@@ -4,6 +4,7 @@
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -28,9 +29,299 @@
                     <label for="Add">Есть дополнительные работы? </label>
                 </div>
             </fieldset>
-            <div class="form-group" id="Add_off">
-                <label>Test:</label>
-                <input type="text" class="form-control" name="Add_1" value="{{ session['Add_form']['Add_1'] if session.get('Add_form') else '' }}">
+            <div class="table" id="Add_off">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Описание операции</th>
+                            <th>Участок</th>
+                            <th>Время на ПУ</th>
+                            <th>Время на всю партию</th>
+                            <th>Стоимость на ПУ</th>
+                            <th>Стоимость на всю партию</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="text" name="title1" id="title1" class="form-control" 
+                                        value="{{ session['Add_form']['title1'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select name="area1" id="area1" class="form-control">
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area1'] == "1" %} selected {% endif %} {% endif %}
+                                            value="1" >
+                                        Тестирование
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area1'] == "2" %} selected {% endif %} {% endif %}
+                                            value="2">
+                                        Ручной монтаж
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area1'] == "3" %} selected {% endif %} {% endif %}
+                                            value="3">
+                                        Линия поверхностного монтажа
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area1'] == "4" %} selected {% endif %} {% endif %}
+                                            value="4">
+                                        Контроль качества
+                                    </option>     
+                                </div>    
+                            </td>
+                            <td>
+                                <input type="number" name="time_pc1" id="time_pc1" class="form-control" min="0" step="1" 
+                                        value="{{ session['Add_form']['time_pc1'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="time_all1" id="time_all1" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all1'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_pc1" id="money_pc1" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all1'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_all1" id="money_all1" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['money_all1'] if session.get('Add_form') else '' }}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="title2" id="title2" class="form-control" 
+                                        value="{{ session['Add_form']['title2'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select name="area2" id="area2" class="form-control">
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area2'] == "1" %} selected {% endif %} {% endif %}
+                                            value="1" >
+                                        Тестирование
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area2'] == "2" %} selected {% endif %} {% endif %}
+                                            value="2">
+                                        Ручной монтаж
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area2'] == "3" %} selected {% endif %} {% endif %}
+                                            value="3">
+                                        Линия поверхностного монтажа
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area2'] == "4" %} selected {% endif %} {% endif %}
+                                            value="4">
+                                        Контроль качества
+                                    </option>     
+                                </div>    
+                            </td>
+                            <td>
+                                <input type="number" name="time_pc2" id="time_pc2" class="form-control" min="0" step="1" 
+                                        value="{{ session['Add_form']['time_pc2'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="time_all2" id="time_all2" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all2'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_pc2" id="money_pc2" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all2'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_all2" id="money_all2" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['money_all2'] if session.get('Add_form') else '' }}">
+                            </td>
+                        </tr>     
+                        <tr>
+                            <td>
+                                <input type="text" name="title3" id="title3" class="form-control" 
+                                        value="{{ session['Add_form']['title3'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select name="area3" id="area3" class="form-control">
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area3'] == "1" %} selected {% endif %} {% endif %}
+                                            value="1" >
+                                        Тестирование
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area3'] == "2" %} selected {% endif %} {% endif %}
+                                            value="2">
+                                        Ручной монтаж
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area3'] == "3" %} selected {% endif %} {% endif %}
+                                            value="3">
+                                        Линия поверхностного монтажа
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area3'] == "4" %} selected {% endif %} {% endif %}
+                                            value="4">
+                                        Контроль качества
+                                    </option>     
+                                </div>    
+                            </td>
+                            <td>
+                                <input type="number" name="time_pc3" id="time_pc3" class="form-control" min="0" step="1" 
+                                        value="{{ session['Add_form']['time_pc3'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="time_all3" id="time_all3" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all3'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_pc3" id="money_pc3" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all3'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_all3" id="money_all3" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['money_all3'] if session.get('Add_form') else '' }}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="title4" id="title4" class="form-control" 
+                                        value="{{ session['Add_form']['title4'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select name="area4" id="area4" class="form-control">
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area4'] == "1" %} selected {% endif %} {% endif %}
+                                            value="1" >
+                                        Тестирование
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area4'] == "2" %} selected {% endif %} {% endif %}
+                                            value="2">
+                                        Ручной монтаж
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area4'] == "3" %} selected {% endif %} {% endif %}
+                                            value="3">
+                                        Линия поверхностного монтажа
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area4'] == "4" %} selected {% endif %} {% endif %}
+                                            value="4">
+                                        Контроль качества
+                                    </option>     
+                                </div>    
+                            </td>
+                            <td>
+                                <input type="number" name="time_pc4" id="time_pc4" class="form-control" min="0" step="1" 
+                                        value="{{ session['Add_form']['time_pc4'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="time_all4" id="time_all4" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all4'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_pc4" id="money_pc4" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all4'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_all4" id="money_all4" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['money_all4'] if session.get('Add_form') else '' }}">
+                            </td>
+                        </tr>                        
+                        <tr>
+                            <td>
+                                <input type="text" name="title5" id="title5" class="form-control" 
+                                        value="{{ session['Add_form']['title5'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select name="area5" id="area5" class="form-control">
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area5'] == "1" %} selected {% endif %} {% endif %}
+                                            value="1" >
+                                        Тестирование
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area5'] == "2" %} selected {% endif %} {% endif %}
+                                            value="2">
+                                        Ручной монтаж
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area5'] == "3" %} selected {% endif %} {% endif %}
+                                            value="3">
+                                        Линия поверхностного монтажа
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area5'] == "4" %} selected {% endif %} {% endif %}
+                                            value="4">
+                                        Контроль качества
+                                    </option>     
+                                </div>    
+                            </td>
+                            <td>
+                                <input type="number" name="time_pc5" id="time_pc5" class="form-control" min="0" step="1" 
+                                        value="{{ session['Add_form']['time_pc5'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="time_all5" id="time_all5" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all5'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_pc5" id="money_pc5" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all5'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_all5" id="money_all5" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['money_all5'] if session.get('Add_form') else '' }}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="title6" id="title6" class="form-control" 
+                                        value="{{ session['Add_form']['title6'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select name="area6" id="area6" class="form-control">
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area6'] == "1" %} selected {% endif %} {% endif %}
+                                            value="1" >
+                                        Тестирование
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area6'] == "2" %} selected {% endif %} {% endif %}
+                                            value="2">
+                                        Ручной монтаж
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area6'] == "3" %} selected {% endif %} {% endif %}
+                                            value="3">
+                                        Линия поверхностного монтажа
+                                    </option>
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area6'] == "4" %} selected {% endif %} {% endif %}
+                                            value="4">
+                                        Контроль качества
+                                    </option>     
+                                </div>    
+                            </td>
+                            <td>
+                                <input type="number" name="time_pc6" id="time_pc6" class="form-control" min="0" step="1" 
+                                        value="{{ session['Add_form']['time_pc6'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="time_all6" id="time_all6" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all6'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_pc6" id="money_pc6" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all6'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="money_all6" id="money_all6" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['money_all6'] if session.get('Add_form') else '' }}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <input type="number" name="sum_time_pc" id="sum_time_pc" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['sum_time_pc'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="sum_time_all" id="sum_time_all" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['sum_time_all'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="sum_money_pc" id="sum_money_pc" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['sum_money_pc'] if session.get('Add_form') else '' }}">
+                            </td>
+                            <td>
+                                <input type="number" name="sum_money_all" id="sum_money_all" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['sum_money_all'] if session.get('Add_form') else '' }}">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>    
             </div>
             <br>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
@@ -39,8 +330,99 @@
         </form>
     </div>
     <script>
+        const time_all1 = document.getElementById("time_all1");
+        const time_pc1 = document.getElementById("time_pc1");
+        const money_all1 = document.getElementById("money_all1");
+        const money_pc1 = document.getElementById("money_pc1");
+        const area1 = document.getElementById("area1");
+
+        const time_all2 = document.getElementById("time_all2");
+        const time_pc2 = document.getElementById("time_pc2");
+        const money_all2 = document.getElementById("money_all2");
+        const money_pc2 = document.getElementById("money_pc2");
+        const area2 = document.getElementById("area2");
+
+        const time_all3 = document.getElementById("time_all3");
+        const time_pc3 = document.getElementById("time_pc3");
+        const money_all3 = document.getElementById("money_all3");
+        const money_pc3 = document.getElementById("money_pc3");
+        const area3 = document.getElementById("area3");
+
+        const time_all4 = document.getElementById("time_all4");
+        const time_pc4 = document.getElementById("time_pc4");
+        const money_all4 = document.getElementById("money_all4");
+        const money_pc4 = document.getElementById("money_pc4");
+        const area4 = document.getElementById("area4");
+
+        const time_all5 = document.getElementById("time_all5");
+        const time_pc5 = document.getElementById("time_pc5");
+        const money_all5 = document.getElementById("money_all5");
+        const money_pc5 = document.getElementById("money_pc5");
+        const area5 = document.getElementById("area5");
+
+        const time_all6 = document.getElementById("time_all6");
+        const time_pc6 = document.getElementById("time_pc6");
+        const money_all6 = document.getElementById("money_all6");
+        const money_pc6 = document.getElementById("money_pc6");
+        const area6 = document.getElementById("area6");
+
+        const sum_time_pc = document.getElementById("sum_time_pc");
+        const sum_time_all = document.getElementById("sum_time_all");
+        const sum_money_pc = document.getElementById("sum_money_pc");
+        const sum_money_all = document.getElementById("sum_money_all");
+
         window.onload = function(){
             check('Add', 'Add_off');
+            fill_all_lines()
+        }
+
+        var ids = ['time_pc1', 'time_pc2', 'time_pc3', 'time_pc4', 'time_pc5', 'time_pc6',
+        'area1', 'area2', 'area3', 'area4', 'area5', 'area6'];
+
+        for (var i = 0; i < ids.length; i++) {
+            var element = document.getElementById(ids[i]);
+            element.addEventListener('change', function(){
+                fill_all_lines();
+            });
+        }
+
+        function fill_all_lines(){
+            fill_line(time_all1, time_pc1, money_all1, money_pc1, area1);
+            fill_line(time_all2, time_pc2, money_all2, money_pc2, area2);
+            fill_line(time_all3, time_pc3, money_all3, money_pc3, area3);
+            fill_line(time_all4, time_pc4, money_all4, money_pc4, area4);
+            fill_line(time_all5, time_pc5, money_all5, money_pc5, area5);
+            fill_line(time_all6, time_pc6, money_all6, money_pc6, area6);
+            sum();
+        }
+
+        function fill_line(time_all, time_pc, money_all, money_pc, area){
+            const time = parseInt(time_pc.value);
+            let coef = 0;
+            t_all = parseInt({{ session['home_form']['field3']}}) * time;
+            time_all.value = (t_all / 3600).toFixed(1);
+            if (area.value=="1"){
+                coef = {{ df2['Стоимость, руб/ч'][9]}};
+            } else if (area.value=="2"){
+                coef = {{ df2['Стоимость, руб/ч'][8]}};
+            } else if (area.value=="3"){
+                coef = {{ df2['Стоимость, руб/ч'][0]}};
+            } else if (area.value=="4"){
+                coef = {{ df2['Стоимость, руб/ч'][20]}};
+            }
+            money_pc.value = Math.ceil(time * coef / 3600);
+            money_all.value = Math.ceil(time_all.value * coef); 
+        }
+
+        function sum(){
+            sum_time_pc.value = parseInt(time_pc1.value) + parseInt(time_pc2.value) +parseInt(time_pc3.value) +
+            parseInt(time_pc4.value) + parseInt(time_pc5.value) +parseInt(time_pc6.value);
+            sum_time_all.value = parseInt(time_all1.value) + parseInt(time_all2.value) +parseInt(time_all3.value) +
+            parseInt(time_all4.value) + parseInt(time_all5.value) +parseInt(time_all6.value);
+            sum_money_pc.value = parseInt(money_pc1.value) + parseInt(money_pc2.value) +parseInt(money_pc3.value) +
+            parseInt(money_pc4.value) + parseInt(money_pc5.value) + parseInt(money_pc6.value);
+            sum_money_all.value = parseInt(money_all1.value) + parseInt(money_all2.value) +parseInt(money_all3.value) +
+            parseInt(money_all4.value) + parseInt(money_all5.value) + parseInt(money_all6.value);
         }
         function check(master, slave) {
           if (document.getElementById(master).checked) {
