@@ -250,33 +250,13 @@ def clear():
             df.to_csv('data/Clear.csv', index=False)
         if 'next' in request.form:
             if not ('Clear' in request.form):
-                return redirect(url_for('ICT'))
+                return redirect(url_for('handv'))
             elif 'Clear_type' in request.form:
-                return redirect(url_for('ICT'))
+                return redirect(url_for('handv'))
             else:
                 msg = 'Выберите программу отмывки'
                 flash(msg)
     return render_template('Clear.html', df = df, edit=edit, data=data, df2=df2)
-
-
-@app.route('/ICT', methods=['GET', 'POST'])
-def ICT():
-    if request.method == 'POST':
-        session['ICT_form'] = request.form
-        if 'tariffs' in request.form:
-            session['last_page'] = 'ICT'
-            return redirect(url_for('tariffs'))
-        if 'back' in request.form:
-            return redirect(url_for('clear'))
-        if 'next' in request.form:
-            if not ('Clear' in request.form):
-                return redirect(url_for('handv'))
-            elif request.form.__len__() == 3:
-                return redirect(url_for('handv'))
-            else:
-                msg = 'Заполните все поля'
-                flash(msg)
-    return render_template('ICT.html')
 
 @app.route('/Handv', methods=['GET', 'POST'])
 def handv():
@@ -286,7 +266,7 @@ def handv():
             session['last_page'] = 'Handv'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
-            return redirect(url_for('ICT'))
+            return redirect(url_for('clear'))
         if 'next' in request.form:
             if not ('Handv' in request.form):
                 return redirect(url_for('sep'))

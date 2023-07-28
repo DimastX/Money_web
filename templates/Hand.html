@@ -20,6 +20,11 @@
     {% endwith %}
     <div class="container">
         <form id = "myForm" method="POST">
+            <br>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+            <p></p>
             <fieldset>
                 <legend>Ручной монтаж</legend>
                 <div class="form-group">
@@ -33,9 +38,6 @@
                 <input type="text" class="form-control" name="Hand_1" value="{{ session['Hand_form']['Hand_1'] if session.get('Hand_form') else '' }}">
             </div>
             <br>
-            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
-            <button type="submit" class="btn btn-primary" name="back">Назад</button>
-            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
         </form>
     </div>
     <script>

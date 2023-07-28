@@ -23,6 +23,11 @@
     {% endwith %}
     <div class="container">
         <form id = "myForm" method="POST">
+            <br>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+            <p></p>
             <fieldset>
                 <legend>Отмывка</legend>
                 <div class="form-group">
@@ -146,18 +151,14 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
-            <button type="submit" class="btn btn-primary" name="back">Назад</button>
-            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
         </form>
     </div>
     <script>
         window.onload = function(){
             check_all('Clear', 'Clear_off');
         }
-        function check(master, slave) {
-          if (document.getElementById(master).checked) {
+        function check(master_box, slave) {
+          if (document.getElementById(master_box).checked) {
             document.getElementById(slave).classList.remove('disable_section')
           } else {
             document.getElementById(slave).classList.add('disable_section')
@@ -188,6 +189,15 @@
             document.getElementById("time").value = result + " ч";
             document.getElementById("costs").value = Math.ceil(costs / parseFloat({{ session['home_form']['field3'] }})) + " руб";
             document.getElementById("costs_all").value = Math.ceil(costs) + " руб";
+            if (master){
+                document.getElementById("number_pcb").value = {{ data[2]}};
+                document.getElementById("number_multi").value = {{ data[0] }};
+                document.getElementById("number_item").value = {{ data[1] }};
+            } else {
+                document.getElementById("number_pcb").value = 0;
+                document.getElementById("number_multi").value = 0;
+                document.getElementById("number_item").value = 0;
+            }
         }
 
         function check_all(master, slave){

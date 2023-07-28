@@ -20,6 +20,9 @@
     {% endwith %}
     <div class="container">
         <form method="POST">
+            <br>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <p></p>
         {% for table in tables %}
                 {{ table|safe }}
         {% endfor %}
@@ -27,7 +30,6 @@
                 <label>Password:</label>
                 <input type="password" class="form-control" name="password">
                 <br>
-                <button type="submit" class="btn btn-primary" name="back">Назад</button>
                 <button type="submit" class="btn btn-primary" name="check">Редактировать</button>
             </div>
         </form>

@@ -21,6 +21,11 @@
     {% endwith %}
     <div class="container">
         <form id = "myForm" method="POST">
+            <br>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+            <p></p>
             <fieldset>
                 <legend>Дополнительные работы</legend>
                 <div class="form-group">
@@ -70,7 +75,7 @@
                             </td>
                             <td>
                                 <input type="number" name="time_pc1" id="time_pc1" class="form-control" min="0" step="1" 
-                                        value="{{ session['Add_form']['time_pc1'] if session.get('Add_form') else '' }}">
+                                        value="{{ session['Add_form']['time_pc1'] if session.get('Add_form') else '0' }}">
                             </td>
                             <td>
                                 <input type="number" name="time_all1" id="time_all1" class="form-control" min="1" step="1" readonly
@@ -113,7 +118,7 @@
                             </td>
                             <td>
                                 <input type="number" name="time_pc2" id="time_pc2" class="form-control" min="0" step="1" 
-                                        value="{{ session['Add_form']['time_pc2'] if session.get('Add_form') else '' }}">
+                                        value="{{ session['Add_form']['time_pc2'] if session.get('Add_form') else '0' }}">
                             </td>
                             <td>
                                 <input type="number" name="time_all2" id="time_all2" class="form-control" min="1" step="1" readonly
@@ -156,7 +161,7 @@
                             </td>
                             <td>
                                 <input type="number" name="time_pc3" id="time_pc3" class="form-control" min="0" step="1" 
-                                        value="{{ session['Add_form']['time_pc3'] if session.get('Add_form') else '' }}">
+                                        value="{{ session['Add_form']['time_pc3'] if session.get('Add_form') else '0' }}">
                             </td>
                             <td>
                                 <input type="number" name="time_all3" id="time_all3" class="form-control" min="1" step="1" readonly
@@ -199,7 +204,7 @@
                             </td>
                             <td>
                                 <input type="number" name="time_pc4" id="time_pc4" class="form-control" min="0" step="1" 
-                                        value="{{ session['Add_form']['time_pc4'] if session.get('Add_form') else '' }}">
+                                        value="{{ session['Add_form']['time_pc4'] if session.get('Add_form') else '0' }}">
                             </td>
                             <td>
                                 <input type="number" name="time_all4" id="time_all4" class="form-control" min="1" step="1" readonly
@@ -242,7 +247,7 @@
                             </td>
                             <td>
                                 <input type="number" name="time_pc5" id="time_pc5" class="form-control" min="0" step="1" 
-                                        value="{{ session['Add_form']['time_pc5'] if session.get('Add_form') else '' }}">
+                                        value="{{ session['Add_form']['time_pc5'] if session.get('Add_form') else '0' }}">
                             </td>
                             <td>
                                 <input type="number" name="time_all5" id="time_all5" class="form-control" min="1" step="1" readonly
@@ -285,7 +290,7 @@
                             </td>
                             <td>
                                 <input type="number" name="time_pc6" id="time_pc6" class="form-control" min="0" step="1" 
-                                        value="{{ session['Add_form']['time_pc6'] if session.get('Add_form') else '' }}">
+                                        value="{{ session['Add_form']['time_pc6'] if session.get('Add_form') else '0' }}">
                             </td>
                             <td>
                                 <input type="number" name="time_all6" id="time_all6" class="form-control" min="1" step="1" readonly
@@ -323,10 +328,6 @@
                     </tbody>
                 </table>    
             </div>
-            <br>
-            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
-            <button type="submit" class="btn btn-primary" name="back">Назад</button>
-            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
         </form>
     </div>
     <script>

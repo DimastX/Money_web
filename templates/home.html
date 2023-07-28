@@ -19,8 +19,14 @@
     {% endif %}
     {% endwith %}
     <div class="container">
+        <br>
         <form id = "myForm" method="POST">
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+            <p></p>
+            <button type="submit" class="btn btn-primary" name="clear-session-button">Новое изделие</button>
             <div class="form-group">
+                <br>
                 <label>Заказчик:</label>
                 <input type="text" class="form-control" name="field1" value="{{ session['home_form']['field1'] if session.get('home_form') else '' }}">
             </div>
@@ -32,9 +38,6 @@
                 <label>Партия:</label>
                 <input type="number" class="form-control" name="field3" min="1" step="1" value="{{ session['home_form']['field3'] if session.get('home_form') else '' }}">
             </div>
-            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
-            <button type="submit" class="btn btn-primary" name="clear-session-button">Новое изделие</button>
-            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
         </form>
     </div>
 </body>
