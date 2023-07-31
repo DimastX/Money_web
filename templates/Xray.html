@@ -31,7 +31,7 @@
             <fieldset>
                 <legend>Рентгенконтроль</legend>
                 <div class="form-group">
-                    <input type="checkbox" id="Xray" name="Xray" value="1" onclick="check('Xray', 'Xray_off')"
+                    <input type="checkbox" id="Xray" name="Xray" value="1" onclick="check_all('Xray', 'Xray_off')"
                            {% if session.get('Xray_form')%} {% if session['Xray_form']['Xray'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Xray">Выполнять рентгенконтроль? </label>
                 </div>
@@ -64,37 +64,131 @@
                                 Прочее
                             </label>
                             <div class="form-group" id="multi" style="display:none">
-                                <label>Время на проверку одной мультизаготовки:</label>
-                                <input type="number" class="form-control" name="multi_control" id="multi_control" min="1" step="1" 
-                                    value="{{ session['Xray_form']['multi_control'] if session.get('Xray_form') else '' }}"></input>
+                                <label>Время на проверку одного компонента, с:</label>
+                                <input type="number" class="form-control" name="components_time" id="components_time" min="0" step="any" 
+                                    value="{{ session['Xray_form']['components_time'] if session.get('Xray_form') else '' }}"></input>
+                                <label>Количество компонентов для рентгенконтроля:</label>
+                                <input type="number" class="form-control" name="components" id="components" min="1" step="1" 
+                                    value="{{ session['Xray_form']['components'] if session.get('Xray_form') else '' }}"></input>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
                             <label>Количество мультизаготовок в партии</label>
-                            <input type="number" name="number_multi" id="number_multi" class="form-control" readonly 
-                                value="{{ session['second_form']['multi_num'] }}">
-                            <label>Количество мультизаготовок в рентгене</label>
-                            <input type="number" name="number_multi" id="number_multi" class="form-control" readonly 
-                                value="{{ session['second_form']['multi_num'] }}">
+                            <input type="text" name="number_multi" id="number_multi" class="form-control" readonly>
+                            <label>Мультизаготовок в рентгене за раз</label>
+                            <input type="text" name="number_Xray_pt" id="number_Xray_pt" class="form-control" readonly>
+                            <label>Всего запусков рентгенконтроля</label>
+                            <input type="text" name="number_Xray" id="number_Xray" class="form-control" readonly>
+                            <label>Всего времени потрачено на партию</label>
+                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                            <label>Всего времени потрачено на ПУ</label>
+                            <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                            <label>Стоимость партии</label>
+                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                            <label>Стоимость ПУ</label>
+                            <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
                         </div>
                     </td>
                 </tr>
             </table>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Данные для рентгенконтроля
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div>
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>{{ df.columns[0] }}</th>
+                                                <th>{{ df.columns[1] }}</th>
+                                            </tr>
+                                        </thead>
+                                        {% for row in df.iterrows(): %}
+                                        <tr>
+                                            {% for cell in row[1] %}
+                                            <td>
+                                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                    <input {% if edit == "0" %} disabled {% endif %}
+                                                        type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                {% else %} <!-- Если это не второй столбец -->
+                                                    {{ cell }}
+                                                {% endif %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                        <tr>
+                                            <td>Ширина мультизаготовки</td>
+                                            <td>
+                                                <input type="number" disabled class="form-control" value="{{ session['second_form']['width'] }}"></input>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Длина мультизаготовки</td>
+                                            <td>
+                                                <input type="number" disabled class="form-control" value="{{ session['second_form']['length'] }}"></input>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Партия</td>
+                                            <td>
+                                                <input type="number" disabled class="form-control" value="{{ session['home_form']['field3'] }}"></input>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <label>Пароль:</label>
+                                <input type="password" class="form-control" name="password" 
+                                        onkeydown="return event.key != 'Enter';">                
+                                <br>
+                                <button {% if edit != "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save" 
+                                        onkeydown="return event.key != 'Enter';">Изменить</button>
+                                <button {% if edit == "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save2" 
+                                        onkeydown="return event.key != 'Enter';">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         </form>
     </div>
     <script>
-        ids = ["MB", "SB", "misc"];
+        ids = ["MB", "SB", "misc", "Xray_proc", "components", "components_time"];
         window.onload = function(){
             check('Xray', 'Xray_off');
             checkOption('misc', 'multi');
+            xray_amount();
         }
+
+        function check_all(master, slave){
+            check(master,slave);
+            xray_amount();
+        }
+
+        const proc_x = document.getElementById('Xray_proc');
+        const chckbx = document.getElementById('Xray');
+        const type = document.getElementsByName('Xray_type');
+
 
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
                 checkOption('misc', 'multi');
+                xray_amount();
             });
         }
 
@@ -114,6 +208,51 @@
                 extraField.style.display = 'block';
             } else {
                 extraField.style.display = 'none';
+            }
+        }
+
+        function xray_amount(){
+            let coef = 1;
+            var proc_value = parseFloat(proc_x.value) / 100;
+            var money_all = 0;
+            var money_pc = 0;
+            var time_all = 0;
+            var time_pc = 0;
+            var multi_num = parseInt({{ session['second_form']['multi_num'] }});
+            coef = Math.max(Math.floor(parseFloat({{df['Значение'][0]}}) / parseFloat({{session['second_form']['width']}})) * 
+            Math.floor(parseFloat({{df['Значение'][1]}}) / parseFloat({{session['second_form']['length']}})), 1);
+            if (chckbx.checked){
+                document.getElementById('number_multi').value = multi_num + " шт";
+                document.getElementById('number_Xray_pt').value = coef + " шт";
+                document.getElementById('number_Xray').value = Math.ceil(multi_num * proc_value / coef);
+                if (type[0].checked){
+                    time_all = parseInt({{ df['Значение'][2]}}) * proc_value * multi_num;
+                    time_pc = time_all / parseInt({{ session['home_form']['field3']}});
+                    money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
+                    money_pc = money_all / parseInt({{ session['home_form']['field3']}});
+                } else if (type[1].checked){
+                    time_all = parseInt({{ df['Значение'][3]}}) * proc_value * multi_num;
+                    time_pc = time_all / parseInt({{ session['home_form']['field3']}});
+                    money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
+                    money_pc = money_all / parseInt({{ session['home_form']['field3']}});
+                } else if (type[2].checked){
+                    time_pc = parseInt(document.getElementById('components').value) * parseFloat(document.getElementById('components_time').value);
+                    time_all = time_pc * parseInt({{ session['home_form']['field3']}});
+                    money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
+                    money_pc = money_all / parseInt({{ session['home_form']['field3']}});
+                } 
+                document.getElementById('time_all').value = (time_all / 3600).toFixed(1) + " ч";
+                document.getElementById('time_pc').value = time_pc.toFixed(1) +" c";
+                document.getElementById('money_all').value = money_all.toFixed(1) + " руб";
+                document.getElementById('money_pc').value = money_pc.toFixed(1) + " руб";
+            } else{
+                document.getElementById('number_multi').value = "-";
+                document.getElementById('number_Xray_pt').value = "-";
+                document.getElementById('number_Xray').value = "-";
+                document.getElementById('time_all').value = "-";
+                document.getElementById('time_pc').value = "-";
+                document.getElementById('money_all').value = "-";
+                document.getElementById('money_pc').value = "-";
             }
         }
     </script>
