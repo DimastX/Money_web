@@ -23,3 +23,9 @@
   pointer-events: none;
   opacity: 0.4;
 }
+.image-button {
+    width: 200px;
+    height: 60px;
+    background-size: cover;
+    background-position: center;
+  }

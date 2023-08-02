@@ -3,7 +3,10 @@
 <head>
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -33,9 +36,111 @@
                     <label for="Handv">Выполнять ручную лакировку? </label>
                 </div>
             </fieldset>
-            <div class="form-group" id="Handv_off">
-                <label>Test:</label>
-                <input type="text" class="form-control" name="Handv_1" value="{{ session['Handv_form']['Handv_1'] if session.get('Handv_form') else '' }}">
+            <table>
+                <tr>
+                    <td style="width: 50%;">
+                        <div class="form-group" id="Handv_off">
+                            <label>Выберите ручной лакировки</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Handv_type" value="1" id="dip"
+                                    {% if session.get('Handv_form')%} {% if session['Handv_form']['Handv_type'] == "1" %} checked {% endif %} {% endif %}>
+                                Окунание
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Handv_type" id="brush"
+                                    {% if session.get('Handv_form')%} {% if session['Handv_form']['Handv_type'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Кисть
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="Handv_type" id="spray"
+                                    {% if session.get('Handv_form')%} {% if session['Handv_form']['Handv_type'] == "3" %} checked {% endif %} {% endif %} value="3">
+                                Краскопульт
+                            </label>
+                            <div class="form-group" id="dimentions" style="display:none">
+                                <label>Ширина области лакировки:</label>
+                                <input type="number" class="form-control" name="width" id="width" min="1" step="1"
+                                    value="{{ session['Handv_form']['width'] if session.get('Handv_form') else '' }}"></input>
+                                <label>Длина области лакировки:</label>
+                                <input type="number" class="form-control" name="length" id="length" min="1" step="1"
+                                    value="{{ session['Handv_form']['length'] if session.get('Handv_form') else '' }}"></input>
+                            </div>
+                            <div class="form-group" id="additional" style="display:none">
+                                <label>Время на подготовительные работы на ПУ, с</label>
+                                <input type="number" class="form-control" name="add" id="add" min="1" step="1"
+                                    value="{{ session['Handv_form']['add'] if session.get('Handv_form') else '' }}"></input>
+                            </div>
+                            <br>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                        <label>Всего плат в партии</label>
+                        <input type="text" name="PCB" id="PCB" class="form-control" readonly>
+                        <label>Всего времени потрачено на ПУ</label>
+                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                        <label>Всего времени потрачено на партию</label>
+                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                        <label>Стоимость ПУ</label>
+                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                        <label>Стоимость партии</label>
+                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                    </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Данные для ручной лакировки
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div>
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>{{ df.columns[0] }}</th>
+                                                <th>{{ df.columns[1] }}</th>
+                                            </tr>
+                                        </thead>
+                                        {% for row in df.iterrows(): %}
+                                        <tr>
+                                            {% for cell in row[1] %}
+                                            <td>
+                                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                    <input {% if edit == "0" %} disabled {% endif %}
+                                                        type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                {% else %} <!-- Если это не второй столбец -->
+                                                    {{ cell }}
+                                                {% endif %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                                <label>Пароль:</label>
+                                <input type="password" class="form-control" name="password" 
+                                        onkeydown="return event.key != 'Enter';">                
+                                <br>
+                                <button {% if edit != "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save" 
+                                        onkeydown="return event.key != 'Enter';">Изменить</button>
+                                <button {% if edit == "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save2" 
+                                        onkeydown="return event.key != 'Enter';">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <br>
         </form>
@@ -43,13 +148,87 @@
     <script>
         window.onload = function(){
             check('Handv', 'Handv_off');
+            checkOption('brush', 'dimentions');
+            checkOption('spray', 'additional');
+            handv_amount();
         }
+        ids = ["dip", "brush", "spray", "Handv", "width", "length", "add"];
+
+        for (var i = 0; i < ids.length; i++) {
+            var element = document.getElementById(ids[i]);
+            element.addEventListener('change', function(){
+                checkOption('brush', 'dimentions');
+                checkOption('spray', 'additional');
+                handv_amount();
+            });
+        }
+
+        function checkOption(optionId, fieldId) {
+            var radioOption1 = document.getElementById(optionId);
+            var extraField = document.getElementById(fieldId);
+
+            if(radioOption1.checked) {
+                extraField.style.display = 'block';
+            } else {
+                extraField.style.display = 'none';
+            }
+        }
+
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
           } else {
             document.getElementById(slave).classList.add('disable_section')
           }
+        }
+
+        var chckbx = document.getElementById('Handv');
+        const Handv_type = document.getElementsByName('Handv_type')
+
+        function handv_amount(){
+            var batch = parseInt({{ session['home_form']['field3']}});
+            var multi_num = parseInt({{ session['second_form']['multi_num']}});
+            var pc = parseInt({{ session['second_form']['pc']}});
+            var width = parseFloat({{session['second_form']['width']}}) / parseFloat({{session['second_form']['width_num']}});
+            var length = parseFloat({{session['second_form']['length']}}) / parseFloat({{session['second_form']['length_num']}});
+            var temp = 0;
+            var add = 0;
+            if (Handv_type[0].checked){
+                time_pc = Math.ceil(parseFloat({{df['Значение'][0]}}) * parseFloat({{df['Значение'][1]}}));
+            } else if (Handv_type[1].checked){
+                width = parseFloat(document.getElementById('width').value); //чтение с полей ввода
+                length = parseFloat(document.getElementById('length').value);
+                temp = Math.min(width, length); // Находим минимальную сторону, чтобы брать её за ширину
+                length = Math.max(width, length);
+                width = temp;
+                width = Math.ceil(width / parseFloat({{df['Значение'][3]}})); // Считаем количество проходов
+                time_pc = Math.ceil(width * length / parseFloat({{df['Значение'][2]}}) * parseFloat({{df['Значение'][4]}}) + parseFloat({{df['Значение'][5]}})); //кол-во проходов * длину / скорость * попр. к-т + доп. работы
+            } else if (Handv_type[2].checked){
+                temp = Math.min(width, length); // Находим минимальную сторону, чтобы брать её за ширину
+                length = Math.max(width, length);
+                width = temp;
+                width = Math.ceil(width / parseFloat({{df['Значение'][7]}})); // Считаем количество проходов
+                add = parseFloat(document.getElementById('add').value);
+                time_pc = Math.ceil(width * length / parseFloat({{df['Значение'][6]}}) * parseFloat({{df['Значение'][8]}}) + add); //кол-во проходов * длину / скорость * попр. к-т + доп. работы
+            } 
+            const time_all = Math.ceil(time_pc * batch / 3600);
+            const money_all = Math.ceil(time_all * parseInt({{ df2['Стоимость, руб/ч'][14]}}));
+            const money_pc = Math.ceil(money_all / batch);
+            if (chckbx.checked){
+                document.getElementById('PCB').value = batch + " шт";
+                document.getElementById('time_pc').value = time_pc + " c";
+                document.getElementById('time_all').value = time_all + " ч";
+                document.getElementById('money_pc').value = money_pc + " руб";
+                document.getElementById('money_all').value = money_all + " руб";
+
+            } else {
+                document.getElementById('PCB').value = '-';
+                document.getElementById('time_pc').value = '-';
+                document.getElementById('time_all').value = '-';
+                document.getElementById('money_pc').value = '-';
+                document.getElementById('money_all').value = '-';
+
+            }
         }
     </script>
 </body>

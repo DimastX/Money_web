@@ -147,6 +147,9 @@ def tht():
 
 @app.route('/wave', methods=['GET', 'POST'])
 def wave():
+    edit = "0"
+    df = pd.read_csv('data/Wave.csv')
+    df2 = readdata()
     if request.method == 'POST':
         session['Wave_form'] = request.form
         if 'tariffs' in request.form:
@@ -155,14 +158,20 @@ def wave():
         if 'back' in request.form:
             return redirect(url_for('tht'))
         if 'next' in request.form:
-            if not ('Wave' in request.form):
-                return redirect(url_for('HRL'))
-            elif request.form.__len__() == 3:
-                return redirect(url_for('HRL'))
+            return redirect(url_for('HRL'))
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
             else:
-                msg = 'Заполните все поля'
+                msg = 'Неверный пароль'
                 flash(msg)
-    return render_template('Wave.html')
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/Wave.csv', index=False)
+    return render_template('Wave.html', df=df, df2=df2, edit=edit)
 
 @app.route('/HRL', methods=['GET', 'POST'])
 def HRL():
@@ -206,6 +215,7 @@ def hand():
                 if key.startswith('row'):  # если используется имя вида 'row%d'
                     row = int(key[3:])  # извлекаем номер строки из имени
                     df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/Hand.csv', index=False)
         if 'next' in request.form:
             if not ('Hand' in request.form):
                 return redirect(url_for('test'))
@@ -219,6 +229,9 @@ def hand():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
+    edit = "0"
+    df2 = readdata()
+    df = pd.read_csv('data/Test.csv')
     if request.method == 'POST':
         session['Test_form'] = request.form
         if 'save' in request.form:
@@ -227,6 +240,12 @@ def test():
             else:
                 msg = 'Неверный пароль'
                 flash(msg)
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/Test.csv', index=False)
         if 'tariffs' in request.form:
             session['last_page'] = 'test'
             return redirect(url_for('tariffs'))
@@ -240,7 +259,7 @@ def test():
             else:
                 msg = 'Заполните все поля'
                 flash(msg)
-    return render_template('Test.html')
+    return render_template('Test.html', df=df, df2=df2, edit=edit)
 
 
 @app.route('/clear', methods=['GET', 'POST'])
@@ -280,6 +299,9 @@ def clear():
 
 @app.route('/Handv', methods=['GET', 'POST'])
 def handv():
+    edit = "0"
+    df = pd.read_csv('data/Handv.csv')
+    df2 = readdata()
     if request.method == 'POST':
         session['Handv_form'] = request.form
         if 'tariffs' in request.form:
@@ -288,14 +310,20 @@ def handv():
         if 'back' in request.form:
             return redirect(url_for('clear'))
         if 'next' in request.form:
-            if not ('Handv' in request.form):
-                return redirect(url_for('sep'))
-            elif request.form.__len__() == 3:
-                return redirect(url_for('sep'))
+            return redirect(url_for('sep'))
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
             else:
-                msg = 'Заполните все поля'
+                msg = 'Неверный пароль'
                 flash(msg)
-    return render_template('Handv.html')
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/Handv.csv', index=False)
+    return render_template('Handv.html', df=df, df2=df2, edit=edit)
 
 @app.route('/separation', methods=['GET', 'POST'])
 def sep():
