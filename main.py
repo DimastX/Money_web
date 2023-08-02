@@ -184,29 +184,49 @@ def HRL():
     return render_template('HRL.html')
 
 @app.route('/hand', methods=['GET', 'POST'])
-def hand():
+def hand():    
+    edit = "0"
+    df = pd.read_csv('data/Hand.csv')
+    df2 = readdata()
     if request.method == 'POST':
         session['Hand_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'hand'
             return redirect(url_for('tariffs'))
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
         if 'back' in request.form:
-            return redirect(url_for('HRL'))
+            return redirect(url_for('HRL'))   
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
         if 'next' in request.form:
             if not ('Hand' in request.form):
                 return redirect(url_for('test'))
-            elif request.form.__len__() == 3:
+            elif request.form['Hand_num'] != '':
                 return redirect(url_for('test'))
             else:
-                msg = 'Заполните все поля'
+                msg = 'Заполните количество точек пайки'
                 flash(msg)
-    return render_template('Hand.html')
+    return render_template('Hand.html', df=df, df2=df2, edit=edit)
 
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     if request.method == 'POST':
         session['Test_form'] = request.form
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
         if 'tariffs' in request.form:
             session['last_page'] = 'test'
             return redirect(url_for('tariffs'))
@@ -289,7 +309,7 @@ def sep():
             if request.form['password'] == password:
                 edit = "1"
             else:
-                msg = 'Правильно заполните поля'
+                msg = 'Неверный пароль'
                 flash(msg)
         if 'tariffs' in request.form:
             session['last_page'] = 'sep'
@@ -322,25 +342,44 @@ def sep():
 @app.route('/xray', methods=['GET', 'POST'])
 def xray():
     fields = 0
+    edit = "0"
+    df2 = readdata()
+    df = pd.read_csv('data/Xray.csv')
     if request.method == 'POST':
         session['Xray_form'] = request.form
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
         if 'tariffs' in request.form:
             session['last_page'] = 'xray'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
             return redirect(url_for('sep'))
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/Xray.csv', index=False)
         if 'next' in request.form:
-            for key in request.form:
-                if request.form[key] == '':
-                    fields += 1
             if not ('Xray' in request.form):
                 return redirect(url_for('add'))
-            elif fields == 1:
-                return redirect(url_for('add'))
             else:
-                msg = 'Заполните все поля'
-                flash(msg)
-    return render_template('Xray.html')
+                if request.form['Xray_proc'] != "":
+                    if not ('Xray_type' in request.form):
+                        flash('Выберите тип ПУ')
+                    elif (request.form['Xray_type'] == "0") or (request.form['Xray_type'] == "1"):
+                        return redirect(url_for('add'))
+                    elif (request.form['components'] != "") and (request.form['components_time'] != ""):
+                        return redirect(url_for('add'))
+                    else:
+                        flash('Заполните данные для типа "Прочее"')
+                else:
+                    flash('Введите сколько процентов от партии необходимо отправить на контроль')
+    return render_template('Xray.html', df=df, df2=df2, edit=edit)
 
 
 @app.route('/additional', methods=['GET', 'POST'])

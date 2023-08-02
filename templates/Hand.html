@@ -3,7 +3,10 @@
 <head>
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -33,23 +36,137 @@
                     <label for="Hand">Выполнять ручной монтаж? </label>
                 </div>
             </fieldset>
-            <div class="form-group" id="Hand_off">
-                <label>Test:</label>
-                <input type="text" class="form-control" name="Hand_1" value="{{ session['Hand_form']['Hand_1'] if session.get('Hand_form') else '' }}">
+            <table>
+                <tr>
+                    <td style="width: 50%;">
+                        <div class="form-group" id="Hand_off">
+                            <label>Количество точек пайки</label>
+                            <br>
+                            <input type="number" class="form-control" min="1" step="1" name="Hand_num" id="Hand_num"
+                                value="{{ session['Hand_form']['Hand_num'] if session.get('Hand_form') else '' }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Всего плат в партии</label>
+                            <input type="text" name="PCB" id="PCB" class="form-control" readonly>
+                            <label>Всего времени потрачено на ПУ</label>
+                            <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                            <label>Всего времени потрачено на партию</label>
+                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                            <label>Стоимость ПУ</label>
+                            <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                            <label>Стоимость партии</label>
+                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Данные для ручного монтажа
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div>
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>{{ df.columns[0] }}</th>
+                                                <th>{{ df.columns[1] }}</th>
+                                            </tr>
+                                        </thead>
+                                        {% for row in df.iterrows(): %}
+                                        <tr>
+                                            {% for cell in row[1] %}
+                                            <td>
+                                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                    <input {% if edit == "0" %} disabled {% endif %}
+                                                        type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                {% else %} <!-- Если это не второй столбец -->
+                                                    {{ cell }}
+                                                {% endif %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                    </table>
+                                </div>
+                                <label>Пароль:</label>
+                                <input type="password" class="form-control" name="password" 
+                                        onkeydown="return event.key != 'Enter';">                
+                                <br>
+                                <button {% if edit != "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save" 
+                                        onkeydown="return event.key != 'Enter';">Изменить</button>
+                                <button {% if edit == "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save2" 
+                                        onkeydown="return event.key != 'Enter';">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <br>
         </form>
     </div>
     <script>
+        ids = ["Hand", "Hand_num"];
+
         window.onload = function(){
             check('Hand', 'Hand_off');
+            hand_amount();
         }
+
+        const points = document.getElementById('Hand_num');
+
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
           } else {
             document.getElementById(slave).classList.add('disable_section')
           }
+        }
+
+        for (var i = 0; i < ids.length; i++) {
+            var element = document.getElementById(ids[i]);
+            element.addEventListener('change', function(){
+                hand_amount();
+            });
+        }
+        var chckbx = document.getElementById('Hand');
+
+        function hand_amount(){
+            var batch = parseInt({{ session['home_form']['field3']}});
+            var multi_num = parseInt({{ session['second_form']['multi_num']}});
+            var pc = parseInt({{ session['second_form']['pc']}});
+            const points_value = parseInt(points.value);
+            const time_pc = points_value * parseFloat({{df['Значение'][0]}});
+            const time_all = Math.ceil(time_pc * batch / 3600);
+            const money_all = Math.ceil(time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}));
+            const money_pc = Math.ceil(money_all / batch);
+            if (chckbx.checked){
+                document.getElementById('PCB').value = batch;
+                document.getElementById('time_pc').value = time_pc + " c";
+                document.getElementById('time_all').value = time_all + " ч";
+                document.getElementById('money_pc').value = money_pc + " руб";
+                document.getElementById('money_all').value = money_all + " руб";
+
+            } else {
+                document.getElementById('PCB').value = '-';
+                document.getElementById('time_pc').value = '-';
+                document.getElementById('time_all').value = '-';
+                document.getElementById('money_pc').value = '-';
+                document.getElementById('money_all').value = '-';
+
+            }
         }
     </script>
 </body>

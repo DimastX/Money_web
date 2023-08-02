@@ -221,12 +221,12 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <label>Всего плат:</label>
+                            <label>Всего плат в мультизаготовке:</label>
                             <input type="number" min="1" class="form-control" name="pc" id ="pc" readonly>
                         </div>
                         <div class="form-group">
                             <label>Всего мультизаготовок:</label>
-                            <input type="number" min="1" class="form-control" name="multi" id ="multi" readonly>
+                            <input type="number" min="1" class="form-control" name="multi_num" id ="multi_num" readonly>
                         </div>
                     </td>
                 </tr>
@@ -289,7 +289,7 @@
             const pc_x = parseInt(num_x.value);
             const pc_y = parseInt(num_y.value);
             document.getElementById('pc').value = pc_x * pc_y;
-            document.getElementById('multi').value = Math.ceil({{session['home_form']['field3']}} / (pc_x * pc_y));
+            document.getElementById('multi_num').value = Math.ceil({{session['home_form']['field3']}} / (pc_x * pc_y));
         }
     </script>
 </body>
