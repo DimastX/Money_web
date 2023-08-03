@@ -4,6 +4,7 @@ import pandas as pd
 import calculations_money as cm
 import io
 import csv
+from werkzeug.datastructures import MultiDict
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -232,7 +233,12 @@ def test():
     edit = "0"
     df2 = readdata()
     df = pd.read_csv('data/Test.csv')
-    if request.method == 'POST':
+    rows = 0
+    """if 'field1_values' in session['Test_form']:
+        rows = max(len(session['Test_form']['field1_values']), rows)
+    if 'field2_values' in session['Test_form']:
+        rows = max(len(session['Test_form']['field2_values']), rows)"""
+    if request.method == 'POST': 
         session['Test_form'] = request.form
         if 'save' in request.form:
             if request.form['password'] == password:
@@ -259,7 +265,7 @@ def test():
             else:
                 msg = 'Заполните все поля'
                 flash(msg)
-    return render_template('Test.html', df=df, df2=df2, edit=edit)
+    return render_template('Test.html', df=df, df2=df2, edit=edit, rows=rows)
 
 
 @app.route('/clear', methods=['GET', 'POST'])
@@ -448,6 +454,19 @@ def download():
     response = Response(csv_data, mimetype='text/csv')
     response.headers['Content-Disposition'] = 'attachment; filename=session_data.csv'
     return response
+
+@app.route('/process', methods=['POST'])
+def process():
+    field1_values = request.form.getlist('field1')
+    field2_values = request.form.getlist('field2')
+
+    for i in range(len(field1_values)):
+        print("Field 1:", field1_values[i])
+        print("Field 2:", field2_values[i])
+
+    # Дальнейшая обработка данных
+
+    return redirect(url_for('test'))
 
 def create_csv():
     # Создаем объект io.StringIO для записи CSV-файла в память

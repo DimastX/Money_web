@@ -6,6 +6,7 @@
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -45,6 +46,42 @@
                                     {% if session.get('Test_form')%} {% if session['Test_form']['firmware_m'] %} checked="checked" {% endif %} {% endif %}>
                                 <label for="firmware_m">Выполнять прошивку микросхем? </label>
                                 <div class="form-group" id="firmware_m_off">
+                                    <table id="myTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Описание</th>
+                                                <th>Время, с</th>
+                                                <th>Количество, с</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="form-control" name="title_0" id="title_0" 
+                                                    value="{{ session['Test_form']['title_0'] if session.get('Test_form') else '' }}"></td>
+                                                <td><input type="number" class="form-control" name="time_0" id="time_0"
+                                                    value="{{ session['Test_form']['time_0'] if session.get('Test_form') else '' }}"></td>
+                                                <td><input type="number" class="form-control" name="num_0"  id="num_0"
+                                                    value="{{ session['Test_form']['num_0'] if session.get('Test_form') else '' }}"></td>
+                                            </tr>
+                                            {%if session.get('Test_form')%}
+                                                {%for i in range(1, session['Test_form']['rows']|int )%}
+                                                <tr>
+                                                    <td><input type="text" class="form-control" name="title_{{i}}" id="title_{{i}}" 
+                                                        value="{{session['Test_form']['title_'+i|string]}}"></td>
+                                                    <td><input type="number" min="1" class="form-control" name="time_{{i}}" id="time_{{i}}"
+                                                        value="{{session['Test_form']['time_' +i|string]}}"></td>
+                                                    <td><input type="number" min="1" class="form-control" name="num_{{i}}" id="num_{{i}}"
+                                                        value="{{session['Test_form']['num_' +i|string]}}"></td>
+                                                </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-primary" onclick="addRow()">Добавить микросхему</button>
+                                    <button type="button" class="btn btn-primary" onclick="deleteRow()">Удалить микросхему</button>
+                                    <br>
+                                    <label>Количество разных микросхем</label>
+                                    <input type="text" name="rows" id="rows" class="form-control" readonly>
                                 </div>
                                 <input type="checkbox" id="firmware" name="firmware" value="1" 
                                         {% if session.get('Test_form')%} {% if session['Test_form']['firmware'] %} checked="checked" {% endif %} {% endif %}>
@@ -146,7 +183,7 @@
 
         window.onload = function(){
             check_all();
-        }
+        };
 
         function check_all(){
             check('Test', 'Test_off');
@@ -154,13 +191,15 @@
             check('firmware_m', 'firmware_m_off');
             check('testing', 'testing_off');
             test_amount();
-        }
+            updateRowCount();
+        };
+
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
                 check_all();
             });
-        }
+        };
 
         function check(master, slave) {
           if (document.getElementById(master).checked) {
@@ -168,7 +207,7 @@
           } else {
             document.getElementById(slave).classList.add('disable_section')
           }
-        }
+        };
 
         var chckbx = document.getElementById('Test');
         var chckbx_fm = document.getElementById('firmware_m'); //firmware_m
@@ -192,6 +231,9 @@
                 if (chckbx_t.checked){
                     time_pc += testing_amount();
                 }
+                if (chckbx_fm.checked){
+                    time_pc += firmware_m_amount();
+                }
                 time_all = Math.ceil(time_pc * batch / 3600);
                 money_all = Math.ceil(time_all * parseFloat({{df2['Стоимость, руб/ч'][10]}}));
                 money_pc = Math.ceil(money_all / batch);
@@ -208,16 +250,59 @@
                 document.getElementById('money_all').value = '-';
 
             }
-        }
+        };
 
         function firmware_amount(){
             return Math.ceil(document.getElementById('firmware_time').value / document.getElementById('firmware_num').value *
             parseFloat({{df['Значение'][2]}})); 
-        }
+        };
 
         function testing_amount(){
             return Math.ceil(document.getElementById('testing_time').value / document.getElementById('testing_num').value *
             document.getElementById('testing_proc').value / 100 * parseFloat({{df['Значение'][3]}})); 
+        };
+
+        function firmware_m_amount(){
+            sum = 0;
+            rows = parseInt(document.getElementById('rows').value);
+            for (let i = 0; i < rows; i++){
+                var time = 'time_' + i;
+                time = parseInt(document.getElementById(time).value);
+                console.log("Время " + time);
+                var num = 'num_' + i;
+                num = parseInt(document.getElementById(num).value);
+                console.log("Количество " + num);
+                sum = Math.ceil(sum + time * num / 8);
+                console.log("Сумма " + sum);
+            }
+            return sum; 
+        };
+
+        function addRow() {
+            var table = document.getElementById("myTable");
+            var newRow = table.insertRow(table.rows.length);
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var rowNumber = table.rows.length - 2;
+            cell1.innerHTML = '<input type="text" class="form-control" name="title_' + rowNumber + '" id="title_' + rowNumber + '">';
+            cell2.innerHTML = '<input type="number" min="1" class="form-control" id="time_' + rowNumber + '" name="time_' + rowNumber + '">';
+            cell3.innerHTML = '<input type="number" min="1" class="form-control" id="num_' + rowNumber + '" name="num_' + rowNumber + '">';
+            updateRowCount();
+        }
+
+        function updateRowCount() {
+            var table = document.getElementById("myTable");
+            var rowCount = table.rows.length;
+    
+            document.getElementById("rows").value = rowCount - 1;
+        }
+
+        function deleteRow() {
+            var table = document.getElementById("myTable");
+            var lastRow = table.rows.length - 1;
+            table.deleteRow(lastRow);
+            updateRowCount();
         }
     </script>
 </body>
