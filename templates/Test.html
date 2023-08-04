@@ -180,25 +180,21 @@
     </div>
     <script>
         ids = ["Test", "firmware", "firmware_m", "testing", "firmware_time", "firmware_num", 'testing_time', 'testing_num', 'testing_proc']
-
+        
+        let inputs = document.querySelectorAll('input');
         window.onload = function(){
             check_all();
         };
 
         function check_all(){
+            updateInputs();
+            updateRowCount();
             check('Test', 'Test_off');
             check('firmware', 'firmware_off');
             check('firmware_m', 'firmware_m_off');
             check('testing', 'testing_off');
             test_amount();
-            updateRowCount();
-        };
-
-        for (var i = 0; i < ids.length; i++) {
-            var element = document.getElementById(ids[i]);
-            element.addEventListener('change', function(){
-                check_all();
-            });
+            console.log(inputs);
         };
 
         function check(master, slave) {
@@ -208,6 +204,21 @@
             document.getElementById(slave).classList.add('disable_section')
           }
         };
+
+
+        const updateInputs = () => {
+            inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+            input.addEventListener('input', handleChange);
+        });
+        };
+
+        // Создаем функцию, которая будет вызываться при изменении элементов input
+        const handleChange = (event) => {          
+            check_all();
+        };
+
+        
 
         var chckbx = document.getElementById('Test');
         var chckbx_fm = document.getElementById('firmware_m'); //firmware_m
@@ -288,21 +299,23 @@
             cell1.innerHTML = '<input type="text" class="form-control" name="title_' + rowNumber + '" id="title_' + rowNumber + '">';
             cell2.innerHTML = '<input type="number" min="1" class="form-control" id="time_' + rowNumber + '" name="time_' + rowNumber + '">';
             cell3.innerHTML = '<input type="number" min="1" class="form-control" id="num_' + rowNumber + '" name="num_' + rowNumber + '">';
-            updateRowCount();
+            updateInputs();
+            check_all();
         }
 
         function updateRowCount() {
             var table = document.getElementById("myTable");
             var rowCount = table.rows.length;
-    
             document.getElementById("rows").value = rowCount - 1;
+            inputs = document.querySelectorAll('input');
         }
 
         function deleteRow() {
             var table = document.getElementById("myTable");
             var lastRow = table.rows.length - 1;
             table.deleteRow(lastRow);
-            updateRowCount();
+            updateInputs();
+            check_all();
         }
     </script>
 </body>
