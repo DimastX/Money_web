@@ -122,6 +122,7 @@
                             <input type="text" name="money_all" id="money_all" class="form-control" readonly>
                             <label>Стоимость ПУ</label>
                             <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -286,7 +287,7 @@
                 sum = Math.ceil(sum + time * num / 8);
                 console.log("Сумма " + sum);
             }
-            return sum; 
+            return Math.ceil(sum * parseFloat({{df['Значение'][3]}}) + parseFloat({{df['Значение'][0]}})); 
         };
 
         function addRow() {

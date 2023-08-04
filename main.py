@@ -176,6 +176,9 @@ def wave():
 
 @app.route('/HRL', methods=['GET', 'POST'])
 def HRL():
+    edit = "0"
+    df = pd.read_csv('data/HRL.csv')
+    df2 = readdata()
     if request.method == 'POST':
         session['HRL_form'] = request.form
         if 'tariffs' in request.form:
@@ -184,14 +187,20 @@ def HRL():
         if 'back' in request.form:
             return redirect(url_for('wave'))
         if 'next' in request.form:
-            if not ('HRL' in request.form):
-                return redirect(url_for('hand'))
-            elif request.form.__len__() == 3:
-                return redirect(url_for('hand'))
+            return redirect(url_for('hand'))
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
             else:
-                msg = 'Заполните все поля'
+                msg = 'Неверный пароль'
                 flash(msg)
-    return render_template('HRL.html')
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/HRL.csv', index=False)
+    return render_template('HRL.html', df=df, df2=df2, edit=edit)
 
 @app.route('/hand', methods=['GET', 'POST'])
 def hand():    

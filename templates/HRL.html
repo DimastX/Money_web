@@ -3,7 +3,11 @@
 <head>
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -34,16 +38,130 @@
                 </div>
             </fieldset>
             <div class="form-group" id="HRL_off">
-                <label>Test:</label>
-                <input type="text" class="form-control" name="HRL_1" value="{{ session['HRL_form']['HRL_1'] if session.get('HRL_form') else '' }}">
+                <table>
+                    <tr>
+                        <td style="width: 50%;">
+                            <label>Выберите количество сторон для селектиной лакировки</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="HRL_type" value="1" id="HRL_type_1"
+                                    {% if session.get('HRL_form')%} {% if session['HRL_form']['HRL_type'] == "1" %} checked {% endif %} {% endif %}>
+                                Односторонняя
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="HRL_type" id="HRL_type_2"
+                                    {% if session.get('HRL_form')%} {% if session['HRL_form']['HRL_type'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Двустронняя
+                            </label>
+                            <br>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label>Количество ПУ в партии</label>
+                                <input type="text" name="PCB" id="PCB" class="form-control" readonly>
+                                <label>Всего времени потрачено на партию</label>
+                                <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                                <label>Всего времени потрачено на ПУ</label>
+                                <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                                <label>Стоимость партии</label>
+                                <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                                <label>Стоимость ПУ</label>
+                                <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Данные для селективной влагозащиты
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" >
+                            <div class="panel-body">
+                                <div>
+                                    <div class="table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>{{ df.columns[0] }}</th>
+                                                    <th>{{ df.columns[1] }}</th>
+                                                </tr>
+                                            </thead>
+                                            {% for row in df.iterrows(): %}
+                                            <tr>
+                                                {% for cell in row[1] %}
+                                                <td>
+                                                    {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                        <input {% if edit == "0" %} disabled {% endif %}
+                                                            type="number" min = 0 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                    {% else %} <!-- Если это не второй столбец -->
+                                                        {{ cell }}
+                                                    {% endif %}
+                                                </td>
+                                                {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+                                            <tr>
+                                                <td>Ширина мультизаготовки</td>
+                                                <td>
+                                                    <input type="number" disabled class="form-control" value="{{ session['second_form']['width'] }}"></input>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Длина мультизаготовки</td>
+                                                <td>
+                                                    <input type="number" disabled class="form-control" value="{{ session['second_form']['length'] }}"></input>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Партия</td>
+                                                <td>
+                                                    <input type="number" disabled class="form-control" value="{{ session['home_form']['field3'] }}"></input>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <label>Пароль:</label>
+                                    <input type="password" class="form-control" name="password" 
+                                            onkeydown="return event.key != 'Enter';">                
+                                    <br>
+                                    <button {% if edit != "0" %} disabled {% endif %}
+                                            type="submit" class="btn btn-primary" name="save" 
+                                            onkeydown="return event.key != 'Enter';">Изменить</button>
+                                    <button {% if edit == "0" %} disabled {% endif %}
+                                            type="submit" class="btn btn-primary" name="save2" 
+                                            onkeydown="return event.key != 'Enter';">Сохранить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <br>
         </form>
     </div>
     <script>
+        ids = ["HRL_type_2", "HRL_type_1", "HRL"];
         window.onload = function(){
-            check('HRL', 'HRL_off');
+            check_all('HRL', 'HRL_off');
         }
+
+        function check_all(master, slave){
+            check(master, slave);
+            HRL_amount();
+        }
+        for (var i = 0; i < ids.length; i++) {
+            var element = document.getElementById(ids[i]);
+            element.addEventListener('change', function(){
+                check_all('HRL', 'HRL_off');
+            });
+        }
+
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
@@ -51,6 +169,54 @@
             document.getElementById(slave).classList.add('disable_section')
           }
         }
+
+        const chckbx = document.getElementById('HRL');
+        const type = document.getElementsByName('HRL_type')
+
+        function HRL_amount(){
+            var batch = parseInt({{ session['home_form']['field3']}});
+            var multi_num = parseInt({{ session['second_form']['multi_num']}});
+            var pc = parseInt({{ session['second_form']['pc']}});
+            var time_multi = 0;
+            var time_all = 0;
+            var time_pc = 0;
+            var money_all = 0;
+            var money_pc = 0;
+            var sides = 0;
+            var area = Math.ceil(parseFloat({{ session['second_form']['width']}}) * parseFloat({{ session['second_form']['length']}}));
+            var prev = parseInt({{ session['second_form']['prev']}});
+            if (prev == 1){
+                prev = 1 - parseFloat({{ df['Значение'][2] }});
+            } else if (prev == 2){
+                prev = 1;
+            }
+            if (chckbx.checked){
+                document.getElementById('PCB').value = batch + " шт";
+                if (type[0].checked){
+                    sides = 1;
+                } else if (type[1].checked){
+                    sides = 2;
+                }
+                var prod = multi_num * sides;
+                var start = parseInt({{df['Значение'][3]}}) * sides * prev;
+                time_all = Math.ceil((prod + start)/3600);
+                money_all = Math.ceil((prod * parseFloat({{df2['Стоимость, руб/ч'][6]}}) + start * parseFloat({{df2['Стоимость, руб/ч'][7]}}))/3600);
+                money_pc = Math.ceil(money_all / batch);
+                time_pc = Math.ceil(time_all/batch * 3600);
+                document.getElementById('time_pc').value = time_pc + " c";
+                document.getElementById('time_all').value = time_all + " ч";
+                document.getElementById('money_pc').value = money_pc + " руб";
+                document.getElementById('money_all').value = money_all + " руб";
+
+            } else {
+                document.getElementById('PCB').value = '-';
+                document.getElementById('time_pc').value = '-';
+                document.getElementById('time_all').value = '-';
+                document.getElementById('money_pc').value = '-';
+                document.getElementById('money_all').value = '-';
+
+            }
+        };
     </script>
 </body>
 </html>
