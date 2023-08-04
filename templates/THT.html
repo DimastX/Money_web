@@ -3,7 +3,11 @@
 <head>
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -33,15 +37,187 @@
                     <label for="THT">Выполнять cелективную пайку THT? </label>
                 </div>
             </fieldset>
-            <div class="form-group" id="THT_off">
-                <label>Test:</label>
-                <input type="text" class="form-control" name="THT_1" value="{{ session['THT_form']['THT_1'] if session.get('THT_form') else '' }}">
+            <table>
+                <tr>
+                    <td style="width: 50%;">
+                        <div class="form-group" id="THT_off">
+                            <label>Выберите количество сторон для селектиной пайки</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="THT_sides" value="1" id="THT_sides_1"
+                                    {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "1" %} checked {% endif %} {% endif %}>
+                                Односторонняя
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="THT_sides" id="THT_sides_2"
+                                    {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Двустронняя
+                            </label>
+                            <br>
+                            <label>Выберите способ рассчёта времени на первую сторону селективной пайки</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="THT_type" id="manual"
+                                    {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Ручной ввод
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="THT_type" id="sim"
+                                    {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "3" %} checked {% endif %} {% endif %} value="3">
+                                Данные симуляции
+                            </label>
+                            <div class="form-group" id="manual_input" style="display:none">
+                                <label>Количество точек пайки на первой стороне:</label>
+                                <input type="number" class="form-control" name="points" id="points" min="0" step="1"
+                                    value="{{ session['THT_form']['points'] if session.get('THT_form') else '0' }}"></input>
+                                <label>Количество DDR-разъёмов на первой стороне:</label>
+                                <input type="number" class="form-control" name="DDR" id="DDR" min="0" step="1"
+                                    value="{{ session['THT_form']['DDR'] if session.get('THT_form') else '0' }}"></input>
+                                <label>Количество PCI-разъёмов на первой стороне:</label>
+                                <input type="number" class="form-control" name="PCI" id="PCI" min="0" step="1"
+                                    value="{{ session['THT_form']['PCI'] if session.get('THT_form') else '0' }}"></input>
+                            </div>
+                            <div class="form-group" id="sim_input" style="display:none">
+                                <label>Время на пайку мультизаготовки на первой стороне, с</label>
+                                <input type="number" class="form-control" name="sim_multi" id="sim_multi" min="0" step="1"
+                                    value="{{ session['THT_form']['sim_multi'] if session.get('THT_form') else '0' }}"></input>
+                            </div>
+                            <div class="form-group" id="second" style="display:none">
+                                <label>Выберите способ рассчёта времени на вторую сторону селективной пайки</label>
+                                <br>
+                                <label>
+                                    <input type="radio" name="THT_type2" id="manual2"
+                                        {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                    Ручной ввод
+                                </label>
+                                <br>
+                                <label>
+                                    <input type="radio" name="THT_type2" id="sim2"
+                                        {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "3" %} checked {% endif %} {% endif %} value="3">
+                                    Данные симуляции
+                                </label>
+                                <div class="form-group" id="manual_input2" style="display:none">
+                                    <label>Количество точек пайки на второй стороне:</label>
+                                    <input type="number" class="form-control" name="points2" id="points2" min="0" step="1"
+                                        value="{{ session['THT_form']['points2'] if session.get('THT_form') else '0' }}"></input>
+                                    <label>Количество DDR-разъёмов на второй стороне:</label>
+                                    <input type="number" class="form-control" name="DDR2" id="DDR2" min="0" step="1"
+                                        value="{{ session['THT_form']['DDR2'] if session.get('THT_form') else '0' }}"></input>
+                                    <label>Количество PCI-разъёмов на второй стороне:</label>
+                                    <input type="number" class="form-control" name="PCI2" id="PCI2" min="0" step="1"
+                                        value="{{ session['THT_form']['PCI2'] if session.get('THT_form') else '0' }}"></input>
+                                </div>
+                                <div class="form-group" id="sim_input2" style="display:none">
+                                    <label>Время на пайку мультизаготовки на второй стороне, с</label>
+                                    <input type="number" class="form-control" name="sim_multi2" id="sim_multi2" min="0" step="1"
+                                        value="{{ session['THT_form']['sim_multi2'] if session.get('THT_form') else '0' }}"></input>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                        <label>Всего плат в партии</label>
+                        <input type="text" name="PCB" id="PCB" class="form-control" readonly>
+                        <label>Всего времени потрачено на ПУ</label>
+                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                        <label>Всего времени потрачено на партию</label>
+                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                        <label>Стоимость ПУ</label>
+                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                        <label>Стоимость партии</label>
+                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                    </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Данные для селективной пайки
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div>
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>{{ df.columns[0] }}</th>
+                                                <th>{{ df.columns[1] }}</th>
+                                            </tr>
+                                        </thead>
+                                        {% for row in df.iterrows(): %}
+                                        <tr>
+                                            {% for cell in row[1] %}
+                                            <td>
+                                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                    <input {% if edit == "0" %} disabled {% endif %}
+                                                        type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                {% else %} <!-- Если это не второй столбец -->
+                                                    {{ cell }}
+                                                {% endif %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                                <label>Пароль:</label>
+                                <input type="password" class="form-control" name="password" 
+                                        onkeydown="return event.key != 'Enter';">                
+                                <br>
+                                <button {% if edit != "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save" 
+                                        onkeydown="return event.key != 'Enter';">Изменить</button>
+                                <button {% if edit == "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save2" 
+                                        onkeydown="return event.key != 'Enter';">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <br>
         </form>
     </div>
     <script>
-        window.onload = function(){
-            check('THT', 'THT_off');
+         window.onload = function(){
+            check_all('THT', 'THT_off');
+        }
+        ids = ["THT", "manual", "sim", "THT_sides_1", "THT_sides_2", "manual2", "sim2", "sim_multi", "points", "DDR", "PCI", "sim_multi2", "points2", "DDR2", "PCI2"];
+
+        for (var i = 0; i < ids.length; i++) {
+            var element = document.getElementById(ids[i]);
+            element.addEventListener('change', function(){
+                check_all('THT', 'THT_off');
+            });
+        }
+        function check_all(master, slave){
+            check(master, slave);
+            checkOption('manual', 'manual_input');
+            checkOption('sim', 'sim_input');
+            checkOption('manual2', 'manual_input2');
+            checkOption('sim2', 'sim_input2');
+            checkOption('THT_sides_2', 'second');
+            THT_amount();
+        }
+        function checkOption(optionId, fieldId) {
+            var radioOption1 = document.getElementById(optionId);
+            var extraField = document.getElementById(fieldId);
+
+            if(radioOption1.checked) {
+                extraField.style.display = 'block';
+            } else {
+                extraField.style.display = 'none';
+            }
         }
         function check(master, slave) {
           if (document.getElementById(master).checked) {
@@ -49,6 +225,60 @@
           } else {
             document.getElementById(slave).classList.add('disable_section')
           }
+        }
+        var chckbx = document.getElementById('THT');
+        const THT_type = document.getElementsByName('THT_type')
+        const THT_type2 = document.getElementsByName('THT_type2')
+        const THT_sides = document.getElementsByName('THT_sides');
+
+        function THT_amount(){
+            var batch = parseInt({{ session['home_form']['field3']}});
+            var multi_num = parseInt({{ session['second_form']['multi_num']}});
+            var pc = parseInt({{ session['second_form']['pc']}});
+            var time_multi = 0;
+            var sides = 1;
+            if (THT_sides[1].checked){ 
+                sides = 2;
+            }
+            if (THT_type[0].checked){
+                time_multi =  Math.ceil(document.getElementById('DDR').value * parseFloat({{df['Значение'][1]}}) + 
+                            document.getElementById('PCI').value * parseFloat({{df['Значение'][2]}}) + 
+                            document.getElementById('points').value * parseFloat({{df['Значение'][5]}}));
+            } else if (THT_type[1].checked){
+                time_multi = parseFloat(document.getElementById('sim_multi').value);
+            }
+            console.log(time_multi);
+            if (sides == 2){
+                if (THT_type2[0].checked){
+                time_multi +=  Math.ceil(document.getElementById('DDR2').value * parseFloat({{df['Значение'][1]}}) + 
+                            document.getElementById('PCI2').value * parseFloat({{df['Значение'][2]}}) + 
+                            document.getElementById('points2').value * parseFloat({{df['Значение'][5]}}));
+            } else if (THT_type2[1].checked){
+                time_multi += parseFloat(document.getElementById('sim_multi2').value);
+                }
+            }
+            console.log(time_multi);
+            time_multi += Math.ceil((parseFloat({{df['Значение'][4]}})) * sides * parseFloat({{df['Значение'][0]}}));
+            console.log(time_multi);
+            const time_all = Math.ceil((time_multi * multi_num + parseFloat({{df['Значение'][3]}}) * sides)  / 3600);
+            const money_all = Math.ceil(time_all * parseInt({{ df2['Стоимость, руб/ч'][14]}}));
+            const money_pc = Math.ceil(money_all / batch);
+            const time_pc = Math.ceil(time_all / batch * 3600);
+            if (chckbx.checked){
+                document.getElementById('PCB').value = batch + " шт";
+                document.getElementById('time_pc').value = time_pc + " c";
+                document.getElementById('time_all').value = time_all + " ч";
+                document.getElementById('money_pc').value = money_pc + " руб";
+                document.getElementById('money_all').value = money_all + " руб";
+
+            } else {
+                document.getElementById('PCB').value = '-';
+                document.getElementById('time_pc').value = '-';
+                document.getElementById('time_all').value = '-';
+                document.getElementById('money_pc').value = '-';
+                document.getElementById('money_all').value = '-';
+
+            }
         }
     </script>
 </body>

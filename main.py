@@ -128,7 +128,9 @@ def smd():
 
 @app.route('/THT', methods=['GET', 'POST'])
 def tht():
-    fields = 0
+    edit = "0"
+    df = pd.read_csv('data/THT.csv')
+    df2 = readdata()
     if request.method == 'POST':
         session['THT_form'] = request.form
         if 'tariffs' in request.form:
@@ -137,14 +139,20 @@ def tht():
         if 'back' in request.form:
             return redirect(url_for('smd'))
         if 'next' in request.form:
-            if not ('THT' in request.form):
-                return redirect(url_for('wave'))
-            elif request.form.__len__() == 3:
-                return redirect(url_for('wave'))
+            return redirect(url_for('wave'))
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
             else:
-                msg = 'Заполните все поля'
+                msg = 'Неверный пароль'
                 flash(msg)
-    return render_template('THT.html')
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/THT.csv', index=False)
+    return render_template('THT.html', df=df, df2=df2, edit=edit)
 
 @app.route('/wave', methods=['GET', 'POST'])
 def wave():
