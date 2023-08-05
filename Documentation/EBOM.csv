@@ -1,79 +1,79 @@
-"Designator";"Layer";"Name";"Designators (BOM)"
-"A1";"Top";"RF3183 RF, Amplifiers\HPA\Modules, RF3183, 5.00x5.00mm, SMD RF3183";"A1"
-"C1";"Top";"0.6pF CAP, Ceramic, 0.6pF, C0G/NP0, 50V, 0.1pF, 0603, SMD";"C1,C13"
-"C2";"Top";"150pF CAP, Ceramic, 150pF, NP0, 50V, 5%, 0603, SMD";"C2,C5,C8,C9,C10,C12,C16,C26,C29"
-"C3";"Top";"13pF CAP, Ceramic, 13pF, NP0, 50V, 5%, 0603, SMD";"C3,C4"
-"C4";"Top";"1000pF CAP, Ceramic, 1000pF, X7R, 50V, 0603, SMD";"C6,C20,C24,C30"
-"C5";"Top";"0.1uF CAP, Ceramic, 0.1uF, X7R, 50V, 0603, SMD";"C7,C18,C19,C21,C22,C23,C25,C27,C28,C32,C36,C37,C38,C39"
-"C6";"Top";"1pF CAP, Ceramic, GJM, 1pF, C0G, 50V, 10%, 0603, SMD";"C11"
-"C7";"Top";"4.7pF CAP, Ceramic, 4.7pF, NP0, 50V, 10%, 0603, SMD";"C14"
-"C8";"Top";"2.2pF CAP, Ceramic, 2.2pF, NP0, 50V, 5%, 0603, SMD";"C15"
-"C9";"Top";"3.3pF CAP, Ceramic, 3.3pF, NP0, 50V, 5%, 0603, SMD";"C17"
-"C10";"Top";"47.0uF CAP, Ceramic, 47.0uF, X5R, 4V, 0805, SMD";"C31,C33"
-"C11";"Top";"0.01uF CAP, Ceramic, 0.01uF, X7R, 50V, 0603, SMD";"C34"
-"C12";"Top";"47.0uF CAP, Ceramic, GRM, 47.0uF, X5R, 6.3V, 20%, 0805, SMD";"C35"
-"C13";"Top";"2.2uF CAP, Ceramic, 2.2uF, X7R, 10V, 0603, SMD";"C40"
-"C14";"Top";"1.0uF CAP, Ceramic, 1.0uF, X7R, 50V, 0603, SMD";"C41,C42"
-"C15";"Top";"SPF5122Z IC, RF ICs\Amplifier, SPF5122Z, SON-8, 2.05x2.05mm, SMD SPF5122Z";"DA1"
-"C16";"Top";"PE42421  PE42421";"DA2"
-"C17";"Top";"SX1276IMLTRT IC, Transceiver|Transmitter|Receiver, SX1276IMLTRT, QFN-28, 6.00x6.00mm, SMD SX1276IMLTRT";"DA3"
-"C18";"Top";"22nH Inductor, 22nH, Unshielded, 0603, 0.80x1.60mm, SMD LQW18AN22NJ00";"L1"
-"C19";"Top";"150nH Inductor, 150nH, 160mA, 1.4GHz, Unshielded, 0603, 0.80x1.60mm, SMD LQW18ANR15J00";"L2,L8"
-"C20";"Top";"1.0nH Inductor, 1.0nH, Unshielded, 0603, 0.80x1.60mm, SMD CI160808-1N0D";"L3,L4"
-"C21";"Top";"7.5nH Inductor, 7.5nH, 750mA, 6.0GHz, Unshielded, 0603, 0.80x1.60mm, SMD LQW18AN7N5C00";"L5,L6"
-"C22";"Top";"47nH Inductor, 47nH, Unshielded, 0603, 0.80x1.60mm, SMD LQW18AN47NG00";"L7"
-"C23";"Top";"3.3k RES, Fixed, 3.3k, 5%, 0.1W, 0603, SMD";"R1,R2,R11,R12,R14"
-"C24";"Top";"110 RES, Fixed, 110, 5%, 0.062W, 0603, SMD";"R4,R5"
-"C25";"Top";"100k RES, Fixed, 100k, 5%, 0.1W, 0603, SMD";"R6"
-"C26";"Top";"120 RES, Fixed, 120, 5%, 0.1W, 0603, SMD";"R7,R8"
-"C27";"Top";"51 RES, Fixed, 51, 5%, 0.1W, 0603, SMD";"R9"
-"C28";"Top";"1k RES, Fixed, 1k, 5%, 0.1W, 0603, SMD";"R10,R13,R15,R21,R24"
-"C29";"Top";"8.2k RES, Fixed, 8.2k, 5%, 0.1W, 0603, SMD";"R17"
-"C30";"Top";"0 RES, Fixed, 0, 0.1W, 0603, SMD";"R3"
-"C31";"Top";"0 RES, Fixed, 0, 0.1W, 0603, SMD";"R18"
-"C32";"Top";"1k RES, Fixed, 1k, 5%, 0.1W, 0603, SMD";"R16,R20,R22,R23"
-"C33";"Top";"GTXO-93T/JS 32.0MHz \ NT2016SA Oscillators, TCXO GTXO-93T/JS 32.0MHz";"UZ1"
-"C34";"Top";"MIC5205-3.3YM5 PWR, Linear Regulators (LDO), MIC5205-3.3YM5, SOT23-5, 2.80x2.90mm, SMD MIC5205-3.3YM5";"U1"
-"C35";"Top";"MCP1700T-1802E/TT  MCP1700T-1802E/TT";"U2"
-"C36";"Top";"2N7002DW SEMIC, FETs, N-Channel, Dual, 2N7002DW, 60V, 73mA, SC-70, 2.00x2.10mm, SMD 2N7002DW";"VT1"
-"C37";"Top";"IRLML6401TRPBF SEMIC, FETs, P-Channel, Single, IRLML6401TRPBF, 12V, 4.3A, SOT23-3, 2.37x2.92mm, SMD IRLML6401TRPBF";"VT2"
-"C38";"Top";"2N7002 SEMIC, FETs, N-Channel, Single, 2N7002 2N7002";"VT3"
-"C39";"Top";"82_MCX-S50-0-22/111_NE CONN, Coaxial (RF)\Connectors\MCX, 82_MCX-S50-0-22/111_NE, 6 GHz, 50 Ohm, 2pins, Male, Right Angle, PCB Edge 82_MCX-S50-0-22/111_NE";"XP1"
-"C40";"Top";;
-"C41";"Top";;
-"C42";"Top";;
-"DA1";"Top";;
-"DA2";"Top";;
-"DA3";"Top";;
-"L1";"Top";;
-"L2";"Top";;
-"L3";"Top";;
-"L4";"Top";;
-"L5";"Top";;
-"L6";"Top";;
-"L7";"Top";;
-"L8";"Top";;
-"R1";"Top";;
-"R2";"Top";;
-"R3";"Top";;
-"R6";"Top";;
-"R7";"Top";;
-"R8";"Top";;
-"R9";"Top";;
-"R10";"Top";;
-"R11";"Top";;
-"R12";"Top";;
-"R13";"Top";;
-"R14";"Top";;
-"R15";"Top";;
-"R17";"Top";;
-"R18";"Top";;
-"R21";"Top";;
-"R24";"Top";;
-"U1";"Top";;
-"U2";"Top";;
-"UZ1";"Top";;
-"VT1";"Top";;
-"VT2";"Top";;
-"VT3";"Top";;
-"XP1";"Top";;
+Designator,Layer,Name,Designators (BOM)
+A1,Top,"RF3183 RF, Amplifiers\HPA\Modules, RF3183, 5.00x5.00mm, SMD RF3183",A1
+C1,Top,"0.6pF CAP, Ceramic, 0.6pF, C0G/NP0, 50V, 0.1pF, 0603, SMD","C1,C13"
+C2,Top,"150pF CAP, Ceramic, 150pF, NP0, 50V, 5%, 0603, SMD","C2,C5,C8,C9,C10,C12,C16,C26,C29"
+C3,Top,"13pF CAP, Ceramic, 13pF, NP0, 50V, 5%, 0603, SMD","C3,C4"
+C4,Top,"1000pF CAP, Ceramic, 1000pF, X7R, 50V, 0603, SMD","C6,C20,C24,C30"
+C5,Bot,"0.1uF CAP, Ceramic, 0.1uF, X7R, 50V, 0603, SMD","C7,C18,C19,C21,C22,C23,C25,C27,C28,C32,C36,C37,C38,C39"
+C6,Top,"1pF CAP, Ceramic, GJM, 1pF, C0G, 50V, 10%, 0603, SMD",C11
+C7,Top,"4.7pF CAP, Ceramic, 4.7pF, NP0, 50V, 10%, 0603, SMD",C14
+C8,Top,"2.2pF CAP, Ceramic, 2.2pF, NP0, 50V, 5%, 0603, SMD",C15
+C9,Top,"3.3pF CAP, Ceramic, 3.3pF, NP0, 50V, 5%, 0603, SMD",C17
+C10,Top,"47.0uF CAP, Ceramic, 47.0uF, X5R, 4V, 0805, SMD","C31,C33"
+C11,Top,"0.01uF CAP, Ceramic, 0.01uF, X7R, 50V, 0603, SMD",C34
+C12,Top,"47.0uF CAP, Ceramic, GRM, 47.0uF, X5R, 6.3V, 20%, 0805, SMD",C35
+C13,Top,"2.2uF CAP, Ceramic, 2.2uF, X7R, 10V, 0603, SMD",C40
+C14,Top,"1.0uF CAP, Ceramic, 1.0uF, X7R, 50V, 0603, SMD","C41,C42"
+C15,Top,"SPF5122Z IC, RF ICs\Amplifier, SPF5122Z, SON-8, 2.05x2.05mm, SMD SPF5122Z",DA1
+C16,Top,PE42421  PE42421,DA2
+C17,Top,"SX1276IMLTRT IC, Transceiver|Transmitter|Receiver, SX1276IMLTRT, QFN-28, 6.00x6.00mm, SMD SX1276IMLTRT",DA3
+C18,Top,"22nH Inductor, 22nH, Unshielded, 0603, 0.80x1.60mm, SMD LQW18AN22NJ00",L1
+C19,Top,"150nH Inductor, 150nH, 160mA, 1.4GHz, Unshielded, 0603, 0.80x1.60mm, SMD LQW18ANR15J00","L2,L8"
+C20,Top,"1.0nH Inductor, 1.0nH, Unshielded, 0603, 0.80x1.60mm, SMD CI160808-1N0D","L3,L4"
+C21,Top,"7.5nH Inductor, 7.5nH, 750mA, 6.0GHz, Unshielded, 0603, 0.80x1.60mm, SMD LQW18AN7N5C00","L5,L6"
+C22,Top,"47nH Inductor, 47nH, Unshielded, 0603, 0.80x1.60mm, SMD LQW18AN47NG00",L7
+C23,Top,"3.3k RES, Fixed, 3.3k, 5%, 0.1W, 0603, SMD","R1,R2,R11,R12,R14"
+C24,Top,"110 RES, Fixed, 110, 5%, 0.062W, 0603, SMD","R4,R5"
+C25,Top,"100k RES, Fixed, 100k, 5%, 0.1W, 0603, SMD",R6
+C26,Top,"120 RES, Fixed, 120, 5%, 0.1W, 0603, SMD","R7,R8"
+C27,Top,"51 RES, Fixed, 51, 5%, 0.1W, 0603, SMD",R9
+C28,Top,"1k RES, Fixed, 1k, 5%, 0.1W, 0603, SMD","R10,R13,R15,R21,R24"
+C29,Top,"8.2k RES, Fixed, 8.2k, 5%, 0.1W, 0603, SMD",R17
+C30,Top,"0 RES, Fixed, 0, 0.1W, 0603, SMD",R3
+C31,Top,"0 RES, Fixed, 0, 0.1W, 0603, SMD",R18
+C32,Top,"1k RES, Fixed, 1k, 5%, 0.1W, 0603, SMD","R16,R20,R22,R23"
+C33,Top,"GTXO-93T/JS 32.0MHz \ NT2016SA Oscillators, TCXO GTXO-93T/JS 32.0MHz",UZ1
+C34,Top,"MIC5205-3.3YM5 PWR, Linear Regulators (LDO), MIC5205-3.3YM5, SOT23-5, 2.80x2.90mm, SMD MIC5205-3.3YM5",U1
+C35,Top,MCP1700T-1802E/TT  MCP1700T-1802E/TT,U2
+C36,Top,"2N7002DW SEMIC, FETs, N-Channel, Dual, 2N7002DW, 60V, 73mA, SC-70, 2.00x2.10mm, SMD 2N7002DW",VT1
+C37,Top,"IRLML6401TRPBF SEMIC, FETs, P-Channel, Single, IRLML6401TRPBF, 12V, 4.3A, SOT23-3, 2.37x2.92mm, SMD IRLML6401TRPBF",VT2
+C38,Top,"2N7002 SEMIC, FETs, N-Channel, Single, 2N7002 2N7002",VT3
+C39,Top,"82_MCX-S50-0-22/111_NE CONN, Coaxial (RF)\Connectors\MCX, 82_MCX-S50-0-22/111_NE, 6 GHz, 50 Ohm, 2pins, Male, Right Angle, PCB Edge 82_MCX-S50-0-22/111_NE",XP1
+C40,Top,,
+C41,Top,,
+C42,Top,,
+DA1,Top,,
+DA2,Top,,
+DA3,Top,,
+L1,Top,,
+L2,Top,,
+L3,Top,,
+L4,Top,,
+L5,Top,,
+L6,Top,,
+L7,Top,,
+L8,Top,,
+R1,Top,,
+R2,Top,,
+R3,Top,,
+R6,Top,,
+R7,Top,,
+R8,Top,,
+R9,Top,,
+R10,Top,,
+R11,Top,,
+R12,Top,,
+R13,Top,,
+R14,Top,,
+R15,Top,,
+R17,Top,,
+R18,Top,,
+R21,Top,,
+R24,Top,,
+U1,Top,,
+U2,Top,,
+UZ1,Top,,
+VT1,Top,,
+VT2,Top,,
+VT3,Top,,
+XP1,Top,,

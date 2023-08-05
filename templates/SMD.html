@@ -22,7 +22,7 @@
     {% endif %}
     {% endwith %}
     <div class="container">
-        <form id = "myForm" method="POST" enctype="multipart/form-data">
+        <form id = "myForm" method="POST">
            <br>
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
@@ -36,18 +36,10 @@
                     <label for="SMD">Выполнять автоматический поверхностный монтаж SMT? </label>
                 </div>
             </fieldset>
-        </form>
         <table>
             <tr>
                 <td style="width: 50%;">
-                    <div class="form-group" id="SMD_off">
-                        <form action="/upload" method="post" enctype="multipart/form-data">
-                        <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
-                        <input type="file" class="form-control-file" name="csv_file" 
-                        value="" accept="text/csv">
-                        <input type="submit" class="btn btn-primary" value="Upload">
-                        </form>
-                    </div>
+                   
                 </td>
                 <td>
                     <div class="form-group">
@@ -64,9 +56,18 @@
                         <label>Стоимость партии</label>
                         <input type="text" name="money_all" id="money_all" class="form-control" readonly>
                     </div>
+                    </form>
                 </td>
             </tr>
         </table>
+        <div class="form-group" id="SMD_off">
+            <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
+            <input type="file" class="form-control-file" name="csv_file" 
+            value="" accept="text/csv">
+            <input type="submit" class="btn btn-primary" value="Upload">
+            </form>
+        </div>
     </div>
     <script>
         ids = ["SMD"];

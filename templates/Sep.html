@@ -70,7 +70,7 @@
                     <td>
                         <div class="form-group">
                             <label>Время на разделение одного ПУ</label>
-                            <input class="form-control" name="time" id="time" readonly></input>
+                            <input class="form-control" name="time" id="time_pc" readonly></input>
                         </div>
                         <div class="form-group">
                             <label>Время на разделение мультизаготовки</label>
@@ -79,6 +79,14 @@
                         <div class="form-group">
                             <label>Время на разделение партии</label>
                             <input class="form-control" name="time_all" id="time_all" readonly></input>
+                        </div>
+                        <div class="form-group">
+                            <label>Стоимость разделеня партии</label>
+                            <input class="form-control" name="money_all" id="money_all" readonly></input>
+                        </div>
+                        <div class="form-group">
+                            <label>Стоимость разделения ПУ</label>
+                            <input class="form-control" name="money_pc" id="money_pc" readonly></input>
                         </div>
                     </td>
                 </tr>
@@ -182,11 +190,14 @@
                 }
             }
             time = Math.ceil(time)
-            document.getElementById("time").value = time + " c";
+            document.getElementById("time_pc").value = time + " c";
             let time_multi = Math.ceil(time * parseFloat({{ time[4] }}))
             document.getElementById("time_multi").value = time_multi + " c";
             let time_all = (time_multi * parseFloat({{ time[3] }}) / 3600).toFixed(1)
             document.getElementById("time_all").value = time_all + " ч";
+            document.getElementById("money_all").value = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) + " руб";
+            document.getElementById("money_pc").value = Math.ceil(time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) 
+                / parseFloat({{ session['home_form']['field3'] }}))  + " руб";
         }
 
         function check_all(master, slave){

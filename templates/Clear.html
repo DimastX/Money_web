@@ -72,15 +72,19 @@
                         </div>
                         <div class="form-group">
                             <label>Времени на отмывку</label>
-                            <input name="time" id="time" class="form-control" readonly>
+                            <input name="time_all" id="time_all" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Времени на отмывку одной платы</label>
+                            <input name="time_all" id="time_pc" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Стоимость отмывки одной платы</label>
-                            <input name="costs" id="costs" class="form-control" readonly>
+                            <input name="money_pc" id="money_pc" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Стоимость отмывки партии</label>
-                            <input name="costs_all" id="costs_all" class="form-control" readonly>
+                            <input name="money_all" id="money_all" class="form-control" readonly>
                         </div>
                     </td>
                 </tr>
@@ -186,9 +190,10 @@
             }
             result = Number(result).toFixed(2)
             var costs = result * parseInt({{ df2['Стоимость, руб/ч'][12]}})
-            document.getElementById("time").value = result + " ч";
-            document.getElementById("costs").value = Math.ceil(costs / parseFloat({{ session['home_form']['field3'] }})) + " руб";
-            document.getElementById("costs_all").value = Math.ceil(costs) + " руб";
+            document.getElementById("time_all").value = result + " ч";
+            document.getElementById("time_pc").value = Math.ceil(result*3600 / parseFloat({{ session['home_form']['field3'] }}))+ " c";
+            document.getElementById("money_pc").value = Math.ceil(costs / parseFloat({{ session['home_form']['field3'] }})) + " руб";
+            document.getElementById("money_all").value = Math.ceil(costs) + " руб";
             if (master){
                 document.getElementById("number_pcb").value = {{ data[2]}};
                 document.getElementById("number_multi").value = {{ data[0] }};

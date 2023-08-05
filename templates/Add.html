@@ -309,20 +309,20 @@
                             <td></td>
                             <td></td>
                             <td>
-                                <input type="number" name="sum_time_pc" id="sum_time_pc" class="form-control" min="1" step="1" readonly
-                                        value="{{ session['Add_form']['sum_time_pc'] if session.get('Add_form') else '' }}">
+                                <input type="number" name="time_pc" id="time_pc" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_pc'] if session.get('Add_form') else '' }}">
                             </td>
                             <td>
-                                <input type="number" name="sum_time_all" id="sum_time_all" class="form-control" min="1" step="1" readonly
-                                        value="{{ session['Add_form']['sum_time_all'] if session.get('Add_form') else '' }}">
+                                <input type="number" name="time_all" id="time_all" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['time_all'] if session.get('Add_form') else '' }}">
                             </td>
                             <td>
-                                <input type="number" name="sum_money_pc" id="sum_money_pc" class="form-control" min="1" step="1" readonly
-                                        value="{{ session['Add_form']['sum_money_pc'] if session.get('Add_form') else '' }}">
+                                <input type="number" name="money_pc" id="money_pc" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['money_pc'] if session.get('Add_form') else '' }}">
                             </td>
                             <td>
-                                <input type="number" name="sum_money_all" id="sum_money_all" class="form-control" min="1" step="1" readonly
-                                        value="{{ session['Add_form']['sum_money_all'] if session.get('Add_form') else '' }}">
+                                <input type="number" name="money_all" id="money_all" class="form-control" min="1" step="1" readonly
+                                        value="{{ session['Add_form']['money_all'] if session.get('Add_form') else '' }}">
                             </td>
                         </tr>
                     </tbody>
@@ -367,10 +367,10 @@
         const money_pc6 = document.getElementById("money_pc6");
         const area6 = document.getElementById("area6");
 
-        const sum_time_pc = document.getElementById("sum_time_pc");
-        const sum_time_all = document.getElementById("sum_time_all");
-        const sum_money_pc = document.getElementById("sum_money_pc");
-        const sum_money_all = document.getElementById("sum_money_all");
+        const sum_time_pc = document.getElementById("time_pc");
+        const sum_time_all = document.getElementById("time_all");
+        const sum_money_pc = document.getElementById("money_pc");
+        const sum_money_all = document.getElementById("money_all");
 
         window.onload = function(){
             check('Add', 'Add_off');
