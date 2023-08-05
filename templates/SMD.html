@@ -3,7 +3,10 @@
 <head>
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -19,8 +22,8 @@
     {% endif %}
     {% endwith %}
     <div class="container">
-        <form id = "myForm" method="POST">
-            <br>
+        <form id = "myForm" method="POST" enctype="multipart/form-data">
+           <br>
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
@@ -33,15 +36,53 @@
                     <label for="SMD">Выполнять автоматический поверхностный монтаж SMT? </label>
                 </div>
             </fieldset>
-            <div class="form-group" id="SMD_off">
-                <label>Test:</label>
-                <input type="text" class="form-control" name="SMD_1" value="{{ session['SMD_form']['SMD_1'] if session.get('SMD_form') else '' }}">
-            </div>
         </form>
+        <table>
+            <tr>
+                <td style="width: 50%;">
+                    <div class="form-group" id="SMD_off">
+                        <form action="/upload" method="post" enctype="multipart/form-data">
+                        <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
+                        <input type="file" class="form-control-file" name="csv_file" 
+                        value="" accept="text/csv">
+                        <input type="submit" class="btn btn-primary" value="Upload">
+                        </form>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>Всего плат в партии</label>
+                        <input type="text" name="PCB" id="PCB" class="form-control" readonly>
+                        <label>Всего SMD компонентов</label>
+                        <input type="text" name="components" id="components" class="form-control" readonly>
+                        <label>Всего времени потрачено на ПУ</label>
+                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                        <label>Всего времени потрачено на партию</label>
+                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                        <label>Стоимость ПУ</label>
+                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                        <label>Стоимость партии</label>
+                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
     <script>
+        ids = ["SMD"];
+
+        for (var i = 0; i < ids.length; i++) {
+            var element = document.getElementById(ids[i]);
+            element.addEventListener('change', function(){
+                check_all('SMD', 'SMD_off');
+            });
+        }
         window.onload = function(){
-            check('SMD', 'SMD_off');
+            check_all('SMD', 'SMD_off');
+        }
+        function check_all(master, slave){
+            check(master, slave);
+            SMD_amount();
         }
         function check(master, slave) {
           if (document.getElementById(master).checked) {
@@ -49,6 +90,70 @@
           } else {
             document.getElementById(slave).classList.add('disable_section')
           }
+        }
+        var chckbx = document.getElementById('SMD');
+        function SMD_amount(){
+            var batch = parseInt({{ session['home_form']['field3']}});
+            lines = ({{ session['tables'] if session.get('tables') else '0'}});
+            var multi_num = parseInt({{ session['second_form']['multi_num']}});
+            var pc = parseInt({{ session['second_form']['pc']}});
+            var time_multi = 0;
+            var sides = 0;
+            var prev = parseInt({{ session['second_form']['prev']}});
+            let time_all = 0;
+            let money_all = 0;
+            let money_pc = 0;
+            let time_pc = 0;
+            if (chckbx.checked && (lines != 0)){
+                Top = lines[0];
+                Top_u = lines[1];
+                Bot = lines[2];
+                Bot_u = lines[3];
+                if (Top != 0){
+                    sides++;
+                }
+                if (Bot != 0){
+                    sides++;
+                }
+                const components = (Top + Bot) * batch;
+                const unics = Top_u + Bot_u;
+                const speed = speed_amount(components);
+                var prod = Math.ceil(components / speed);
+                var start = Math.max(unics * parseFloat({{df['Значение'][2]}}), sides * parseFloat({{df['Значение'][1]}})) /3600;
+                time_all = Math.ceil((prod+start)*parseFloat({{df['Значение'][0]}}));
+                time_pc = Math.ceil(time_all / batch * 3600);
+                money_all = Math.ceil(start * parseInt({{ df2['Стоимость, руб/ч'][1]}}) + prod * parseInt({{ df2['Стоимость, руб/ч'][0]}}));
+                money_pc = Math.ceil(money_all / batch);
+                console.log(time_pc);
+                console.log(lines);
+                console.log(components);
+                console.log(speed);
+                document.getElementById('PCB').value = batch + " шт";
+                document.getElementById('components').value = components + " шт";
+                document.getElementById('time_pc').value = time_pc + " c";
+                document.getElementById('time_all').value = time_all + " ч";
+                document.getElementById('money_pc').value = money_pc + " руб";
+                document.getElementById('money_all').value = money_all + " руб";
+
+            } else {
+                document.getElementById('PCB').value = '-';
+                document.getElementById('components').value = '-';
+                document.getElementById('time_pc').value = '-';
+                document.getElementById('time_all').value = '-';
+                document.getElementById('money_pc').value = '-';
+                document.getElementById('money_all').value = '-';
+
+            }
+        }
+
+        function speed_amount(batch){
+            var df = {{df3 | safe}};
+            for (var i = 0; i <=9; i++){
+                if ((batch < parseInt(df[i][1])) &&
+                (batch > parseInt(df[i][0]))){
+                    return parseInt(df[i][2]);
+                }
+            }
         }
     </script>
 </body>

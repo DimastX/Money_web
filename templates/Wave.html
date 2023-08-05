@@ -143,9 +143,17 @@
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
             var pc = parseInt({{ session['second_form']['pc']}});
             const time_multi = parseFloat({{df['Значение'][0]}});
-            const time_all = Math.ceil(time_multi * multi_num / 3600);
+            var prev = parseInt({{ session['second_form']['prev']}});
+            if (prev == 1){
+                prev = 1 - parseFloat({{ df['Значение'][1] }});
+            } else if (prev == 2){
+                prev = 1;
+            }
+            const start = parseFloat({{ df['Значение'][2] }}) * prev / 3600;
+            const prod = time_multi * multi_num / 3600;
+            const time_all = Math.ceil(start + prod);
             const time_pc = Math.ceil(time_multi / pc);
-            const money_all = Math.ceil(time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}));
+            const money_all = Math.ceil(start * parseInt({{ df2['Стоимость, руб/ч'][5]}}) + prod * parseInt({{ df2['Стоимость, руб/ч'][4]}}));
             const money_pc = Math.ceil(money_all / batch);
             if (chckbx.checked){
                 document.getElementById('PCB').value = batch + " шт";

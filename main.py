@@ -5,6 +5,8 @@ import calculations_money as cm
 import io
 import csv
 from werkzeug.datastructures import MultiDict
+from werkzeug.utils import secure_filename
+import tables as tb
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -105,7 +107,10 @@ def edittable():
 
 @app.route('/SMD', methods=['GET', 'POST'])
 def smd():
-    fields = 0
+    edit = "0"
+    df = pd.read_csv('data/SMD.csv')
+    df2 = readdata()
+    df3 = pd.read_csv('data/SMD2.csv').values.tolist()
     if request.method == 'POST':
         session['SMD_form'] = request.form
         if 'tariffs' in request.form:
@@ -114,17 +119,31 @@ def smd():
         if 'back' in request.form:
             return redirect(url_for('second'))
         if 'next' in request.form:
-            for key in request.form:
-                if request.form[key] == '':
-                    fields += 1
-            if not ('SMD' in request.form):
-                return redirect(url_for('tht'))
-            elif fields == 1:
-                return redirect(url_for('tht'))
+            return redirect(url_for('tht'))
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
             else:
-                msg = 'Заполните все поля'
+                msg = 'Неверный пароль'
                 flash(msg)
-    return render_template('SMD.html')
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/SMD.csv', index=False)
+    return render_template('SMD.html', df=df, df2=df2, edit=edit, df3=df3)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    csv_file = request.files['csv_file']
+    if csv_file:
+        session['tables']=tb.tables(csv_file) 
+        return redirect(url_for('smd'))
+    else:
+        return 'Файл не был загружен'
+    
 
 @app.route('/THT', methods=['GET', 'POST'])
 def tht():
