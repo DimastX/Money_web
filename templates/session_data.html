@@ -8,27 +8,24 @@
     <title>Session Data</title>
 </head>
 <body>
-    <h1>Session Data</h1>
     <div class="container">
-        <div class="table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Field</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for data in session_data %}
-                        <tr>
-                            <td>{{ data['key'] }}</td>
-                            <td>{{ data['value'] | safe}}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    <a href="{{ url_for('download') }}" class="btn btn-primary">Download CSV</a>
+        <form id = "myForm" method="POST">
+            <br>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="download">Скачать таблицу</button>
+             <p></p>
+             <body>
+                <h1>Стоимость изготовления</h1>
+                {% for table in tables1 %}
+                    {{ table|safe }}
+                {% endfor %}
+                <h1>Стоимость Подготовки</h1>
+                {% for table in tables2 %}
+                    {{ table|safe }}
+                {% endfor %}
+            </body>
+        </form>
     </div>
 </body>
 </html>

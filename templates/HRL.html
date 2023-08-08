@@ -68,6 +68,14 @@
                                 <input type="text" name="money_all" id="money_all" class="form-control" readonly>
                                 <label>Стоимость ПУ</label>
                                 <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                                <label>Всего времени потрачено на переналадку ПУ</label>
+                                <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
+                                <label>Всего времени потрачено на пареналадку партии</label>
+                                <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
+                                <label>Стоимость переналадки ПУ</label>
+                                <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
+                                <label>Стоимость переналадки партии</label>
+                                <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
                             </div>
                         </td>
                     </tr>
@@ -199,14 +207,22 @@
                 }
                 var prod = multi_num * sides;
                 var start = parseInt({{df['Значение'][3]}}) * sides * prev;
-                time_all = Math.ceil((prod + start)/3600);
-                money_all = Math.ceil((prod * parseFloat({{df2['Стоимость, руб/ч'][6]}}) + start * parseFloat({{df2['Стоимость, руб/ч'][7]}}))/3600);
+                time_all = Math.ceil((prod)/3600);
+                var time_re_all = Math.ceil((start)/3600);
+                money_all = Math.ceil((prod * parseFloat({{df2['Стоимость, руб/ч'][6]}}))/3600);
+                money_re_all = Math.ceil((start * parseFloat({{df2['Стоимость, руб/ч'][7]}}))/3600);
                 money_pc = Math.ceil(money_all / batch);
                 time_pc = Math.ceil(time_all/batch * 3600);
+                var money_re_pc = Math.ceil(money_re_all / batch);
+                var time_re_pc = Math.ceil(time_re_all/batch * 3600);
                 document.getElementById('time_pc').value = time_pc + " c";
                 document.getElementById('time_all').value = time_all + " ч";
                 document.getElementById('money_pc').value = money_pc + " руб";
                 document.getElementById('money_all').value = money_all + " руб";
+                document.getElementById('time_re_pc').value = time_re_pc + " c";
+                document.getElementById('time_re_all').value = time_re_all + " ч";
+                document.getElementById('money_re_pc').value = money_re_pc + " руб";
+                document.getElementById('money_re_all').value = money_re_all + " руб";
 
             } else {
                 document.getElementById('PCB').value = '-';
@@ -214,6 +230,10 @@
                 document.getElementById('time_all').value = '-';
                 document.getElementById('money_pc').value = '-';
                 document.getElementById('money_all').value = '-';
+                document.getElementById('time_re_pc').value = '-';
+                document.getElementById('time_re_all').value = '-';
+                document.getElementById('money_re_pc').value = '-';
+                document.getElementById('money_re_all').value = '-';
 
             }
         };

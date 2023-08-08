@@ -309,20 +309,16 @@
                             <td></td>
                             <td></td>
                             <td>
-                                <input type="number" name="time_pc" id="time_pc" class="form-control" min="1" step="1" readonly
-                                        value="{{ session['Add_form']['time_pc'] if session.get('Add_form') else '' }}">
+                                <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
                             </td>
                             <td>
-                                <input type="number" name="time_all" id="time_all" class="form-control" min="1" step="1" readonly
-                                        value="{{ session['Add_form']['time_all'] if session.get('Add_form') else '' }}">
+                                <input type="text" name="time_all" id="time_all" class="form-control" readonly>
                             </td>
                             <td>
-                                <input type="number" name="money_pc" id="money_pc" class="form-control" min="1" step="1" readonly
-                                        value="{{ session['Add_form']['money_pc'] if session.get('Add_form') else '' }}">
+                                <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
                             </td>
                             <td>
-                                <input type="number" name="money_all" id="money_all" class="form-control" min="1" step="1" readonly
-                                        value="{{ session['Add_form']['money_all'] if session.get('Add_form') else '' }}">
+                                <input type="text" name="money_all" id="money_all" class="form-control" readonly>
                             </td>
                         </tr>
                     </tbody>
@@ -372,6 +368,7 @@
         const sum_money_pc = document.getElementById("money_pc");
         const sum_money_all = document.getElementById("money_all");
 
+        const chckbx = document.getElementById('Add');
         window.onload = function(){
             check('Add', 'Add_off');
             fill_all_lines()
@@ -416,14 +413,21 @@
         }
 
         function sum(){
-            sum_time_pc.value = parseInt(time_pc1.value) + parseInt(time_pc2.value) +parseInt(time_pc3.value) +
-            parseInt(time_pc4.value) + parseInt(time_pc5.value) +parseInt(time_pc6.value);
-            sum_time_all.value = parseInt(time_all1.value) + parseInt(time_all2.value) +parseInt(time_all3.value) +
-            parseInt(time_all4.value) + parseInt(time_all5.value) +parseInt(time_all6.value);
-            sum_money_pc.value = parseInt(money_pc1.value) + parseInt(money_pc2.value) +parseInt(money_pc3.value) +
-            parseInt(money_pc4.value) + parseInt(money_pc5.value) + parseInt(money_pc6.value);
-            sum_money_all.value = parseInt(money_all1.value) + parseInt(money_all2.value) +parseInt(money_all3.value) +
-            parseInt(money_all4.value) + parseInt(money_all5.value) + parseInt(money_all6.value);
+            if (chckbx.checked){
+                sum_time_pc.value = parseInt(time_pc1.value) + parseInt(time_pc2.value) +parseInt(time_pc3.value) +
+                parseInt(time_pc4.value) + parseInt(time_pc5.value) +parseInt(time_pc6.value) + " с";
+                sum_time_all.value = parseInt(time_all1.value) + parseInt(time_all2.value) + parseInt(time_all3.value) +
+                parseInt(time_all4.value) + parseInt(time_all5.value) + parseInt(time_all6.value) + " ч";
+                sum_money_pc.value = parseInt(money_pc1.value) + parseInt(money_pc2.value) +parseInt(money_pc3.value) +
+                parseInt(money_pc4.value) + parseInt(money_pc5.value) + parseInt(money_pc6.value) + " руб";
+                sum_money_all.value = parseInt(money_all1.value) + parseInt(money_all2.value) +parseInt(money_all3.value) +
+                parseInt(money_all4.value) + parseInt(money_all5.value) + parseInt(money_all6.value) + " руб";
+            } else {
+                sum_time_pc.value = "-";
+                sum_time_all.value = "-";
+                sum_money_pc.value = "-";
+                sum_money_all.value = "-";
+            }
         }
         function check(master, slave) {
           if (document.getElementById(master).checked) {

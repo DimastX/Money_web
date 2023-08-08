@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, Response
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response
 from flask_table import Table, Col
 import pandas as pd
 import calculations_money as cm
@@ -16,6 +16,13 @@ def readdata():
     return pd.read_csv('data/tarifs.csv')
 
 @app.route('/', methods=['GET', 'POST'])
+def start():
+    if request.method == 'POST':
+        if 'next' in request.form:
+            return redirect(url_for('home'))
+    return render_template('Start.html')
+
+@app.route('/home', methods=['GET', 'POST'])
 def home():
     msg = ""
     if request.method == 'POST':
@@ -370,6 +377,7 @@ def handv():
 @app.route('/separation', methods=['GET', 'POST'])
 def sep():
     df = pd.read_csv('data/Sep.csv')
+    df2 = readdata()
     fields = 0
     edit = "0"
     time = cm.sep_calculations(session, df)
@@ -406,7 +414,7 @@ def sep():
             else:
                 msg = 'Выберите тип разделения'
                 flash(msg)
-    return render_template('Sep.html', df=df, edit=edit, time=time)
+    return render_template('Sep.html', df=df, edit=edit, time=time, df2=df2)
 
 
 @app.route('/xray', methods=['GET', 'POST'])
@@ -446,7 +454,7 @@ def xray():
                     elif (request.form['components'] != "") and (request.form['components_time'] != ""):
                         return redirect(url_for('add'))
                     else:
-                        flash('Заполните данные для типа "Прочее"')
+                        return redirect(url_for('add'))
                 else:
                     flash('Введите сколько процентов от партии необходимо отправить на контроль')
     return render_template('Xray.html', df=df, df2=df2, edit=edit)
@@ -467,54 +475,23 @@ def add():
             return redirect(url_for('session_data'))
     return render_template('Add.html', df2=df2)
 
-@app.route('/session_data')
+@app.route('/session_data', methods=['GET', 'POST'])
 def session_data():
-    # Отображаем данные из объекта session на странице
-    session_data = []
-    i = 0
-    for key, value in session.items():
-        session_data.append({'key': key, 'value': value})
-        session_data[i]['value'] = str(session_data[i]['value']).translate(str.maketrans('{}', "  "))
-        session_data[i]['value'] = str(session_data[i]['value']).replace(',', "<br>")
-        print(session_data[i]['value'])
-        i=i+1
-
-    return render_template('session_data.html', session_data=session_data)
-
-@app.route('/download')
-def download():
-    # Создаем CSV-файл на сервере
-    csv_data = create_csv()
-
-    # Отправляем файл в качестве вложения для скачивания
-    response = Response(csv_data, mimetype='text/csv')
-    response.headers['Content-Disposition'] = 'attachment; filename=session_data.csv'
-    return response
-
-@app.route('/process', methods=['POST'])
-def process():
-    field1_values = request.form.getlist('field1')
-    field2_values = request.form.getlist('field2')
-
-    for i in range(len(field1_values)):
-        print("Field 1:", field1_values[i])
-        print("Field 2:", field2_values[i])
-
-    # Дальнейшая обработка данных
-
-    return redirect(url_for('test'))
-
-def create_csv():
-    # Создаем объект io.StringIO для записи CSV-файла в память
-    csv_buffer = io.StringIO()
-
-    # Записываем таблицу в CSV-файл
-    writer = csv.writer(csv_buffer)
-    writer.writerow(['Field', 'Value'])
-    for key, value in session.items():
-        writer.writerow([key, value])
-
-    return csv_buffer.getvalue()
+    df = cm.create_export(session)
+    if request.method == 'POST':
+        if 'download' in request.form:
+            df[1].to_csv('Calculations/Prepare.csv', sep=',', encoding='utf-8')
+            df[0].to_csv('Calculations/Data.csv', sep=',', encoding='utf-8')
+        
+            # Возвращаем файл для скачивания.
+            return send_file('Calculations/data.csv', mimetype='text/csv', as_attachment=True)
+    if 'back' in request.form:
+        return redirect(url_for('add'))
+    if 'tariffs' in request.form:
+        session['last_page'] = 'session_data'
+        return redirect(url_for('tariffs'))
+    return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], 
+                           tables2=[df[1].to_html(classes='table', index=False, header="true")])
 
 
 if __name__ == '__main__':

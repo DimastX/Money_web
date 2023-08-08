@@ -9,6 +9,7 @@ def tables(file):
     Top = pd.DataFrame(Top)
     top_lines = 0
     bot_lines = 0
+    unics = BOM["Designators (BOM)"].nunique()
     for index, row in Bot.iterrows():
         value = str(row['Designator'])
         for index2, row2, in BOM.iterrows():
@@ -31,5 +32,5 @@ def tables(file):
         bot_lines_unic = Bot["Name"].nunique()
     else:
         bot_lines_unic = 0
-    lines = [top_lines, top_lines_unic, bot_lines, bot_lines_unic]
+    lines = [top_lines, top_lines_unic, bot_lines, bot_lines_unic, unics]
     return lines
