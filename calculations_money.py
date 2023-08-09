@@ -24,17 +24,56 @@ def sep_calculations(session, df):
     return time
     
 def create_export(session):
-    SMD = [
-        session['SMD_form']['time_pc'],
-        session['SMD_form']['time_all'],
-        session['SMD_form']['money_pc'],
-        session['SMD_form']['money_all']
+    batch = int(session['home_form']['field3'])
+    SMD_re_t = [
+        session['SMD_form']['time_re_pc_t'],
+        session['SMD_form']['time_re_all_t'],
+        session['SMD_form']['money_re_pc_t'],
+        session['SMD_form']['money_re_all_t']
         ]
-    SMD_re = [
-        session['SMD_form']['time_re_pc'],
-        session['SMD_form']['time_re_all'],
-        session['SMD_form']['money_re_pc'],
-        session['SMD_form']['money_re_all']
+    SMD_t = [
+        session['SMD_form']['time_pc_t'],
+        session['SMD_form']['time_all_t'],
+        session['SMD_form']['money_pc_t'],
+        session['SMD_form']['money_all_t']
+        ]    
+    SMD_re_b = [
+        session['SMD_form']['time_re_pc_b'],
+        session['SMD_form']['time_re_all_b'],
+        session['SMD_form']['money_re_pc_b'],
+        session['SMD_form']['money_re_all_b']
+        ]
+    SMD_b = [
+        session['SMD_form']['time_pc_b'],
+        session['SMD_form']['time_all_b'],
+        session['SMD_form']['money_pc_b'],
+        session['SMD_form']['money_all_b']
+        ]
+    if session['SMD_form']['repair_time_all'] != '-':
+        SMD_rep =[
+            str(math.ceil(int(str(session['SMD_form']['repair_time_all']).split(" ")[0]) / batch * 3600)) + " с",
+            session['SMD_form']['repair_time_all'],
+            str(math.ceil(int(str(session['SMD_form']['repair_money_all']).split(" ")[0]) / batch)) + " руб",
+            session['SMD_form']['repair_money_all']
+        ]
+        SMD_cont =[
+            str(math.ceil(int(str(session['SMD_form']['control_time_all']).split(" ")[0]) / batch * 3600)) + " с",
+            session['SMD_form']['control_time_all'],
+            str(math.ceil(int(str(session['SMD_form']['control_money_all']).split(" ")[0]) / batch)) + " руб",
+            session['SMD_form']['control_money_all']
+        ]
+    else:
+        SMD_rep =[
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
+        SMD_cont =[
+            "-",
+            "-",
+            "-",
+            "-"
         ]
     THT = [
         session['THT_form']['time_pc'],
@@ -114,17 +153,21 @@ def create_export(session):
         session['Add_form']['money_pc'],
         session['Add_form']['money_all']
         ]
-    data = [SMD, SMD_re, THT, THT_re, Wave, Wave_re, HRL, HRL_re, Hand, Test, Clear, Handv, Sep, Xray, Add]
+    data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont ,THT_re, THT, Wave_re, Wave, HRL_re, HRL, Hand, Test, Clear, Handv, Sep, Xray, Add]
     headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
     row_headers = [
-        "Автоматический поверхностный монтаж SMT",
-        "Автоматический поверхностный монтаж SMT, переналадка", 
-        "Селективная пайка THT",
+        "Автоматический поверхностный монтаж SMT Pri, переналадка",
+        "Автоматический поверхностный монтаж SMT Pri", 
+        "Автоматический поверхностный монтаж SMT Sec, переналадка",
+        "Автоматический поверхностный монтаж SMT Sec", 
+        "Ремонт на поверхностном монтаже",
+        "Контроль на поверхностном монтаже",
         "Селективная пайка THT, переналадка",
-        "Волновая пайка",
+        "Селективная пайка THT",
         "Волновая пайка, переналадка",
-        "Селективная лакировка HRL",
+        "Волновая пайка",
         "Селективная лакировка HRL, переналадка",
+        "Селективная лакировка HRL",
         "Ручной монтаж",
         "Тестирование",
         "Отмывка",
@@ -135,32 +178,46 @@ def create_export(session):
         ]
     df = pd.DataFrame(data, columns=headers, index=row_headers)
     df = df.drop(df[(df == "-").all(axis=1)].index)
-    
-    headers2 = ["","Стоимость"]
-    row_headers2 = [
-        "Трафареты"
-        "Проверка документации"
-        "Создание ЕВОМ"
-    ]
-    data2 = prepare(session)
-    df2 = pd.DataFrame(data2, columns=headers2)
-    return [df, df2]
+    sum_time_pc, sum_money_pc, sum_time_all, sum_money_all = 0, 0, 0, 0
+    for i in range(df.shape[0]):
+        sum_time_pc += int(str(df.iloc[i, 0]).split(" ")[0])
+        sum_time_all += int(str(df.iloc[i, 1]).split(" ")[0])
+        sum_money_pc += int(str(df.iloc[i, 2]).split(" ")[0])
+        sum_money_all += int(str(df.iloc[i, 3]).split(" ")[0])
+    total = [str(sum_time_pc) + " с", str(sum_time_all) + " ч", str(sum_money_pc) + " руб", str(sum_money_all) + " руб"]
+    df.loc["Итого"] = total
+    if 'prepare' in session['second_form']:
+        headers2 = ["","Стоимость"]
+        data2 = prepare(session)
+        prep_sum = 0
+        for data_in_data2 in data2:
+            prep_sum += int(str(data_in_data2[1]).split(" ")[0])
+        data2.append(["Итого", str(prep_sum) + " руб" ])
+        prep_sum_pc = int(prep_sum / batch)
+        df.loc["Итого с подготовкой производства"] = [str(sum_time_pc) + " с", str(sum_time_all) + " ч", str(sum_money_pc + prep_sum_pc) + " руб", str(sum_money_all + prep_sum) + " руб"]
+        df2 = pd.DataFrame(data2, columns=headers2)
+        return [df, df2]
+    return [df, 1]
 
 def prepare(session):
     df = pd.read_csv('data/Traf.csv')
     df2 = pd.read_csv('data/tarifs.csv')
-    if "Trafs_costs_select" in session["second_form"]:
-        if session["second_form"]["Trafs_costs_select"] == "1": 
-            if session["second_form"]["Traf_value2"] == "1":
-                traf = int(df['Значение'][0])
-            if session["second_form"]["Traf_value2"] == "2":
-                traf = int(df['Значение'][1])
-            if session["second_form"]["Traf_value2"] == "3":
-                traf = int(df['Значение'][2])
-            traf *= int(session["second_form"]["Traf_value2"])
-        elif session["second_form"]["Trafs_costs_select"] == "2":
-            traf = int(session["second_form"]["Traf_value"])
-    doc = df2["Стоимость, руб/ч"][23]
-    ebom = df2["Стоимость, руб/ч"][23] * session["tables"][4]
+    if "Trafs_costs_select" in session["second_form"] and "Traf" in session["second_form"]:
+        if session['second_form']['Traf'] == "2":
+            if session["second_form"]["Trafs_costs_select"] == "1": 
+                if session["second_form"]["Traf_value2"] == "1":
+                    traf = int(df['Значение'][0])
+                if session["second_form"]["Traf_value2"] == "2":
+                    traf = int(df['Значение'][1])
+                if session["second_form"]["Traf_value2"] == "3":
+                    traf = int(df['Значение'][2])
+            elif session["second_form"]["Trafs_costs_select"] == "2":
+                traf = int(session["second_form"]["Traf_value"])
+            traf *= int(session["second_form"]["sides_SMD"])
+    else:
+        traf = 0
+    traf = str(traf) + " руб"
+    doc = str(df2["Стоимость, руб/ч"][23]) + " руб"
+    ebom = str(df2["Стоимость, руб/ч"][24] * session["tables"][4]) + " руб"
     return [["Трафареты", traf], ["Проверка документации", doc], ["Создание EBOM", ebom]]
     

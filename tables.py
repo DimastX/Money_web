@@ -9,7 +9,8 @@ def tables(file):
     Top = pd.DataFrame(Top)
     top_lines = 0
     bot_lines = 0
-    unics = BOM["Designators (BOM)"].nunique()
+    BOM.dropna(axis='index', how='all', inplace=True)
+    unics = BOM.shape[0]
     for index, row in Bot.iterrows():
         value = str(row['Designator'])
         for index2, row2, in BOM.iterrows():

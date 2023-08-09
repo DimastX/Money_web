@@ -7,6 +7,8 @@ import csv
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import secure_filename
 import tables as tb
+from datetime import datetime
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -57,7 +59,7 @@ def second():
             if ('Comp' in request.form) and ('prod' in request.form) and ('prev' in request.form) \
                     and (request.form['width']!="") and (request.form['length']!="") \
                     and (request.form['width_num']!="") and (request.form['length_num']!="") \
-                    and ('multi' in request.form) and ('Traf' in request.form):
+                    and ('Traf' in request.form):
                 if request.form['Traf'] =="1":
                     return redirect(url_for('smd'))
                 if ('sides_SMD' in request.form) and ('Traf_value' in request.form):
@@ -115,9 +117,11 @@ def edittable():
 @app.route('/SMD', methods=['GET', 'POST'])
 def smd():
     edit = "0"
+    edit2 = "0"
     df = pd.read_csv('data/SMD.csv')
     df2 = readdata()
     df3 = pd.read_csv('data/SMD2.csv').values.tolist()
+    df4 = pd.read_csv('data/SMD2.csv')
     if request.method == 'POST':
         session['SMD_form'] = request.form
         if 'tariffs' in request.form:
@@ -139,7 +143,22 @@ def smd():
                     row = int(key[3:])  # извлекаем номер строки из имени
                     df["Значение"][row] = request.form[key]  # обновляем значение ячейки
             df.to_csv('data/SMD.csv', index=False)
-    return render_template('SMD.html', df=df, df2=df2, edit=edit, df3=df3)
+        if 'save3' in request.form:
+            if request.form['password2'] == password:
+                edit2 = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
+        if 'save4' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row_'):  # если используется имя вида 'row%d'
+                    row = str(key[4:])  # извлекаем номер строки из имени
+                    row = str(row).split("_")
+                    df4.iloc[ int(row[0]), int(row[1])-1] = request.form[key]  # обновляем значение ячейки
+            df4.to_csv('data/SMD2.csv', index=False)
+        if 'template' in request.form:
+            return send_file('Documentation/Template.csv', mimetype='text/csv', as_attachment=True)
+    return render_template('SMD.html', df=df, df2=df2, edit=edit, df3=df3, edit2=edit2, df4=df4)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -277,10 +296,6 @@ def test():
     df2 = readdata()
     df = pd.read_csv('data/Test.csv')
     rows = 0
-    """if 'field1_values' in session['Test_form']:
-        rows = max(len(session['Test_form']['field1_values']), rows)
-    if 'field2_values' in session['Test_form']:
-        rows = max(len(session['Test_form']['field2_values']), rows)"""
     if request.method == 'POST': 
         session['Test_form'] = request.form
         if 'save' in request.form:
@@ -478,20 +493,41 @@ def add():
 @app.route('/session_data', methods=['GET', 'POST'])
 def session_data():
     df = cm.create_export(session)
+    if isinstance(df[1], int):
+        table = 0
+    else:
+        table = 1
     if request.method == 'POST':
         if 'download' in request.form:
-            df[1].to_csv('Calculations/Prepare.csv', sep=',', encoding='utf-8')
-            df[0].to_csv('Calculations/Data.csv', sep=',', encoding='utf-8')
-        
-            # Возвращаем файл для скачивания.
-            return send_file('Calculations/data.csv', mimetype='text/csv', as_attachment=True)
+            current_time = datetime.now()
+            path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
+            name = str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day) + ".csv"
+            if not os.path.exists(path):
+                # Создаем директорию, если она не существует
+                os.makedirs(path)
+            with open(path +"/" + name, 'w', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow(["Стоимость производства"])
+                # Записываем строки из первого DataFrame
+                writer.writerow(df[0].columns)
+                writer.writerows(df[0].to_records(index=True))
+                if table:
+                    # Записываем пустую строку
+                    writer.writerow([])
+                    writer.writerow(["Стоимость подготовки производства"])
+                    # Записываем строки из второго DataFrame
+                    writer.writerow(df[1].columns)
+                    writer.writerows(df[1].to_records(index=False))
+            return send_file(path +"/" + name, mimetype='text/csv', as_attachment=True)
     if 'back' in request.form:
         return redirect(url_for('add'))
     if 'tariffs' in request.form:
         session['last_page'] = 'session_data'
         return redirect(url_for('tariffs'))
-    return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], 
+    if table:
+        return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
                            tables2=[df[1].to_html(classes='table', index=False, header="true")])
+    return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table = table)
 
 
 if __name__ == '__main__':

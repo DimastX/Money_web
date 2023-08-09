@@ -37,43 +37,200 @@
                 </div>
             </fieldset>
         <table>
+            <th>
+                <td><label>Primary</label> </td>
+                <td><label>Secondary</label></td>
+                <td><label>Партия</label></td>
+                <td></td>
+            </th>
             <tr>
-                <td style="width: 50%;">
-                   
+                <td style="width: 40%;">
+                    <input type="text" class="form-control" readonly value="Количество компонентов">
+                    <input type="text" class="form-control" readonly value="Количество наименований">
+                    <input type="text" class="form-control" readonly value="Время сборки 1 ПУ">
+                    <input type="text" class="form-control" readonly value="Стоимость сборки 1 ПУ">
+                    <input type="text" class="form-control" readonly value="Время сборки всей партии">
+                    <input type="text" class="form-control" readonly value="Стоимость сборки всей партии">
+                    <input type="text" class="form-control" readonly value="Время переналадки 1 ПУ">
+                    <input type="text" class="form-control" readonly value="Стоимость переналадки 1 ПУ">
+                    <input type="text" class="form-control" readonly value="Время переналадки всей партии">
+                    <input type="text" class="form-control" readonly value="Стоимость переналадки всей партии">
+                    <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
+                    <input type="text" class="form-control" readonly value="Время ремонта партии">
+                    <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
+                    <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
+                    <br>
+                    <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                 </td>
-                <td>
+                <td style="width: 20%;">
+                    <input type="text" name="components_t" id="components_t" class="form-control" readonly>
+                    <input type="text" name="unics_t" id="unics_t" class="form-control" readonly>
+                    <input type="text" name="time_pc_t" id="time_pc_t" class="form-control" readonly>
+                    <input type="text" name="money_pc_t" id="money_pc_t" class="form-control" readonly>
+                    <input type="text" name="time_all_t" id="time_all_t" class="form-control" readonly>
+                    <input type="text" name="money_all_t" id="money_all_t" class="form-control" readonly>
+                    <input type="text" name="time_re_pc_t" id="time_re_pc_t" class="form-control" readonly>
+                    <input type="text" name="money_re_pc_t" id="money_re_pc_t" class="form-control" readonly>
+                    <input type="text" name="time_re_all_t" id="time_re_all_t" class="form-control" readonly>
+                    <input type="text" name="money_re_all_t" id="money_re_all_t" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
+                    <br>
+                    <input type="text" name="money_all_f_t" id="money_all_f_t" class="form-control" readonly>
+                    
+                </td>
+                <td style="width: 20%;">
+                    <input type="text" name="components_b" id="components_b" class="form-control" readonly>
+                    <input type="text" name="unics_b" id="unics_b" class="form-control" readonly>
+                    <input type="text" name="time_pc_b" id="time_pc_b" class="form-control" readonly>
+                    <input type="text" name="money_pc_b" id="money_pc_b" class="form-control" readonly>
+                    <input type="text" name="time_all_b" id="time_all_b" class="form-control" readonly>
+                    <input type="text" name="money_all_b" id="money_all_b" class="form-control" readonly>
+                    <input type="text" name="time_re_pc_b" id="time_re_pc_b" class="form-control" readonly>
+                    <input type="text" name="money_re_pc_b" id="money_re_pc_b" class="form-control" readonly>
+                    <input type="text" name="time_re_all_b" id="time_re_all_b" class="form-control" readonly>
+                    <input type="text" name="money_re_all_b" id="money_re_all_b" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
+                    <br>
+                    <input type="text" name="money_all_f_b" id="money_all_f_b" class="form-control" readonly>
+                    
+                </td>
+                <td style="width: 20%;" >
                     <div class="form-group">
-                        <label>Всего плат в партии</label>
-                        <input type="text" name="PCB" id="PCB" class="form-control" readonly>
-                        <label>Всего SMD компонентов</label>
                         <input type="text" name="components" id="components" class="form-control" readonly>
-                        <label>Всего времени потрачено на ПУ</label>
+                        <input type="text" name="unics" id="unics" class="form-control" readonly>
                         <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                        <label>Всего времени потрачено на партию</label>
-                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                        <label>Стоимость ПУ</label>
                         <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                        <label>Стоимость партии</label>
+                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
                         <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                        <label>Всего времени потрачено на переналадку ПУ</label>
                         <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
-                        <label>Всего времени потрачено на пареналадку партии</label>
-                        <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
-                        <label>Стоимость переналадки ПУ</label>
                         <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
-                        <label>Стоимость переналадки партии</label>
+                        <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
                         <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
+                        <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
+                        <input type="text" name="repair_time_all" id="repair_time_all" class="form-control" readonly>
+                        <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                        <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                        <br>
+                        <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                     </div>
-                    </form>
                 </td>
             </tr>
         </table>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            Данные для SMD монтажа
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse" >
+                    <div class="panel-body">
+                        <div>
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>{{ df.columns[0] }}</th>
+                                            <th>{{ df.columns[1] }}</th>
+                                        </tr>
+                                    </thead>
+                                    {% for row in df.iterrows(): %}
+                                        <tr>
+                                            {% for cell in row[1] %}
+                                            <td>
+                                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                    <input {% if edit == "0" %} disabled {% endif %}
+                                                        type="number" min = 0 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                {% else %} <!-- Если это не второй столбец -->
+                                                    {{ cell }}
+                                                {% endif %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <label>Пароль:</label>
+                            <input type="password" class="form-control" name="password" 
+                                    onkeydown="return event.key != 'Enter';">                
+                            <br>
+                            <button {% if edit != "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save" 
+                                    onkeydown="return event.key != 'Enter';">Изменить</button>
+                            <button {% if edit == "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save2" 
+                                    onkeydown="return event.key != 'Enter';">Сохранить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group" id="accordion2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2">
+                            Скорость SMD монтажа
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne2" class="panel-collapse collapse" >
+                    <div class="panel-body">
+                        <div>
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>{{ df4.columns[0] }}</th>
+                                            <th>{{ df4.columns[1] }}</th>
+                                            <th>{{ df4.columns[2] }}</th>
+                                        </tr>
+                                    </thead>
+                                    {% for row in df4.iterrows(): %}
+                                    <tr>
+                                        {% for cell in row[1] %}
+                                        <td>
+                                            <input {% if edit2 == "0" %} disabled {% endif %}
+                                                type="number" min = 0 step="any" class="form-control" name="row_{{ row[0] }}_{{loop.index}}" value="{{ cell }}" />
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <label>Пароль:</label>
+                            <input type="password" class="form-control" name="password2" 
+                                    onkeydown="return event.key != 'Enter';">                
+                            <br>
+                            <button {% if edit2 != "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save3" 
+                                    onkeydown="return event.key != 'Enter';">Изменить</button>
+                            <button {% if edit2 == "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save4" 
+                                    onkeydown="return event.key != 'Enter';">Сохранить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Скачать шаблон" name="template">
+        </form>
         <div class="form-group" id="SMD_off">
+
             <form action="/upload" method="post" enctype="multipart/form-data">
             <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
             <input type="file" class="form-control-file" name="csv_file" 
             value="" accept="text/csv">
-            <input type="submit" class="btn btn-primary" value="Upload">
+            <br>
+            <input type="submit" class="btn btn-primary" value="Загрузить">
             </form>
         </div>
     </div>
@@ -124,41 +281,179 @@
                 if (Bot != 0){
                     sides++;
                 }
+
+                let repair = 0;
+                if (prev == 1){
+                    repair = parseFloat({{df["Значение"][5]}}) * batch;
+                } else if (prev == 2){
+                    repair = parseFloat({{df["Значение"][4]}}) * batch;
+                }
+                repair_time_all = Math.ceil(repair * parseFloat({{df["Значение"][6]}}) / 100 / 3600);
+                repair_time_pc = Math.ceil(repair_time_all / batch * 3600);
+                repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) );
+                repair_time_pc = Math.ceil(repair_money_all / batch);
+
+                control_time_all = Math.ceil(repair * parseFloat({{df["Значение"][7]}}) / 100 / 3600);
+                control_time_pc = Math.ceil(control_time_all / batch * 3600);
+                control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
+                control_time_pc = Math.ceil(control_money_all / batch);
+
                 const components = (Top + Bot) * batch;
+                const components_t = Top * batch;
+                const components_b = Bot * batch;
                 const unics = Top_u + Bot_u;
-                const speed = speed_amount(components);
-                var prod = Math.ceil(components / speed);
-                var start = Math.max(unics * parseFloat({{df['Значение'][2]}}), sides * parseFloat({{df['Значение'][1]}})) /3600;
+                const unics_t = Top_u;
+                const unics_b = Bot_u;
+                const speed_t = speed_amount(components_t);
+                const speed_b = speed_amount(components_b);
+                var prod_t = 0;
+                var prod_b = 0;
+
+                if (unics_t != 0){
+                    var start_t = Math.max(unics_t * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}})) /3600;
+                    prod_t = Math.ceil(components_t / speed_t);
+                } else {
+                    var start_t = 0;
+                    prod_t = 0;
+                }
+                if (unics_b != 0){
+                    var start_b = Math.max(unics_b * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}})) /3600;
+                    prod_b = Math.ceil(components_b / speed_b);
+                } else{
+                    var start_b = 0;
+                    prod_b = 0;
+                }
+                var start = start_t + start_b;
+                var prod = prod_b+prod_t;
+
                 time_all = Math.ceil((prod)*parseFloat({{df['Значение'][0]}}));
+                time_all_t = Math.ceil((prod_t)*parseFloat({{df['Значение'][0]}}));
+                time_all_b = Math.ceil((prod_b)*parseFloat({{df['Значение'][0]}}));
+
                 time_re_all = Math.ceil((start)*parseFloat({{df['Значение'][0]}}));
+                time_re_all_t = Math.ceil((start_t)*parseFloat({{df['Значение'][0]}}));
+                time_re_all_b = Math.ceil((start_b)*parseFloat({{df['Значение'][0]}}));
+
                 time_pc = Math.ceil(time_all / batch * 3600);
+                time_pc_t = Math.ceil(time_all_t / batch * 3600);
+                time_pc_b = Math.ceil(time_all_b / batch * 3600);
+
                 time_re_pc = Math.ceil(time_re_all / batch * 3600);
-                money_all = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][0]}}));
-                money_re_all = Math.ceil(start * parseInt({{ df2['Стоимость, руб/ч'][1]}}));
+                time_re_pc_t = Math.ceil(time_re_all_t / batch * 3600);
+                time_re_pc_b = Math.ceil(time_re_all_b / batch * 3600);
+
+                money_all = Math.ceil(time_all * parseInt({{ df2['Стоимость, руб/ч'][0]}}));
+                money_all_t = Math.ceil(time_all_t * parseInt({{ df2['Стоимость, руб/ч'][0]}}));
+                money_all_b = Math.ceil(time_all_b * parseInt({{ df2['Стоимость, руб/ч'][0]}}));
+
+                money_re_all = Math.ceil(time_re_all * parseInt({{ df2['Стоимость, руб/ч'][1]}}));
+                money_re_all_t = Math.ceil(time_re_all_t * parseInt({{ df2['Стоимость, руб/ч'][1]}}));
+                money_re_all_b = Math.ceil(time_re_all_b * parseInt({{ df2['Стоимость, руб/ч'][1]}}));
+
                 money_pc = Math.ceil(money_all / batch);
+                money_pc_t = Math.ceil(money_all_t / batch);
+                money_pc_b = Math.ceil(money_all_b / batch);
+
                 money_re_pc = Math.ceil(money_re_all / batch);
-                document.getElementById('PCB').value = batch + " шт";
+                money_re_pc_t = Math.ceil(money_re_all_t / batch);
+                money_re_pc_b = Math.ceil(money_re_all_b / batch);
+
                 document.getElementById('components').value = components + " шт";
+                document.getElementById('components_t').value = components_t + " шт";
+                document.getElementById('components_b').value = components_b + " шт";
+
+                document.getElementById('unics').value = unics + " шт";
+                document.getElementById('unics_t').value = unics_t + " шт";
+                document.getElementById('unics_b').value = unics_b + " шт";
+                
                 document.getElementById('time_pc').value = time_pc + " c";
                 document.getElementById('time_all').value = time_all + " ч";
                 document.getElementById('money_pc').value = money_pc + " руб";
                 document.getElementById('money_all').value = money_all + " руб";
+
                 document.getElementById('time_re_pc').value = time_re_pc + " c";
                 document.getElementById('time_re_all').value = time_re_all + " ч";
                 document.getElementById('money_re_pc').value = money_re_pc + " руб";
                 document.getElementById('money_re_all').value = money_re_all + " руб";
+                
+                document.getElementById('time_re_pc_t').value = time_re_pc_t + " c";
+                document.getElementById('time_re_all_t').value = time_re_all_t + " ч";
+                document.getElementById('money_re_pc_t').value = money_re_pc_t + " руб";
+                document.getElementById('money_re_all_t').value = money_re_all_t + " руб";
+                
+                document.getElementById('time_re_pc_b').value = time_re_pc_b + " c";
+                document.getElementById('time_re_all_b').value = time_re_all_b + " ч";
+                document.getElementById('money_re_pc_b').value = money_re_pc_b + " руб";
+                document.getElementById('money_re_all_b').value = money_re_all_b + " руб";
+
+                document.getElementById('time_pc_t').value = time_pc_t + " c";
+                document.getElementById('time_all_t').value = time_all_t + " ч";
+                document.getElementById('money_pc_t').value = money_pc_t + " руб";
+                document.getElementById('money_all_t').value = money_all_t + " руб";
+
+                document.getElementById('time_pc_b').value = time_pc_b + " c";
+                document.getElementById('time_all_b').value = time_all_b + " ч";
+                document.getElementById('money_pc_b').value = money_pc_b + " руб";
+                document.getElementById('money_all_b').value = money_all_b + " руб";
+
+                document.getElementById('repair_time_all').value = repair_time_all + " ч";
+                document.getElementById('repair_money_all').value = repair_money_all + " руб";
+
+                document.getElementById('control_time_all').value = control_time_all + " ч";
+                document.getElementById('control_money_all').value = control_money_all + " руб";
+                
+                document.getElementById("money_all_f_t").value = (money_all_t + money_re_all_t) + " руб";
+                document.getElementById("money_all_f_b").value = (money_all_b + money_re_all_b) + " руб";
+                document.getElementById("money_all_f").value = (money_all + money_re_all + repair_money_all + control_money_all) + " руб";
+
             } else {
-                document.getElementById('PCB').value = '-';
                 document.getElementById('components').value = '-';
+                document.getElementById('components_t').value = '-';
+                document.getElementById('components_b').value = '-';
+
+                document.getElementById('unics').value = '-';
+                document.getElementById('unics_t').value = '-';
+                document.getElementById('unics_b').value = '-';
+
                 document.getElementById('time_pc').value = '-';
                 document.getElementById('time_all').value = '-';
                 document.getElementById('money_pc').value = '-';
                 document.getElementById('money_all').value = '-';
+
                 document.getElementById('time_re_pc').value = '-';
                 document.getElementById('time_re_all').value = '-';
                 document.getElementById('money_re_pc').value = '-';
                 document.getElementById('money_re_all').value = '-';
 
+                document.getElementById('time_re_pc_t').value = '-';
+                document.getElementById('time_re_all_t').value = '-';
+                document.getElementById('money_re_pc_t').value = '-';
+                document.getElementById('money_re_all_t').value = '-';
+                
+                document.getElementById('time_re_pc_b').value = '-';
+                document.getElementById('time_re_all_b').value = '-';
+                document.getElementById('money_re_pc_b').value = '-';
+                document.getElementById('money_re_all_b').value = '-';
+
+                document.getElementById('time_pc_t').value = '-';
+                document.getElementById('time_all_t').value = '-';
+                document.getElementById('money_pc_t').value = '-';
+                document.getElementById('money_all_t').value = '-';
+
+                document.getElementById('time_pc_b').value = '-';
+                document.getElementById('time_all_b').value = '-';
+                document.getElementById('money_pc_b').value = '-';
+                document.getElementById('money_all_b').value = '-';
+
+                document.getElementById("money_all_f_t").value = '-';
+                document.getElementById("money_all_f_b").value ='-';
+                document.getElementById("money_all_f").value = '-';
+
+                document.getElementById('repair_time_all').value = '-';
+                document.getElementById('repair_money_all').value = '-';
+
+                document.getElementById('control_time_all').value = '-';
+                document.getElementById('control_money_all').value = '-';
             }
         }
 

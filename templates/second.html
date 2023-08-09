@@ -41,7 +41,7 @@
                             <label>
                                 <input type="radio" name="Comp" title="+10% к входному контролю"
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                Разрабатывает (в заводской упаковке)
+                                Давальческая (в заводской упаковке)
                             </label>
                             <br>
                             <label>
@@ -53,18 +53,9 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <label>Мультизаготовка:</label>
-                            <br>
-                            <label>
-                                <input type="radio" name="multi" value="1"
-                                       {% if session.get('second_form')%} {% if session['second_form']['multi'] == "1" %} checked {% endif %} {% endif %}>
-                                Давальческая
-                            </label>
-                            <br>
-                            <label>
-                                <input type="radio" name="multi"
-                                       {% if session.get('second_form')%} {% if session['second_form']['multi'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                Разрабатывает Starline
+                            <input type="checkbox" id="prepare" name="prepare" value="1"
+                           {% if session.get('second_form')%} {% if session['second_form']['prepare'] %} checked="checked" {% endif %} {% endif %}>
+                            <label for="HRL">Выполнять подготовку производства? </label>
                             </label>
                         </div>
                     </td>
@@ -153,18 +144,18 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <label>Ширина:</label>
+                            <label>Ширина мультзаготовки:</label>
                             <input type="number" class="form-control" min="1" step="any" name="width" 
                                 value="{{ session['second_form']['width'] if session.get('second_form') else '' }}">
+                            <label>Длина мультизаготовки:</label>
+                            <input type="number" class="form-control" min="1" step="any" name="length" 
+                                value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <div class="form-group">
-                            <label>Длина:</label>
-                            <input type="number" class="form-control" min="1" step="any" name="length" 
-                                value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
                         </div>
                     </td>
                 </tr>
