@@ -38,7 +38,7 @@
             </fieldset>
             <table>
                 <tr>
-                    <td style="width: 50%;">
+                    <td style="width: 30%;">
                         <div class="form-group" id="Xray_off">
                             <label>Выборка в %</label>
                             <br>
@@ -73,22 +73,30 @@
                             </div>
                         </div>
                     </td>
+                    <td style="width: 40%;">
+                        <div class="form-group">
+                            <input type="text" class="form-control" readonly value="Количество МЗ в партии">
+                            <input type="text" class="form-control" readonly value="Количество МЗ в рентгенконтроле за 1 запуск">
+                            <input type="text" class="form-control" readonly value="Запусков рентгенконтроля">
+                            <input type="text" class="form-control" readonly value="Времени на рентгенконтроль ПУ">
+                            <input type="text" class="form-control" readonly value="Стоимость рентгенконтроля ПУ">
+                            <input type="text" class="form-control" readonly value="Времени на рентгенконтроль партии">
+                            <input type="text" class="form-control" readonly value="Стоимость рентгенконтроля партии">
+                            <br>
+                            <input type="text" class="form-control" readonly value="Итого">
+                            </div>
+                    </td>
                     <td>
                         <div class="form-group">
-                            <label>Количество мультизаготовок в партии</label>
                             <input type="text" name="number_multi" id="number_multi" class="form-control" readonly>
-                            <label>Мультизаготовок в рентгене за раз</label>
                             <input type="text" name="number_Xray_pt" id="number_Xray_pt" class="form-control" readonly>
-                            <label>Всего запусков рентгенконтроля</label>
                             <input type="text" name="number_Xray" id="number_Xray" class="form-control" readonly>
-                            <label>Всего времени потрачено на партию</label>
-                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                            <label>Всего времени потрачено на ПУ</label>
                             <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                            <label>Стоимость партии</label>
-                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                            <label>Стоимость ПУ</label>
                             <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                            <br>
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
@@ -241,10 +249,12 @@
                     money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
                     money_pc = money_all / parseInt({{ session['home_form']['field3']}});
                 } 
-                document.getElementById('time_all').value = (time_all / 3600).toFixed(1) + " ч";
-                document.getElementById('time_pc').value = time_pc.toFixed(1) +" c";
-                document.getElementById('money_all').value = money_all.toFixed(1) + " руб";
-                document.getElementById('money_pc').value = money_pc.toFixed(1) + " руб";
+                document.getElementById('time_all').value = Math.ceil(time_all / 3600) + " ч";
+                document.getElementById('time_pc').value = Math.ceil(time_pc) +" c";
+                document.getElementById('money_all').value = Math.ceil(money_all) + " руб";
+                document.getElementById('money_pc').value = Math.ceil(money_pc) + " руб";                
+                document.getElementById('money_all_f').value = Math.ceil(money_all) + " руб";
+
             } else{
                 document.getElementById('number_multi').value = "-";
                 document.getElementById('number_Xray_pt').value = "-";
@@ -253,6 +263,7 @@
                 document.getElementById('time_pc').value = "-";
                 document.getElementById('money_all').value = "-";
                 document.getElementById('money_pc').value = "-";
+                document.getElementById("money_all_f").value = '-';
             }
         }
     </script>

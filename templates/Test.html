@@ -39,7 +39,7 @@
             </fieldset>
             <table>
                 <tr>
-                    <td style="width: 50%;">
+                    <td style="width: 40%;">
                         <div class="form-group" id="Test_off">
                             <div class="form-group">
                                 <input type="checkbox" id="firmware_m" name="firmware_m" value="1" 
@@ -51,7 +51,7 @@
                                             <tr>
                                                 <th>Описание</th>
                                                 <th>Время, с</th>
-                                                <th>Количество, с</th>
+                                                <th>Количество</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -110,18 +110,24 @@
                                 </div>
                         </div>
                     </td>
+                    <td style="width: 35%;">
+                        <input type="text" class="form-control" readonly value="Количество компонентов">
+                        <input type="text" class="form-control" readonly value="Время тестирования 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Стоимость тестирования 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Время тестирования всей партии">
+                        <input type="text" class="form-control" readonly value="Стоимость тестирования всей партии">
+                        <br>
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                    </td>
                     <td>
                         <div class="form-group">
-                            <label>Количество ПУ в партии</label>
                             <input type="text" name="PCB" id="PCB" class="form-control" readonly>
-                            <label>Всего времени потрачено на партию</label>
-                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                            <label>Всего времени потрачено на ПУ</label>
                             <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                            <label>Стоимость партии</label>
-                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                            <label>Стоимость ПУ</label>
                             <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                            <br>
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
@@ -253,6 +259,7 @@
                 document.getElementById('time_all').value = time_all + " ч";
                 document.getElementById('money_pc').value = money_pc + " руб";
                 document.getElementById('money_all').value = money_all + " руб";
+                document.getElementById("money_all_f").value = (money_all) + " руб";
 
             } else {
                 document.getElementById('PCB').value = '-';
@@ -260,6 +267,7 @@
                 document.getElementById('time_all').value = '-';
                 document.getElementById('money_pc').value = '-';
                 document.getElementById('money_all').value = '-';
+                document.getElementById("money_all_f").value = '-';
 
             }
         };

@@ -38,7 +38,7 @@
             </fieldset>
             <table>
                 <tr>
-                    <td>
+                    <td style="width: 30%;">
                         <div class="form-group" id="Clear_off">
                             <label>Выберите программу отмывки</label>
                             <br>
@@ -56,35 +56,33 @@
                             <br>
                         </div>
                     </td>
+                    <td style="width: 40%;">
+                        <input type="text" class="form-control" readonly value="Количество компонентов">
+                        <input type="text" class="form-control" readonly value="Количество заготовок в отмывке">
+                        <input type="text" class="form-control" readonly value="Количество плат в мультизаготовке">
+                        <input type="text" class="form-control" readonly value="Время отмывки 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Стоимость отмывки 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Время отмывки всей партии">
+                        <input type="text" class="form-control" readonly value="Стоимость отмывки всей партии">
+                        <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
+                        <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
+                        <br>
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                    </td>
                     <td>
                         <div class="form-group">
-                            <label>Количество плат в отмывке</label>
                             <input type="number" name="number_pcb" id="number_pcb" class="form-control" readonly value="{{ data[2]}}">
-                        </div>
-                        <div class="form-group">
-                            <label>Количество заготовок в отмывке</label>
                             <input type="number" name="number_multi" id="number_multi" class="form-control" readonly value="{{ data[0] }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Количество плат в мультизаготовке</label>
                             <input type="number" name="number_item" id="number_item" class="form-control" readonly 
                                 value="{{ data[1] }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Времени на отмывку</label>
-                            <input name="time_all" id="time_all" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Времени на отмывку одной платы</label>
                             <input name="time_pc" id="time_pc" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Стоимость отмывки одной платы</label>
                             <input name="money_pc" id="money_pc" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Стоимость отмывки партии</label>
+                            <input name="time_all" id="time_all" class="form-control" readonly>
                             <input name="money_all" id="money_all" class="form-control" readonly>
+                            <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                            <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                            <br>
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
@@ -176,6 +174,8 @@
         const number_smallitems = document.getElementById("number_pcb");
         const chckbx = document.getElementById("Clear")
         function multiply(){
+            
+            var batch = parseInt({{ session['home_form']['field3']}});
             const num = parseInt(number_smallitems.value);
             const num1 = parseInt(number_multi.value);
             const num2 = parseInt(number_item.value);
@@ -191,30 +191,42 @@
             result = Number(result).toFixed(2)
             var costs = result * parseInt({{ df2['Стоимость, руб/ч'][12]}})
             if (chckbx.checked){
+                
                 document.getElementById("time_all").value = Math.ceil(result) + " ч";
                 document.getElementById("time_pc").value = Math.ceil(result*3600 / parseFloat({{ session['home_form']['field3'] }}))+ " c";
                 document.getElementById("money_pc").value = Math.ceil(costs / parseFloat({{ session['home_form']['field3'] }})) + " руб";
                 document.getElementById("money_all").value = Math.ceil(costs) + " руб";
+                control_time_all = Math.ceil(batch * parseFloat({{df['Значение'][5]}}) / num1 / 3600);
+                control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
+                document.getElementById('control_time_all').value = control_time_all + " ч";
+                document.getElementById('control_money_all').value = control_money_all + " руб";
+                document.getElementById("money_all_f").value = (costs + control_money_all) + " руб";
+
             } else {
                 document.getElementById("time_all").value = "-";
                 document.getElementById("time_pc").value = "-";
                 document.getElementById("money_pc").value = "-";
                 document.getElementById("money_all").value = "-";
+                document.getElementById('control_time_all').value = '-';
+                document.getElementById('control_money_all').value = '-';
+                document.getElementById("money_all_f").value = '-';
             }
+            
             if (master){
                 document.getElementById("number_pcb").value = {{ data[2]}};
                 document.getElementById("number_multi").value = {{ data[0] }};
                 document.getElementById("number_item").value = {{ data[1] }};
             } else {
-                document.getElementById("number_pcb").value = 0;
-                document.getElementById("number_multi").value = 0;
-                document.getElementById("number_item").value = 0;
+                document.getElementById("number_pcb").value = "0";
+                document.getElementById("number_multi").value = "0";
+                document.getElementById("number_item").value = "0";
             }
         }
 
         function check_all(master, slave){
             multiply()
             check(master, slave)
+            multiply()
         }
     </script>
 </body>

@@ -38,7 +38,7 @@
             </fieldset>
             <table>
                 <tr>
-                    <td>
+                    <td style="width: 30%;">
                         <div class="form-group" id="Sep_off">
                             <label>Выберите способ разделения</label>
                             <br>
@@ -67,26 +67,24 @@
                             <br>
                         </div>
                     </td>
+                    <td style="width: 40%;">
+                        <div class="form-group">
+                            <input type="text" class="form-control" readonly value="Времени на разделение ПУ">
+                            <input type="text" class="form-control" readonly value="Стоимость разделения ПУ">
+                            <input type="text" class="form-control" readonly value="Времени на разделение партии">
+                            <input type="text" class="form-control" readonly value="Стоимость разделения партии">
+                            <br>
+                            <input type="text" class="form-control" readonly value="Итого">
+                        </div>
+                    </td>
                     <td>
                         <div class="form-group">
-                            <label>Время на разделение одного ПУ</label>
                             <input class="form-control" name="time_pc" id="time_pc" readonly></input>
-                        </div>
-                        <div class="form-group">
-                            <label>Время на разделение мультизаготовки</label>
-                            <input class="form-control" name="time_multi" id="time_multi" readonly></input>
-                        </div>
-                        <div class="form-group">
-                            <label>Время на разделение партии</label>
-                            <input class="form-control" name="time_all" id="time_all" readonly></input>
-                        </div>
-                        <div class="form-group">
-                            <label>Стоимость разделения партии</label>
-                            <input class="form-control" name="money_all" id="money_all" readonly></input>
-                        </div>
-                        <div class="form-group">
-                            <label>Стоимость разделения ПУ</label>
                             <input class="form-control" name="money_pc" id="money_pc" readonly></input>
+                            <input class="form-control" name="time_all" id="time_all" readonly></input>
+                            <input class="form-control" name="money_all" id="money_all" readonly></input>
+                            <br>
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
@@ -180,31 +178,34 @@
             const number = num.value;
             if (chckbx.checked){
                 if(opt[0].checked){
-                    time = parseFloat({{ time[0] }});
+                    time = parseFloat({{ time[0] }});                 
+                    time_multi = Math.ceil(time * parseFloat({{ time[4] }}))                     
+                    time_all = Math.ceil(time_multi * parseFloat({{ time[3] }}) * parseFloat({{df['Значение'][3]}})/ 3600) 
                 } else if(opt[1].checked){
-                    time = parseFloat({{ time[1] }}) * Number(number) / parseFloat({{ time[4] }});
+                    time = parseFloat({{ time[1] }}) * Number(number) / parseFloat({{ time[4] }});                    
+                    time_multi = Math.ceil(time * parseFloat({{ time[4] }}))                     
+                    time_all = Math.ceil(time_multi * parseFloat({{ time[3] }}) * parseFloat({{df['Значение'][4]}})/ 3600) 
                 } else if(opt[2].checked){
                     time = parseFloat({{ time[2] }});
+                    time_multi = Math.ceil(time * parseFloat({{ time[4] }}))                     
+                    time_all = Math.ceil(time_multi * parseFloat({{ time[3] }}) * parseFloat({{df['Значение'][5]}})/ 3600) 
                 } else {
                     time = 0;
                 }
             }
-            time = Math.ceil(time)
             if (chckbx.checked){
                 document.getElementById("time_pc").value = time + " c";
-                let time_multi = Math.ceil(time * parseFloat({{ time[4] }}))
-                document.getElementById("time_multi").value = time_multi + " c";
-                let time_all = Math.ceil(time_multi * parseFloat({{ time[3] }}) / 3600)
                 document.getElementById("time_all").value = time_all + " ч";
                 document.getElementById("money_all").value = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) + " руб";
                 document.getElementById("money_pc").value = Math.ceil(time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) 
                     / parseFloat({{ session['home_form']['field3'] }}))  + " руб";
+                document.getElementById("money_all_f").value = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) + " руб";
             } else {
                 document.getElementById("time_pc").value = "-";
-                document.getElementById("time_multi").value = "-";
                 document.getElementById("time_all").value = "-";
                 document.getElementById("money_all").value = "-";
                 document.getElementById("money_pc").value = "-";
+                document.getElementById("money_all_f").value = "-";
             }
         }
 

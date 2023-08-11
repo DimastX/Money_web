@@ -19,7 +19,7 @@ def sep_calculations(session, df):
     number_multi = int(session['home_form']['field3']) /  number_items
     time_scrub = math.ceil((by_x + by_y) / df['Значение'][0] * df['Значение'][3] / number_items)
     time_jump = df['Значение'][1] * df['Значение'][4]
-    time_sar = math.ceil((by_x + by_y) / df['Значение'][2] * df['Значение'][5] / number_items)
+    time_sar = math.ceil((by_x + by_y) / df['Значение'][2]  / number_items)
     time = [time_scrub, time_jump, time_sar, number_multi, number_items]
     return time
     
@@ -99,6 +99,32 @@ def create_export(session):
         session['Wave_form']['money_re_pc'],
         session['Wave_form']['money_re_all']
         ]
+    if session['Wave_form']['repair_time_all'] != '-':
+        Wave_rep =[
+            str(math.ceil(int(str(session['Wave_form']['repair_time_all']).split(" ")[0]) / batch * 3600)) + " с",
+            session['Wave_form']['repair_time_all'],
+            str(math.ceil(int(str(session['Wave_form']['repair_money_all']).split(" ")[0]) / batch)) + " руб",
+            session['Wave_form']['repair_money_all']
+        ]
+        Wave_cont =[
+            str(math.ceil(int(str(session['Wave_form']['control_time_all']).split(" ")[0]) / batch * 3600)) + " с",
+            session['Wave_form']['control_time_all'],
+            str(math.ceil(int(str(session['Wave_form']['control_money_all']).split(" ")[0]) / batch)) + " руб",
+            session['Wave_form']['control_money_all']
+        ]
+    else:
+        Wave_rep =[
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
+        Wave_cont =[
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
     HRL = [
         session['HRL_form']['time_pc'],
         session['HRL_form']['time_all'],
@@ -111,12 +137,15 @@ def create_export(session):
         session['HRL_form']['money_re_pc'],
         session['HRL_form']['money_re_all']
         ]
+    HRL_rep = data_creation(session['HRL_form']['repair_time_all'], session['HRL_form']['repair_money_all'], batch)
+    HRL_cont = data_creation(session['HRL_form']['control_time_all'], session['HRL_form']['control_money_all'], batch)
     Hand = [
         session['Hand_form']['time_pc'],
         session['Hand_form']['time_all'],
         session['Hand_form']['money_pc'],
         session['Hand_form']['money_all']
         ]
+    Hand_cont = data_creation(session['Hand_form']['control_time_all'], session['Hand_form']['control_money_all'], batch)
     Test = [
         session['Test_form']['time_pc'],
         session['Test_form']['time_all'],
@@ -129,12 +158,14 @@ def create_export(session):
         session['Clear_form']['money_pc'],
         session['Clear_form']['money_all']
         ]
+    Clear_cont = data_creation(session['Clear_form']['control_time_all'], session['Clear_form']['control_money_all'], batch)
     Handv = [
         session['Handv_form']['time_pc'],
         session['Handv_form']['time_all'],
         session['Handv_form']['money_pc'],
         session['Handv_form']['money_all']
         ]
+    Handv_cont = data_creation(session['Handv_form']['control_time_all'], session['Handv_form']['control_money_all'], batch)
     Sep = [
         session['Sep_form']['time_pc'],
         session['Sep_form']['time_all'],
@@ -153,7 +184,8 @@ def create_export(session):
         session['Add_form']['money_pc'],
         session['Add_form']['money_all']
         ]
-    data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont ,THT_re, THT, Wave_re, Wave, HRL_re, HRL, Hand, Test, Clear, Handv, Sep, Xray, Add]
+    data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont ,THT_re, THT, Wave_re, Wave, Wave_rep, Wave_cont, HRL_re, HRL, HRL_rep, HRL_cont, Hand, Handv_cont, 
+            Hand_cont, Test, Clear, Clear_cont, Handv, Sep, Xray, Add]
     headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
     row_headers = [
         "Автоматический поверхностный монтаж SMT Pri, переналадка",
@@ -166,12 +198,19 @@ def create_export(session):
         "Селективная пайка THT",
         "Волновая пайка, переналадка",
         "Волновая пайка",
+        "Ремонт на волновой пайке",
+        "Контроль на волновой пайке",
         "Селективная лакировка HRL, переналадка",
-        "Селективная лакировка HRL",
+        "Селективная лакировка HRL", 
+        "Ремонт на селективной лакировке",
+        "Контроль на селективной лакировке",
         "Ручной монтаж",
+        "Контроль ручного монтажа",
         "Тестирование",
         "Отмывка",
+        "Контроль после отмывки",
         "Ручная лакировка",
+        "Контроль ручной лакировки",
         "Разделение",
         "Рентгенконтроль",
         "Доп. работы"
@@ -221,3 +260,19 @@ def prepare(session):
     ebom = str(df2["Стоимость, руб/ч"][24] * session["tables"][4]) + " руб"
     return [["Трафареты", traf], ["Проверка документации", doc], ["Создание EBOM", ebom]]
     
+def data_creation(time_all, money_all, batch):
+    if time_all == "-":
+        list1 = [
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
+    else:
+        list1 = [
+            str(math.ceil(int(str(time_all).split(" ")[0]) / batch * 3600)) + " с",
+            time_all,
+            str(math.ceil(int(str(money_all).split(" ")[0]) / batch)) + " руб",
+            money_all
+        ]
+    return list1

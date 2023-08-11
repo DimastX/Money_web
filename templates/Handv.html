@@ -38,7 +38,7 @@
             </fieldset>
             <table>
                 <tr>
-                    <td style="width: 50%;">
+                    <td style="width: 30%;">
                         <div class="form-group" id="Handv_off">
                             <label>Выберите ручной лакировки</label>
                             <br>
@@ -75,18 +75,28 @@
                             <br>
                         </div>
                     </td>
+                    <td style="width: 40%;">
+                        <input type="text" class="form-control" readonly value="Количество ПУ в партии">
+                        <input type="text" class="form-control" readonly value="Времени на лакировку ПУ">
+                        <input type="text" class="form-control" readonly value="Стоимость лакировки ПУ">
+                        <input type="text" class="form-control" readonly value="Времени на лакировку партии">
+                        <input type="text" class="form-control" readonly value="Стоимость лакировки партии">
+                        <input type="text" class="form-control" readonly value="Времени на контроль партии">
+                        <input type="text" class="form-control" readonly value="Стоимость контроля партии">
+                        <br>
+                        <input type="text" class="form-control" readonly value="Итого">
+                    </td>
                     <td>
                         <div class="form-group">
-                        <label>Всего плат в партии</label>
                         <input type="text" name="PCB" id="PCB" class="form-control" readonly>
-                        <label>Всего времени потрачено на ПУ</label>
                         <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                        <label>Всего времени потрачено на партию</label>
-                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                        <label>Стоимость ПУ</label>
                         <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                        <label>Стоимость партии</label>
+                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
                         <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                        <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                        <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                        <br>
+                        <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                     </div>
                     </td>
                 </tr>
@@ -204,29 +214,40 @@
                 width = Math.ceil(width / parseFloat({{df['Значение'][3]}})); // Считаем количество проходов
                 time_pc = Math.ceil(width * length / parseFloat({{df['Значение'][2]}}) * parseFloat({{df['Значение'][4]}}) + parseFloat({{df['Значение'][5]}})); //кол-во проходов * длину / скорость * попр. к-т + доп. работы
             } else if (Handv_type[2].checked){
+                width = parseFloat({{session['second_form']['width']}}) / parseFloat({{session['second_form']['width_num']}});
+                length = parseFloat({{session['second_form']['length']}}) / parseFloat({{session['second_form']['length_num']}});
                 temp = Math.min(width, length); // Находим минимальную сторону, чтобы брать её за ширину
                 length = Math.max(width, length);
                 width = temp;
+                console.log(width)
                 width = Math.ceil(width / parseFloat({{df['Значение'][7]}})); // Считаем количество проходов
+                console.log(width)
                 add = parseFloat(document.getElementById('add').value);
                 time_pc = Math.ceil(width * length / parseFloat({{df['Значение'][6]}}) * parseFloat({{df['Значение'][8]}}) + add); //кол-во проходов * длину / скорость * попр. к-т + доп. работы
             } 
             const time_all = Math.ceil(time_pc * batch / 3600);
             const money_all = Math.ceil(time_all * parseInt({{ df2['Стоимость, руб/ч'][14]}}));
             const money_pc = Math.ceil(money_all / batch);
+            control_time_all = Math.ceil(batch * parseFloat({{df['Значение'][9]}}) / 3600);
+            control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
             if (chckbx.checked){
                 document.getElementById('PCB').value = batch + " шт";
                 document.getElementById('time_pc').value = time_pc + " c";
                 document.getElementById('time_all').value = time_all + " ч";
                 document.getElementById('money_pc').value = money_pc + " руб";
                 document.getElementById('money_all').value = money_all + " руб";
-
+                document.getElementById('control_time_all').value = control_time_all + " ч";
+                document.getElementById('control_money_all').value = control_money_all + " руб";
+                document.getElementById("money_all_f").value = (money_all + control_money_all) + " руб";
             } else {
                 document.getElementById('PCB').value = '-';
                 document.getElementById('time_pc').value = '-';
                 document.getElementById('time_all').value = '-';
                 document.getElementById('money_pc').value = '-';
                 document.getElementById('money_all').value = '-';
+                document.getElementById('control_time_all').value = '-';
+                document.getElementById('control_money_all').value = '-';
+                document.getElementById("money_all_f").value = '-';
 
             }
         }

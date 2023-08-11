@@ -40,7 +40,7 @@
             <div class="form-group" id="HRL_off">
                 <table>
                     <tr>
-                        <td style="width: 50%;">
+                        <td style="width: 30%;">
                             <label>Выберите количество сторон для селектиной лакировки</label>
                             <br>
                             <label>
@@ -56,26 +56,40 @@
                             </label>
                             <br>
                         </td>
-                        <td>
+                        <td style="width: 40%;">
+                            <input type="text" class="form-control" readonly value="Количество ПУ в партии">
+                            <input type="text" class="form-control" readonly value="Времени на лакировку ПУ">
+                            <input type="text" class="form-control" readonly value="Стоимость лакировки ПУ">
+                            <input type="text" class="form-control" readonly value="Времени на лакировку партии">
+                            <input type="text" class="form-control" readonly value="Стоимость лакировки партии">
+                            <input type="text" class="form-control" readonly value="Времени на переналадку ПУ">
+                            <input type="text" class="form-control" readonly value="Стоимость переналадки ПУ">
+                            <input type="text" class="form-control" readonly value="Времени на переналадку партии">
+                            <input type="text" class="form-control" readonly value="Стоимость переналадки партии">
+                            <input type="text" class="form-control" readonly value="Время ремонта партии">
+                            <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
+                            <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
+                            <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
+                            <br>                            
+                            <input type="text" class="form-control" readonly value="Итого">
+                        </td>
+                        <td style="width: 40%;">
                             <div class="form-group">
-                                <label>Количество ПУ в партии</label>
                                 <input type="text" name="PCB" id="PCB" class="form-control" readonly>
-                                <label>Всего времени потрачено на партию</label>
-                                <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                                <label>Всего времени потрачено на ПУ</label>
                                 <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                                <label>Стоимость партии</label>
-                                <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                                <label>Стоимость ПУ</label>
                                 <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                                <label>Всего времени потрачено на переналадку ПУ</label>
+                                <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                                <input type="text" name="money_all" id="money_all" class="form-control" readonly>
                                 <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
-                                <label>Всего времени потрачено на пареналадку партии</label>
-                                <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
-                                <label>Стоимость переналадки ПУ</label>
                                 <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
-                                <label>Стоимость переналадки партии</label>
+                                <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
                                 <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
+                                <input type="text" name="repair_time_all" id="repair_time_all" class="form-control" readonly>
+                                <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
+                                <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                                <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                                <br>
+                                <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                             </div>
                         </td>
                     </tr>
@@ -205,11 +219,29 @@
                 } else if (type[1].checked){
                     sides = 2;
                 }
-                var prod = multi_num * sides;
+                let repair = 0;
+                if (prev == 1){
+                    repair = parseFloat({{df["Значение"][5]}}) * batch;
+                } else if (prev == 2){
+                    repair = parseFloat({{df["Значение"][4]}}) * batch;
+                }
+                repair_time_all = Math.ceil(repair * parseFloat({{df["Значение"][6]}}) / 100 / 3600);
+                repair_time_pc = Math.ceil(repair_time_all / batch * 3600);
+                repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) );
+                repair_time_pc = Math.ceil(repair_money_all / batch);
+
+                control_time_all = Math.ceil(repair * parseFloat({{df["Значение"][7]}}) / 100 / 3600);
+                control_time_pc = Math.ceil(control_time_all / batch * 3600);
+                control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
+                control_time_pc = Math.ceil(control_money_all / batch);
+
+                console.log(area)
+                var prod = multi_num * sides * Math.ceil(area / parseInt({{df['Значение'][0]}}));
+                console.log(prod)
                 var start = parseInt({{df['Значение'][3]}}) * sides * prev;
-                time_all = Math.ceil((prod)/3600);
+                time_all = Math.ceil((prod * parseInt({{df['Значение'][1]}}))/3600);
                 var time_re_all = Math.ceil((start)/3600);
-                money_all = Math.ceil((prod * parseFloat({{df2['Стоимость, руб/ч'][6]}}))/3600);
+                money_all = Math.ceil((time_all * parseFloat({{df2['Стоимость, руб/ч'][6]}})));
                 money_re_all = Math.ceil((start * parseFloat({{df2['Стоимость, руб/ч'][7]}}))/3600);
                 money_pc = Math.ceil(money_all / batch);
                 time_pc = Math.ceil(time_all/batch * 3600);
@@ -223,6 +255,14 @@
                 document.getElementById('time_re_all').value = time_re_all + " ч";
                 document.getElementById('money_re_pc').value = money_re_pc + " руб";
                 document.getElementById('money_re_all').value = money_re_all + " руб";
+                
+                document.getElementById('repair_time_all').value = repair_time_all + " ч";
+                document.getElementById('repair_money_all').value = repair_money_all + " руб";
+
+                document.getElementById('control_time_all').value = control_time_all + " ч";
+                document.getElementById('control_money_all').value = control_money_all + " руб";
+                
+                document.getElementById("money_all_f").value = (money_all + money_re_all + repair_money_all + control_money_all) + " руб";
 
             } else {
                 document.getElementById('PCB').value = '-';
@@ -234,6 +274,14 @@
                 document.getElementById('time_re_all').value = '-';
                 document.getElementById('money_re_pc').value = '-';
                 document.getElementById('money_re_all').value = '-';
+                
+                document.getElementById("money_all_f").value = '-';
+
+                document.getElementById('repair_time_all').value = '-';
+                document.getElementById('repair_money_all').value = '-';
+
+                document.getElementById('control_time_all').value = '-';
+                document.getElementById('control_money_all').value = '-';
 
             }
         };

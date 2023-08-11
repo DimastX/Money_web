@@ -39,30 +39,41 @@
             <table>
                 <tr>
                     <td style="width: 50%;">
-                        <div class="form-group" id="Wave_off"></div>
+                        <input type="text" class="form-control" readonly value="Количество плат в партии">
+                        <input type="text" class="form-control" readonly value="Количество плат в мультзаготовки">
+                        <input type="text" class="form-control" readonly value="Время сборки 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Стоимость сборки 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Время сборки всей партии">
+                        <input type="text" class="form-control" readonly value="Стоимость сборки всей партии">
+                        <input type="text" class="form-control" readonly value="Время переналадки 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Стоимость переналадки 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Время переналадки всей партии">
+                        <input type="text" class="form-control" readonly value="Стоимость переналадки всей партии">
+                        <input type="text" class="form-control" readonly value="Время ремонта партии">                            
+                        <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
+                        <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
+                        <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
+                        <br>
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                     </td>
                     <td>
                         <div class="form-group">
-                            <label>Всего плат в партии</label>
                             <input type="text" name="PCB" id="PCB" class="form-control" readonly>
-                            <label>Всего плат в мультизаготовке</label>
-                            <input type="text" name="PCB" id="PCB_m" class="form-control" readonly>
-                            <label>Всего времени потрачено на ПУ</label>
+                            <input type="text" name="PCB_m" id="PCB_m" class="form-control" readonly>
                             <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                            <label>Всего времени потрачено на партию</label>
-                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                            <label>Стоимость ПУ</label>
                             <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                            <label>Стоимость партии</label>
+                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
                             <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                            <label>Всего времени потрачено на переналадку ПУ</label>
                             <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
-                            <label>Всего времени потрачено на пареналадку партии</label>
-                            <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
-                            <label>Стоимость переналадки ПУ</label>
                             <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
-                            <label>Стоимость переналадки партии</label>
+                            <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
                             <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
+                            <input type="text" name="repair_time_all" id="repair_time_all" class="form-control" readonly>
+                            <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
+                            <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                            <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                            <br>
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
@@ -93,7 +104,7 @@
                                             <td>
                                                 {% if loop.index == 2 %}  <!-- Если это второй столбец -->
                                                     <input {% if edit == "0" %} disabled {% endif %}
-                                                        type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                        type="number" min = 0 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
                                                 {% else %} <!-- Если это не второй столбец -->
                                                     {{ cell }}
                                                 {% endif %}
@@ -123,6 +134,7 @@
     </div>
     <script>
         window.onload = function(){
+            wave_amount();
             check('Wave', 'Wave_off');
             wave_amount();
         }
@@ -161,12 +173,27 @@
             const prod = time_multi * multi_num / 3600;
             const time_all = Math.ceil(prod);
             const time_re_all = Math.ceil(start);
-            const time_pc = Math.ceil(time_all/ batch);
-            const time_re_pc = Math.ceil(time_re_all / batch);
+            const time_pc = Math.ceil(time_all/ batch * 3600);
+            const time_re_pc = Math.ceil(time_re_all / batch * 3600);
             const money_all = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][4]}}));
             const money_re_all = Math.ceil(start * parseInt({{ df2['Стоимость, руб/ч'][5]}}));
             const money_pc = Math.ceil(money_all / batch);
             const money_re_pc = Math.ceil(money_re_all / batch);
+            let repair = 0;
+                if (prev == 1){
+                    repair = parseFloat({{df["Значение"][4]}}) * batch;
+                } else if (prev == 2){
+                    repair = parseFloat({{df["Значение"][3]}}) * batch;
+                }
+            repair_time_all = Math.ceil(repair * parseFloat({{df["Значение"][5]}}) / 100 / 3600);
+            repair_time_pc = Math.ceil(repair_time_all / batch * 3600);
+            repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) );
+            repair_time_pc = Math.ceil(repair_money_all / batch);
+
+            control_time_all = Math.ceil(repair * parseFloat({{df["Значение"][6]}}) / 100 / 3600);
+            control_time_pc = Math.ceil(control_time_all / batch * 3600);
+            control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
+            control_time_pc = Math.ceil(control_money_all / batch)
             if (chckbx.checked){
                 document.getElementById('PCB').value = batch + " шт";
                 document.getElementById('PCB_m').value = pc + " шт";
@@ -179,6 +206,14 @@
                 document.getElementById('money_re_pc').value = money_re_pc + " руб";
                 document.getElementById('money_re_all').value = money_re_all + " руб";
 
+                document.getElementById('repair_time_all').value = repair_time_all + " ч";
+                document.getElementById('repair_money_all').value = repair_money_all + " руб";
+
+                document.getElementById('control_time_all').value = control_time_all + " ч";
+                document.getElementById('control_money_all').value = control_money_all + " руб";
+            
+                document.getElementById("money_all_f").value = (money_all + money_re_all + repair_money_all + control_money_all) + " руб";
+
             } else {
                 document.getElementById('PCB').value = '-';
                 document.getElementById('PCB_m').value = '-';
@@ -190,6 +225,14 @@
                 document.getElementById('time_re_all').value = '-';
                 document.getElementById('money_re_pc').value = '-';
                 document.getElementById('money_re_all').value = '-';
+                
+                document.getElementById("money_all_f").value = '-';
+
+                document.getElementById('repair_time_all').value = '-';
+                document.getElementById('repair_money_all').value = '-';
+
+                document.getElementById('control_time_all').value = '-';
+                document.getElementById('control_money_all').value = '-';
 
             }
         }

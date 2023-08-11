@@ -38,7 +38,7 @@
             </fieldset>
             <table>
                 <tr>
-                    <td style="width: 50%;">
+                    <td style="width: 30%;">
                         <div class="form-group" id="Hand_off">
                             <label>Количество точек пайки</label>
                             <br>
@@ -46,18 +46,30 @@
                                 value="{{ session['Hand_form']['Hand_num'] if session.get('Hand_form') else '' }}">
                         </div>
                     </td>
-                    <td>
+                    <td style="width: 40%;">                        
                         <div class="form-group">
-                            <label>Всего плат в партии</label>
+                        <input type="text" class="form-control" readonly value="Количество ПУ в партии">
+                        <input type="text" class="form-control" readonly value="Времени на пайку ПУ">
+                        <input type="text" class="form-control" readonly value="Стоимость пайки ПУ">
+                        <input type="text" class="form-control" readonly value="Времени на пайку партии">
+                        <input type="text" class="form-control" readonly value="Стоимость пайки партии">
+                        <input type="text" class="form-control" readonly value="Времени на контроль партии">
+                        <input type="text" class="form-control" readonly value="Стоимость контроля партии">
+                        <br>
+                        <input type="text" class="form-control" readonly value="Итого">
+                        </div>
+                    </td>
+                    <td style="width: 40%;">
+                        <div class="form-group">
                             <input type="text" name="PCB" id="PCB" class="form-control" readonly>
-                            <label>Всего времени потрачено на ПУ</label>
                             <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                            <label>Всего времени потрачено на партию</label>
-                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                            <label>Стоимость ПУ</label>
                             <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                            <label>Стоимость партии</label>
+                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
                             <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                            <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                            <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                            <br>
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
@@ -148,16 +160,22 @@
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
             var pc = parseInt({{ session['second_form']['pc']}});
             const points_value = parseInt(points.value);
-            const time_pc = points_value * parseFloat({{df['Значение'][0]}});
-            const time_all = Math.ceil(time_pc * batch / 3600);
+            let time_pc = points_value * parseFloat({{df['Значение'][0]}});
+            const time_all = Math.ceil((time_pc * batch + parseFloat({{df['Значение'][1]}}))/ 3600 );
+            time_pc = Math.ceil(time_all / batch * 3600);
             const money_all = Math.ceil(time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}));
             const money_pc = Math.ceil(money_all / batch);
+            control_time_all = Math.ceil(batch * parseFloat({{df['Значение'][2]}}) * points_value / 3600);
+            control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
             if (chckbx.checked){
-                document.getElementById('PCB').value = batch;
+                document.getElementById('PCB').value = batch + " шт";
                 document.getElementById('time_pc').value = time_pc + " c";
                 document.getElementById('time_all').value = time_all + " ч";
                 document.getElementById('money_pc').value = money_pc + " руб";
                 document.getElementById('money_all').value = money_all + " руб";
+                document.getElementById('control_time_all').value = control_time_all + " ч";
+                document.getElementById('control_money_all').value = control_money_all + " руб";
+                document.getElementById("money_all_f").value = (money_all + control_money_all) + " руб";
 
             } else {
                 document.getElementById('PCB').value = '-';
@@ -166,6 +184,9 @@
                 document.getElementById('money_pc').value = '-';
                 document.getElementById('money_all').value = '-';
 
+                document.getElementById('control_time_all').value = '-';
+                document.getElementById('control_money_all').value = '-';
+                document.getElementById("money_all_f").value = '-';
             }
         }
     </script>
