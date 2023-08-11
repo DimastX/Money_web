@@ -39,45 +39,72 @@
             <table>
                 <tr>
                     <td style="width: 50%;">
-                        <input type="text" class="form-control" readonly value="Количество плат в партии">
-                        <input type="text" class="form-control" readonly value="Количество плат в мультзаготовки">
-                        <input type="text" class="form-control" readonly value="Время сборки 1 ПУ">
-                        <input type="text" class="form-control" readonly value="Стоимость сборки 1 ПУ">
-                        <input type="text" class="form-control" readonly value="Время сборки всей партии">
-                        <input type="text" class="form-control" readonly value="Стоимость сборки всей партии">
-                        <input type="text" class="form-control" readonly value="Время переналадки 1 ПУ">
-                        <input type="text" class="form-control" readonly value="Стоимость переналадки 1 ПУ">
-                        <input type="text" class="form-control" readonly value="Время переналадки всей партии">
-                        <input type="text" class="form-control" readonly value="Стоимость переналадки всей партии">
-                        <input type="text" class="form-control" readonly value="Время ремонта партии">                            
-                        <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
-                        <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
-                        <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
-                        <br>
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                         <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                     </td>
                     <td>
-                        <div class="form-group">
-                            <input type="text" name="PCB" id="PCB" class="form-control" readonly>
-                            <input type="text" name="PCB_m" id="PCB_m" class="form-control" readonly>
-                            <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                            <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                            <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
-                            <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
-                            <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
-                            <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
-                            <input type="text" name="repair_time_all" id="repair_time_all" class="form-control" readonly>
-                            <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
-                            <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
-                            <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
-                            <br>
-                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
-                        </div>
+                        <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
+                        <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                     </td>
                 </tr>
             </table>
+            <div class="panel-group" id="accordion_dat">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
+                                Данные по стоимости волновой пайки
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_data" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Значение</th>
+                                        </tr>
+                                    </thead>
+                                    <td>
+                                        <input type="text" class="form-control" readonly value="Количество плат в партии">
+                                        <input type="text" class="form-control" readonly value="Количество плат в мультзаготовки">
+                                        <input type="text" class="form-control" readonly value="Время сборки 1 ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость сборки 1 ПУ">
+                                        <input type="text" class="form-control" readonly value="Время сборки всей партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость сборки всей партии">
+                                        <input type="text" class="form-control" readonly value="Время переналадки 1 ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость переналадки 1 ПУ">
+                                        <input type="text" class="form-control" readonly value="Время переналадки всей партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость переналадки всей партии">
+                                        <input type="text" class="form-control" readonly value="Время ремонта партии">                            
+                                        <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
+                                        <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="PCB" id="PCB" class="form-control" readonly>
+                                        <input type="text" name="PCB_m" id="PCB_m" class="form-control" readonly>
+                                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                                        <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
+                                        <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
+                                        <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
+                                        <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
+                                        <input type="text" name="repair_time_all" id="repair_time_all" class="form-control" readonly>
+                                        <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
+                                        <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                                        <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -211,8 +238,11 @@
 
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
-            
-                document.getElementById("money_all_f").value = (money_all + money_re_all + repair_money_all + control_money_all) + " руб";
+                
+                money_all_f = money_all + money_re_all + repair_money_all + control_money_all;
+                money_pc_f = Math.ceil(money_all_f / batch);
+                document.getElementById("money_all_f").value = money_all_f + " руб";
+                document.getElementById("money_pc_f").value = money_pc_f + " руб";
 
             } else {
                 document.getElementById('PCB').value = '-';
@@ -227,6 +257,7 @@
                 document.getElementById('money_re_all').value = '-';
                 
                 document.getElementById("money_all_f").value = '-';
+                document.getElementById("money_pc_f").value = '-';
 
                 document.getElementById('repair_time_all').value = '-';
                 document.getElementById('repair_money_all').value = '-';

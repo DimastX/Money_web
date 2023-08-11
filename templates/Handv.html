@@ -76,31 +76,60 @@
                         </div>
                     </td>
                     <td style="width: 40%;">
-                        <input type="text" class="form-control" readonly value="Количество ПУ в партии">
-                        <input type="text" class="form-control" readonly value="Времени на лакировку ПУ">
-                        <input type="text" class="form-control" readonly value="Стоимость лакировки ПУ">
-                        <input type="text" class="form-control" readonly value="Времени на лакировку партии">
-                        <input type="text" class="form-control" readonly value="Стоимость лакировки партии">
-                        <input type="text" class="form-control" readonly value="Времени на контроль партии">
-                        <input type="text" class="form-control" readonly value="Стоимость контроля партии">
-                        <br>
-                        <input type="text" class="form-control" readonly value="Итого">
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                     </td>
                     <td>
                         <div class="form-group">
-                        <input type="text" name="PCB" id="PCB" class="form-control" readonly>
-                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                        <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
-                        <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
-                        <br>
-                        <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
-                    </div>
+                            <input type="text" name="money_all_f" id="money_pc_f" class="form-control" readonly> 
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
+                        </div>
                     </td>
                 </tr>
             </table>
+            <div class="panel-group" id="accordion_dat">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
+                                Данные по стоимости ручной лакировки
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_data" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Значение</th>
+                                        </tr>
+                                    </thead>
+                                    <td>
+                                        <input type="text" class="form-control" readonly value="Количество ПУ в партии">
+                                        <input type="text" class="form-control" readonly value="Времени на лакировку ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость лакировки ПУ">
+                                        <input type="text" class="form-control" readonly value="Времени на лакировку партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость лакировки партии">
+                                        <input type="text" class="form-control" readonly value="Времени на контроль партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость контроля партии">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="PCB" id="PCB" class="form-control" readonly>
+                                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                                        <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                                        <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>                                        
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -238,7 +267,11 @@
                 document.getElementById('money_all').value = money_all + " руб";
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
-                document.getElementById("money_all_f").value = (money_all + control_money_all) + " руб";
+
+                money_all_f = money_all + control_money_all;
+                money_pc_f = Math.ceil(money_all_f / batch);
+                document.getElementById("money_all_f").value = money_all_f + " руб";
+                document.getElementById("money_pc_f").value = money_pc_f + " руб";
             } else {
                 document.getElementById('PCB').value = '-';
                 document.getElementById('time_pc').value = '-';
@@ -248,6 +281,7 @@
                 document.getElementById('control_time_all').value = '-';
                 document.getElementById('control_money_all').value = '-';
                 document.getElementById("money_all_f").value = '-';
+                document.getElementById("money_pc_f").value = '-';
 
             }
         }

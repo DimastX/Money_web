@@ -29,7 +29,7 @@
             <fieldset>
                 <legend>Дополнительные работы</legend>
                 <div class="form-group">
-                    <input type="checkbox" id="Add" name="Add" value="1" onclick="check('Add', 'Add_off')"
+                    <input type="checkbox" id="Add" name="Add" value="1" onclick="check_all('Add', 'Add_off')"
                            {% if session.get('Add_form') %} {% if session['Add_form']['Add'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Add">Есть дополнительные работы? </label>
                 </div>
@@ -370,7 +370,7 @@
 
         const chckbx = document.getElementById('Add');
         window.onload = function(){
-            check('Add', 'Add_off');
+            check_all('Add', 'Add_off');
             fill_all_lines()
         }
 
@@ -384,6 +384,10 @@
             });
         }
 
+        function check_all(master, slave){
+            check(master, slave);
+            fill_all_lines();
+        }
         function fill_all_lines(){
             fill_line(time_all1, time_pc1, money_all1, money_pc1, area1);
             fill_line(time_all2, time_pc2, money_all2, money_pc2, area2);

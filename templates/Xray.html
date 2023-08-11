@@ -75,32 +75,63 @@
                     </td>
                     <td style="width: 40%;">
                         <div class="form-group">
-                            <input type="text" class="form-control" readonly value="Количество МЗ в партии">
-                            <input type="text" class="form-control" readonly value="Количество МЗ в рентгенконтроле за 1 запуск">
-                            <input type="text" class="form-control" readonly value="Запусков рентгенконтроля">
-                            <input type="text" class="form-control" readonly value="Времени на рентгенконтроль ПУ">
-                            <input type="text" class="form-control" readonly value="Стоимость рентгенконтроля ПУ">
-                            <input type="text" class="form-control" readonly value="Времени на рентгенконтроль партии">
-                            <input type="text" class="form-control" readonly value="Стоимость рентгенконтроля партии">
-                            <br>
-                            <input type="text" class="form-control" readonly value="Итого">
+                            <input type="text" class="form-control" readonly value="Итоговая стоимость всей 1 ПУ">
+                            <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                             </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input type="text" name="number_multi" id="number_multi" class="form-control" readonly>
-                            <input type="text" name="number_Xray_pt" id="number_Xray_pt" class="form-control" readonly>
-                            <input type="text" name="number_Xray" id="number_Xray" class="form-control" readonly>
-                            <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                            <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                            <br>
+                            <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
                             <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
             </table>
+            <div class="panel-group" id="accordion_dat">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
+                                Данные по стоимости волновой пайки
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_data" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Значение</th>
+                                        </tr>
+                                    </thead>
+                                    <td>
+                                        <input type="text" class="form-control" readonly value="Количество МЗ в партии">
+                                        <input type="text" class="form-control" readonly value="Количество МЗ в рентгенконтроле за 1 запуск">
+                                        <input type="text" class="form-control" readonly value="Запусков рентгенконтроля">
+                                        <input type="text" class="form-control" readonly value="Времени на рентгенконтроль ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость рентгенконтроля ПУ">
+                                        <input type="text" class="form-control" readonly value="Времени на рентгенконтроль партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость рентгенконтроля партии">
+                                    </td>
+                                    <td>
+                                        
+                                        <input type="text" name="number_multi" id="number_multi" class="form-control" readonly>
+                                        <input type="text" name="number_Xray_pt" id="number_Xray_pt" class="form-control" readonly>
+                                        <input type="text" name="number_Xray" id="number_Xray" class="form-control" readonly>
+                                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -226,6 +257,7 @@
             var money_pc = 0;
             var time_all = 0;
             var time_pc = 0;
+            var batch = parseInt({{ session['home_form']['field3']}});
             var multi_num = parseInt({{ session['second_form']['multi_num'] }});
             coef = Math.max(Math.floor(parseFloat({{df['Значение'][0]}}) / parseFloat({{session['second_form']['width']}})) * 
             Math.floor(parseFloat({{df['Значение'][1]}}) / parseFloat({{session['second_form']['length']}})), 1);
@@ -252,8 +284,12 @@
                 document.getElementById('time_all').value = Math.ceil(time_all / 3600) + " ч";
                 document.getElementById('time_pc').value = Math.ceil(time_pc) +" c";
                 document.getElementById('money_all').value = Math.ceil(money_all) + " руб";
-                document.getElementById('money_pc').value = Math.ceil(money_pc) + " руб";                
-                document.getElementById('money_all_f').value = Math.ceil(money_all) + " руб";
+                document.getElementById('money_pc').value = Math.ceil(money_pc) + " руб";
+
+                money_all_f = Math.ceil(money_all);
+                money_pc_f = Math.ceil(money_all_f / batch);
+                document.getElementById('money_all_f').value = money_all_f + " руб";
+                document.getElementById('money_pc_f').value = money_pc_f + " руб";
 
             } else{
                 document.getElementById('number_multi').value = "-";
@@ -264,6 +300,7 @@
                 document.getElementById('money_all').value = "-";
                 document.getElementById('money_pc').value = "-";
                 document.getElementById("money_all_f").value = '-';
+                document.getElementById("money_pc_f").value = '-';
             }
         }
     </script>

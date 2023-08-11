@@ -69,26 +69,58 @@
                     </td>
                     <td style="width: 40%;">
                         <div class="form-group">
-                            <input type="text" class="form-control" readonly value="Времени на разделение ПУ">
-                            <input type="text" class="form-control" readonly value="Стоимость разделения ПУ">
-                            <input type="text" class="form-control" readonly value="Времени на разделение партии">
-                            <input type="text" class="form-control" readonly value="Стоимость разделения партии">
-                            <br>
-                            <input type="text" class="form-control" readonly value="Итого">
+                            <input type="text" class="form-control" readonly value="Итоговая стоимость всей 1 ПУ">
+                            <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input class="form-control" name="time_pc" id="time_pc" readonly></input>
-                            <input class="form-control" name="money_pc" id="money_pc" readonly></input>
-                            <input class="form-control" name="time_all" id="time_all" readonly></input>
-                            <input class="form-control" name="money_all" id="money_all" readonly></input>
-                            <br>
+                            <input type="text" name="money_all_f" id="money_pc_f" class="form-control" readonly> 
                             <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
             </table>
+             	    <div class="panel-group" id="accordion_dat">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
+                                Данные по стоимости волновой пайки
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_data" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Значение</th>
+                                        </tr>
+                                    </thead>
+                                    <td>
+                                        <input type="text" class="form-control" readonly value="Времени на разделение ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость разделения ПУ">
+                                        <input type="text" class="form-control" readonly value="Времени на разделение партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость разделения партии">
+                                    </td>
+                                    <td>
+                                                    
+                                        <input class="form-control" name="time_pc" id="time_pc" readonly></input>
+                                        <input class="form-control" name="money_pc" id="money_pc" readonly></input>
+                                        <input class="form-control" name="time_all" id="time_all" readonly></input>
+                                        <input class="form-control" name="money_all" id="money_all" readonly></input>
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -176,6 +208,7 @@
         function time_calculation(){
             let time = 0;
             const number = num.value;
+            var batch = parseInt({{ session['home_form']['field3']}});
             if (chckbx.checked){
                 if(opt[0].checked){
                     time = parseFloat({{ time[0] }});                 
@@ -199,12 +232,17 @@
                 document.getElementById("money_all").value = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) + " руб";
                 document.getElementById("money_pc").value = Math.ceil(time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) 
                     / parseFloat({{ session['home_form']['field3'] }}))  + " руб";
-                document.getElementById("money_all_f").value = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) + " руб";
+                    
+                money_all_f = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}});
+                money_pc_f = Math.ceil(money_all_f / batch)    
+                document.getElementById("money_all_f").value = money_all_f  + " руб";
+                document.getElementById("money_pc_f").value = money_pc_f + " руб";
             } else {
                 document.getElementById("time_pc").value = "-";
                 document.getElementById("time_all").value = "-";
                 document.getElementById("money_all").value = "-";
                 document.getElementById("money_pc").value = "-";
+                document.getElementById("money_pc_f").value = "-";
                 document.getElementById("money_all_f").value = "-";
             }
         }

@@ -27,6 +27,7 @@
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+            <input type="submit" class="btn btn-primary" value="Скачать шаблон" name="template">
             <p></p>
             <fieldset>
                 <legend>Автоматический поверхностный монтаж SMT</legend>
@@ -39,10 +40,12 @@
         <table>
             <tr>
                 <td style="width: 50%;">
+                    <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                     <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                 </td>
                 <td >
                     <div class="form-group">                        
+                        <input type="text" name="money_all_f" id="money_pc_f" class="form-control" readonly> 
                         <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                     </div>
                 </td>
@@ -67,7 +70,7 @@
                                             <th></th>
                                             <th>Сторона Primary</th>
                                             <th>Сторона Secondary</th>
-                                            <th>ПУ</th>
+                                            <th>Общее</th>
                                         </tr>
                                     </thead>
                                     <td style="width: 40%;">
@@ -255,16 +258,13 @@
                 </div>
             </div>
         </div>
-        <input type="submit" class="btn btn-primary" value="Скачать шаблон" name="template">
         </form>
         <div class="form-group" id="SMD_off">
 
-            <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
-            <input type="file" class="form-control-file" name="csv_file" 
-            value="" accept="text/csv">
-            <br>
-            <input type="submit" class="btn btn-primary" value="Загрузить">
+            <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
+                <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
+                <input type="file" class="form-control-file" name="csv_file" 
+                value="" accept="text/csv" onchange="submitForm()">
             </form>
         </div>
     </div>
@@ -291,6 +291,11 @@
             document.getElementById(slave).classList.add('disable_section')
           }
         }
+
+        function submitForm() {
+            document.getElementById("uploadForm").submit();
+        }
+
         var chckbx = document.getElementById('SMD');
         function SMD_amount(){
             var batch = parseInt({{ session['home_form']['field3']}});
@@ -438,7 +443,10 @@
                 
                 document.getElementById("money_all_f_t").value = (money_all_t + money_re_all_t) + " руб";
                 document.getElementById("money_all_f_b").value = (money_all_b + money_re_all_b) + " руб";
-                document.getElementById("money_all_f").value = (money_all + money_re_all + repair_money_all + control_money_all) + " руб";
+                money_all_f = money_all + money_re_all + repair_money_all + control_money_all;
+                money_pc_f = Math.ceil(money_all_f/batch)
+                document.getElementById("money_pc_f").value = money_pc_f + " руб";
+                document.getElementById("money_all_f").value = money_all_f + " руб";
 
             } else {
                 document.getElementById('components').value = '-';
@@ -482,6 +490,7 @@
                 document.getElementById("money_all_f_t").value = '-';
                 document.getElementById("money_all_f_b").value ='-';
                 document.getElementById("money_all_f").value = '-';
+                document.getElementById("money_pc_f").value = '-';
 
                 document.getElementById('repair_time_all').value = '-';
                 document.getElementById('repair_money_all').value = '-';

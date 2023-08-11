@@ -57,36 +57,66 @@
                         </div>
                     </td>
                     <td style="width: 40%;">
-                        <input type="text" class="form-control" readonly value="Количество компонентов">
-                        <input type="text" class="form-control" readonly value="Количество заготовок в отмывке">
-                        <input type="text" class="form-control" readonly value="Количество плат в мультизаготовке">
-                        <input type="text" class="form-control" readonly value="Время отмывки 1 ПУ">
-                        <input type="text" class="form-control" readonly value="Стоимость отмывки 1 ПУ">
-                        <input type="text" class="form-control" readonly value="Время отмывки всей партии">
-                        <input type="text" class="form-control" readonly value="Стоимость отмывки всей партии">
-                        <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
-                        <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
-                        <br>
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                         <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                     </td>
                     <td>
                         <div class="form-group">
-                            <input type="number" name="number_pcb" id="number_pcb" class="form-control" readonly value="{{ data[2]}}">
-                            <input type="number" name="number_multi" id="number_multi" class="form-control" readonly value="{{ data[0] }}">
-                            <input type="number" name="number_item" id="number_item" class="form-control" readonly 
-                                value="{{ data[1] }}">
-                            <input name="time_pc" id="time_pc" class="form-control" readonly>
-                            <input name="money_pc" id="money_pc" class="form-control" readonly>
-                            <input name="time_all" id="time_all" class="form-control" readonly>
-                            <input name="money_all" id="money_all" class="form-control" readonly>
-                            <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
-                            <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
-                            <br>
+                            
+                            <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly>
                             <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                         </div>
                     </td>
                 </tr>
             </table>
+            <div class="panel-group" id="accordion_dat">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
+                                Данные по стоимости отмывки
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_data" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Значение</th>
+                                        </tr>
+                                    </thead>
+                                    <td>
+                                        <input type="text" class="form-control" readonly value="Количество компонентов">
+                                        <input type="text" class="form-control" readonly value="Количество заготовок в отмывке">
+                                        <input type="text" class="form-control" readonly value="Количество плат в мультизаготовке">
+                                        <input type="text" class="form-control" readonly value="Время отмывки 1 ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость отмывки 1 ПУ">
+                                        <input type="text" class="form-control" readonly value="Время отмывки всей партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость отмывки всей партии">
+                                        <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="number_pcb" id="number_pcb" class="form-control" readonly value="{{ data[2]}}">
+                                        <input type="number" name="number_multi" id="number_multi" class="form-control" readonly value="{{ data[0] }}">
+                                        <input type="number" name="number_item" id="number_item" class="form-control" readonly 
+                                            value="{{ data[1] }}">
+                                        <input name="time_pc" id="time_pc" class="form-control" readonly>
+                                        <input name="money_pc" id="money_pc" class="form-control" readonly>
+                                        <input name="time_all" id="time_all" class="form-control" readonly>
+                                        <input name="money_all" id="money_all" class="form-control" readonly>
+                                        <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                                        <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>                                        
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -189,7 +219,7 @@
                 result = 0;
             }
             result = Number(result).toFixed(2)
-            var costs = result * parseInt({{ df2['Стоимость, руб/ч'][12]}})
+            var costs = Math.ceil(result * parseInt({{ df2['Стоимость, руб/ч'][12]}}))
             if (chckbx.checked){
                 
                 document.getElementById("time_all").value = Math.ceil(result) + " ч";
@@ -200,7 +230,11 @@
                 control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
-                document.getElementById("money_all_f").value = (costs + control_money_all) + " руб";
+
+                money_all_f = costs + control_money_all;
+                money_pc_f = Math.ceil(money_all_f / batch);
+                document.getElementById("money_all_f").value = money_all_f + " руб";
+                document.getElementById("money_pc_f").value = money_pc_f + " руб";
 
             } else {
                 document.getElementById("time_all").value = "-";
@@ -210,6 +244,7 @@
                 document.getElementById('control_time_all').value = '-';
                 document.getElementById('control_money_all').value = '-';
                 document.getElementById("money_all_f").value = '-';
+                document.getElementById("money_pc_f").value = '-';
             }
             
             if (master){

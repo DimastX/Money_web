@@ -507,17 +507,21 @@ def session_data():
                 os.makedirs(path)
             with open(path +"/" + name, 'w', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file)
-                writer.writerow(["Стоимость производства"])
-                # Записываем строки из первого DataFrame
-                writer.writerow(df[0].columns)
-                writer.writerows(df[0].to_records(index=True))
+                writer.writerow(["Заказчик:", session['home_form']['field1']])
+                writer.writerow(["Изделие:", session['home_form']['field2']])
+                writer.writerow(["Партия:", session['home_form']['field3']])
+                writer.writerow([])
                 if table:
                     # Записываем пустую строку
-                    writer.writerow([])
                     writer.writerow(["Стоимость подготовки производства"])
                     # Записываем строки из второго DataFrame
                     writer.writerow(df[1].columns)
                     writer.writerows(df[1].to_records(index=False))
+                    writer.writerow([])
+                writer.writerow(["Стоимость производства"])
+                # Записываем строки из первого DataFrame
+                writer.writerow(df[0].columns)
+                writer.writerows(df[0].to_records(index=True))
             return send_file(path +"/" + name, mimetype='text/csv', as_attachment=True)
     if 'back' in request.form:
         return redirect(url_for('add'))
