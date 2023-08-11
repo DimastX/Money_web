@@ -75,18 +75,32 @@ def create_export(session):
             "-",
             "-"
         ]
-    THT = [
+    THT_pri = [
         session['THT_form']['time_pc'],
         session['THT_form']['time_all'],
         session['THT_form']['money_pc'],
         session['THT_form']['money_all']
         ]
-    THT_re = [
+    THT_pri_re = [
         session['THT_form']['time_re_pc'],
         session['THT_form']['time_re_all'],
         session['THT_form']['money_re_pc'],
         session['THT_form']['money_re_all']
+        ]    
+    THT_sec = [
+        session['THT_form']['time_pc2'],
+        session['THT_form']['time_all2'],
+        session['THT_form']['money_pc2'],
+        session['THT_form']['money_all2']
         ]
+    THT_sec_re = [
+        session['THT_form']['time_re_pc2'],
+        session['THT_form']['time_re_all2'],
+        session['THT_form']['money_re_pc2'],
+        session['THT_form']['money_re_all2']
+        ] 
+    THT_rep = data_creation(session['THT_form']['repair_time_all'], session['THT_form']['repair_money_all'], batch)
+    THT_cont = data_creation(session['THT_form']['control_time_all'], session['THT_form']['control_money_all'], batch)
     Wave = [
         session['Wave_form']['time_pc'],
         session['Wave_form']['time_all'],
@@ -184,7 +198,9 @@ def create_export(session):
         session['Add_form']['money_pc'],
         session['Add_form']['money_all']
         ]
-    data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont ,THT_re, THT, Wave_re, Wave, Wave_rep, Wave_cont, HRL_re, HRL, HRL_rep, HRL_cont, Hand, Handv_cont, 
+    data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont ,
+            THT_pri_re, THT_pri, THT_sec_re, THT_sec, THT_rep, THT_cont, 
+            Wave_re, Wave, Wave_rep, Wave_cont, HRL_re, HRL, HRL_rep, HRL_cont, Hand, Handv_cont, 
             Hand_cont, Test, Clear, Clear_cont, Handv, Sep, Xray, Add]
     headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
     row_headers = [
@@ -194,8 +210,12 @@ def create_export(session):
         "Автоматический поверхностный монтаж SMT Sec", 
         "Ремонт на поверхностном монтаже",
         "Контроль на поверхностном монтаже",
-        "Селективная пайка THT, переналадка",
-        "Селективная пайка THT",
+        "Селективная пайка THT Pri, переналадка",
+        "Селективная пайка THT Pri", 
+        "Селективная пайка THT Sec, переналадка",
+        "Селективная пайка THT Sec", 
+        "Ремонт на cелективной пайке THT",
+        "Контроль на cелективной пайке THT",
         "Волновая пайка, переналадка",
         "Волновая пайка",
         "Ремонт на волновой пайке",

@@ -37,91 +37,125 @@
                 </div>
             </fieldset>
         <table>
-            <th>
-                <td><label>Primary</label> </td>
-                <td><label>Secondary</label></td>
-                <td><label>Партия</label></td>
-                <td></td>
-            </th>
             <tr>
-                <td style="width: 40%;">
-                    <input type="text" class="form-control" readonly value="Количество компонентов">
-                    <input type="text" class="form-control" readonly value="Количество наименований">
-                    <input type="text" class="form-control" readonly value="Время сборки 1 ПУ">
-                    <input type="text" class="form-control" readonly value="Стоимость сборки 1 ПУ">
-                    <input type="text" class="form-control" readonly value="Время сборки всей партии">
-                    <input type="text" class="form-control" readonly value="Стоимость сборки всей партии">
-                    <input type="text" class="form-control" readonly value="Время переналадки 1 ПУ">
-                    <input type="text" class="form-control" readonly value="Стоимость переналадки 1 ПУ">
-                    <input type="text" class="form-control" readonly value="Время переналадки всей партии">
-                    <input type="text" class="form-control" readonly value="Стоимость переналадки всей партии">
-                    <input type="text" class="form-control" readonly value="Время ремонта партии">
-                    <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
-                    <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
-                    <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
-                    <br>
+                <td style="width: 50%;">
                     <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                 </td>
-                <td style="width: 20%;">
-                    <input type="text" name="components_t" id="components_t" class="form-control" readonly>
-                    <input type="text" name="unics_t" id="unics_t" class="form-control" readonly>
-                    <input type="text" name="time_pc_t" id="time_pc_t" class="form-control" readonly>
-                    <input type="text" name="money_pc_t" id="money_pc_t" class="form-control" readonly>
-                    <input type="text" name="time_all_t" id="time_all_t" class="form-control" readonly>
-                    <input type="text" name="money_all_t" id="money_all_t" class="form-control" readonly>
-                    <input type="text" name="time_re_pc_t" id="time_re_pc_t" class="form-control" readonly>
-                    <input type="text" name="money_re_pc_t" id="money_re_pc_t" class="form-control" readonly>
-                    <input type="text" name="time_re_all_t" id="time_re_all_t" class="form-control" readonly>
-                    <input type="text" name="money_re_all_t" id="money_re_all_t" class="form-control" readonly>
-                    <input type="text" class="form-control" readonly>
-                    <input type="text" class="form-control" readonly>
-                    <input type="text" class="form-control" readonly>
-                    <input type="text" class="form-control" readonly>
-                    <br>
-                    <input type="text" name="money_all_f_t" id="money_all_f_t" class="form-control" readonly>
-                    
-                </td>
-                <td style="width: 20%;">
-                    <input type="text" name="components_b" id="components_b" class="form-control" readonly>
-                    <input type="text" name="unics_b" id="unics_b" class="form-control" readonly>
-                    <input type="text" name="time_pc_b" id="time_pc_b" class="form-control" readonly>
-                    <input type="text" name="money_pc_b" id="money_pc_b" class="form-control" readonly>
-                    <input type="text" name="time_all_b" id="time_all_b" class="form-control" readonly>
-                    <input type="text" name="money_all_b" id="money_all_b" class="form-control" readonly>
-                    <input type="text" name="time_re_pc_b" id="time_re_pc_b" class="form-control" readonly>
-                    <input type="text" name="money_re_pc_b" id="money_re_pc_b" class="form-control" readonly>
-                    <input type="text" name="time_re_all_b" id="time_re_all_b" class="form-control" readonly>
-                    <input type="text" name="money_re_all_b" id="money_re_all_b" class="form-control" readonly>
-                    <input type="text" class="form-control" readonly>
-                    <input type="text" class="form-control" readonly>
-                    <input type="text" class="form-control" readonly>
-                    <input type="text" class="form-control" readonly>
-                    <br>
-                    <input type="text" name="money_all_f_b" id="money_all_f_b" class="form-control" readonly>
-                    
-                </td>
-                <td style="width: 20%;" >
-                    <div class="form-group">
-                        <input type="text" name="components" id="components" class="form-control" readonly>
-                        <input type="text" name="unics" id="unics" class="form-control" readonly>
-                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
-                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
-                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
-                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                        <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
-                        <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
-                        <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
-                        <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
-                        <input type="text" name="repair_time_all" id="repair_time_all" class="form-control" readonly>
-                        <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
-                        <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
-                        <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
-                        <br>
+                <td >
+                    <div class="form-group">                        
                         <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
                     </div>
                 </td>
             </tr>
         </table>
+        <div class="panel-group" id="accordion_dat">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
+                            Данные по стоимости SMD монтажа
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne_data" class="panel-collapse collapse" >
+                    <div class="panel-body">
+                        <div>
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Сторона Primary</th>
+                                            <th>Сторона Secondary</th>
+                                            <th>ПУ</th>
+                                        </tr>
+                                    </thead>
+                                    <td style="width: 40%;">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" readonly value="Количество компонентов">
+                                            <input type="text" class="form-control" readonly value="Количество наименований">
+                                            <input type="text" class="form-control" readonly value="Время сборки 1 ПУ">
+                                            <input type="text" class="form-control" readonly value="Стоимость сборки 1 ПУ">
+                                            <input type="text" class="form-control" readonly value="Время сборки всей партии">
+                                            <input type="text" class="form-control" readonly value="Стоимость сборки всей партии">
+                                            <input type="text" class="form-control" readonly value="Время переналадки 1 ПУ">
+                                            <input type="text" class="form-control" readonly value="Стоимость переналадки 1 ПУ">
+                                            <input type="text" class="form-control" readonly value="Время переналадки всей партии">
+                                            <input type="text" class="form-control" readonly value="Стоимость переналадки всей партии">
+                                            <input type="text" class="form-control" readonly value="Время ремонта партии">
+                                            <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
+                                            <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
+                                            <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">                                            
+                                            <br>
+                                            <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                                        </div>
+                                    </td>
+                                    <td style="width: 20%;">
+                                        <div class="form-group">                                        
+                                            <input type="text" name="components_t" id="components_t" class="form-control" readonly>
+                                            <input type="text" name="unics_t" id="unics_t" class="form-control" readonly>
+                                            <input type="text" name="time_pc_t" id="time_pc_t" class="form-control" readonly>
+                                            <input type="text" name="money_pc_t" id="money_pc_t" class="form-control" readonly>
+                                            <input type="text" name="time_all_t" id="time_all_t" class="form-control" readonly>
+                                            <input type="text" name="money_all_t" id="money_all_t" class="form-control" readonly>
+                                            <input type="text" name="time_re_pc_t" id="time_re_pc_t" class="form-control" readonly>
+                                            <input type="text" name="money_re_pc_t" id="money_re_pc_t" class="form-control" readonly>
+                                            <input type="text" name="time_re_all_t" id="time_re_all_t" class="form-control" readonly>
+                                            <input type="text" name="money_re_all_t" id="money_re_all_t" class="form-control" readonly>
+                                            <input type="text" class="form-control" readonly>
+                                            <input type="text" class="form-control" readonly>
+                                            <input type="text" class="form-control" readonly>
+                                            <input type="text" class="form-control" readonly>
+                                            <br>
+                                            <input type="text" name="money_all_f_t" id="money_all_f_t" class="form-control" readonly>
+                                        </div>
+                                    </td>
+                                    <td style="width: 20%;">
+                                        <div class="form-group">                                        
+                                            <input type="text" name="components_b" id="components_b" class="form-control" readonly>
+                                            <input type="text" name="unics_b" id="unics_b" class="form-control" readonly>
+                                            <input type="text" name="time_pc_b" id="time_pc_b" class="form-control" readonly>
+                                            <input type="text" name="money_pc_b" id="money_pc_b" class="form-control" readonly>
+                                            <input type="text" name="time_all_b" id="time_all_b" class="form-control" readonly>
+                                            <input type="text" name="money_all_b" id="money_all_b" class="form-control" readonly>
+                                            <input type="text" name="time_re_pc_b" id="time_re_pc_b" class="form-control" readonly>
+                                            <input type="text" name="money_re_pc_b" id="money_re_pc_b" class="form-control" readonly>
+                                            <input type="text" name="time_re_all_b" id="time_re_all_b" class="form-control" readonly>
+                                            <input type="text" name="money_re_all_b" id="money_re_all_b" class="form-control" readonly>
+                                            <input type="text" class="form-control" readonly>
+                                            <input type="text" class="form-control" readonly>
+                                            <input type="text" class="form-control" readonly>
+                                            <input type="text" class="form-control" readonly>
+                                            <br>
+                                            <input type="text" name="money_all_f_b" id="money_all_f_b" class="form-control" readonly>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" name="components" id="components" class="form-control" readonly>
+                                            <input type="text" name="unics" id="unics" class="form-control" readonly>
+                                            <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                                            <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                                            <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                                            <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                                            <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
+                                            <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
+                                            <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
+                                            <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
+                                            <input type="text" name="repair_time_all" id="repair_time_all" class="form-control" readonly>
+                                            <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
+                                            <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
+                                            <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                                            <br>
+                                        </div>
+                                    </td>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
