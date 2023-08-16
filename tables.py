@@ -14,22 +14,22 @@ def tables(file):
     for index, row in Bot.iterrows():
         value = str(row['Designator'])
         for index2, row2, in BOM.iterrows():
-            value2 = str(row2['Designators (BOM)']).split(",")
+            value2 = str(row2['Designators (BOM)']).replace(" ","").split(",")
             if value in value2:
                 Bot.at[index, 'Name'] = row2["Name"]
                 bot_lines += 1
     for index, row in Top.iterrows():
         value = str(row['Designator'])
         for index2, row2, in BOM.iterrows():
-            value2 = str(row2['Designators (BOM)']).split(",")
+            value2 = str(row2['Designators (BOM)']).replace(" ","").split(",")
             if value in value2:
                 Top.at[index, 'Name'] = row2["Name"]
                 top_lines += 1
-    if top_lines:
+    if top_lines != 0:
         top_lines_unic = Top["Name"].nunique()
     else:
         top_lines_unic = 0
-    if bot_lines:
+    if bot_lines != 0:
         bot_lines_unic = Bot["Name"].nunique()
     else:
         bot_lines_unic = 0
