@@ -61,7 +61,37 @@
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="2" >
+                    <td>
+                        <div class="form-group">
+                            <label>Производство:</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="prod" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['prod'] == "1" %} checked {% endif %} {% endif %}>
+                                Победит 1
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="prod"
+                                       {% if session.get('second_form')%} {% if session['second_form']['prod'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Победит 5
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Производилось ранее?</label>
+                            <br>
+                            <label>
+                                <input type="radio" name="prev" value="1"
+                                       {% if session.get('second_form')%} {% if session['second_form']['prev'] == "1" %} checked {% endif %} {% endif %}>
+                                Да
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="prev"
+                                       {% if session.get('second_form')%} {% if session['second_form']['prev'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                Нет
+                            </label>
+                        </div>
                         <div class="form-group">
                             <label>Трафареты:</label>
                             <br>
@@ -144,78 +174,36 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <label>Ширина мультзаготовки:</label>
-                            <input type="number" class="form-control" min="1" step="any" name="width" 
-                                value="{{ session['second_form']['width'] if session.get('second_form') else '' }}">
-                            <label>Длина мультизаготовки:</label>
-                            <input type="number" class="form-control" min="1" step="any" name="length" 
-                                value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <label>Производство:</label>
-                            <br>
-                            <label>
-                                <input type="radio" name="prod" value="1"
-                                       {% if session.get('second_form')%} {% if session['second_form']['prod'] == "1" %} checked {% endif %} {% endif %}>
-                                Победит 1
-                            </label>
-                            <br>
-                            <label>
-                                <input type="radio" name="prod"
-                                       {% if session.get('second_form')%} {% if session['second_form']['prod'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                Победит 5
-                            </label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
                             <div class="form-group">
                                 <label>Количество плат по Y:</label>
                                 <input type="number" class="form-control" name="width_num" id="width_num" min ="1"
                                     value="{{ session['second_form']['width_num'] if session.get('second_form') else '' }}">
-                            </div>
-                            <div class="form-group">
                                 <label>Количество плат по X:</label>
                                 <input type="number" min="1" class="form-control" name="length_num" id="length_num"
                                     value="{{ session['second_form']['length_num'] if session.get('second_form') else '' }}">
                             </div>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
                         <div class="form-group">
-                            <label>Производилось ранее?</label>
-                            <br>
-                            <label>
-                                <input type="radio" name="prev" value="1"
-                                       {% if session.get('second_form')%} {% if session['second_form']['prev'] == "1" %} checked {% endif %} {% endif %}>
-                                Да
-                            </label>
-                            <br>
-                            <label>
-                                <input type="radio" name="prev"
-                                       {% if session.get('second_form')%} {% if session['second_form']['prev'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                Нет
-                            </label>
+                            <div class="form-group">
+                                <label>Ширина исходной печатной платы:</label>
+                                <input type="number" class="form-control" min="1" step="any" name="width_pp" id="width_pp"
+                                    value="{{ session['second_form']['width_pp'] if session.get('second_form') else '' }}">
+                                <label>Длина исходной печатной платы:</label>
+                                <input type="number" class="form-control" min="1" step="any" name="length_pp" id="length_pp" 
+                                    value="{{ session['second_form']['length_pp'] if session.get('second_form') else '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Ширина мультзаготовки:</label>
+                                <input type="number" class="form-control" min="1" step="any" name="width" id="width" 
+                                    value="{{ session['second_form']['width'] if session.get('second_form') else '' }}">
+                                <label>Длина мультизаготовки:</label>
+                                <input type="number" class="form-control" min="1" step="any" name="length" id="length" 
+                                    value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
+                            </div>
                         </div>
-                    </td>
-                    <td>
                         <div class="form-group">
                             <label>Всего плат в мультизаготовке:</label>
                             <input type="number" min="1" class="form-control" name="pc" id ="pc" readonly>
-                        </div>
-                        <div class="form-group">
                             <label>Всего мультизаготовок:</label>
                             <input type="number" min="1" class="form-control" name="multi_num" id ="multi_num" readonly>
                         </div>
@@ -271,11 +259,44 @@
         document.getElementById('length_num').addEventListener('change', function() {
             pc_number();
         });
+
         
-        document.getElementById('width_num').addEventListener('change', function() {
-            pc_number();
+        document.getElementById('width_pp').addEventListener('change', function() {
+            let width_pp = parseFloat(document.getElementById("width_pp").value);
+            let y = parseFloat(document.getElementById("width_num").value);
+
+            if (!isNaN(width_pp) && !isNaN(y)) {
+                document.getElementById("width").value = width_pp * y;
+            }
+        });
+        
+        document.getElementById('length_pp').addEventListener('change', function() {
+            let length_pp = parseFloat(document.getElementById("length_pp").value);
+            let x = parseFloat(document.getElementById("length_num").value);
+
+            if (!isNaN(length_pp) && !isNaN(x)) {
+                document.getElementById("length").value = length_pp * x;
+            }
         });
 
+        document.getElementById('width').addEventListener('change', function() {
+            let width_pp = parseFloat(document.getElementById("width").value);
+            let y = parseFloat(document.getElementById("width_num").value);
+
+            if (!isNaN(width_pp) && !isNaN(y)) {
+                document.getElementById("width_pp").value = Math.ceil(width_pp / y);
+            }
+        });
+
+        document.getElementById('length').addEventListener('change', function() {
+            let length_pp = parseFloat(document.getElementById("length").value);
+            let x = parseFloat(document.getElementById("length_num").value);
+
+            if (!isNaN(length_pp) && !isNaN(x)) {
+                document.getElementById("length_pp").value = Math.ceil(length_pp / x);
+            }
+        });
+        
         function pc_number(){
             const pc_x = parseInt(num_x.value);
             const pc_y = parseInt(num_y.value);

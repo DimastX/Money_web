@@ -244,7 +244,7 @@ def create_export(session):
         sum_money_pc += int(str(df.iloc[i, 2]).split(" ")[0])
         sum_money_all += int(str(df.iloc[i, 3]).split(" ")[0])
     total = [str(sum_time_pc) + " с", str(sum_time_all) + " ч", str(sum_money_pc) + " руб", str(sum_money_all) + " руб"]
-    df.loc["Итого"] = total
+    df.loc["Cебестоимость"] = total
     if 'prepare' in session['second_form']:
         headers2 = ["","Стоимость"]
         data2 = prepare(session)
@@ -253,7 +253,16 @@ def create_export(session):
             prep_sum += int(str(data_in_data2[1]).split(" ")[0])
         data2.append(["Итого", str(prep_sum) + " руб" ])
         prep_sum_pc = int(prep_sum / batch)
-        df.loc["Итого с подготовкой производства"] = [str(sum_time_pc) + " с", str(sum_time_all) + " ч", str(sum_money_pc + prep_sum_pc) + " руб", str(sum_money_all + prep_sum) + " руб"]
+        VAT = int(session["Info_form"]["VAT"]) / 100.0 + 1
+        Income = int(session["Info_form"]["Info_proc"]) / 100.0 + 1
+        sum = [sum_time_pc, sum_time_all, sum_money_pc + prep_sum_pc, sum_money_all+prep_sum]
+        df.loc["Cебестоимость с подготовкой производства"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
+        sum[2] = int(sum[2] * Income)
+        sum[3] = int(sum[3] * Income)
+        df.loc["Итого с подготовкой производства без НДС"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]     
+        sum[2] = int(sum[2] * VAT)
+        sum[3] = int(sum[3] * VAT)
+        df.loc["Итого с подготовкой производства"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
         df2 = pd.DataFrame(data2, columns=headers2)
         return [df, df2]
     return [df, 1]

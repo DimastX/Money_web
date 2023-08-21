@@ -487,7 +487,7 @@ def add():
         if 'back' in request.form:
             return redirect(url_for('xray'))
         if 'next' in request.form:
-            return redirect(url_for('session_data'))
+            return redirect(url_for('info'))
     return render_template('Add.html', df2=df2)
 
 @app.route('/session_data', methods=['GET', 'POST'])
@@ -524,7 +524,7 @@ def session_data():
                 writer.writerows(df[0].to_records(index=True))
             return send_file(path +"/" + name, mimetype='text/csv', as_attachment=True)
     if 'back' in request.form:
-        return redirect(url_for('add'))
+        return redirect(url_for('info'))
     if 'tariffs' in request.form:
         session['last_page'] = 'session_data'
         return redirect(url_for('tariffs'))
@@ -533,6 +533,33 @@ def session_data():
                            tables2=[df[1].to_html(classes='table', index=False, header="true")])
     return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table = table)
 
+@app.route('/info', methods=['GET', 'POST'])
+def info():
+    edit = "0"
+    df2 = readdata()
+    df = pd.read_csv('data/Info.csv')
+    if request.method == 'POST':
+        session['Info_form'] = request.form
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
+        if 'save2' in request.form:
+            for key in request.form.keys():
+                if key.startswith('row'):  # если используется имя вида 'row%d'
+                    row = int(key[3:])  # извлекаем номер строки из имени
+                    df["Значение"][row] = request.form[key]  # обновляем значение ячейки
+            df.to_csv('data/Info.csv', index=False)
+        if 'next' in request.form:
+            return redirect(url_for('session_data'))
+        if 'back' in request.form:
+            return redirect(url_for('add'))
+        if 'tariffs' in request.form:
+            session['last_page'] = 'info'
+            return redirect(url_for('tariffs'))
+    return render_template('Info.html', df=df, edit=edit, df2=df2)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <!-- вывод flash-сообщений -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        <form id = "myForm" method="POST"> 
+            <br>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+            <p></p>
+            <label>Прибыль в %</label>
+            <br>
+            <input type="number" class="form-control" min="0" step="1" max="100" name="Info_proc" id="Info_proc"
+                value="{{ session['Info_form']['Info_proc'] if session.get('Xray_form') else '30' }}">
+            <label>НДС в %</label>
+            <br>
+            <input type="number" class="form-control" name="VAT" id="VAT" readonly
+                value="{{ df['Значение'][0] }}">
+            <br>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            Информация по стоимости
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse" >
+                    <div class="panel-body">
+                        <div>
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>{{ df.columns[0] }}</th>
+                                            <th>{{ df.columns[1] }}</th>
+                                        </tr>
+                                    </thead>
+                                    {% for row in df.iterrows(): %}
+                                    <tr>
+                                        {% for cell in row[1] %}
+                                        <td>
+                                            {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                <input {% if edit == "0" %} disabled {% endif %}
+                                                    type="number" min="0" max="1" step="0.1" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                            {% else %} <!-- Если это не второй столбец -->
+                                                {{ cell }}
+                                            {% endif %}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <label>Пароль:</label>
+                            <input type="password" class="form-control" name="password" 
+                                    onkeydown="return event.key != 'Enter';">                
+                            <br>
+                            <button {% if edit != "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save" 
+                                    onkeydown="return event.key != 'Enter';">Изменить</button>
+                            <button {% if edit == "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save2" 
+                                    onkeydown="return event.key != 'Enter';">Сохранить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>    
+    </div>
+</body>
