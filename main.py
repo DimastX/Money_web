@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response, jsonify
 from flask_table import Table, Col
 import pandas as pd
 import calculations_money as cm
@@ -7,12 +7,16 @@ import csv
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import secure_filename
 import tables as tb
+import directories
+import pickle
+
 from datetime import datetime
 import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 password = '1234'
+Calculations_path = "Calculations/"
 
 def readdata():
     return pd.read_csv('data/tarifs.csv')
@@ -21,14 +25,53 @@ def readdata():
 def start():
     if request.method == 'POST':
         if 'next' in request.form:
+            session.clear()
             return redirect(url_for('home'))
+        if 'dirs' in request.form:
+            # directories = dirs.get_folder_names("Calculations")
+            return redirect(url_for('dirs'))
     return render_template('Start.html')
+
+@app.route('/dirs', methods=['GET', 'POST'])
+def dirs():
+    file_tree = directories.generate_file_tree('Calculations')  # Путь к директории с заказчиками
+    if request.method == 'POST':
+        if 'prev' in request.form:
+            return redirect(url_for('start'))
+        if 'open' in request.form:
+            file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder'] + ".pickle"
+            with open(file_path, 'rb') as file:
+                session_data = pickle.load(file)
+                session.update(session_data)
+            return redirect(url_for('home'))
+        if 'download' in request.form:
+            file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder']
+            return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True)
+    return render_template('Dirs.html', file_tree=file_tree)
+
+@app.route("/get_child_folders", methods=["POST"])
+def get_child_folders():
+    parent_folder = request.form["parent_folder"]
+    session["dirs1"] = parent_folder
+    path = Calculations_path+str(parent_folder)
+    child_folders = directories.generate_file_tree(path)
+    return jsonify({"child_folders": child_folders})
+
+@app.route("/get_sub_folders", methods=["POST"])
+def get_sub_folders():
+    path = Calculations_path + session['dirs1'] + "/" + str(request.form["child_folder"])
+    session["dirs2"] = str(request.form["child_folder"])
+    sub_folders = directories.generate_file_tree2(path)
+    return jsonify({"sub_folders": sub_folders})
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     msg = ""
+    file_tree = directories.generate_file_tree('Calculations')
     if request.method == 'POST':
         session['home_form'] = request.form
+        if 'back' in request.form:
+            return redirect(url_for('start'))
         if 'tariffs' in request.form:
             session['last_page'] = 'home'
             return redirect(url_for('tariffs'))
@@ -42,7 +85,7 @@ def home():
         elif 'clear-session-button' in request.form:
             session.clear()
             return redirect(request.url)
-    return render_template('home.html')
+    return render_template('home.html', file_tree=file_tree)
 
 
 @app.route('/second', methods=['GET', 'POST'])
@@ -501,11 +544,11 @@ def session_data():
         if 'download' in request.form:
             current_time = datetime.now()
             path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
-            name = str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day) + ".csv"
+            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day)
             if not os.path.exists(path):
                 # Создаем директорию, если она не существует
                 os.makedirs(path)
-            with open(path +"/" + name, 'w', newline='', encoding='utf-8') as file:
+            with open(path +"/" + name + ".csv", 'w', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file)
                 writer.writerow(["Заказчик:", session['home_form']['field1']])
                 writer.writerow(["Изделие:", session['home_form']['field2']])
@@ -522,7 +565,12 @@ def session_data():
                 # Записываем строки из первого DataFrame
                 writer.writerow(df[0].columns)
                 writer.writerows(df[0].to_records(index=True))
-            return send_file(path +"/" + name, mimetype='text/csv', as_attachment=True)
+            session_data = {}
+            for key, value in session.items():
+                session_data[key] = value
+            with open(path +"/" + name + '.pickle', 'wb') as file:
+                pickle.dump(session_data, file)
+            return send_file(path +"/" + name + ".csv", mimetype='text/csv', as_attachment=True)
     if 'back' in request.form:
         return redirect(url_for('info'))
     if 'tariffs' in request.form:

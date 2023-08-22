@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <!-- вывод flash-сообщений -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container" >
+        <h1>Каталог изделий</h1>
+        <form id = "myForm" method="POST">
+        <select name="parent_folder" class="form-control">
+            {% for folder in file_tree %}
+            <option value="{{ folder }}">{{ folder }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <select name="child_folder" id="child-folder" class="form-control">
+            <!-- Здесь будут генерироваться значения для второго выпадающего списка -->
+        </select>
+        <br>
+        <select name="sub_folder" id="sub-folder" class="form-control">
+            <!-- Здесь будут генерироваться значения для третьего выпадающего списка -->
+        </select>
+        <br>
+            <button type="submit" class="btn btn-primary" name="prev">Назад</button>
+            <button type="submit" class="btn btn-primary" name="open">Открыть изделие</button>
+            <button type="submit" class="btn btn-primary" name="download">Скачать расчёт</button>
+            <button type="submit" class="btn btn-primary" name="new">Новый заказчик</button>
+        </form>
+    </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+
+        $(document).ready(function(){
+            $("select[name='parent_folder']").change(function(){
+            var selectedParentFolder = $(this).val();
+
+            // Запрос на сервер для получения значений второго списка
+            $.ajax({
+                url: "/get_child_folders",
+                type: "POST",
+                data: { parent_folder: selectedParentFolder },
+                success: function(response){
+                var childFolderSelect = $("#child-folder");
+                childFolderSelect.empty();
+
+                // Создание значений второго списка
+                $.each(response.child_folders, function(index, folder){
+                    childFolderSelect.append('<option value="' + folder + '">' + folder + '</option>');
+                });
+
+                // Обновление третьего списка при изменении значения второго списка
+                var selectedChildFolder = childFolderSelect.val();
+                updateSubFolderOptions(selectedChildFolder);
+                }
+            });
+            });
+
+            // Обработка изменений второго списка для обновления третьего списка
+            $("#child-folder").change(function(){
+            var selectedChildFolder = $(this).val();
+            updateSubFolderOptions(selectedChildFolder);
+            });
+
+            // Функция для обновления значений третьего списка
+            function updateSubFolderOptions(selectedChildFolder) {
+            $.ajax({
+                url: "/get_sub_folders",
+                type: "POST",
+                data: { child_folder: selectedChildFolder },
+                success: function(response){
+                var subFolderSelect = $("#sub-folder");
+                subFolderSelect.empty();
+
+                // Создание значений третьего списка
+                $.each(response.sub_folders, function(index, folder){
+                    subFolderSelect.append('<option value="' + folder + '">' + folder + '</option>');
+                });
+                }
+            });
+            }
+    });
+        
+        </script>
+        
+</body>

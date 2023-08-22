@@ -21,15 +21,17 @@
     <div class="container">
         <br>
         <form id = "myForm" method="POST">
-            <a class='btn btn-transparent' style="width: 66.14px; height: 34px;"><img src='static\css/pick.png' width="20" height="20"></a> 
+            <button type="submit" class="btn btn-primary" name="back">Назад</button> 
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
-            <p></p>
-            <button type="submit" class="btn btn-primary" name="clear-session-button">Новое изделие</button>
             <div class="form-group">
                 <br>
                 <label>Заказчик:</label>
-                <input type="text" class="form-control" name="field1" value="{{ session['home_form']['field1'] if session.get('home_form') else '' }}">
+                <select name="field1" class="form-control">
+                    {% for folder in file_tree %}
+                    <option value="{{ folder }}">{{ folder }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="form-group">
                 <label>Изделие:</label>
