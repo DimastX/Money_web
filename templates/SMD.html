@@ -21,6 +21,10 @@
         </div>
     {% endif %}
     {% endwith %}
+    <div class="alert" id="processing-notification" hidden>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        Таблица обрабатывается
+    </div>
     <div class="container">
         <form id = "myForm" method="POST">
            <br>
@@ -33,7 +37,7 @@
                 <legend>Автоматический поверхностный монтаж SMT</legend>
                 <div class="form-group">
                     <input type="checkbox" id="SMD" name="SMD" value="1" onclick="check('SMD', 'SMD_off')"
-                           {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD'] %} checked="checked" {% endif %} {% endif %}>
+                           {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD'] or session.get('tables')%} checked="checked" {% endif %} {% endif %}>
                     <label for="SMD">Выполнять автоматический поверхностный монтаж SMT? </label>
                 </div>
             </fieldset>
@@ -293,6 +297,8 @@
         }
 
         function submitForm() {
+            var notification = document.getElementById("processing-notification");
+            notification.style.display = "block";
             document.getElementById("uploadForm").submit();
         }
 
@@ -399,9 +405,9 @@
                 money_re_pc_t = Math.ceil(money_re_all_t / batch);
                 money_re_pc_b = Math.ceil(money_re_all_b / batch);
 
-                document.getElementById('components').value = components + " шт";
-                document.getElementById('components_t').value = components_t + " шт";
-                document.getElementById('components_b').value = components_b + " шт";
+                document.getElementById('components').value = Top+Bot + " шт";
+                document.getElementById('components_t').value = Top + " шт";
+                document.getElementById('components_b').value = Bot + " шт";
 
                 document.getElementById('unics').value = unics + " шт";
                 document.getElementById('unics_t').value = unics_t + " шт";

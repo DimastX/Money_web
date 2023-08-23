@@ -28,8 +28,9 @@
                 <br>
                 <label>Заказчик:</label>
                 <select name="field1" class="form-control">
+                    <option selected hidden></option>
                     {% for folder in file_tree %}
-                    <option value="{{ folder }}">{{ folder }}</option>
+                    <option value="{{ folder }}" {% if session.get('home_form')%} {% if session['home_form']['field1'] == folder %} selected {% endif %} {% endif %}>{{ folder }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -37,11 +38,17 @@
                 <label>Изделие:</label>
                 <input type="text" class="form-control" name="field2" value="{{ session['home_form']['field2'] if session.get('home_form') else '' }}">
             </div>
+            <div class="tooltip-example" data-toggle="tooltip" data-placement="top" title="Это пояснение">Текст с подсказкой</div>
             <div class="form-group">
                 <label>Партия:</label>
                 <input type="number" class="form-control" name="field3" min="1" step="1" value="{{ session['home_form']['field3'] if session.get('home_form') else '' }}">
             </div>
         </form>
     </div>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </body>
 </html>

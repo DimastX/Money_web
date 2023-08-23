@@ -47,6 +47,8 @@ def dirs():
         if 'download' in request.form:
             file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder']
             return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True)
+        if 'new' in request.form:
+            return redirect(url_for('cust'))
     return render_template('Dirs.html', file_tree=file_tree)
 
 @app.route("/get_child_folders", methods=["POST"])
@@ -63,6 +65,18 @@ def get_sub_folders():
     session["dirs2"] = str(request.form["child_folder"])
     sub_folders = directories.generate_file_tree2(path)
     return jsonify({"sub_folders": sub_folders})
+
+@app.route("/new_customer", methods=['GET', 'POST'])
+def cust():
+    if request.method == 'POST':
+        if 'new' in request.form:
+            folder_name = request.form["name"]
+            folder_path = Calculations_path + folder_name
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
+            return redirect(url_for("dirs"))
+    return render_template('Cust.html')
+
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -165,7 +179,7 @@ def smd():
     df2 = readdata()
     df3 = pd.read_csv('data/SMD2.csv').values.tolist()
     df4 = pd.read_csv('data/SMD2.csv')
-    if request.method == 'POST':
+    if request.method == 'POST': 
         session['SMD_form'] = request.form
         if 'tariffs' in request.form:
             session['last_page'] = 'smd'

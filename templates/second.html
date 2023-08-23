@@ -49,6 +49,12 @@
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "3" %} checked {% endif %} {% endif %} value="3">
                                 Закупка Starline
                             </label>
+                            <label>
+                                <input type="radio" name="Comp" title="+10% к входному контролю"
+                                       {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "4" %} checked {% endif %} {% endif %} value="4">
+                                Смешанная
+                            </label>
+                            <br>
                         </div>
                     </td>
                     <td>
@@ -105,71 +111,71 @@
                                 <input type="radio" name="Traf" id="Traf_Y"
                                        {% if session.get('second_form')%} {% if session['second_form']['Traf'] == "2" %} checked {% endif %} {% endif %} value="2">
                                 Разрабатывает Starline
-                                <div class="form-group" id="Traf_costs" style="display:none; margin: 10px">
-                                    <table margin="0">
-                                        <tr>
-                                            <td style="width: 50%;">
-                                                <div class="form-group">
-                                                    <label>Количество сторон SMD:</label>
-                                                    <br>
-                                                    <label>
-                                                        <input type="radio" name="sides_SMD" value="1"
-                                                            {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "1" %} checked {% endif %} {% endif %}>
-                                                        Односторонняя
-                                                    </label>
-                                                    <br>
-                                                    <label>
-                                                        <input type="radio" name="sides_SMD"
-                                                            {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                                        Двусторонняя
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td style="width: 50%;">
-                                                <div class="form-group">
-                                                    <label>Выбор стоимости:</label>
-                                                    <br>
-                                                    <label>
-                                                        <input type="radio" name="Trafs_costs_select" value="1" id="Trafs_costs_select1"
-                                                            {% if session.get('second_form')%} {% if session['second_form']['Trafs_costs_select'] == "1" %} checked {% endif %} {% endif %}>
-                                                        Тарифная
-                                                    </label>
-                                                    <br>
-                                                    <label>
-                                                        <input type="radio" name="Trafs_costs_select" id="Trafs_costs_select2"
-                                                            {% if session.get('second_form')%} {% if session['second_form']['Trafs_costs_select'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                                        Ручная
-                                                    </label>
-                                                    <div class="form-group" id="Traf_costs1" style="display:none; margin: 10px">
-                                                        <label>Стоимость трафарета</label>
-                                                        <br>
-                                                        <select name="Traf_value2" class="form-control">
-                                                            <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "1" %} selected {% endif %} {% endif %}
-                                                                    value="1" >
-                                                                Простой трафарет - 15.000 руб
-                                                            </option>
-                                                            <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "2" %} selected {% endif %} {% endif %}
-                                                                    value="2">
-                                                                Средний трафарет - 30.000 руб
-                                                            </option>
-                                                            <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "3" %} selected {% endif %} {% endif %}
-                                                                    value="3">
-                                                                Сложный трафарет - 100.000 руб
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group" id="Traf_costs2" style="display:none; margin: 10px">
-                                                        <label>Стоимость трафарета</label>
-                                                        <input type="number" class="form-control" name="Traf_value"
-                                                            value="{{ session['second_form']['Traf_value'] if session.get('second_form') else '' }}"
-                                                            placeholder="За 1 шт." min="0" step="1000">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
                             </label>
+                            <div class="form-group" id="Traf_costs" style="display:none; margin: 10px">
+                                <table margin="0" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 50%;">
+                                            <div class="form-group">
+                                                <label>Количество сторон SMD:</label>
+                                                <br>
+                                                <label>
+                                                    <input type="radio" name="sides_SMD" value="1"
+                                                        {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "1" %} checked {% endif %} {% endif %}>
+                                                    Односторонняя
+                                                </label>
+                                                <br>
+                                                <label>
+                                                    <input type="radio" name="sides_SMD"
+                                                        {% if session.get('second_form')%} {% if session['second_form']['sides_SMD'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                                    Двусторонняя
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <label>Выбор стоимости:</label>
+                                                <br>
+                                                <label>
+                                                    <input type="radio" name="Trafs_costs_select" value="1" id="Trafs_costs_select1"
+                                                        {% if session.get('second_form')%} {% if session['second_form']['Trafs_costs_select'] == "1" %} checked {% endif %} {% endif %}>
+                                                    Тарифная
+                                                </label>
+                                                <br>
+                                                <label>
+                                                    <input type="radio" name="Trafs_costs_select" id="Trafs_costs_select2"
+                                                        {% if session.get('second_form')%} {% if session['second_form']['Trafs_costs_select'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                                    Ручная
+                                                </label>
+                                                <div class="form-group" id="Traf_costs1" style="display:none; margin: 10px">
+                                                    <label>Стоимость трафарета</label>
+                                                    <br>
+                                                    <select name="Traf_value2" class="form-control">
+                                                        <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "1" %} selected {% endif %} {% endif %}
+                                                                value="1" >
+                                                            Простой трафарет - 15.000 руб
+                                                        </option>
+                                                        <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "2" %} selected {% endif %} {% endif %}
+                                                                value="2">
+                                                            Средний трафарет - 30.000 руб
+                                                        </option>
+                                                        <option {% if session.get('second_form')%} {% if session['second_form']['Traf_value2'] == "3" %} selected {% endif %} {% endif %}
+                                                                value="3">
+                                                            Сложный трафарет - 100.000 руб
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group" id="Traf_costs2" style="display:none; margin: 10px">
+                                                    <label>Стоимость трафарета</label>
+                                                    <input type="number" class="form-control" name="Traf_value"
+                                                        value="{{ session['second_form']['Traf_value'] if session.get('second_form') else '' }}"
+                                                        placeholder="За 1 шт." min="0" step="1000">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </td>
                     <td>

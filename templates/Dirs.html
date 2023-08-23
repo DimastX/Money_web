@@ -22,6 +22,7 @@
         <h1>Каталог изделий</h1>
         <form id = "myForm" method="POST">
         <select name="parent_folder" class="form-control">
+            <option selected hidden></option>
             {% for folder in file_tree %}
             <option value="{{ folder }}">{{ folder }}</option>
             {% endfor %}
