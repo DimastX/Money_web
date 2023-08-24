@@ -5,7 +5,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ url_for('static', filename='css/doubletitle.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
         <!-- вывод flash-сообщений -->
@@ -33,26 +36,51 @@
                             <label>Комплектация:</label>
                             <br>
                             <label>
-                                <input type="radio" name="Comp" value="1" title="+10% к входному контролю, +15% к входному контролю"
+                                <input type="radio" name="Comp" value="1"
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "1" %} checked {% endif %} {% endif %}>
                                 Давальческая (россыпью)
+                                <a href="#" data-toggle="tooltip" title="+15% к входному контролю">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+                                </a>
                             </label>
                             <br>
                             <label>
-                                <input type="radio" name="Comp" title="+10% к входному контролю"
+                                <input type="radio" name="Comp"
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "2" %} checked {% endif %} {% endif %} value="2">
                                 Давальческая (в заводской упаковке)
+                                <a href="#" data-toggle="tooltip" title="+10% к входному контролю">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+                                </a>
                             </label>
                             <br>
                             <label>
-                                <input type="radio" name="Comp" title="Надбавочного коэффициента нет"
+                                <input type="radio" name="Comp" 
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "3" %} checked {% endif %} {% endif %} value="3">
                                 Закупка Starline
+                                <a href="#" data-toggle="tooltip" title="Надбавочного коэффициента нет">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+                                </a>
                             </label>
+                            <br>
                             <label>
-                                <input type="radio" name="Comp" title="+10% к входному контролю"
+                                <input type="radio" name="Comp"
                                        {% if session.get('second_form')%} {% if session['second_form']['Comp'] == "4" %} checked {% endif %} {% endif %} value="4">
                                 Смешанная
+                                <a href="#" data-toggle="tooltip" title="+15% к входному контролю">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+                                </a>
                             </label>
                             <br>
                         </div>
@@ -61,7 +89,13 @@
                         <div class="form-group">
                             <input type="checkbox" id="prepare" name="prepare" value="1"
                            {% if session.get('second_form')%} {% if session['second_form']['prepare'] %} checked="checked" {% endif %} {% endif %}>
-                            <label for="HRL">Выполнять подготовку производства? </label>
+                            <label for="HRL">Выполнять подготовку производства? 
+                                <a href="#" data-toggle="tooltip" title="Влияет на стоимость подготовки производства, в т.ч. трафаретов">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+                                </a>
                             </label>
                         </div>
                     </td>
@@ -84,7 +118,15 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label>Производилось ранее?</label>
+                            <label>Производилось ранее?
+                                
+                                <a href="#" data-toggle="tooltip" title="Влияет на количество плат, отправляемых на ремонт (-50%)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+                                </a>
+                            </label>
                             <br>
                             <label>
                                 <input type="radio" name="prev" value="1"
@@ -219,6 +261,9 @@
         </form>
     </div>
     <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
         let num_x = document.getElementById('length_num');
         let num_y = document.getElementById('width_num');
         function checkOption(optionId, fieldId) {
@@ -276,7 +321,24 @@
             }
         });
         
+        document.getElementById('width_num').addEventListener('change', function() {
+            let width_pp = parseFloat(document.getElementById("width_pp").value);
+            let y = parseFloat(document.getElementById("width_num").value);
+
+            if (!isNaN(width_pp) && !isNaN(y)) {
+                document.getElementById("width").value = width_pp * y;
+            }
+        });
+        
         document.getElementById('length_pp').addEventListener('change', function() {
+            let length_pp = parseFloat(document.getElementById("length_pp").value);
+            let x = parseFloat(document.getElementById("length_num").value);
+
+            if (!isNaN(length_pp) && !isNaN(x)) {
+                document.getElementById("length").value = length_pp * x;
+            }
+        });
+        document.getElementById('length_num').addEventListener('change', function() {
             let length_pp = parseFloat(document.getElementById("length_pp").value);
             let x = parseFloat(document.getElementById("length_num").value);
 
