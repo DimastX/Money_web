@@ -15,23 +15,28 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
-password = '1234'
-Calculations_path = "Calculations/"
+password = '1234' # Пароль для редактирования констант
+Calculations_path = "Calculations/" # Путь хранения расчётов 
 
+# Загрузка тарифов из таблицы .csv
 def readdata():
     return pd.read_csv('data/tarifs.csv')
 
+# Стартовая страница
 @app.route('/', methods=['GET', 'POST'])
 def start():
     if request.method == 'POST':
+        # Очистка cookies и открытие формы расчёта
         if 'next' in request.form:
             session.clear()
             return redirect(url_for('home'))
+        # Открытие каталога изделий
         if 'dirs' in request.form:
-            # directories = dirs.get_folder_names("Calculations")
             return redirect(url_for('dirs'))
-    return render_template('Start.html')
+    return render_template('Start.html') #Открытие стартовой станицы
 
+
+# Страница с каталогом изделий
 @app.route('/dirs', methods=['GET', 'POST'])
 def dirs():
     file_tree = directories.generate_file_tree('Calculations')  # Путь к директории с заказчиками
@@ -39,62 +44,70 @@ def dirs():
         if 'prev' in request.form:
             return redirect(url_for('start'))
         if 'open' in request.form:
+            # Путь к файлу вида: Директория_хранения/Имя_заказчика/Наименование_изделия/Название_расчёта.pickle
             file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder'] + ".pickle"
+            # Открытие файла полученному по этому пути
             with open(file_path, 'rb') as file:
                 session_data = pickle.load(file)
-                session.update(session_data)
+                session.update(session_data) # Задание в значение session данных из предыдущего расчёта
             return redirect(url_for('home'))
         if 'download' in request.form:
+            # Путь к файлу вида: Директория_хранения/Имя_заказчика/Наименование_изделия/Название_расчёта.pickle
             file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder']
-            return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True)
+            return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True) # Скачивание файла 
         if 'new' in request.form:
-            return redirect(url_for('cust'))
+            return redirect(url_for('cust')) # Открытие страницы с созданием нового заказчика
     return render_template('Dirs.html', file_tree=file_tree)
 
+# Создание списка всех заказчиков
 @app.route("/get_child_folders", methods=["POST"])
 def get_child_folders():
     parent_folder = request.form["parent_folder"]
-    session["dirs1"] = parent_folder
+    session["dirs1"] = parent_folder # Запись значения имени заказчика в session
     path = Calculations_path+str(parent_folder)
     child_folders = directories.generate_file_tree(path)
     return jsonify({"child_folders": child_folders})
 
+
+# Создание списка всех изделий
 @app.route("/get_sub_folders", methods=["POST"])
 def get_sub_folders():
     path = Calculations_path + session['dirs1'] + "/" + str(request.form["child_folder"])
-    session["dirs2"] = str(request.form["child_folder"])
+    session["dirs2"] = str(request.form["child_folder"])# Запись значения названия изделия в session
     sub_folders = directories.generate_file_tree2(path)
     return jsonify({"sub_folders": sub_folders})
 
+
+# Страница с созданием нового заказчика
 @app.route("/new_customer", methods=['GET', 'POST'])
 def cust():
     if request.method == 'POST':
         if 'new' in request.form:
-            folder_name = request.form["name"]
+            folder_name = request.form["name"] # Получение имени нового заказчика
             folder_path = Calculations_path + folder_name
-            if not os.path.exists(folder_path):
+            if not os.path.exists(folder_path): #Если такого имени ещё нет то создаётся новая директория
                 os.makedirs(folder_path)
             return redirect(url_for("dirs"))
     return render_template('Cust.html')
 
 
+# Первая страница в калькуляторе
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     msg = ""
-    file_tree = directories.generate_file_tree('Calculations')
+    file_tree = directories.generate_file_tree('Calculations') # Создание списка всех заказчиков
     if request.method == 'POST':
-        session['home_form'] = request.form
+        session['home_form'] = request.form # Сохранение всех полей 
         if 'back' in request.form:
-            return redirect(url_for('start'))
+            return redirect(url_for('start')) # Возвращение на предыдущую страницу
         if 'tariffs' in request.form:
-            session['last_page'] = 'home'
-            return redirect(url_for('tariffs'))
+            session['last_page'] = 'home' # Запоминание страницы с которой уходим, для дальнейшего возвращения на неё
+            return redirect(url_for('tariffs')) # Открытие страницы с тарифами
         elif 'next' in request.form:
             if (request.form['field1'] != "") and (request.form['field2'] != "") and (request.form['field3'] != ""):
                 return redirect(url_for('second'))
             else:
                 msg = 'Заполните все поля'
-                #return render_template('home.html', msg=msg)ss
                 flash(msg)
         elif 'clear-session-button' in request.form:
             session.clear()
