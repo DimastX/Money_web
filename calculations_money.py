@@ -1,30 +1,38 @@
 import math
 import pandas as pd
 
+
+"""Расчёт затрат на отмывку"""
 def clear_calculations(session, df):
-    by_x = math.floor(df['Значение'][3] / float(session['second_form']['width']))
+    by_x = math.floor(df['Значение'][3] / float(session['second_form']['width']))  #Ширина рамки отмывки/ширину мз 
     by_y = math.floor(df['Значение'][2] / float(session['second_form']['length']))
-    number_multi = int(by_x * by_y)
-    number_items = int(session['second_form']['length_num']) * int(session['second_form']['width_num'])
-    number_smallitems = int(number_items * number_multi)
-    if int(session['home_form']['field3']) < number_smallitems:
+    number_multi = int(by_x * by_y) #Количество мультизаготовок, помещающихся в рамке отмывки одновременно
+    number_items = int(session['second_form']['length_num']) * int(session['second_form']['width_num']) #Количество плат в мз
+    number_smallitems = int(number_items * number_multi) #Количество плат в рамке отмывки одновременно
+    if int(session['home_form']['field3']) < number_smallitems: #Если размер партии меньше, чем количество плат в отмывке одновременно
         number_smallitems = int(session['home_form']['field3'])
         number_multi = number_smallitems / number_items
-    return [number_multi, number_items, number_smallitems]
+    return [number_multi, number_items, number_smallitems] #Количество мз в рамке отмывки, количество плат в мз, количество плат в рамке отмывки
 
+
+"""Расчёт времени на разделение одной мз"""
 def sep_calculations(session, df):
-    by_x = float(session['second_form']['width']) * (int(session['second_form']['length_num']) + 1) 
+    by_x = float(session['second_form']['width']) * (int(session['second_form']['length_num']) + 1) #ширина мз * (количество плат в длину + 1) = расстояние пройденное по х
     by_y = float(session['second_form']['length']) * (int(session['second_form']['width_num']) + 1) 
-    number_items = int(session['second_form']['length_num']) * int(session['second_form']['width_num'])
-    number_multi = int(session['home_form']['field3']) /  number_items
-    time_scrub = math.ceil((by_x + by_y) / df['Значение'][0] * df['Значение'][3] / number_items)
-    time_jump = df['Значение'][1] * df['Значение'][4]
-    time_sar = math.ceil((by_x + by_y) / df['Значение'][2]  / number_items)
+    number_items = int(session['second_form']['length_num']) * int(session['second_form']['width_num']) #Количество пп в мз
+    number_multi = int(session['home_form']['field3']) /  number_items #Количество мз
+    time_scrub = math.ceil((by_x + by_y) / df['Значение'][0] * df['Значение'][3] / number_items) #(Расстояние / скорость скрайбирования) * поправочный коэф-т / количество пп в мз
+    time_jump = df['Значение'][1] * df['Значение'][4] #
+    time_sar = math.ceil((by_x + by_y) / df['Значение'][2]  * df['Значение'][5]/ number_items) #(Расстояние / скорость SAR) * поправочный коэф-т / количество пп в мз
     time = [time_scrub, time_jump, time_sar, number_multi, number_items]
     return time
     
+
+
+"""Создание итоговой таблицы"""
 def create_export(session):
     batch = int(session['home_form']['field3'])
+    #Создание массивов для каждой строки затрат
     SMD_re_t = [
         session['SMD_form']['time_re_pc_t'],
         session['SMD_form']['time_re_all_t'],
@@ -49,7 +57,7 @@ def create_export(session):
         session['SMD_form']['money_pc_b'],
         session['SMD_form']['money_all_b']
         ]
-    if session['SMD_form']['repair_time_all'] != '-':
+    if session['SMD_form']['repair_time_all'] != '-': #В случае если ремонт требуется расчёт значений для ремонта
         SMD_rep =[
             str(math.ceil(int(str(session['SMD_form']['repair_time_all']).split(" ")[0]) / batch * 3600)) + " с",
             session['SMD_form']['repair_time_all'],
@@ -203,6 +211,7 @@ def create_export(session):
             Wave_re, Wave, Wave_rep, Wave_cont, HRL_re, HRL, HRL_rep, HRL_cont, Hand, Handv_cont, 
             Hand_cont, Test, Clear, Clear_cont, Handv, Sep, Xray, Add]
     headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
+    #Статьи расходов
     row_headers = [
         "Автоматический поверхностный монтаж SMT Pri, переналадка",
         "Автоматический поверхностный монтаж SMT Pri", 
@@ -235,6 +244,7 @@ def create_export(session):
         "Рентгенконтроль",
         "Доп. работы"
         ]
+    #Создание DataFrame со значениями выше
     df = pd.DataFrame(data, columns=headers, index=row_headers)
     df = df.drop(df[(df == "-").all(axis=1)].index)
     sum_time_pc, sum_money_pc, sum_time_all, sum_money_all = 0, 0, 0, 0
@@ -244,7 +254,8 @@ def create_export(session):
         sum_money_pc += int(str(df.iloc[i, 2]).split(" ")[0])
         sum_money_all += int(str(df.iloc[i, 3]).split(" ")[0])
     total = [str(sum_time_pc) + " с", str(sum_time_all) + " ч", str(sum_money_pc) + " руб", str(sum_money_all) + " руб"]
-    df.loc["Cебестоимость"] = total
+    df.loc["Cебестоимость"] = total #Строка итого
+    #Создание таблицы с подоготовкой производства
     if 'prepare' in session['second_form']:
         headers2 = ["","Стоимость"]
         data2 = prepare(session)
@@ -270,7 +281,7 @@ def create_export(session):
 def prepare(session):
     df = pd.read_csv('data/Traf.csv')
     df2 = pd.read_csv('data/tarifs.csv')
-    if "Trafs_costs_select" in session["second_form"] and "Traf" in session["second_form"]:
+    if "Trafs_costs_select" in session["second_form"] and "Traf" in session["second_form"]: #Выбор стоимости трафарет основываясь на том, что было выбрано на странице second
         if session['second_form']['Traf'] == "2":
             if session["second_form"]["Trafs_costs_select"] == "1": 
                 if session["second_form"]["Traf_value2"] == "1":
@@ -288,7 +299,9 @@ def prepare(session):
     doc = str(df2["Стоимость, руб/ч"][23]) + " руб"
     ebom = str(df2["Стоимость, руб/ч"][24] * session["tables"][4]) + " руб"
     return [["Трафареты", traf], ["Проверка документации", doc], ["Создание EBOM", ebom]]
-    
+
+
+"""Функция для создания значений в массиве при известном одном значении"""   
 def data_creation(time_all, money_all, batch):
     if time_all == "-":
         list1 = [

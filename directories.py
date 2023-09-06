@@ -1,5 +1,6 @@
 import os
 
+"""Список вложенных директорий в директории"""
 def generate_file_tree(directory):
     file_tree = []
 
@@ -9,7 +10,7 @@ def generate_file_tree(directory):
             file_tree.append(folder)
 
     return file_tree
-
+"""Список вложенных файлов с расширением .pickle в директории"""
 def generate_file_tree2(directory):
     file_tree = []
 
