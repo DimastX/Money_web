@@ -5,6 +5,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <script src="scripts/Checks.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -186,31 +187,42 @@
         </form>
     </div>
     <script>
+        function check(master_box, slave) {
+            if (document.getElementById(master_box).checked) {
+            document.getElementById(slave).classList.remove('disable_section')
+            } else {
+            document.getElementById(slave).classList.add('disable_section')
+            }
+        }
         window.onload = function(){
             check_all('Clear', 'Clear_off');
         }
-        function check(master_box, slave) {
-          if (document.getElementById(master_box).checked) {
-            document.getElementById(slave).classList.remove('disable_section')
-          } else {
-            document.getElementById(slave).classList.add('disable_section')
-          }
+        
+        
+        // Вызывает пересчёт, затем проверку нажатия, затем ещё раз пересчёт
+        function check_all(master, slave){
+            multiply()
+            check(master, slave)
+            multiply()
         }
         
-        
         const opt = document.getElementsByName("Clear_type");
-        const number_multi = document.getElementById("number_multi");
-        const number_items = document.getElementById("number_items");
-        const number_smallitems = document.getElementById("number_pcb");
+        // Эти значения считаются в calculations_money.py
+        const number_multi = document.getElementById("number_multi"); //Количество мз
+        const number_items = document.getElementById("number_items"); //Количество плат в мз
+        const number_smallitems = document.getElementById("number_pcb"); // Количество плат в рамке отмывки
         const chckbx = document.getElementById("Clear")
+
+        //функция пересчёта значений
         function multiply(){
-            
             var batch = parseInt({{ session['home_form']['field3']}});
-            const num = parseInt(number_smallitems.value);
+            const num = parseInt(number_smallitems.value); 
             const num1 = parseInt(number_multi.value);
             const num2 = parseInt(number_item.value);
             const master = chckbx.checked
+            //расчёт количества циклов отмывки
             var result = parseFloat({{ session['home_form']['field3'] }}) / parseFloat(num); 
+            //Выбор программы отмывки
             if (opt[0].checked && master){
                 result = result * parseFloat({{ df['Значение'][0] }}) * parseFloat({{ df['Значение'][4] }}) / 60;
             } else if(opt[1].checked && master){
@@ -219,7 +231,9 @@
                 result = 0;
             }
             result = Number(result).toFixed(2)
+            //Стоимость, исходя из тарифов
             var costs = Math.ceil(result * parseInt({{ df2['Стоимость, руб/ч'][12]}}))
+            
             if (chckbx.checked){
                 
                 document.getElementById("time_all").value = Math.ceil(result) + " ч";
@@ -256,12 +270,6 @@
                 document.getElementById("number_multi").value = "0";
                 document.getElementById("number_item").value = "0";
             }
-        }
-
-        function check_all(master, slave){
-            multiply()
-            check(master, slave)
-            multiply()
         }
     </script>
 </body>

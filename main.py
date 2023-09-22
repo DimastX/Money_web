@@ -6,6 +6,7 @@ import io
 import csv
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import secure_filename
+from waitress import serve
 import tables as tb
 import directories
 import pickle
@@ -204,7 +205,7 @@ def smd():
                 msg = 'Неверный пароль'
                 flash(msg)
         if 'save4' in request.form: #изменение второй таблицы
-            tb.update_table("SMD2", request.form, df4)
+            tb.update_table2("SMD2", request.form, df4)
         if 'template' in request.form:
             return send_file('Documentation/Template.csv', mimetype='text/csv', as_attachment=True)
     return render_template('SMD.html', df=df, df2=df2, edit=edit, df3=df3, edit2=edit2, df4=df4)
@@ -566,3 +567,4 @@ def session_data():
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
+    #serve(app, host="0.0.0.0", port=5000)

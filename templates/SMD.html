@@ -348,13 +348,13 @@
                 control_time_pc = Math.ceil(control_time_all / batch * 3600);
                 control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
                 control_time_pc = Math.ceil(control_money_all / batch);
-                console.log(Bot);
                 const components = (Top + Bot) * batch;
                 const components_t = Top * batch;
                 const components_b = Bot * batch;
                 const unics = Top_u + Bot_u;
                 const unics_t = Top_u;
                 const unics_b = Bot_u;
+                console.log(components_t)
                 const speed_t = speed_amount(components_t);
                 const speed_b = speed_amount(components_b);
                 console.log(speed_t)
@@ -376,9 +376,10 @@
                     var start_b = 0;
                     prod_b = 0;
                 }
+                console.log(prod_t)
+                console.log(prod_b)
                 var start = start_t + start_b;
                 var prod = prod_b+prod_t;
-
                 time_all = Math.ceil((prod)*parseFloat({{df['Значение'][0]}}));
                 time_all_t = Math.ceil((prod_t)*parseFloat({{df['Значение'][0]}}));
                 time_all_b = Math.ceil((prod_b)*parseFloat({{df['Значение'][0]}}));

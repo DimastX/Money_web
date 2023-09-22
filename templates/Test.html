@@ -325,9 +325,9 @@
                 time = parseInt(document.getElementById(time).value);
                 var num = 'num_' + i;
                 num = parseInt(document.getElementById(num).value);
-                sum = Math.ceil(sum + time * num / 8);
+                sum = Math.ceil(sum + time * Math.ceil(num / parseFloat({{df['Значение'][4]}})) + parseFloat({{df['Значение'][0]}}));
             }
-            return Math.ceil(sum * parseFloat({{df['Значение'][3]}}) + parseFloat({{df['Значение'][0]}})); 
+            return Math.ceil(sum * parseFloat({{df['Значение'][3]}})); 
         };
 
         function addRow() {

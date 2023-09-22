@@ -369,14 +369,18 @@
         const sum_money_all = document.getElementById("money_all");
 
         const chckbx = document.getElementById('Add');
+
+        //ПВЫзывается при запуске
         window.onload = function(){
             check_all('Add', 'Add_off');
             fill_all_lines()
         }
 
+        //список значений, изменения которых отслеживаются на странице
         var ids = ['time_pc1', 'time_pc2', 'time_pc3', 'time_pc4', 'time_pc5', 'time_pc6',
         'area1', 'area2', 'area3', 'area4', 'area5', 'area6'];
 
+        //В случае изменения какого-то значения, пересчитается заполнение строк
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
@@ -384,10 +388,14 @@
             });
         }
 
+        //Функция, вызывающая проверку нажатия на чекбокс и расчёт всех строк
         function check_all(master, slave){
             check(master, slave);
             fill_all_lines();
         }
+
+
+        //Расчёт стоимости для 6ти строк
         function fill_all_lines(){
             fill_line(time_all1, time_pc1, money_all1, money_pc1, area1);
             fill_line(time_all2, time_pc2, money_all2, money_pc2, area2);
@@ -398,6 +406,8 @@
             sum();
         }
 
+
+        // Расчёт стоимости на партию, на 1 ПУ, а так же времени на партию по заданому времени на 1 ПУ      
         function fill_line(time_all, time_pc, money_all, money_pc, area){
             const time = parseInt(time_pc.value);
             let coef = 0;
@@ -416,6 +426,8 @@
             money_all.value = Math.ceil(time_all.value * coef); 
         }
 
+        
+        //Сложение всех строк
         function sum(){
             if (chckbx.checked){
                 sum_time_pc.value = parseInt(time_pc1.value) + parseInt(time_pc2.value) +parseInt(time_pc3.value) +
@@ -433,6 +445,9 @@
                 sum_money_all.value = "-";
             }
         }
+
+
+        //Проверка нажатия на чекбокс. В случае, если нажат, всё остальное перестаёт быть readonly
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')

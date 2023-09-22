@@ -53,3 +53,12 @@ def update_table(name, form, df):
             df["Значение"][row] = form[key]  # обновляем значение ячейки
     name = "data/"+name+".csv"        
     df.to_csv(name, index=False)
+
+def update_table2(name, form, df):
+    for key in form.keys():
+        if key.startswith('row_'):  # если используется имя вида 'row%d'
+            row = str(key[4:])  # извлекаем номер строки из имени
+            row = str(row).split("_")
+            df.iloc[ int(row[0]), int(row[1])-1] = form[key]  # обновляем значение ячейки
+    name = "data/"+name+".csv"      
+    df.to_csv(name, index=False)

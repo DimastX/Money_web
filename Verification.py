@@ -40,7 +40,7 @@ def test_verif(form):
 
 def clear_verif(form):
     if "Clear" in form:
-        if form["money_all_f"] == 'NaN руб':
+        if form["money_all_f"] == 'Infinity руб':
             return "Заполните все поля"
     return 0
 

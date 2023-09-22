@@ -23,6 +23,7 @@
     {% endwith %}
     <div class="container" >
         <h1>Каталог изделий</h1>
+        <label>Выберите заказчика</label>
         <form id = "myForm" method="POST">
         <select name="parent_folder" class="form-control">
             <option selected hidden></option>
@@ -31,10 +32,12 @@
             {% endfor %}
         </select>
         <br>
+        <label>Выберите изделие</label>
         <select name="child_folder" id="child-folder" class="form-control">
             <!-- Здесь будут генерироваться значения для второго выпадающего списка -->
         </select>
         <br>
+        <label>Выберите файл расчёта</label>
         <select name="sub_folder" id="sub-folder" class="form-control">
             <!-- Здесь будут генерироваться значения для третьего выпадающего списка -->
         </select>
