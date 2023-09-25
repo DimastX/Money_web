@@ -233,18 +233,18 @@
                         </div>
                         <div class="form-group">
                             <div class="form-group">
-                                <label>Ширина исходной печатной платы:</label>
+                                <label>Ширина исходной печатной платы в мм:</label>
                                 <input type="number" class="form-control" min="1" step="any" name="width_pp" id="width_pp"
                                     value="{{ session['second_form']['width_pp'] if session.get('second_form') else '' }}">
-                                <label>Длина исходной печатной платы:</label>
+                                <label>Длина исходной печатной платы в мм:</label>
                                 <input type="number" class="form-control" min="1" step="any" name="length_pp" id="length_pp" 
                                     value="{{ session['second_form']['length_pp'] if session.get('second_form') else '' }}">
                             </div>
                             <div class="form-group">
-                                <label>Ширина мультзаготовки:</label>
+                                <label>Ширина мультзаготовки в мм:</label>
                                 <input type="number" class="form-control" min="1" step="any" name="width" id="width" 
                                     value="{{ session['second_form']['width'] if session.get('second_form') else '' }}">
-                                <label>Длина мультизаготовки:</label>
+                                <label>Длина мультизаготовки в мм:</label>
                                 <input type="number" class="form-control" min="1" step="any" name="length" id="length" 
                                     value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
                             </div>

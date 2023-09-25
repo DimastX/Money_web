@@ -177,6 +177,9 @@ def smd():
     df2 = readdata()
     df3 = pd.read_csv('data/SMD2.csv').values.tolist() #Скорость монтажа на смд линии для удобной обработки в JS
     df4 = pd.read_csv('data/SMD2.csv') #Скорость монтажа на смд линии
+    if "tables" in session:
+        if session["tables"] == 0: #Если ошибка 0, т.е в РАР не 2 разных позиции
+            flash("PAP файл заполнен некорректно. Неправильно введён столбец Layer")
     if request.method == 'POST': 
         session['SMD_form'] = request.form
         if 'tariffs' in request.form:
@@ -207,15 +210,19 @@ def smd():
         if 'save4' in request.form: #изменение второй таблицы
             tb.update_table2("SMD2", request.form, df4)
         if 'template' in request.form:
-            return send_file('Documentation/Template.csv', mimetype='text/csv', as_attachment=True)
+            return send_file('Documentation/Template.xls', as_attachment=True)
     return render_template('SMD.html', df=df, df2=df2, edit=edit, df3=df3, edit2=edit2, df4=df4)
 
 """Функция обработки вызванной таблицы"""
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    csv_file = request.files['csv_file']
-    if csv_file:
-        session['tables']=tb.tables(csv_file) #Запись данных обработки таблицы BOM и PAP
+    file = request.files['csv_file']
+    if file:
+        tables = tb.tables(file)
+        if tables == 0:
+            session['tables'] = 0
+        else: 
+            session['tables']=tb.tables(file) #Запись данных обработки таблицы BOM и PAP
         return redirect(url_for('smd'))
     else:
         return 'Файл не был загружен'
@@ -525,13 +532,15 @@ def session_data():
     else:
         table = 1
     if request.method == 'POST':
+        session["session_data"] = request.form
         if 'download' in request.form:
             current_time = datetime.now()
             path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
-            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day)
+            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day) + "_" + session["session_data"]["comm"]
             if not os.path.exists(path):
                 # Создаем директорию, если она не существует
                 os.makedirs(path)
+            """
             with open(path +"/" + name + ".csv", 'w', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file)
                 writer.writerow(["Заказчик:", session['home_form']['field1']])
@@ -555,6 +564,38 @@ def session_data():
             with open(path +"/" + name + '.pickle', 'wb') as file:
                 pickle.dump(session_data, file)
             return send_file(path +"/" + name + ".csv", mimetype='text/csv', as_attachment=True)
+    """
+            session["session_data"] = request.form
+            if 'download' in request.form:
+                current_time = datetime.now()
+                path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
+                name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day) + "_" + session["session_data"]["comm"]
+                if not os.path.exists(path):
+                    os.makedirs(path)
+
+                with pd.ExcelWriter(path +"/" + name + ".xlsx") as writer:
+
+                    sheet_name = 'Трудозатраты'
+                    [['Earth', 1], ['Moon', 0.606], ['Mars', 0.107]]
+                    df_info = pd.DataFrame([["Заказчик", session['home_form']['field1']], ["Изделие", session['home_form']['field2']], ["Партия", session['home_form']['field3']]])
+                    df_info.to_excel(writer, index=False, sheet_name=sheet_name, header = False)
+                    #df1 = pd.concat([df[0], df[1]], keys=['Стоимость подготовки производства', 'Стоимость производства'])
+                    start_row = df_info.shape[0] + 2
+                    df[0].to_excel(writer, sheet_name=sheet_name, startrow= start_row, index=True)
+                    if table:
+                        start_row += df[0].shape[0] + 2
+                        df[1].to_excel(writer, sheet_name=sheet_name, startrow=start_row, index=False)
+                    for column in df[0]:
+                        column_length = max(df[0][column].astype(str).map(len).max(), len(column))
+                        col_idx = df[0].columns.get_loc(column)
+                        writer.sheets[sheet_name].set_column(col_idx + 1, col_idx + 1, column_length+1)
+                    writer.sheets[sheet_name].set_column(0, 0, 60)
+                session_data = {}
+                for key, value in session.items():
+                    session_data[key] = value
+                with open(path +"/" + name + '.pickle', 'wb') as file:
+                    pickle.dump(session_data, file)
+                return send_file(path +"/" + name + ".xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", as_attachment=True)
     if 'back' in request.form:
         return redirect(url_for('info'))
     if 'tariffs' in request.form:
@@ -564,6 +605,7 @@ def session_data():
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
                            tables2=[df[1].to_html(classes='table', index=False, header="true")])
     return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table = table)
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)

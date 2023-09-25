@@ -5,12 +5,16 @@ import pandas as pd
 Позже по количеству наименований считается количество уникальных компонентов, устанавливаемых на разные стороны
 """
 def tables(file):
-    df = pd.read_csv(file, encoding='utf-8', sep=',')
+    #df = pd.read_csv(file, encoding='utf-8', sep=',')
+    df = pd.read_excel(file)
     PAP = df.iloc[:, :2] #Выделяем таблицу PAP
-    BOM = df.iloc[:, 2:] #Выделяем таблицу BOM
-    Bot = PAP[PAP["Layer"] == 'Bot']["Designator"] #Из таблицы PAP выделяем те компоненты, которые ставятся на сторону Bot
+    BOM = df.iloc[:, 2:] #Выделяем таблицу BOM 
+    Layer = PAP["Layer"].unique()
+    if len(Layer) != 2:
+        return  0
+    Bot = PAP[PAP["Layer"] == Layer[0]]["Designator"] #Из таблицы PAP выделяем те компоненты, которые ставятся на сторону Bot
     Bot = pd.DataFrame(Bot)
-    Top = PAP[PAP["Layer"] == 'Top']["Designator"] #Из таблицы PAP выделяем те компоненты, которые ставятся на сторону Top
+    Top = PAP[PAP["Layer"] == Layer[1]]["Designator"] #Из таблицы PAP выделяем те компоненты, которые ставятся на сторону Top
     Top = pd.DataFrame(Top)
     top_lines = 0
     bot_lines = 0
