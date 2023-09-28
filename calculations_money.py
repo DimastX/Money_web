@@ -206,10 +206,13 @@ def create_export(session):
         session['Add_form']['money_pc'],
         session['Add_form']['money_all']
         ]
-    data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont ,
+    data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont,
             THT_pri_re, THT_pri, THT_sec_re, THT_sec, THT_rep, THT_cont, 
-            Wave_re, Wave, Wave_rep, Wave_cont, HRL_re, HRL, HRL_rep, HRL_cont, Hand, Handv_cont, 
-            Hand_cont, Test, Clear, Clear_cont, Handv, Sep, Xray, Add]
+            Wave_re, Wave, Wave_rep, Wave_cont, 
+            HRL_re, HRL, HRL_rep, HRL_cont, 
+            Hand, Hand_cont, 
+            Test, Clear, Clear_cont, Handv, 
+            Handv_cont, Sep, Xray, Add]
     headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
     #Статьи расходов
     row_headers = [
@@ -219,20 +222,24 @@ def create_export(session):
         "Автоматический поверхностный монтаж SMT Sec", 
         "Ремонт на поверхностном монтаже",
         "Контроль на поверхностном монтаже",
+
         "Селективная пайка THT Pri, переналадка",
         "Селективная пайка THT Pri", 
         "Селективная пайка THT Sec, переналадка",
         "Селективная пайка THT Sec", 
         "Ремонт на cелективной пайке THT",
         "Контроль на cелективной пайке THT",
+
         "Волновая пайка, переналадка",
         "Волновая пайка",
         "Ремонт на волновой пайке",
         "Контроль на волновой пайке",
+
         "Селективная лакировка HRL, переналадка",
         "Селективная лакировка HRL", 
         "Ремонт на селективной лакировке",
         "Контроль на селективной лакировке",
+
         "Ручной монтаж",
         "Контроль ручного монтажа",
         "Тестирование",

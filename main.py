@@ -6,7 +6,6 @@ import io
 import csv
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import secure_filename
-from waitress import serve
 import tables as tb
 import directories
 import pickle
@@ -222,7 +221,7 @@ def upload():
         if tables == 0:
             session['tables'] = 0
         else: 
-            session['tables']=tb.tables(file) #Запись данных обработки таблицы BOM и PAP
+            session['tables']= tables #Запись данных обработки таблицы BOM и PAP
         return redirect(url_for('smd'))
     else:
         return 'Файл не был загружен'

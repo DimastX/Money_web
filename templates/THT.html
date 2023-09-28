@@ -366,7 +366,7 @@
             time_multi += Math.ceil((parseFloat({{df['Значение'][4]}})));
             time_multi *= parseFloat({{df['Значение'][0]}});
             const start = parseFloat({{df['Значение'][3]}}) * prev / 3600;
-            const prod = time_multi * multi_num / 3600;
+            const prod = time_multi * multi_num / 3600 / 2; //2 машины
             const time_all = Math.ceil((prod));
             const time_re_all = Math.ceil((start));
             const money_all = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][2]}}));
@@ -383,7 +383,7 @@
             }
             time_multi2 *= parseFloat({{df['Значение'][0]}});
             
-            const prod2 = time_multi2 * multi_num / 3600;
+            const prod2 = time_multi2 * multi_num / 3600 / 2; //2 машины
             const time_all2 = Math.ceil((prod2));
             const time_re_all2 = Math.ceil((start2));
             const money_all2 = Math.ceil(prod2 * parseInt({{ df2['Стоимость, руб/ч'][2]}}));
