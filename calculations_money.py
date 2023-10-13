@@ -206,13 +206,27 @@ def create_export(session):
         session['Add_form']['money_pc'],
         session['Add_form']['money_all']
         ]
+    if "Pack_form" in session:
+        Pack = [
+            0,
+            0,
+            session['Pack_form']['money_pc'],
+            session['Pack_form']['money_all']
+        ]
+    else:
+        Pack =[
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
     data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont,
             THT_pri_re, THT_pri, THT_sec_re, THT_sec, THT_rep, THT_cont, 
             Wave_re, Wave, Wave_rep, Wave_cont, 
             HRL_re, HRL, HRL_rep, HRL_cont, 
             Hand, Hand_cont, 
             Test, Clear, Clear_cont, Handv, 
-            Handv_cont, Sep, Xray, Add]
+            Handv_cont, Sep, Xray, Add, Pack]
     headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
     #Статьи расходов
     row_headers = [
@@ -249,7 +263,8 @@ def create_export(session):
         "Контроль ручной лакировки",
         "Разделение",
         "Рентгенконтроль",
-        "Доп. работы"
+        "Доп. работы",
+        "Упаковка"
         ]
     #Создание DataFrame со значениями выше
     df = pd.DataFrame(data, columns=headers, index=row_headers)

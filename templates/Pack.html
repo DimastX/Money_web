@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Second Page</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+        <!-- вывод flash-сообщений -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        <form method="POST">
+            <br>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+            <p></p>
+            <fieldset>
+                <legend>Упаковка</legend>
+                <div class="form-group">
+                    <input type="checkbox" id="Pack" name="Pack" value="1" onclick="check_all('Pack', 'Pack_off')"
+                           {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack'] %} checked="checked" {% endif %} {% endif %}>
+                    <label for="Pack">Выполнять упаковку? </label>
+                </div>
+            </fieldset>
+            
+            <div id="Pack_off">
+                <table>
+                    <tr>
+                        <td style="width: 30%;">
+                            <label>Тип короба</label>
+                            <br>
+                            <select name="Pack_type" id="Pack_type" class="form-control">
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "1" %} selected {% endif %} {% endif %}
+                                                                value="0" >
+                                                            Короб №1
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "2" %} selected {% endif %} {% endif %}
+                                                                value="1" >
+                                                            Короб №2
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "3" %} selected {% endif %} {% endif %}
+                                                                value="2" >
+                                                            Короб №3
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "4" %} selected {% endif %} {% endif %}
+                                                                value="3" >
+                                                            Короб №4.1
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "5" %} selected {% endif %} {% endif %}
+                                                                value="4" >
+                                                            Короб №4.2
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "6" %} selected {% endif %} {% endif %}
+                                                                value="5" >
+                                                            Короб №5
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "7" %} selected {% endif %} {% endif %}
+                                                                value="6" >
+                                                            Короб №6
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "8" %} selected {% endif %} {% endif %}
+                                                                value="7" >
+                                                            Короб №7    
+                            </select>                   
+                            <br>
+                            <label>Тип плёнки</label>
+                            <br>    
+                            <select name="Tape_type" id="Tape_type" class="form-control">
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Tape_type'] == "1" %} selected {% endif %} {% endif %}
+                                                                value="0" >
+                                                            Пузырчатая плёнка
+                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Tape_type'] == "2" %} selected {% endif %} {% endif %}
+                                                                value="1" >
+                                                            Экранирующая плёнка
+                            </select>
+                            <br>
+                            <div class="form-group">
+                                <label for="Wisp_1">{{df["Наименование"][10]}}, в мм </label>
+                                <input type="number" min = 0 step="any" class="form-control" id="Wisp_1" name="Wisp_1"
+                                       {% if session.get('Pack_form')%} {% if session['Pack_form']['Wisp_1'] %}  
+                                       value="{{ session['Pack_form']['Wisp_1'] }}"
+                                       {% endif %} {% else %} value="0" {% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="Wisp_2">{{df["Наименование"][11]}}, в мм</label>
+                                <input type="number" min = 0 step="any" class="form-control" id="Wisp_2" name="Wisp_2"
+                                       {% if session.get('Pack_form')%} {% if session['Pack_form']['Wisp_2'] %}  
+                                       value="{{ session['Pack_form']['Wisp_2'] }}"
+                                       {% endif %} {% else %} value="0" {% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="Wisp_3">{{df["Наименование"][12]}}, в мм </label>
+                                <input type="number" min = 0 step="any" class="form-control" id="Wisp_3" name="Wisp_3"
+                                       {% if session.get('Pack_form')%} {% if session['Pack_form']['Wisp_3'] %}  
+                                       value="{{ session['Pack_form']['Wisp_3'] }}"
+                                       {% endif %} {% else %} value="0" {% endif %}>
+                            </div>
+                        </td>
+                        <td style="width: 40%;">
+                            <div class="form-group">
+                                <input type="text" class="form-control" readonly value="Итоговая стоимость всей 1 ПУ">
+                                <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                                </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" name="money_pc" id="money_pc" class="form-control" readonly> 
+                                <input type="text" name="money_all" id="money_all" class="form-control" readonly> 
+                            </div>
+                        </td>
+                    </tr>
+                    </table>
+            </div> 
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Данные для упаковки
+                            </a>
+                        </h4>
+                    </div>
+                    
+                    <div id="collapseOne" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div>
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>{{ df.columns[0] }}</th>
+                                                <th>{{ df.columns[1] }}</th>
+                                                <th>{{ df.columns[2] }}</th>
+                                                <th>{{ df.columns[3] }}</th>
+                                                <th>{{ df.columns[4] }}</th>
+                                                <th>{{ df.columns[5] }}</th>
+                                                <th>Используется</th>
+                                            </tr>
+                                        </thead>
+                                        {% for row in df.iterrows(): %}
+                                            <tr>
+                                                {% for cell in row[1] %}
+                                                <td>
+                                                    {% if loop.index != 1 %}  <!-- Если это второй столбец -->
+                                                        <input {% if edit == "0" %} disabled {% endif %}
+                                                            type="number" min = 0 step="any" class="form-control" name="row_{{ row[0] }}_{{loop.index}}" value="{{ cell }}" />
+                                                    {% else %} <!-- Если это не второй столбец -->
+                                                        {{ cell }}
+                                                    {% endif %}
+                                                </td>
+                                                {% endfor %}
+                                                <td>
+                                                    <input type="number" min="0" step="1" class="form-control" name="row_{{ row[0] }}_{{loop.index}}" readonly>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            <label>Пароль:</label>
+                            <input type="password" class="form-control" name="password" 
+                                    onkeydown="return event.key != 'Enter';">                
+                            <br>
+                            <button {% if edit != "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save" 
+                                    onkeydown="return event.key != 'Enter';">Изменить</button>
+                            <button {% if edit == "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save2" 
+                                    onkeydown="return event.key != 'Enter';">Сохранить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+    <script>
+        ids = ["Pack_type", "Tape_type", "Wisp_1", "Wisp_2", "Wisp_3"]
+
+        for (var i = 0; i < ids.length; i++) {
+            var element = document.getElementById(ids[i]);
+            element.addEventListener('change', function(){
+                pack_amount();
+            });
+        }
+
+        window.onload = function(){
+            check_all("Pack","Pack_off");
+            pack_amount();
+        }
+        function check_all(master, slave){
+            pack_amount();
+            check(master,slave);
+            pack_amount();
+        }
+
+        function check(master, slave) {
+          if (document.getElementById(master).checked) {
+            document.getElementById(slave).classList.remove('disable_section')
+          } else {
+            document.getElementById(slave).classList.add('disable_section')
+          }
+        }
+        var pack_type = document.getElementById("Pack_type")
+        var tape_type = document.getElementById("Tape_type")
+        var Wisp_1 = document.getElementById("Wisp_1")
+        var Wisp_2 = document.getElementById("Wisp_2")
+        var Wisp_3 = document.getElementById("Wisp_3")
+        const chckbx = document.getElementById('Pack');
+
+        function pack_amount(){
+            var batch = parseInt({{ session['home_form']['field3']}});
+            var area = Math.ceil(parseFloat({{session['second_form']['width_pp']}}) * parseFloat({{session['second_form']['length_pp']}}))
+            area = 2.5 * area;
+            var pack_money = 0;
+            pack_money = parseInt(pack_type.value);
+            tape_money = parseInt(tape_type.value);
+            console.log(pack_money);
+            var pack_money_all = 0;
+            var pack_num = 1;
+            if (chckbx.checked){
+                if (pack_money == 0){
+                    pack_money_all = parseFloat({{df["Стоимость"][0]}});
+                    pack_num = parseInt({{df["Количество"][0]}});
+                } else if (pack_money == 1){
+                    pack_money_all = parseFloat({{df["Стоимость"][1]}});
+                    pack_num = parseInt({{df["Количество"][1]}});
+                } else if (pack_money == 2){
+                    pack_money_all = parseFloat({{df["Стоимость"][2]}});
+                    pack_num = parseInt({{df["Количество"][2]}});
+                } else if (pack_money == 3){
+                    pack_money_all = parseFloat({{df["Стоимость"][3]}});
+                    pack_num = parseInt({{df["Количество"][3]}});
+                } else if (pack_money == 4){
+                    pack_money_all = parseFloat({{df["Стоимость"][4]}});
+                    pack_num = parseInt({{df["Количество"][4]}});
+                } else if (pack_money == 5){
+                    pack_money_all = parseFloat({{df["Стоимость"][5]}});
+                    pack_num = parseInt({{df["Количество"][5]}});
+                } else if (pack_money == 6){
+                    pack_money_all = parseFloat({{df["Стоимость"][6]}});
+                    pack_num = parseInt({{df["Количество"][6]}});
+                } else if (pack_money == 7){
+                    pack_money_all = parseFloat({{df["Стоимость"][7]}});
+                    pack_num = parseInt({{df["Количество"][7]}});
+                }
+
+                pack_money_all = Math.ceil(pack_money_all * batch / pack_num);
+                console.log(pack_money_all);
+                pack_money_pc = Math.ceil(pack_money_all / batch);
+                
+                if (tape_money == 0){
+                    tape_money_all = parseFloat({{df["Стоимость"][8]}});
+                    tape_area = parseFloat({{df["Длина"][8]}}) * parseFloat({{df["Ширина"][8]}});
+                } else if (pack_money == 1){
+                    tape_money_all = parseFloat({{df["Стоимость"][9]}});
+                    tape_area = parseFloat({{df["Длина"][9]}}) * parseFloat({{df["Ширина"][9]}});
+                }
+                tape_money_all = Math.ceil(area * batch / tape_area * tape_money_all)
+                wisp_money_all = Math.ceil((Wisp_1.value * parseFloat({{df["Стоимость"][10]}}) / parseFloat({{df["Длина"][10]}}) 
+                + Wisp_2.value * parseFloat({{df["Стоимость"][11]}}) / parseFloat({{df["Длина"][11]}})
+                + Wisp_3.value * parseFloat({{df["Стоимость"][12]}}) / parseFloat({{df["Длина"][12]}})) * batch)
+            
+                var money_all = pack_money_all + tape_money_all + wisp_money_all;
+                var money_pc = Math.ceil(money_all / batch)
+                document.getElementById("money_all").value = Math.ceil(money_all) + " руб";
+                document.getElementById("money_pc").value = Math.ceil(money_pc) + " руб";
+            } else {
+                document.getElementById("money_all").value = "-";
+                document.getElementById("money_pc").value = "-";
+            }
+        }
+    </script>
+</body>
+</html>

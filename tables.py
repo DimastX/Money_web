@@ -27,6 +27,7 @@ def tables(file):
             if value in value2:
                 Bot.at[index, 'Name'] = row2["Name"]
                 bot_lines += 1 #Счётчик количества устанавливаемых компонентов
+                break
     for index, row in Top.iterrows():
         value = str(row['Designator'])
         for index2, row2, in BOM.iterrows():
@@ -34,6 +35,7 @@ def tables(file):
             if value in value2:
                 Top.at[index, 'Name'] = row2["Name"]
                 top_lines += 1
+                break
     if top_lines != 0:
         top_lines_unic = Top["Name"].nunique() #Количество уникальных компонентов на стороне TOP
     else:

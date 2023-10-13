@@ -56,8 +56,6 @@ def dirs():
             # Путь к файлу вида: Директория_хранения/Имя_заказчика/Наименование_изделия/Название_расчёта.pickle
             file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder']
             return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True) # Скачивание файла 
-        if 'new' in request.form:
-            return redirect(url_for('cust')) # Открытие страницы с созданием нового заказчика
     return render_template('Dirs.html', file_tree=file_tree)
 
 
@@ -89,7 +87,7 @@ def cust():
             folder_path = Calculations_path + folder_name
             if not os.path.exists(folder_path): #Если такого имени ещё нет то создаётся новая директория
                 os.makedirs(folder_path)
-            return redirect(url_for("dirs"))
+            return redirect(url_for("home"))
     return render_template('Cust.html')
 
 
@@ -105,6 +103,8 @@ def home():
         if 'tariffs' in request.form:
             session['last_page'] = 'home' # Запоминание страницы с которой уходим, для дальнейшего возвращения на неё
             return redirect(url_for('tariffs')) # Открытие страницы с тарифами
+        if 'new' in request.form:
+            return redirect(url_for('cust')) # Открытие страницы с созданием нового заказчика
         if 'next' in request.form:
             msg = ver.home_verif(session["home_form"]) # Вызов проверки заполнения полей на первой странице
             if msg == 0:
@@ -473,11 +473,39 @@ def xray():
         if 'next' in request.form:
             msg = ver.xray_verif(request.form) # Вызов проверки заполнения полей на первой странице
             if msg == 0:
-                return redirect(url_for('add')) #Переход на следующую страницу
+                return redirect(url_for('pack')) #Переход на следующую страницу
             else:
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('Xray.html', df=df, df2=df2, edit=edit)
 
+@app.route('/pack', methods = ['GET', 'POST'])
+def pack():
+    df = pd.read_csv('data/Pack.csv')
+    df2 = readdata()
+    fields = 0
+    edit = "0"
+    if request.method == 'POST':
+        session['Pack_form'] = request.form
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
+        if 'tariffs' in request.form:
+            session['last_page'] = 'pack'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('xray'))
+        if 'save2' in request.form:
+            tb.update_table("Pack", request.form, df)
+        if 'next' in request.form:
+            msg = ver.xray_verif(request.form) # Вызов проверки заполнения полей на первой странице
+            if msg == 0:
+                return redirect(url_for('add')) #Переход на следующую страницу
+            else:
+                flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
+    return render_template('Pack.html', df=df, df2=df2, edit=edit)
 
 """Дополнительные работы"""
 @app.route('/additional', methods=['GET', 'POST'])
@@ -490,7 +518,7 @@ def add():
             session['last_page'] = 'add'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
-            return redirect(url_for('xray'))
+            return redirect(url_for('pack'))
         if 'next' in request.form:
             return redirect(url_for('info'))
     return render_template('Add.html', df2=df2)
@@ -539,31 +567,6 @@ def session_data():
             if not os.path.exists(path):
                 # Создаем директорию, если она не существует
                 os.makedirs(path)
-            """
-            with open(path +"/" + name + ".csv", 'w', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                writer.writerow(["Заказчик:", session['home_form']['field1']])
-                writer.writerow(["Изделие:", session['home_form']['field2']])
-                writer.writerow(["Партия:", session['home_form']['field3']])
-                writer.writerow([])
-                if table:
-                    # Записываем пустую строку
-                    writer.writerow(["Стоимость подготовки производства"])
-                    # Записываем строки из второго DataFrame
-                    writer.writerow(df[1].columns)
-                    writer.writerows(df[1].to_records(index=False))
-                    writer.writerow([])
-                writer.writerow(["Стоимость производства"])
-                # Записываем строки из первого DataFrame
-                writer.writerow(df[0].columns)
-                writer.writerows(df[0].to_records(index=True))
-            session_data = {}
-            for key, value in session.items():
-                session_data[key] = value
-            with open(path +"/" + name + '.pickle', 'wb') as file:
-                pickle.dump(session_data, file)
-            return send_file(path +"/" + name + ".csv", mimetype='text/csv', as_attachment=True)
-    """
             session["session_data"] = request.form
             if 'download' in request.form:
                 current_time = datetime.now()
