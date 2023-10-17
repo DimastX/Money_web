@@ -45,28 +45,28 @@
                             <label>Тип короба</label>
                             <br>
                             <select name="Pack_type" id="Pack_type" class="form-control">
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "1" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack_type'] == "0" %} selected {% endif %} {% endif %}
                                                                 value="0" >
                                                             Короб №1
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "2" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack_type'] == "1" %} selected {% endif %} {% endif %}
                                                                 value="1" >
                                                             Короб №2
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "3" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack_type'] == "2" %} selected {% endif %} {% endif %}
                                                                 value="2" >
                                                             Короб №3
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "4" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack_type'] == "3" %} selected {% endif %} {% endif %}
                                                                 value="3" >
                                                             Короб №4.1
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "5" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack_type'] == "4" %} selected {% endif %} {% endif %}
                                                                 value="4" >
                                                             Короб №4.2
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "6" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack_type'] == "5" %} selected {% endif %} {% endif %}
                                                                 value="5" >
                                                             Короб №5
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "7" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack_type'] == "6" %} selected {% endif %} {% endif %}
                                                                 value="6" >
                                                             Короб №6
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Pack_type'] == "8" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Pack_type'] == "7" %} selected {% endif %} {% endif %}
                                                                 value="7" >
                                                             Короб №7    
                             </select>                   
@@ -74,10 +74,10 @@
                             <label>Тип плёнки</label>
                             <br>    
                             <select name="Tape_type" id="Tape_type" class="form-control">
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Tape_type'] == "1" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Tape_type'] == "1" %} selected {% endif %} {% endif %}
                                                                 value="0" >
                                                             Пузырчатая плёнка
-                                <option {% if session.get('pack_form')%} {% if session['pack_form']['Tape_type'] == "2" %} selected {% endif %} {% endif %}
+                                <option {% if session.get('Pack_form')%} {% if session['Pack_form']['Tape_type'] == "2" %} selected {% endif %} {% endif %}
                                                                 value="1" >
                                                             Экранирующая плёнка
                             </select>

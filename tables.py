@@ -9,6 +9,7 @@ def tables(file):
     df = pd.read_excel(file)
     PAP = df.iloc[:, :2] #Выделяем таблицу PAP
     BOM = df.iloc[:, 2:] #Выделяем таблицу BOM 
+    PAP['Layer'] = PAP['Layer'].fillna(0)
     Layer = PAP["Layer"].unique()
     if len(Layer) != 2:
         return  0
@@ -33,7 +34,7 @@ def tables(file):
         for index2, row2, in BOM.iterrows():
             value2 = str(row2['Designators (BOM)']).replace(" ","").split(",")
             if value in value2:
-                Top.at[index, 'Name'] = row2["Name"]
+                Top.at[index, 'Name'] = row2["Name"]    
                 top_lines += 1
                 break
     if top_lines != 0:

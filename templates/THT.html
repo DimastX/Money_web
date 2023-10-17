@@ -45,13 +45,13 @@
                             <br>
                             <label>
                                 <input type="radio" name="THT_sides" value="1" id="THT_sides_1"
-                                    {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "1" %} checked {% endif %} {% endif %}>
+                                    {% if session.get('THT_form')%} {% if session['THT_form']['THT_sides'] == "1" %} checked {% endif %} {% endif %}>
                                 Односторонняя
                             </label>
                             <br>
                             <label>
                                 <input type="radio" name="THT_sides" id="THT_sides_2"
-                                    {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "2" %} checked {% endif %} {% endif %} value="2">
+                                    {% if session.get('THT_form')%} {% if session['THT_form']['THT_sides'] == "2" %} checked {% endif %} {% endif %} value="2">
                                 Двустронняя
                             </label>
                             <br>
@@ -72,6 +72,9 @@
                                 <label>Количество точек пайки на первой стороне:</label>
                                 <input type="number" class="form-control" name="points" id="points" min="0" step="1"
                                     value="{{ session['THT_form']['points'] if session.get('THT_form') else '0' }}"></input>
+                                <label>Количество многорядных точек пайки на первой стороне:</label>
+                                <input type="number" class="form-control" name="points_2" id="points_2" min="0" step="1"
+                                    value="{{ session['THT_form']['points_2'] if session.get('THT_form') else '0' }}"></input>
                                 <label>Количество DDR-разъёмов на первой стороне:</label>
                                 <input type="number" class="form-control" name="DDR" id="DDR" min="0" step="1"
                                     value="{{ session['THT_form']['DDR'] if session.get('THT_form') else '0' }}"></input>
@@ -102,6 +105,9 @@
                                     <label>Количество точек пайки на второй стороне:</label>
                                     <input type="number" class="form-control" name="points2" id="points2" min="0" step="1"
                                         value="{{ session['THT_form']['points2'] if session.get('THT_form') else '0' }}"></input>
+                                    <label>Количество точек пайки на второй стороне:</label>
+                                    <input type="number" class="form-control" name="points2_2" id="points2_2" min="0" step="1"
+                                        value="{{ session['THT_form']['points2_2'] if session.get('THT_form') else '0' }}"></input>
                                     <label>Количество DDR-разъёмов на второй стороне:</label>
                                     <input type="number" class="form-control" name="DDR2" id="DDR2" min="0" step="1"
                                         value="{{ session['THT_form']['DDR2'] if session.get('THT_form') else '0' }}"></input>
@@ -275,7 +281,7 @@
          window.onload = function(){
             check_all('THT', 'THT_off');
         }
-        ids = ["THT", "manual", "sim", "THT_sides_1", "THT_sides_2", "manual2", "sim2", "sim_multi", "points", "DDR", "PCI", "sim_multi2", "points2", "DDR2", "PCI2"];
+        ids = ["THT", "manual", "sim", "THT_sides_1", "THT_sides_2", "manual2", "sim2", "sim_multi", "points", "points_2", "points2_2", "DDR", "PCI", "sim_multi2", "points2", "DDR2", "PCI2"];
 
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);

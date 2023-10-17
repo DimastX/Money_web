@@ -98,6 +98,7 @@ def home():
     file_tree = directories.generate_file_tree('Calculations') # Создание списка всех заказчиков
     if request.method == 'POST':
         session['home_form'] = request.form # Сохранение всех полей в случае отправки формы
+        ver.auto_save(session)
         if 'back' in request.form:
             return redirect(url_for('start')) # Возвращение на предыдущую страницу
         if 'tariffs' in request.form:
@@ -120,6 +121,7 @@ def second():
     msg = ""
     if request.method == 'POST':
         session['second_form'] = request.form # Сохранение всех полей в случае отправки формы
+        ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'second'
             return redirect(url_for('tariffs'))
@@ -181,6 +183,7 @@ def smd():
             flash("PAP файл заполнен некорректно. Неправильно введён столбец Layer")
     if request.method == 'POST': 
         session['SMD_form'] = request.form
+        ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'smd'
             return redirect(url_for('tariffs'))
@@ -234,6 +237,7 @@ def tht():
     df2 = readdata()
     if request.method == 'POST':
         session['THT_form'] = request.form
+        ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'tht'
             return redirect(url_for('tariffs'))
@@ -563,41 +567,36 @@ def session_data():
         if 'download' in request.form:
             current_time = datetime.now()
             path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
-            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day) + "_" + session["session_data"]["comm"]
+            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day)
+            if "comm" in session["home_form"]:
+                if session["home_form"] != "":
+                    name += "_" + session["home_form"]["comm"]
             if not os.path.exists(path):
-                # Создаем директорию, если она не существует
                 os.makedirs(path)
-            session["session_data"] = request.form
-            if 'download' in request.form:
-                current_time = datetime.now()
-                path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
-                name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day) + "_" + session["session_data"]["comm"]
-                if not os.path.exists(path):
-                    os.makedirs(path)
 
-                with pd.ExcelWriter(path +"/" + name + ".xlsx") as writer:
+            with pd.ExcelWriter(path +"/" + name + ".xlsx") as writer:
 
-                    sheet_name = 'Трудозатраты'
-                    [['Earth', 1], ['Moon', 0.606], ['Mars', 0.107]]
-                    df_info = pd.DataFrame([["Заказчик", session['home_form']['field1']], ["Изделие", session['home_form']['field2']], ["Партия", session['home_form']['field3']]])
-                    df_info.to_excel(writer, index=False, sheet_name=sheet_name, header = False)
-                    #df1 = pd.concat([df[0], df[1]], keys=['Стоимость подготовки производства', 'Стоимость производства'])
-                    start_row = df_info.shape[0] + 2
-                    df[0].to_excel(writer, sheet_name=sheet_name, startrow= start_row, index=True)
-                    if table:
-                        start_row += df[0].shape[0] + 2
-                        df[1].to_excel(writer, sheet_name=sheet_name, startrow=start_row, index=False)
-                    for column in df[0]:
-                        column_length = max(df[0][column].astype(str).map(len).max(), len(column))
-                        col_idx = df[0].columns.get_loc(column)
-                        writer.sheets[sheet_name].set_column(col_idx + 1, col_idx + 1, column_length+1)
-                    writer.sheets[sheet_name].set_column(0, 0, 60)
-                session_data = {}
-                for key, value in session.items():
-                    session_data[key] = value
-                with open(path +"/" + name + '.pickle', 'wb') as file:
-                    pickle.dump(session_data, file)
-                return send_file(path +"/" + name + ".xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", as_attachment=True)
+                sheet_name = 'Трудозатраты'
+                [['Earth', 1], ['Moon', 0.606], ['Mars', 0.107]]
+                df_info = pd.DataFrame([["Заказчик", session['home_form']['field1']], ["Изделие", session['home_form']['field2']], ["Партия", session['home_form']['field3']]])
+                df_info.to_excel(writer, index=False, sheet_name=sheet_name, header = False)
+                #df1 = pd.concat([df[0], df[1]], keys=['Стоимость подготовки производства', 'Стоимость производства'])
+                start_row = df_info.shape[0] + 2
+                df[0].to_excel(writer, sheet_name=sheet_name, startrow= start_row, index=True)
+                if table:
+                    start_row += df[0].shape[0] + 2
+                    df[1].to_excel(writer, sheet_name=sheet_name, startrow=start_row, index=False)
+                for column in df[0]:
+                    column_length = max(df[0][column].astype(str).map(len).max(), len(column))
+                    col_idx = df[0].columns.get_loc(column)
+                    writer.sheets[sheet_name].set_column(col_idx + 1, col_idx + 1, column_length+1)
+                writer.sheets[sheet_name].set_column(0, 0, 60)
+            session_data = {}
+            for key, value in session.items():
+                session_data[key] = value
+            with open(path +"/" + name + '.pickle', 'wb') as file:
+                pickle.dump(session_data, file)
+            return send_file(path +"/" + name + ".xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", as_attachment=True)
     if 'back' in request.form:
         return redirect(url_for('info'))
     if 'tariffs' in request.form:

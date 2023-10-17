@@ -207,12 +207,20 @@ def create_export(session):
         session['Add_form']['money_all']
         ]
     if "Pack_form" in session:
-        Pack = [
-            0,
-            0,
-            session['Pack_form']['money_pc'],
-            session['Pack_form']['money_all']
+        if session['Pack_form']['money_pc'] == "-":
+            Pack =[
+            "-",
+            "-",
+            "-",
+            "-"
         ]
+        else:
+            Pack = [
+                "0 c",
+                "0 c",
+                session['Pack_form']['money_pc'],
+                session['Pack_form']['money_all']
+            ]
     else:
         Pack =[
             "-",
@@ -295,7 +303,7 @@ def create_export(session):
         df.loc["Итого с подготовкой производства без НДС"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]     
         sum[2] = int(sum[2] * VAT)
         sum[3] = int(sum[3] * VAT)
-        df.loc["Итого с подготовкой производства"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
+        df.loc["Итого с подготовкой производства с НДС"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
         df2 = pd.DataFrame(data2, columns=headers2)
         return [df, df2]
     return [df, 1]

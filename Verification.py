@@ -1,3 +1,6 @@
+import pickle
+from datetime import datetime
+
 def home_verif(form):
     if (form['field1'] != "") and (form['field2'] != "") and (form['field3'] != ""): # Проверка, что на первой странице заполнены все поля
         return 0
@@ -55,3 +58,16 @@ def xray_verif(form):
         if form["money_all_f"] == 'NaN руб':
             return "Заполните все поля"
     return 0
+
+def auto_save(session):
+    session_data = {} 
+    path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
+    current_time = datetime.now()
+    name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day)
+    if "comm" in session["home_form"]:
+        if session["home_form"] != "":
+            name += "_" + session["home_form"]["comm"]       
+    for key, value in session.items():
+        session_data[key] = value
+    with open(path +"/" + name + '.pickle', 'wb') as file:
+        pickle.dump(session_data, file)

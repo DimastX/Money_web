@@ -92,7 +92,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
-                                Данные по стоимости волновой пайки
+                                Данные по стоимости рентгенконтроля
                             </a>
                         </h4>
                     </div>
@@ -276,7 +276,7 @@
                     money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
                     money_pc = money_all / parseInt({{ session['home_form']['field3']}});
                 } else if (type[2].checked){
-                    time_pc = parseInt(document.getElementById('components').value) * parseFloat(document.getElementById('components_time').value);
+                    time_pc = parseInt(document.getElementById('components').value) * parseFloat(document.getElementById('components_time').value) * proc_value;
                     time_all = time_pc * parseInt({{ session['home_form']['field3']}});
                     money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
                     money_pc = money_all / parseInt({{ session['home_form']['field3']}});
