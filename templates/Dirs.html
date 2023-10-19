@@ -43,13 +43,15 @@
         </select>
         <br>
             <button type="submit" class="btn btn-primary" name="prev">Назад</button>
-            <button type="submit" class="btn btn-primary" name="open">Открыть изделие</button>
-            <button type="submit" class="btn btn-primary" name="download">Скачать расчёт</button>
+            <button type="submit" class="btn btn-primary" name="open" id="open">Открыть изделие</button>
+            <button type="submit" class="btn btn-primary" name="download" id="download">Скачать расчёт</button>
         </form>
     </div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
-
+            window.onload = function(){
+                disable_button();
+            }
         $(document).ready(function(){
             $("select[name='parent_folder']").change(function(){
             var selectedParentFolder = $(this).val();
@@ -71,6 +73,7 @@
                 // Обновление третьего списка при изменении значения второго списка
                 var selectedChildFolder = childFolderSelect.val();
                 updateSubFolderOptions(selectedChildFolder);
+                
                 }
             });
             });
@@ -79,6 +82,7 @@
             $("#child-folder").change(function(){
             var selectedChildFolder = $(this).val();
             updateSubFolderOptions(selectedChildFolder);
+            
             });
 
             // Функция для обновления значений третьего списка
@@ -90,16 +94,31 @@
                 success: function(response){
                 var subFolderSelect = $("#sub-folder");
                 subFolderSelect.empty();
+                disable_button();
 
                 // Создание значений третьего списка
                 $.each(response.sub_folders, function(index, folder){
                     subFolderSelect.append('<option value="' + folder + '">' + folder + '</option>');
+                    disable_button();
                 });
                 }
             });
             }
     });
-        
+        function disable_button(){
+            var button = document.getElementById("download")
+            var button2 = document.getElementById("open")
+            var folder_name = document.getElementById("sub-folder")
+            console.log(folder_name.options.length)
+            if (folder_name.options.length == 0){
+            var button = document.getElementById("download")
+                button.disabled = true;
+                button2.disabled = true;
+            } else{
+                button.disabled = false;
+                button2.disabled = false;
+            }
+        }
         </script>
         
 </body>

@@ -10,6 +10,7 @@ import tables as tb
 import directories
 import pickle
 import Verification as ver
+import time
 
 from datetime import datetime
 import os
@@ -41,6 +42,7 @@ def start():
 @app.route('/dirs', methods=['GET', 'POST'])
 def dirs():
     file_tree = directories.generate_file_tree('Calculations')  # Путь к директории с заказчиками
+    session.clear()
     if request.method == 'POST':
         if 'prev' in request.form:
             return redirect(url_for('start'))
@@ -53,9 +55,24 @@ def dirs():
                 session.update(session_data) # Задание в значение session данных из предыдущего расчёта
             return redirect(url_for('home'))
         if 'download' in request.form:
-            # Путь к файлу вида: Директория_хранения/Имя_заказчика/Наименование_изделия/Название_расчёта.pickle
+            # Путь к файлу вида: Директория_хранения/Имя_заказчика/Наименование_изделия/Название_расчёта.csv
             file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder']
-            return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True) # Скачивание файла 
+            if os.path.exists(file_path + ".csv") or os.path.exists(file_path + ".xlsx"):
+                with open(file_path + ".pickle", 'rb') as file:
+                    session_data = pickle.load(file)
+                    session.update(session_data)    
+                if "check" not in session:
+                    flash("Расчёт был сделан в старой версии приложения. Убедитесь в его актуальности. Откройте изделие и скачайте расчёт оттуда")
+                    return render_template('Dirs.html', file_tree=file_tree)
+                elif session["check"] == 0:
+                    flash("Расчёт был недоделан, либо были внесены изменения, актуализируйте его")
+                    return redirect(url_for('home'))
+                if os.path.exists(file_path + ".xlsx"):
+                    send_file(file_path + ".xlsx", mimetype='text/csv', as_attachment=True) # Скачивание файла 
+                if os.path.exists(file_path + ".csv"):
+                    send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True) # Скачивание файла ``
+            else:
+                flash("Расчёт на такой файл ещё не был создан")
     return render_template('Dirs.html', file_tree=file_tree)
 
 
@@ -562,6 +579,7 @@ def session_data():
         table = 0
     else:
         table = 1
+    session['check'] = 1
     if request.method == 'POST':
         session["session_data"] = request.form
         if 'download' in request.form:
@@ -577,7 +595,6 @@ def session_data():
             with pd.ExcelWriter(path +"/" + name + ".xlsx") as writer:
 
                 sheet_name = 'Трудозатраты'
-                [['Earth', 1], ['Moon', 0.606], ['Mars', 0.107]]
                 df_info = pd.DataFrame([["Заказчик", session['home_form']['field1']], ["Изделие", session['home_form']['field2']], ["Партия", session['home_form']['field3']]])
                 df_info.to_excel(writer, index=False, sheet_name=sheet_name, header = False)
                 #df1 = pd.concat([df[0], df[1]], keys=['Стоимость подготовки производства', 'Стоимость производства'])
@@ -598,6 +615,7 @@ def session_data():
                 pickle.dump(session_data, file)
             return send_file(path +"/" + name + ".xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", as_attachment=True)
     if 'back' in request.form:
+        session['check'] = 0
         return redirect(url_for('info'))
     if 'tariffs' in request.form:
         session['last_page'] = 'session_data'

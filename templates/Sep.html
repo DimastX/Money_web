@@ -46,6 +46,12 @@
                                 <input type="radio" name="Sep_type" value="1" id="Scrab" onclick="time_calculation()"
                                     {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep_type'] == "1" %} checked {% endif %} {% endif %}>
                                 Скрайбирование
+                                <div class="form-group" id="jumpers2" style="display:none">
+                                    <br>
+                                    <label>Количество перемычек при скрайбировании:</label>
+                                    <input type="number" class="form-control" name="jumpers2" id="jumpers2_num" min="0" step="1" onclick="time_calculation()" onkeyup="time_calculation()"
+                                        value="{{ session['Sep_form']['jumpers2'] if session.get('Sep_form') else '0' }}"></input>
+                                </div>
                             </label>
                             <br>
                             <label>
@@ -53,17 +59,19 @@
                                     {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep_type'] == "2" %} checked {% endif %} {% endif %} value="2">
                                 Перемычки
                             </label>
+                            <div class="form-group" id="jumpers" style="display:none">
+                                <br>
+                                <label>Количество перемычек:</label>
+                                <input type="number" class="form-control" name="jumpers" id="jumpers_num" min="1" step="1" onclick="time_calculation()" onkeyup="time_calculation()"
+                                    value="{{ session['Sep_form']['jumpers'] if session.get('Sep_form') else '0' }}"></input>
+                            </div>
                             <br>
                             <label>
                                 <input type="radio" name="Sep_type" id="SAR" onclick="time_calculation()"
                                     {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep_type'] == "3" %} checked {% endif %} {% endif %} value="3">
                                 SAR
                             </label>
-                            <div class="form-group" id="jumpers" style="display:none">
-                                <label>Количество перемычек:</label>
-                                <input type="number" class="form-control" name="jumpers" id="jumpers_num" min="1" step="1" onclick="time_calculation()" onkeyup="time_calculation()"
-                                    value="{{ session['Sep_form']['jumpers'] if session.get('Sep_form') else '' }}"></input>
-                            </div>
+                            
                             <br>
                         </div>
                     </td>
@@ -176,11 +184,13 @@
     </div>
     <script>
         const opt = document.getElementsByName("Sep_type");
-        const chckbx = document.getElementById("Sep")
-        const num = document.getElementById("jumpers_num")
+        const chckbx = document.getElementById("Sep");
+        const num = document.getElementById("jumpers_num");
+        const num2 = document.getElementById("jumpers2_num");
         window.onload = function(){
             check('Sep', 'Sep_off');
             checkOption('jump', 'jumpers');
+            checkOption('Scrab', 'jumpers2');
             time_calculation();
         }
 
@@ -194,12 +204,15 @@
 
         document.getElementById('jump').addEventListener('change', function() {
             checkOption('jump', 'jumpers');
+            checkOption('Scrab', 'jumpers2');
         });
         document.getElementById('Scrab').addEventListener('change', function() {
             checkOption('jump', 'jumpers');
+            checkOption('Scrab', 'jumpers2');
         });
         document.getElementById('SAR').addEventListener('change', function() {
             checkOption('jump', 'jumpers');
+            checkOption('Scrab', 'jumpers2');
         });
         document.getElementById('time').addEventListener('change', function() {
             time_calculation();
@@ -208,10 +221,12 @@
         function time_calculation(){
             let time = 0;
             const number = num.value;
+            const number2 = num2.value;
             var batch = parseInt({{ session['home_form']['field3']}});
             if (chckbx.checked){
                 if(opt[0].checked){
-                    time = parseFloat({{ time[0] }});                 
+                    time = parseFloat({{ time[0] }});
+                    time = time + parseFloat({{ time[1] }}) * Number(number2) / parseFloat({{ time[4] }});
                     time_multi = Math.ceil(time * parseFloat({{ time[4] }}))                     
                     time_all = Math.ceil(time_multi * parseFloat({{ time[3] }}) * parseFloat({{df['Значение'][3]}})/ 3600) 
                 } else if(opt[1].checked){

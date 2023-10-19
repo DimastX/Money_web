@@ -327,7 +327,10 @@ def prepare(session):
         traf = 0
     traf = str(traf) + " руб"
     doc = str(df2["Стоимость, руб/ч"][23]) + " руб"
-    ebom = str(df2["Стоимость, руб/ч"][24] * session["tables"][4]) + " руб"
+    if "tables" in session:
+        ebom = str(df2["Стоимость, руб/ч"][24] * session["tables"][4]) + " руб"
+    else:
+        ebom = "0 руб"
     return [["Трафареты", traf], ["Проверка документации", doc], ["Создание EBOM", ebom]]
 
 

@@ -33,6 +33,7 @@
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <input type="submit" class="btn btn-primary" value="Скачать шаблон" name="template">
+            <a href="https://doc.starline.ru/pages/viewpage.action?pageId=661060034" class="btn btn-primary">Инструкции</a>
             <p></p>
             <fieldset>
                 <legend>Автоматический поверхностный монтаж SMT</legend>
@@ -40,6 +41,7 @@
                     <input type="checkbox" id="SMD" name="SMD" value="1" onclick="check('SMD', 'SMD_off')"
                            {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD'] or session.get('tables')%} checked="checked" {% endif %} {% endif %}>
                     <label for="SMD">Выполнять автоматический поверхностный монтаж SMT? </label>
+                    
                 </div>
             </fieldset>
         <table>
@@ -301,7 +303,7 @@
             document.getElementById(slave).classList.add('disable_section')
           }
         }
-
+        
         function submitForm() {
             var notification = document.getElementById("processing-notification");
             notification.style.display = "block";

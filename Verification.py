@@ -1,5 +1,6 @@
 import pickle
 from datetime import datetime
+import os
 
 def home_verif(form):
     if (form['field1'] != "") and (form['field2'] != "") and (form['field3'] != ""): # Проверка, что на первой странице заполнены все поля
@@ -69,5 +70,7 @@ def auto_save(session):
             name += "_" + session["home_form"]["comm"]       
     for key, value in session.items():
         session_data[key] = value
+    if not os.path.exists(path):
+            os.makedirs(path)
     with open(path +"/" + name + '.pickle', 'wb') as file:
         pickle.dump(session_data, file)
