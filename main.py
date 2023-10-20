@@ -68,9 +68,9 @@ def dirs():
                     flash("Расчёт был недоделан, либо были внесены изменения, актуализируйте его")
                     return redirect(url_for('home'))
                 if os.path.exists(file_path + ".xlsx"):
-                    send_file(file_path + ".xlsx", mimetype='text/csv', as_attachment=True) # Скачивание файла 
+                    return send_file(file_path + ".xlsx", mimetype='text/csv', as_attachment=True) # Скачивание файла 
                 if os.path.exists(file_path + ".csv"):
-                    send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True) # Скачивание файла ``
+                    return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True) # Скачивание файла ``
             else:
                 flash("Расчёт на такой файл ещё не был создан")
     return render_template('Dirs.html', file_tree=file_tree)
