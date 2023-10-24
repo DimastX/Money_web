@@ -226,7 +226,7 @@
             if (chckbx.checked){
                 if(opt[0].checked){
                     time = parseFloat({{ time[0] }});
-                    time = time + parseFloat({{ time[1] }}) * Number(number2) / parseFloat({{ time[4] }});
+                    time = Math.ceil(time + parseFloat({{ time[1] }}) * Number(number2) / parseFloat({{ time[4] }}));
                     time_multi = Math.ceil(time * parseFloat({{ time[4] }}))                     
                     time_all = Math.ceil(time_multi * parseFloat({{ time[3] }}) * parseFloat({{df['Значение'][3]}})/ 3600) 
                 } else if(opt[1].checked){
@@ -244,7 +244,7 @@
             if (chckbx.checked){
                 document.getElementById("time_pc").value = time + " c";
                 document.getElementById("time_all").value = time_all + " ч";
-                document.getElementById("money_all").value = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) + " руб";
+                document.getElementById("money_all").value = Math.ceil(time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}})) + " руб";
                 document.getElementById("money_pc").value = Math.ceil(time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) 
                     / parseFloat({{ session['home_form']['field3'] }}))  + " руб";
                     

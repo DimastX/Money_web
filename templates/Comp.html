@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <!-- вывод flash-сообщений -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        <form id = "myForm" method="POST">
+            <br>
+            <button type="submit" class="btn btn-primary" name="back">Назад</button>
+            <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
+            <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
+            <p></p>
+            <fieldset>
+                <legend>Комплектация</legend>
+            </fieldset>
+            <table>
+                <tr>
+                    <td style="width: 30%;">
+                        <div class="form-group">
+                            <label>Количество наименований</label>
+                            <br>
+                            <input type="number" class="form-control" min="0" step="1" name="Comp_num" id="Comp_num">
+                        </div>
+                    </td>
+                    <td style="width: 40%;">                        
+                        <div class="form-group">
+                            <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
+                            <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                    </td>
+                    <td style="width: 40%;">
+                        <div class="form-group">                            
+                            <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="panel-group" id="accordion_dat">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
+                                Данные по стоимости приёмки комплектации
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_data" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div class="table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Значение</th>
+                                        </tr>
+                                    </thead>
+                                    <td>
+                                        <input type="text" class="form-control" readonly value="Количество ПУ в партии">
+                                        <input type="text" class="form-control" readonly value="Времени на приёмку ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость приёмки ПУ">
+                                        <input type="text" class="form-control" readonly value="Времени на приёмку партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость приёмки партии">
+                                        <input type="text" class="form-control" readonly value="Времени на входной контроль ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость входного контроля ПУ">
+                                        <input type="text" class="form-control" readonly value="Времени на входной контроль партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость входного контроля партии">
+                                        <input type="text" class="form-control" readonly value="Времени на выходной контроль ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость выходного контроля ПУ">
+                                        <input type="text" class="form-control" readonly value="Времени на выходной контроль партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость выходного контроля партии">
+                                        <input type="text" class="form-control" readonly value="Времени на отгрузку ПУ">
+                                        <input type="text" class="form-control" readonly value="Стоимость отгрузки ПУ">
+                                        <input type="text" class="form-control" readonly value="Времени на отгрузку партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость отгрузки партии">
+                                        <input type="text" class="form-control" readonly value="Итого времени на ПУ">
+                                        <input type="text" class="form-control" readonly value="Итого стоимость ПУ">
+                                        <input type="text" class="form-control" readonly value="Итого времени на партию">
+                                        <input type="text" class="form-control" readonly value="Итого стоимость партии">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="PCB" id="PCB" class="form-control" readonly>
+                                        <input type="text" name="time_pc1" id="time_pc1" class="form-control" readonly>
+                                        <input type="text" name="money_pc1" id="money_pc1" class="form-control" readonly>
+                                        <input type="text" name="time_all1" id="time_all1" class="form-control" readonly>
+                                        <input type="text" name="money_all1" id="money_all1" class="form-control" readonly>
+                                        <input type="text" name="time_pc2" id="time_pc2" class="form-control" readonly>
+                                        <input type="text" name="money_pc2" id="money_pc2" class="form-control" readonly>
+                                        <input type="text" name="time_all2" id="time_all2" class="form-control" readonly>
+                                        <input type="text" name="money_all2" id="money_all2" class="form-control" readonly>
+                                        <input type="text" name="time_pc3" id="time_pc3" class="form-control" readonly>
+                                        <input type="text" name="money_pc3" id="money_pc3" class="form-control" readonly>
+                                        <input type="text" name="time_all3" id="time_all3" class="form-control" readonly>
+                                        <input type="text" name="money_all3" id="money_all3" class="form-control" readonly>
+                                        <input type="text" name="time_pc4" id="time_pc4" class="form-control" readonly>
+                                        <input type="text" name="money_pc4" id="money_pc4" class="form-control" readonly>
+                                        <input type="text" name="time_all4" id="time_all4" class="form-control" readonly>
+                                        <input type="text" name="money_all4" id="money_all4" class="form-control" readonly>
+                                        <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
+                                        <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
+                                        <input type="text" name="time_all" id="time_all" class="form-control" readonly>
+                                        <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Данные для контроля комплектации
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <div>
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>{{ df.columns[0] }}</th>
+                                                <th>{{ df.columns[1] }}</th>
+                                            </tr>
+                                        </thead>
+                                        {% for row in df.iterrows(): %}
+                                        <tr>
+                                            {% for cell in row[1] %}
+                                            <td>
+                                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                                    <input {% if edit == "0" %} disabled {% endif %}
+                                                        type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                {% else %} <!-- Если это не второй столбец -->
+                                                    {{ cell }}
+                                                {% endif %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                    </table>
+                                </div>
+                                <label>Пароль:</label>
+                                <input type="password" class="form-control" name="password" 
+                                        onkeydown="return event.key != 'Enter';">                
+                                <br>
+                                <button {% if edit != "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save" 
+                                        onkeydown="return event.key != 'Enter';">Изменить</button>
+                                <button {% if edit == "0" %} disabled {% endif %}
+                                        type="submit" class="btn btn-primary" name="save2" 
+                                        onkeydown="return event.key != 'Enter';">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </form>
+    </div>
+    <script>
+        ids = ["Comp_num"];
+
+        window.onload = function(){
+            value_start();
+            Comp_amount();
+        }
+
+        const points = document.getElementById('Comp_num');
+        function value_start(){
+            if ("{{'Comp_form' in session}}" == "True"){
+                points.value = {{session['Comp_form']["Comp_num"] if session.get('Comp_form') else '0'}};
+            } else if("{{'tables' in session}}" == "True"){
+                points.value = {{session['tables'][4] if session.get('tables') else '0'}};
+            } else{
+                points.value = '0';
+            }
+        }
+        function check(master, slave) {
+          if (document.getElementById(master).checked) {
+            document.getElementById(slave).classList.remove('disable_section')
+          } else {
+            document.getElementById(slave).classList.add('disable_section')
+          }
+        }
+
+        for (var i = 0; i < ids.length; i++) {
+            var element = document.getElementById(ids[i]);
+            element.addEventListener('change', function(){
+                Comp_amount();
+            });
+        }
+
+        function Comp_amount(){
+            var batch = parseInt({{ session['home_form']['field3']}});
+            var names = points.value;
+            var coef = 1;
+            var add = 0;
+
+            var time_all1 = Math.ceil(names * coef * parseInt({{df['Значение'][0]}}) / 3600);
+            var money_all1 = time_all1 * parseInt({{df2['Стоимость, руб/ч'][22]}});
+            console.log(names);
+            console.log(money_all1);
+            console.log(time_all1);
+            var money_pc1 = Math.ceil(money_all1 / batch);
+            var time_pc1 = Math.ceil(time_all1 / batch * 3600);
+            
+            var time_all2 = Math.ceil(names * (parseInt({{df['Значение'][1]}}) + add) / 3600);
+            if ((time_all2 * 3600)< parseInt({{df['Значение'][4]}})){
+                time_all2 = Math.ceil(parseInt({{df['Значение'][4]}}) / 3600);
+            }
+            time_pc2 = Math.ceil(time_pc2 / 3600);
+            var time_pc2 = Math.ceil(time_all2 / batch * 3600);
+            var money_all2 = time_all2 * parseInt({{df2['Стоимость, руб/ч'][19]}});
+            var money_pc2 = Math.ceil(money_all2 / batch);
+            
+            var time_all3 = Math.ceil(batch * parseInt({{df['Значение'][2]}}) / 3600);
+            var time_pc3 = Math.ceil(time_all3 / batch * 3600);
+            var money_all3 = time_all3 * parseInt({{df2['Стоимость, руб/ч'][21]}});
+            var money_pc3 = Math.ceil(money_all3 / batch);
+            
+            var time_all4 = Math.ceil(batch * parseInt({{df['Значение'][3]}}) / 3600);
+            var time_pc4 = Math.ceil(time_all4 / batch * 3600);
+            var money_all4 = time_all4 * parseInt({{df2['Стоимость, руб/ч'][22]}});
+            var money_pc4 = Math.ceil(money_all4 / batch);
+
+            var time_all = time_all1 + time_all2 + time_all3 + time_all4;
+            var time_pc = Math.ceil(time_all / batch * 3600);
+            var money_all = money_all1 + money_all2 + money_all3 + money_all4;
+            var money_pc = Math.ceil(money_all / batch);
+
+            document.getElementById('PCB').value = batch + " шт";
+            document.getElementById('time_pc1').value = time_pc1 + " c";
+            document.getElementById('time_all1').value = time_all1 + " ч";
+            document.getElementById('money_pc1').value = money_pc1 + " руб";
+            document.getElementById('money_all1').value = money_all1 + " руб";
+
+            document.getElementById('time_pc2').value = time_pc2 + " c";
+            document.getElementById('time_all2').value = time_all2 + " ч";
+            document.getElementById('money_pc2').value = money_pc2 + " руб";
+            document.getElementById('money_all2').value = money_all2 + " руб";
+
+            document.getElementById('time_pc3').value = time_pc3 + " c";
+            document.getElementById('time_all3').value = time_all3 + " ч";
+            document.getElementById('money_pc3').value = money_pc3 + " руб";
+            document.getElementById('money_all3').value = money_all3 + " руб";
+
+            document.getElementById('time_pc4').value = time_pc4 + " c";
+            document.getElementById('time_all4').value = time_all4 + " ч";
+            document.getElementById('money_pc4').value = money_pc4 + " руб";
+            document.getElementById('money_all4').value = money_all4 + " руб";
+
+            document.getElementById('time_pc').value = time_pc + " c";
+            document.getElementById('time_all').value = time_all + " ч";
+            document.getElementById('money_pc').value = money_pc + " руб";
+            document.getElementById('money_all').value = money_all + " руб";
+            
+            document.getElementById("money_pc_f").value = money_pc + " руб";
+            document.getElementById("money_all_f").value = money_all + " руб";
+
+        }
+    </script>
+</body>
+</html>

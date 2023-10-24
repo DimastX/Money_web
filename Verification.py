@@ -60,6 +60,12 @@ def xray_verif(form):
             return "Заполните все поля"
     return 0
 
+def handv_verif(form):
+    if "Handv" in form:
+        if form["money_all_f"] == 'NaN руб':
+            return "Заполните все поля"
+    return 0
+
 def auto_save(session):
     session_data = {} 
     path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])

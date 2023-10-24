@@ -18,7 +18,7 @@ import os
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 password = '1234' # Пароль для редактирования констант
-Calculations_path = "Calculations/" # Путь хранения расчётов 
+Calculations_path = "Calculations/" # Путь хранения расчётов
 
 """ Функция для загрузки тарифов из таблицы .csv"""
 def readdata():
@@ -60,7 +60,7 @@ def dirs():
             if os.path.exists(file_path + ".csv") or os.path.exists(file_path + ".xlsx"):
                 with open(file_path + ".pickle", 'rb') as file:
                     session_data = pickle.load(file)
-                    session.update(session_data)    
+                    session.update(session_data)
                 if "check" not in session:
                     flash("Расчёт был сделан в старой версии приложения. Убедитесь в его актуальности. Откройте изделие и скачайте расчёт оттуда")
                     return render_template('Dirs.html', file_tree=file_tree)
@@ -68,7 +68,7 @@ def dirs():
                     flash("Расчёт был недоделан, либо были внесены изменения, актуализируйте его")
                     return redirect(url_for('home'))
                 if os.path.exists(file_path + ".xlsx"):
-                    return send_file(file_path + ".xlsx", mimetype='text/csv', as_attachment=True) # Скачивание файла 
+                    return send_file(file_path + ".xlsx", mimetype='text/csv', as_attachment=True) # Скачивание файла
                 if os.path.exists(file_path + ".csv"):
                     return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True) # Скачивание файла ``
             else:
@@ -209,7 +209,7 @@ def smd():
         if 'next' in request.form:
             msg = ver.smd_verif(session) # Вызов проверки заполнения полей на первой странице
             if msg == 0:
-                return redirect(url_for('tht')) #Переход на следующую страницу
+                return redirect(url_for('comp')) #Переход на следующую страницу
             else:
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
         if 'save' in request.form: #Проверка, что подходит пароль для первой таблицы
@@ -246,6 +246,32 @@ def upload():
     else:
         return 'Файл не был загружен'
     
+"""Страница с комплектацией"""
+@app.route('/Comp', methods=['GET', 'POST'])
+def comp():
+    edit = "0"
+    df = pd.read_csv('data/Comp.csv') #Константы СМД линии
+    df2 = readdata()
+    if request.method == 'POST':
+        session['Comp_form'] = request.form
+        ver.auto_save(session)
+        if 'tariffs' in request.form:
+            session['last_page'] = 'comp'
+            return redirect(url_for('tariffs'))
+        if 'back' in request.form:
+            return redirect(url_for('smd'))
+        if 'next' in request.form:
+            return redirect(url_for('tht'))
+        if 'save' in request.form:
+            if request.form['password'] == password:
+                edit = "1"
+            else:
+                msg = 'Неверный пароль'
+                flash(msg)
+        if 'save2' in request.form:
+            tb.update_table("THT", request.form, df)
+    return render_template('Comp.html', df=df, df2=df2, edit=edit)
+    
 """THT монтаж"""
 @app.route('/THT', methods=['GET', 'POST'])
 def tht():
@@ -259,7 +285,7 @@ def tht():
             session['last_page'] = 'tht'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
-            return redirect(url_for('smd'))
+            return redirect(url_for('comp'))
         if 'next' in request.form:
             return redirect(url_for('wave'))
         if 'save' in request.form:
@@ -281,6 +307,7 @@ def wave():
     df2 = readdata()
     if request.method == 'POST':
         session['Wave_form'] = request.form
+        ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'wave'
             return redirect(url_for('tariffs'))
@@ -306,6 +333,7 @@ def HRL():
     df2 = readdata()
     if request.method == 'POST':
         session['HRL_form'] = request.form
+        ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'HRL'
             return redirect(url_for('tariffs'))
@@ -331,6 +359,7 @@ def hand():
     df2 = readdata()
     if request.method == 'POST':
         session['Hand_form'] = request.form
+        ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'hand'
             return redirect(url_for('tariffs'))
@@ -358,6 +387,7 @@ def test():
     rows = 0
     if request.method == 'POST': 
         session['Test_form'] = request.form
+        ver.auto_save(session)
         if 'save' in request.form:
             if request.form['password'] == password:
                 edit = "1"
@@ -389,6 +419,7 @@ def clear():
     data = cm.clear_calculations(session, df) #
     if request.method == 'POST':
         session['Clear_form'] = request.form
+        ver.auto_save(session)
         if 'save' in request.form:
             if request.form['password'] == password:
                 edit = "1"
@@ -419,13 +450,18 @@ def handv():
     df2 = readdata()
     if request.method == 'POST':
         session['Handv_form'] = request.form
+        ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'handv'
             return redirect(url_for('tariffs'))
         if 'back' in request.form:
             return redirect(url_for('clear'))
         if 'next' in request.form:
-            return redirect(url_for('sep'))
+            msg = ver.handv_verif(request.form) # Вызов проверки заполнения полей на первой странице
+            if msg == 0:
+                return redirect(url_for('sep'))
+            else:
+                flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
         if 'save' in request.form:
             if request.form['password'] == password:
                 edit = "1"
@@ -447,6 +483,7 @@ def sep():
     time = cm.sep_calculations(session, df)
     if request.method == 'POST':
         session['Sep_form'] = request.form
+        ver.auto_save(session)
         if 'save' in request.form:
             if request.form['password'] == password:
                 edit = "1"
@@ -478,6 +515,7 @@ def xray():
     df = pd.read_csv('data/Xray.csv')
     if request.method == 'POST':
         session['Xray_form'] = request.form
+        ver.auto_save(session)
         if 'save' in request.form:
             if request.form['password'] == password:
                 edit = "1"
@@ -507,6 +545,7 @@ def pack():
     edit = "0"
     if request.method == 'POST':
         session['Pack_form'] = request.form
+        ver.auto_save(session)
         if 'save' in request.form:
             if request.form['password'] == password:
                 edit = "1"
@@ -535,6 +574,7 @@ def add():
     df2 = readdata()
     if request.method == 'POST':
         session['Add_form'] = request.form
+        ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'add'
             return redirect(url_for('tariffs'))
@@ -553,6 +593,7 @@ def info():
     df = pd.read_csv('data/Info.csv')
     if request.method == 'POST':
         session['Info_form'] = request.form
+        ver.auto_save(session)
         if 'save' in request.form:
             if request.form['password'] == password:
                 edit = "1"
