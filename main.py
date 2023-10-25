@@ -649,6 +649,16 @@ def session_data():
                     col_idx = df[0].columns.get_loc(column)
                     writer.sheets[sheet_name].set_column(col_idx + 1, col_idx + 1, column_length+1)
                 writer.sheets[sheet_name].set_column(0, 0, 60)
+
+                sheet_name = "Информация"
+                df_info.to_excel(writer, index=False, sheet_name=sheet_name, header = False)
+                start_row = df_info.shape[0] + 2
+                df[2].to_excel(writer, sheet_name=sheet_name, startrow= start_row, index=False)
+                for column in df[2]:
+                    column_length = max(df[2][column].astype(str).map(len).max(), len(column))
+                    col_idx = df[2].columns.get_loc(column)
+                    writer.sheets[sheet_name].set_column(col_idx + 1, col_idx + 1, column_length+1)
+                writer.sheets[sheet_name].set_column(0, 0, 40)
             session_data = {}
             for key, value in session.items():
                 session_data[key] = value
@@ -663,8 +673,10 @@ def session_data():
         return redirect(url_for('tariffs'))
     if table:
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
-                           tables2=[df[1].to_html(classes='table', index=False, header="true")])
-    return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table = table)
+                           tables2=[df[1].to_html(classes='table', index=False, header="true")], 
+                           tables3=[df[2].to_html(classes='table', index=False, header="true")])
+    return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table = table,
+                           tables3=[df[2].to_html(classes='table', index=False, header="true")])
 
 
 if __name__ == '__main__':

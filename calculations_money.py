@@ -303,9 +303,11 @@ def create_export(session):
     #Создание таблицы с подоготовкой производства
     prep_sum = 0
     prep_sum_pc = int(prep_sum / batch)
+    Traf = 0
     if 'prepare' in session['second_form']:
         headers2 = ["","Стоимость"]
         data2 = prepare(session)
+        Traf = int(str(data2[0][1]).split(" ")[0])
         for data_in_data2 in data2:
             prep_sum += int(str(data_in_data2[1]).split(" ")[0])
         data2.append(["Итого", str(prep_sum) + " руб" ])
@@ -322,10 +324,32 @@ def create_export(session):
     sum[2] = int(sum[2] * VAT)
     sum[3] = int(sum[3] * VAT)
     df.loc["Итоговая стоимость"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
+    cost_c, cost_e, cost_p = 0, 0, 0
+    if "cost_c" in session["second_form"]:
+        if session["second_form"]["cost_c"] != "":
+            cost_c = int(session["second_form"]["cost_c"])
+        if session["second_form"]["cost_e"] != "":
+            cost_e = int(session["second_form"]["cost_e"])
+        if session["second_form"]["cost_p"] != "":
+            cost_p = int(session["second_form"]["cost_p"])
+    prep = prep_sum - Traf
+    if prep < 0:
+        prep = 0
+    data3 = [
+        ["Трафареты", str(Traf) + " руб"],
+        ["Подготовка производства", str(prep) + " руб"],
+        ["Печатные платы", str(cost_p) + " руб"],
+        ["Компоненты", str(cost_c) + " руб"],
+        ["Оснастки", str(cost_e) + " руб"],
+        ["Итого", str(cost_p + cost_c + cost_e + prep + Traf) + " руб"]
+    ]
+    headers3 = [" ", "Стоимость"]
+    df3 = pd.DataFrame(data3, columns=headers3)
     if 'prepare' in session['second_form']:
         df2 = pd.DataFrame(data2, columns=headers2)
-        return [df, df2]
-    return [df, 1]
+        return [df, df2, df3]
+    
+    return [df, 1, df3]
 
 def prepare(session):
     df = pd.read_csv('data/Traf.csv')

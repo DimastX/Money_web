@@ -27,6 +27,10 @@
                     {{ table|safe }}
                 {% endfor %}
             {%endif%}
+            <h1>Доп. информация</h1>
+            {% for table in tables3 %}
+                {{ table|safe }}
+            {% endfor %}
             </body>
         </form>
     </div>

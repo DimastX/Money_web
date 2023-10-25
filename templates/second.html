@@ -219,6 +219,19 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Стоимость компонентов:</label>
+                                <input type="number" class="form-control" name="cost_c" id="cost_c" min ="0"
+                                    value="{{ session['second_form']['cost_c'] if session.get('second_form') else '0' }}">
+                                <label>Стоимость печатных плат:</label>
+                                <input type="number" min="0" class="form-control" name="cost_p" id="cost_p"
+                                    value="{{ session['second_form']['cost_p'] if session.get('second_form') else '0' }}">
+                                <label>Стоимость оснасток:</label>
+                                <input type="number" min="0" class="form-control" name="cost_e" id="cost_e"
+                                    value="{{ session['second_form']['cost_e'] if session.get('second_form') else '0' }}">
+                            </div>
+                        </div>
                     </td>
                     <td>
                         <div class="form-group">
