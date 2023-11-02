@@ -10,16 +10,19 @@ def tables(file):
     PAP = df.iloc[:, :2] #Выделяем таблицу PAP
     BOM = df.iloc[:, 2:] #Выделяем таблицу BOM 
     PAP['Layer'] = PAP['Layer'].fillna(0)
+    PAP.drop_duplicates()
     Layer = PAP["Layer"].unique()
-    if len(Layer) != 2:
+    if len(Layer) > 2:
         return  0
     Bot = PAP[PAP["Layer"] == Layer[0]]["Designator"] #Из таблицы PAP выделяем те компоненты, которые ставятся на сторону Bot
     Bot = pd.DataFrame(Bot)
-    Top = PAP[PAP["Layer"] == Layer[1]]["Designator"] #Из таблицы PAP выделяем те компоненты, которые ставятся на сторону Top
-    Top = pd.DataFrame(Top)
+    if len(Layer) == 2:
+        Top = PAP[PAP["Layer"] == Layer[1]]["Designator"] #Из таблицы PAP выделяем те компоненты, которые ставятся на сторону Top
+        Top = pd.DataFrame(Top)
     top_lines = 0
     bot_lines = 0
     BOM.dropna(axis='index', how='all', inplace=True) #Выкидываем пустые строки. Т.к. ВОМ всегда не больше РАР, а для удобства обработки мы закидываем всё одной таблицей
+    bom_table(BOM)
     unics = BOM.shape[0] #Подсчёт количества строк в ВОМ
     for index, row in Bot.iterrows(): #Проходимся по по всем ссылочным указателям в Bot, чтобы проверить есть они в BOM или нет. Часто бывает, что PAP больше, чем BOM и там будут незаполненные строки
         value = str(row['Designator'])
@@ -29,14 +32,16 @@ def tables(file):
                 Bot.at[index, 'Name'] = row2["Name"]
                 bot_lines += 1 #Счётчик количества устанавливаемых компонентов
                 break
-    for index, row in Top.iterrows():
-        value = str(row['Designator'])
-        for index2, row2, in BOM.iterrows():
-            value2 = str(row2['Designators (BOM)']).replace(" ","").split(",")
-            if value in value2:
-                Top.at[index, 'Name'] = row2["Name"]    
-                top_lines += 1
-                break
+    
+    if len(Layer) == 2:        
+        for index, row in Top.iterrows():
+            value = str(row['Designator'])
+            for index2, row2, in BOM.iterrows():
+                value2 = str(row2['Designators (BOM)']).replace(" ","").split(",")
+                if value in value2:
+                    Top.at[index, 'Name'] = row2["Name"]    
+                    top_lines += 1
+                    break
     if top_lines != 0:
         top_lines_unic = Top["Name"].nunique() #Количество уникальных компонентов на стороне TOP
     else:
@@ -69,3 +74,23 @@ def update_table2(name, form, df):
             df.iloc[ int(row[0]), int(row[1])-1] = form[key]  # обновляем значение ячейки
     name = "data/"+name+".csv"      
     df.to_csv(name, index=False)
+
+
+#Функция для замены - на , в BOM 
+def bom_table(BOM):
+    for index, row in BOM.iterrows():
+        if '-' in row['Designators (BOM)']:
+            string = str(row['Designators (BOM)'])
+            string = string.split("-")
+            if len(string) > 2:
+                return 0 # Некорректное заполнение
+            elif len(string) == 2:
+                start = int(''.join(c if c.isdigit() else ' ' for c in string[0]))
+                end = int(''.join(c if c.isdigit() else ' ' for c in string[1]))
+                name = ''.join(c if c.isalpha() else ' ' for c in string[0])
+                names = []
+                for i in range(end - start):
+                    names.append(name + str(start + i))
+            names = str(names)
+            names = names.replace(" ","")
+            row['Designators (BOM)'] = names
