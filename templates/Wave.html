@@ -36,35 +36,37 @@
                     <label for="Wave">Выполнять волновую пайку? </label>
                 </div>
             </fieldset>
-            <table>
-                <tr>
-                    <td style="width: 33%;">
-                        <div class="form-group">
-                            <label>Количество компонентов</label>
-                            <br>
-                            <input type="number" class="form-control" min="0" step="1" name="Wave_num" id="Wave_num"
-                            value="{{ session['Wave_form']['Wave_num'] if session.get('Wave_form') else '' }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Количество оснасток</label>
-                            <br>
-                            <input type="number" class="form-control" min="0" step="1" name="Wave_eq_num" id="Wave_eq_num"
-                            value="{{ session['Wave_form']['Wave_eq_num'] if session.get('Wave_form') else '' }}">
-                        </div>
-                        <input type="checkbox" id="Wave_type" name="Wave_type" value="1"
-                           {% if session.get('Wave_form')%} {% if session['Wave_form']['Wave_type'] %} checked="checked" {% endif %} {% endif %}>
-                    <label for="Wave">Это материнская или серверная плата? </label>
-                    </td>
-                    <td style="width: 33%;">
-                        <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
-                        <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
-                    </td>
-                    <td>
-                        <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
-                        <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
-                    </td>
-                </tr>
-            </table>
+            <div class="form-group" name="Wave_off" id="Wave_off">
+                <table>
+                    <tr>
+                        <td style="width: 33%;">
+                            <div class="form-group">
+                                <label>Количество компонентов</label>
+                                <br>
+                                <input type="number" class="form-control" min="0" step="1" name="Wave_num" id="Wave_num"
+                                value="{{ session['Wave_form']['Wave_num'] if session.get('Wave_form') else '1' }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Количество оснасток</label>
+                                <br>
+                                <input type="number" class="form-control" min="0" step="1" name="Wave_eq_num" id="Wave_eq_num"
+                                value="{{ session['Wave_form']['Wave_eq_num'] if session.get('Wave_form') else '1' }}">
+                            </div>
+                            <input type="checkbox" id="Wave_type" name="Wave_type" value="1"
+                            {% if session.get('Wave_form')%} {% if session['Wave_form']['Wave_type'] %} checked="checked" {% endif %} {% endif %}>
+                        <label for="Wave">Это материнская или серверная плата? </label>
+                        </td>
+                        <td style="width: 33%;">
+                            <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
+                            <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                        </td>
+                        <td>
+                            <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <div class="panel-group" id="accordion_dat">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -183,6 +185,7 @@
             document.getElementById(slave).classList.add('disable_section')
           }
         }
+        
 
         ids = ["Wave", "Wave_num", "Wave_eq_num", "Wave_type"];
 
@@ -214,14 +217,12 @@
             if (chckbx2.checked){
                 k = parseFloat({{ df['Значение'][7] }});
             }
-            console.log(k);
 
             const n_eq = document.getElementById("Wave_eq_num").value;
             const N_comp = document.getElementById("Wave_num").value * pc;
             const t_comp = parseFloat({{ df['Значение'][8] }});
             const t_AOI = 2 * parseFloat({{ df['Значение'][9] }});
             const t_wave = parseFloat({{ df['Значение'][10] }}) / k;
-            console.log(t_wave);
             const t_end = parseFloat({{ df['Значение'][0]}});
             const n_work = parseFloat({{ df['Значение'][6]}})
 
@@ -236,7 +237,6 @@
                 dt = CycleTime / n_eq;
             }
             const prod = (dt * multi_num + CycleTime)/3600;
-            console.log(prod)
             const time_all = Math.ceil(prod);
             const time_pc = Math.ceil(time_all/ batch * 3600);
             const money_all = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][4]}}));
