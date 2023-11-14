@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_table import Table, Col
 import pandas as pd
 import calculations_money as cm
-import io
-import csv
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import secure_filename
 import tables as tb
@@ -14,7 +12,7 @@ import time
 
 from datetime import datetime
 import os
-
+#Проверка
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 password = '1234' # Пароль для редактирования констант
