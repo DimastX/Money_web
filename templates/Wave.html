@@ -38,7 +38,24 @@
             </fieldset>
             <table>
                 <tr>
-                    <td style="width: 50%;">
+                    <td style="width: 33%;">
+                        <div class="form-group">
+                            <label>Количество компонентов</label>
+                            <br>
+                            <input type="number" class="form-control" min="0" step="1" name="Wave_num" id="Wave_num"
+                            value="{{ session['Wave_form']['Wave_num'] if session.get('Wave_form') else '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Количество оснасток</label>
+                            <br>
+                            <input type="number" class="form-control" min="0" step="1" name="Wave_eq_num" id="Wave_eq_num"
+                            value="{{ session['Wave_form']['Wave_eq_num'] if session.get('Wave_form') else '' }}">
+                        </div>
+                        <input type="checkbox" id="Wave_type" name="Wave_type" value="1"
+                           {% if session.get('Wave_form')%} {% if session['Wave_form']['Wave_type'] %} checked="checked" {% endif %} {% endif %}>
+                    <label for="Wave">Это материнская или серверная плата? </label>
+                    </td>
+                    <td style="width: 33%;">
                         <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                         <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                     </td>
@@ -69,15 +86,11 @@
                                     </thead>
                                     <td>
                                         <input type="text" class="form-control" readonly value="Количество плат в партии">
-                                        <input type="text" class="form-control" readonly value="Количество плат в мультзаготовки">
+                                        <input type="text" class="form-control" readonly value="Количество плат в мультзаготовке">
                                         <input type="text" class="form-control" readonly value="Время сборки 1 ПУ">
                                         <input type="text" class="form-control" readonly value="Стоимость сборки 1 ПУ">
                                         <input type="text" class="form-control" readonly value="Время сборки всей партии">
                                         <input type="text" class="form-control" readonly value="Стоимость сборки всей партии">
-                                        <input type="text" class="form-control" readonly value="Время переналадки 1 ПУ">
-                                        <input type="text" class="form-control" readonly value="Стоимость переналадки 1 ПУ">
-                                        <input type="text" class="form-control" readonly value="Время переналадки всей партии">
-                                        <input type="text" class="form-control" readonly value="Стоимость переналадки всей партии">
                                         <input type="text" class="form-control" readonly value="Время ремонта партии">                            
                                         <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
                                         <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
@@ -90,10 +103,6 @@
                                         <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
                                         <input type="text" name="time_all" id="time_all" class="form-control" readonly>
                                         <input type="text" name="money_all" id="money_all" class="form-control" readonly>
-                                        <input type="text" name="time_re_pc" id="time_re_pc" class="form-control" readonly>
-                                        <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
-                                        <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
-                                        <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
                                         <input type="text" name="repair_time_all" id="repair_time_all" class="form-control" readonly>
                                         <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
                                         <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
@@ -175,7 +184,7 @@
           }
         }
 
-        ids = ["Wave"];
+        ids = ["Wave", "Wave_num", "Wave_eq_num", "Wave_type"];
 
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
@@ -185,33 +194,60 @@
         }
 
         var chckbx = document.getElementById('Wave');
+        var chckbx2 = document.getElementById('Wave_type');
+
         function wave_amount(){
             var batch = parseInt({{ session['home_form']['field3']}});
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
             var pc = parseInt({{ session['second_form']['pc']}});
             const time_multi = parseFloat({{df['Значение'][0]}});
             var prev = parseInt({{ session['second_form']['prev']}});
+            
             if (prev == 1){
                 prev = 1 - parseFloat({{ df['Значение'][1] }});
             } else if (prev == 2){
                 prev = 1;
             }
-            const start = parseFloat({{ df['Значение'][2] }}) * prev / 3600;
-            const prod = time_multi * multi_num / 3600;
+
+            
+            let k = 1;
+            if (chckbx2.checked){
+                k = parseFloat({{ df['Значение'][7] }});
+            }
+            console.log(k);
+
+            const n_eq = document.getElementById("Wave_eq_num").value;
+            const N_comp = document.getElementById("Wave_num").value * pc;
+            const t_comp = parseFloat({{ df['Значение'][8] }});
+            const t_AOI = 2 * parseFloat({{ df['Значение'][9] }});
+            const t_wave = parseFloat({{ df['Значение'][10] }}) / k;
+            console.log(t_wave);
+            const t_end = parseFloat({{ df['Значение'][0]}});
+            const n_work = parseFloat({{ df['Значение'][6]}})
+
+            let dt = (N_comp * t_comp + t_AOI) / n_work;
+            const CycleTime = N_comp * t_comp + t_AOI + t_wave + t_end;
+            const n_eq2 = CycleTime / dt;
+
+            if (n_eq - n_work <= 0){
+                dt = CycleTime / n_eq;
+            }
+            if (n_eq2 > n_eq){
+                dt = CycleTime / n_eq;
+            }
+            const prod = (dt * multi_num + CycleTime)/3600;
+            console.log(prod)
             const time_all = Math.ceil(prod);
-            const time_re_all = Math.ceil(start);
             const time_pc = Math.ceil(time_all/ batch * 3600);
-            const time_re_pc = Math.ceil(time_re_all / batch * 3600);
             const money_all = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][4]}}));
-            const money_re_all = Math.ceil(start * parseInt({{ df2['Стоимость, руб/ч'][5]}}));
             const money_pc = Math.ceil(money_all / batch);
-            const money_re_pc = Math.ceil(money_re_all / batch);
+
             let repair = 0;
-                if (prev == 1){
-                    repair = parseFloat({{df["Значение"][4]}}) * batch;
-                } else if (prev == 2){
-                    repair = parseFloat({{df["Значение"][3]}}) * batch;
-                }
+            if (prev == 1){
+                repair = parseFloat({{df["Значение"][4]}}) * batch;
+            } else if (prev == 2){
+                repair = parseFloat({{df["Значение"][3]}}) * batch;
+            }
             repair_time_all = Math.ceil(repair * parseFloat({{df["Значение"][5]}}) / 100 / 3600);
             repair_time_pc = Math.ceil(repair_time_all / batch * 3600);
             repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) );
@@ -228,10 +264,6 @@
                 document.getElementById('time_all').value = time_all + " ч";
                 document.getElementById('money_pc').value = money_pc + " руб";
                 document.getElementById('money_all').value = money_all + " руб";
-                document.getElementById('time_re_pc').value = time_re_pc + " c";
-                document.getElementById('time_re_all').value = time_re_all + " ч";
-                document.getElementById('money_re_pc').value = money_re_pc + " руб";
-                document.getElementById('money_re_all').value = money_re_all + " руб";
 
                 document.getElementById('repair_time_all').value = repair_time_all + " ч";
                 document.getElementById('repair_money_all').value = repair_money_all + " руб";
@@ -239,7 +271,7 @@
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
                 
-                money_all_f = money_all + money_re_all + repair_money_all + control_money_all;
+                money_all_f = money_all + repair_money_all + control_money_all;
                 money_pc_f = Math.ceil(money_all_f / batch);
                 document.getElementById("money_all_f").value = money_all_f + " руб";
                 document.getElementById("money_pc_f").value = money_pc_f + " руб";
@@ -251,10 +283,6 @@
                 document.getElementById('time_all').value = '-';
                 document.getElementById('money_pc').value = '-';
                 document.getElementById('money_all').value = '-';
-                document.getElementById('time_re_pc').value = '-';
-                document.getElementById('time_re_all').value = '-';
-                document.getElementById('money_re_pc').value = '-';
-                document.getElementById('money_re_all').value = '-';
                 
                 document.getElementById("money_all_f").value = '-';
                 document.getElementById("money_pc_f").value = '-';

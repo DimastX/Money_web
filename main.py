@@ -671,6 +671,9 @@ def session_data():
     if 'tariffs' in request.form:
         session['last_page'] = 'session_data'
         return redirect(url_for('tariffs'))
+    if 'new' in request.form:
+        session.clear()
+        return redirect(url_for('home'))
     if table:
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
                            tables2=[df[1].to_html(classes='table', index=False, header="true")], 

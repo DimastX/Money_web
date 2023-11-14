@@ -22,7 +22,7 @@ def tables(file):
     top_lines = 0
     bot_lines = 0
     BOM.dropna(axis='index', how='all', inplace=True) #Выкидываем пустые строки. Т.к. ВОМ всегда не больше РАР, а для удобства обработки мы закидываем всё одной таблицей
-    bom_table(BOM)
+    #bom_table(BOM) #Функция для замены всех - на запятые
     unics = BOM.shape[0] #Подсчёт количества строк в ВОМ
     for index, row in Bot.iterrows(): #Проходимся по по всем ссылочным указателям в Bot, чтобы проверить есть они в BOM или нет. Часто бывает, что PAP больше, чем BOM и там будут незаполненные строки
         value = str(row['Designator'])
@@ -79,18 +79,19 @@ def update_table2(name, form, df):
 #Функция для замены - на , в BOM 
 def bom_table(BOM):
     for index, row in BOM.iterrows():
-        if '-' in row['Designators (BOM)']:
-            string = str(row['Designators (BOM)'])
-            string = string.split("-")
-            if len(string) > 2:
-                return 0 # Некорректное заполнение
-            elif len(string) == 2:
-                start = int(''.join(c if c.isdigit() else ' ' for c in string[0]))
-                end = int(''.join(c if c.isdigit() else ' ' for c in string[1]))
-                name = ''.join(c if c.isalpha() else ' ' for c in string[0])
-                names = []
-                for i in range(end - start):
-                    names.append(name + str(start + i))
-            names = str(names)
-            names = names.replace(" ","")
-            row['Designators (BOM)'] = names
+        if row['Designators (BOM)'] != "":
+            if '-' in str(row['Designators (BOM)']):
+                string = str(row['Designators (BOM)'])
+                string = string.split("-")
+                if len(string) > 2:
+                    return 0 # Некорректное заполнение
+                elif len(string) == 2:
+                    start = int(''.join(c if c.isdigit() else ' ' for c in string[0]))
+                    end = int(''.join(c if c.isdigit() else ' ' for c in string[1]))
+                    name = ''.join(c if c.isalpha() else ' ' for c in string[0])
+                    names = []
+                    for i in range(end - start):
+                        names.append(name + str(start + i))
+                names = str(names)
+                names = names.replace(" ","")
+                row['Designators (BOM)'] = names

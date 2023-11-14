@@ -115,12 +115,6 @@ def create_export(session):
         session['Wave_form']['money_pc'],
         session['Wave_form']['money_all']
         ]
-    Wave_re = [
-        session['Wave_form']['time_re_pc'],
-        session['Wave_form']['time_re_all'],
-        session['Wave_form']['money_re_pc'],
-        session['Wave_form']['money_re_all']
-        ]
     if session['Wave_form']['repair_time_all'] != '-':
         Wave_rep =[
             str(math.ceil(int(str(session['Wave_form']['repair_time_all']).split(" ")[0]) / batch * 3600)) + " с",
@@ -244,7 +238,7 @@ def create_export(session):
         ]
     data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont,
             THT_pri_re, THT_pri, THT_sec_re, THT_sec, THT_rep, THT_cont, 
-            Wave_re, Wave, Wave_rep, Wave_cont, 
+            Wave, Wave_rep, Wave_cont, 
             HRL_re, HRL, HRL_rep, HRL_cont, 
             Hand, Hand_cont, 
             Test, Clear, Clear_cont, Handv, 
@@ -266,7 +260,6 @@ def create_export(session):
         "Ремонт на cелективной пайке THT",
         "Контроль на cелективной пайке THT",
 
-        "Волновая пайка, переналадка",
         "Волновая пайка",
         "Ремонт на волновой пайке",
         "Контроль на волновой пайке",
@@ -318,8 +311,8 @@ def create_export(session):
     sum[2] = int(sum[2] * Income)
     sum[3] = int(sum[3] * Income)
     df.loc["Стоимость с прибылью, без НДС и подготовки"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
-    sum[2] = int(sum[2] + prep_sum)
-    sum[3] = int(sum[3] + prep_sum_pc)
+    sum[2] = int(sum[2] + prep_sum_pc)
+    sum[3] = int(sum[3] + prep_sum)
     df.loc["Стоимость с прибылью и подготовкой, без НДС"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
     sum[2] = int(sum[2] * VAT)
     sum[3] = int(sum[3] * VAT)

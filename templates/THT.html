@@ -39,7 +39,7 @@
             </fieldset>
             <table>
                 <tr>
-                    <td style="width: 30%;">
+                    <td style="width: 40%;">
                         <div class="form-group" id="THT_off">
                             <label>Выберите количество сторон для селектиной пайки</label>
                             <br>
@@ -69,10 +69,10 @@
                                 Данные симуляции
                             </label>
                             <div class="form-group" id="manual_input" style="display:none">
-                                <label>Количество точек пайки на первой стороне:</label>
+                                <label>Количество компонентов до 10 рядов точек пайки (за один проход):</label>
                                 <input type="number" class="form-control" name="points" id="points" min="0" step="1"
                                     value="{{ session['THT_form']['points'] if session.get('THT_form') else '0' }}"></input>
-                                <label>Количество многорядных точек пайки на первой стороне:</label>
+                                <label>Количество компонентов более 10 рядов точек пайки (за один проход)</label>
                                 <input type="number" class="form-control" name="points_2" id="points_2" min="0" step="1"
                                     value="{{ session['THT_form']['points_2'] if session.get('THT_form') else '0' }}"></input>
                                 <label>Количество DDR-разъёмов на первой стороне:</label>
@@ -102,10 +102,10 @@
                                     Данные симуляции
                                 </label>
                                 <div class="form-group" id="manual_input2" style="display:none">
-                                    <label>Количество точек пайки на второй стороне:</label>
+                                    <label>Количество компонентов до 10 рядов точек пайки (за один проход) на второй стороне:</label>
                                     <input type="number" class="form-control" name="points2" id="points2" min="0" step="1"
                                         value="{{ session['THT_form']['points2'] if session.get('THT_form') else '0' }}"></input>
-                                    <label>Количество точек пайки на второй стороне:</label>
+                                    <label>Количество компонентов более 10 рядов точек пайки (за один проход) на второй стороне:</label>
                                     <input type="number" class="form-control" name="points2_2" id="points2_2" min="0" step="1"
                                         value="{{ session['THT_form']['points2_2'] if session.get('THT_form') else '0' }}"></input>
                                     <label>Количество DDR-разъёмов на второй стороне:</label>
@@ -124,7 +124,7 @@
                             <br>
                         </div>
                     </td>
-                    <td style="width: 40%;">
+                    <td style="width: 30%;">
                         <div class="form-group">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
@@ -249,7 +249,7 @@
                                             <td>
                                                 {% if loop.index == 2 %}  <!-- Если это второй столбец -->
                                                     <input {% if edit == "0" %} disabled {% endif %}
-                                                        type="number" min = 1 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
+                                                        type="number" min = 0 step="any" class="form-control" name="row{{ row[0] }}" value="{{ cell }}" />
                                                 {% else %} <!-- Если это не второй столбец -->
                                                     {{ cell }}
                                                 {% endif %}
