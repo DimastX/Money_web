@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response, jsonify, g
+from functools import wraps
 from flask_table import Table, Col
 import pandas as pd
 import calculations_money as cm
@@ -8,6 +9,8 @@ import tables as tb
 import directories
 import pickle
 import Verification as ver
+from flask_ldap3_login import LDAP3LoginManager
+
 import time
 
 from datetime import datetime
@@ -17,18 +20,35 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 password = '1234' # Пароль для редактирования констант
 Calculations_path = "Calculations/" # Путь хранения расчётов
-
 """ Функция для загрузки тарифов из таблицы .csv"""
 def readdata():
     return pd.read_csv('data/tarifs.csv')
 
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "logged_in" in session:
+            return f(*args, **kwargs)
+        return redirect(url_for('login_post'))
+    return decorated_function
+
+def clear_session():
+    user = ""
+    if "logged_in" in session:
+        user = session["logged_in"]
+    session.clear()
+    if user != "":
+        session["logged_in"] = user
+
 """Стартовая страница"""
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def start():
     if request.method == 'POST':
         # Очистка cookies и открытие формы расчёта
         if 'next' in request.form:
-            session.clear()
+            clear_session()
             return redirect(url_for('home'))
         # Открытие каталога изделий
         if 'dirs' in request.form:
@@ -36,11 +56,24 @@ def start():
     return render_template('Start.html') #Открытие стартовой станицы
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login_post():
+    if request.method == 'POST':
+        user = ver.log_in(request.form)
+        if user == -1:
+            flash("Неверный логин или пароль")
+        else:
+            session['logged_in'] = user
+            return redirect(url_for("start"))
+    return render_template('login.html') #Открытие стартовой станицы
+
 """Страница с каталогом изделий"""
 @app.route('/dirs', methods=['GET', 'POST'])
+@login_required
 def dirs():
     file_tree = directories.generate_file_tree('Calculations')  # Путь к директории с заказчиками
-    session.clear()
+
+    clear_session()
     if request.method == 'POST':
         if 'prev' in request.form:
             return redirect(url_for('start'))
@@ -108,6 +141,7 @@ def cust():
 
 """Первая страница с информацией по изделию"""
 @app.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
     msg = ""
     file_tree = directories.generate_file_tree('Calculations') # Создание списка всех заказчиков
@@ -132,6 +166,7 @@ def home():
 
 """Страница с информацией по производству изделия"""
 @app.route('/second', methods=['GET', 'POST'])
+@login_required
 def second():
     msg = ""
     if request.method == 'POST':
@@ -152,6 +187,7 @@ def second():
 
 """Страница с тарифами"""
 @app.route('/tariffs', methods=['GET', 'POST'])
+@login_required
 def tariffs():
     df = readdata()
     if request.method == 'POST':
@@ -169,6 +205,7 @@ def tariffs():
 
 """редактируемая страница с тарифами"""
 @app.route('/edittable', methods=['POST', 'GET'])
+@login_required
 def edittable():
     df = readdata()
     # Если это POST-запрос с данными для обновления таблицы
@@ -186,6 +223,7 @@ def edittable():
 
 """Страница с смд монтажом"""
 @app.route('/SMD', methods=['GET', 'POST'])
+@login_required
 def smd():
     edit = "0"
     edit2 = "0"
@@ -232,6 +270,7 @@ def smd():
 
 """Функция обработки вызванной таблицы"""
 @app.route('/upload', methods=['GET', 'POST'])
+@login_required
 def upload():
     file = request.files['csv_file']
     if file:
@@ -246,6 +285,7 @@ def upload():
     
 """Страница с комплектацией"""
 @app.route('/Comp', methods=['GET', 'POST'])
+@login_required
 def comp():
     edit = "0"
     df = pd.read_csv('data/Comp.csv') #Константы СМД линии
@@ -272,6 +312,7 @@ def comp():
     
 """THT монтаж"""
 @app.route('/THT', methods=['GET', 'POST'])
+@login_required
 def tht():
     edit = "0"
     df = pd.read_csv('data/THT.csv') #Константы ТНТ монтажа
@@ -299,6 +340,7 @@ def tht():
 
 """Волновая пайка"""
 @app.route('/wave', methods=['GET', 'POST'])
+@login_required
 def wave():
     edit = "0"
     df = pd.read_csv('data/Wave.csv')
@@ -325,6 +367,7 @@ def wave():
 
 """Лакировка HRL"""
 @app.route('/HRL', methods=['GET', 'POST'])
+@login_required
 def HRL():
     edit = "0"
     df = pd.read_csv('data/HRL.csv')
@@ -351,6 +394,7 @@ def HRL():
 
 """Ручной монтаж"""
 @app.route('/hand', methods=['GET', 'POST'])
+@login_required
 def hand():    
     edit = "0"
     df = pd.read_csv('data/Hand.csv')
@@ -378,6 +422,7 @@ def hand():
 
 """Тестирование"""
 @app.route('/test', methods=['GET', 'POST'])
+@login_required
 def test():
     edit = "0"
     df2 = readdata()
@@ -410,6 +455,7 @@ def test():
 
 """Отмывка"""
 @app.route('/clear', methods=['GET', 'POST'])
+@login_required
 def clear():
     edit = "0"
     df = pd.read_csv('data/Clear.csv')
@@ -442,6 +488,7 @@ def clear():
 
 """Ручная лакировка"""
 @app.route('/Handv', methods=['GET', 'POST'])
+@login_required
 def handv():
     edit = "0"
     df = pd.read_csv('data/Handv.csv')
@@ -473,6 +520,7 @@ def handv():
 
 """Разделение"""
 @app.route('/separation', methods=['GET', 'POST'])
+@login_required
 def sep():
     df = pd.read_csv('data/Sep.csv')
     df2 = readdata()
@@ -506,6 +554,7 @@ def sep():
 
 """Рентгенконтроль"""
 @app.route('/xray', methods=['GET', 'POST'])
+@login_required
 def xray():
     fields = 0
     edit = "0"
@@ -536,6 +585,7 @@ def xray():
     return render_template('Xray.html', df=df, df2=df2, edit=edit)
 
 @app.route('/pack', methods = ['GET', 'POST'])
+@login_required
 def pack():
     df = pd.read_csv('data/Pack.csv')
     df2 = readdata()
@@ -567,6 +617,7 @@ def pack():
 
 """Дополнительные работы"""
 @app.route('/additional', methods=['GET', 'POST'])
+@login_required
 def add():
     fields = 0
     df2 = readdata()
@@ -585,6 +636,7 @@ def add():
 
 """Страница с дополнительными затратами: прибыль + НДС"""
 @app.route('/info', methods=['GET', 'POST'])
+@login_required
 def info():
     edit = "0"
     df2 = readdata()
@@ -612,6 +664,7 @@ def info():
 
 """Финальная таблица экспорта"""
 @app.route('/session_data', methods=['GET', 'POST'])
+@login_required
 def session_data():
     df = cm.create_export(session) #Создание таблицы со всеми данными
     if isinstance(df[1], int):
@@ -670,7 +723,7 @@ def session_data():
         session['last_page'] = 'session_data'
         return redirect(url_for('tariffs'))
     if 'new' in request.form:
-        session.clear()
+        clear_session()
         return redirect(url_for('home'))
     if table:
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,

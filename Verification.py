@@ -1,6 +1,8 @@
 import pickle
 from datetime import datetime
 import os
+import pandas as pd
+
 
 def home_verif(form):
     if (form['field1'] != "") and (form['field2'] != "") and (form['field3'] != ""): # Проверка, что на первой странице заполнены все поля
@@ -80,3 +82,13 @@ def auto_save(session):
             os.makedirs(path)
     with open(path +"/" + name + '.pickle', 'wb') as file:
         pickle.dump(session_data, file)
+
+def log_in(form):
+    base = pd.read_csv('data/Rights.csv', header=None)
+    login = form["username"]
+    password = form["password"]
+    for row in base.iterrows():
+        if login == row[1][0]:
+            if password == row[1][1]:
+                return row[0]
+    return -1
