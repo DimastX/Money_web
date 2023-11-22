@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
@@ -66,10 +66,10 @@
                             <div class="form-group" id="multi" style="display:none">
                                 <label>Время на проверку одного компонента, с:</label>
                                 <input type="number" class="form-control" name="components_time" id="components_time" min="0" step="any" 
-                                    value="{{ session['Xray_form']['components_time'] if session.get('Xray_form') else '' }}"></input>
+                                    value="{{ session['Xray_form']['components_time'] if session.get('Xray_form') else '1' }}"></input>
                                 <label>Количество компонентов для рентгенконтроля:</label>
                                 <input type="number" class="form-control" name="components" id="components" min="1" step="1" 
-                                    value="{{ session['Xray_form']['components'] if session.get('Xray_form') else '' }}"></input>
+                                    value="{{ session['Xray_form']['components'] if session.get('Xray_form') else '1' }}"></input>
                             </div>
                         </div>
                     </td>

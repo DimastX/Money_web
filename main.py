@@ -236,6 +236,11 @@ def smd():
             flash("PAP файл заполнен некорректно. Неправильно введён столбец Layer")
     if request.method == 'POST': 
         session['SMD_form'] = request.form
+        session['tables'] = [int(session['SMD_form']["SMD1"]),
+                             int(session['SMD_form']["SMD2"]),
+                             int(session['SMD_form']["SMD3"]),
+                             int(session['SMD_form']["SMD4"]),
+                             int(session['SMD_form']["SMD5"])]
         ver.auto_save(session)
         if 'tariffs' in request.form:
             session['last_page'] = 'smd'

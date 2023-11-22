@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
@@ -46,7 +46,29 @@
             </fieldset>
         <table>
             <tr>
-                <td style="width: 50%;">
+                <td style="width: 30%;"> 
+                    <label>Количество компонентов на стороне Top</label>
+                    <br>
+                    <input type="number" class="form-control" min="0" step="1" name="SMD1" id="SMD1"
+                    value="{{ session['tables'][0] if session.get('tables') else '0' }}">
+                    <label>Количество наименований на стороне Top</label>
+                    <br>
+                    <input type="number" class="form-control" min="0" step="1" name="SMD2" id="SMD2"
+                    value="{{ session['tables'][1] if session.get('tables') else '0' }}">
+                    <label>Количество компонентов на стороне Bot</label>
+                    <br>
+                    <input type="number" class="form-control" min="0" step="1" name="SMD3" id="SMD3"
+                    value="{{ session['tables'][2] if session.get('tables') else '0' }}">
+                    <label>Количество наименований на стороне Bot</label>
+                    <br>
+                    <input type="number" class="form-control" min="0" step="1" name="SMD4" id="SMD4"
+                    value="{{ session['tables'][3] if session.get('tables') else '0' }}">
+                    <label>Количество уникальных наименований</label>
+                    <br>
+                    <input type="number" class="form-control" min="0" step="1" name="SMD5" id="SMD5"
+                    value="{{ session['tables'][4] if session.get('tables') else '0' }}">
+                </td>
+                <td style="width: 40%;">
                     <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                     <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                 </td>
@@ -270,13 +292,13 @@
 
             <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
                 <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
-                <input type="file" class="form-control-file" name="csv_file" 
+                <input type="file" class="form-control-file" name="csv_file" accept=".xlsx"
                 value="" onchange="submitForm()">
             </form>
         </div>
     </div>
     <script>
-        ids = ["SMD"];
+        ids = ["SMD", "SMD1", "SMD2", "SMD3","SMD4", "SMD5" ];
 
         
         $(document).ready(function(){
@@ -310,10 +332,15 @@
             document.getElementById("uploadForm").submit();
         }
 
+        SMD1 =  document.getElementById('SMD1');
+        SMD2 =  document.getElementById('SMD2');
+        SMD3 =  document.getElementById('SMD3');
+        SMD4 =  document.getElementById('SMD4');
+        SMD5 =  document.getElementById('SMD5');
         var chckbx = document.getElementById('SMD');
         function SMD_amount(){
             var batch = parseInt({{ session['home_form']['field3']}});
-            lines = ({{ session['tables'] if session.get('tables') else '0'}});
+            lines = [SMD1.value, SMD2.value, SMD3.value, SMD4.value, SMD5.value,]
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
             var pc = parseInt({{ session['second_form']['pc']}});
             var time_multi = 0;
@@ -356,11 +383,8 @@
                 const unics = lines[4];
                 const unics_t = Top_u;
                 const unics_b = Bot_u;
-                console.log(components_t)
                 const speed_t = speed_amount(components_t);
                 const speed_b = speed_amount(components_b);
-                console.log(speed_t)
-                console.log(speed_b)
                 var prod_t = 0;
                 var prod_b = 0;
 
@@ -389,8 +413,6 @@
                         prod_b = multi_num * parseFloat({{df['Значение'][8]}}) / 3600
                     }
                 }
-                console.log(prod_t)
-                console.log(prod_b)
                 var start = start_t + start_b;
                 var prod = prod_b+prod_t;
                 time_all = Math.ceil((prod)*parseFloat({{df['Значение'][0]}}));

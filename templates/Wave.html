@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
@@ -236,7 +236,7 @@
             if (n_eq2 > n_eq){
                 dt = CycleTime / n_eq;
             }
-            const prod = (dt * multi_num + CycleTime)/3600;
+            const prod = (dt * multi_num + CycleTime)/3600 * parseFloat({{ df['Значение'][11] }});
             const time_all = Math.ceil(prod);
             const time_pc = Math.ceil(time_all/ batch * 3600);
             const money_all = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][4]}}));
