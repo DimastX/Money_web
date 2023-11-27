@@ -56,12 +56,34 @@ def start():
     return render_template('Start.html') #Открытие стартовой станицы
 
 
+@app.route('/login2', methods=['GET'])
+def index():
+    return render_template('login2.html')
+
+@app.route('/login3', methods=['POST'])
+def login3():
+    username = request.form['username']
+    password = request.form['password']
+
+    if ver.authenticate(username, password):
+        # Аутентификация прошла успешно
+        return 'Успешная аутентификация'
+    else:
+        # Неправильные учетные данные
+        return 'Неправильное имя пользователя или пароль'
+    return render_template('login2.html')
+    
+
 @app.route('/login', methods=['GET', 'POST'])
 def login_post():
     if request.method == 'POST':
-        user = ver.log_in(request.form)
+        username = request.form['username']
+        password = request.form['password']
+        user = ver.authenticate(username, password)
         if user == -1:
             flash("Неверный логин или пароль")
+        elif user == -2:
+            flash("У вас нет прав")
         else:
             session['logged_in'] = user
             return redirect(url_for("start"))

@@ -2,6 +2,11 @@ import pickle
 from datetime import datetime
 import os
 import pandas as pd
+from ldap3 import Server, Connection, SIMPLE, SYNC, ALL
+LDAP_SERVER = 'ldap.ultrastar.ru'
+LDAP_PORT = 389
+LDAP_DN = 'dc=ultrastar,dc=ru'
+LDAP_SEARCH_BASE = 'ou=users,dc=ultrastar,dc=ru'  # Базовый DN для поиска пользователей
 
 
 def home_verif(form):
@@ -92,3 +97,31 @@ def log_in(form):
             if password == row[1][1]:
                 return row[0]
     return -1
+
+def authenticate(username, password):
+    try:
+        server = Server(LDAP_SERVER, port=LDAP_PORT, get_info=ALL)
+        user = username
+        username = "uid=" + username + "," + LDAP_DN
+        conn = Connection(server, auto_bind=True, user=username, password=password, authentication=SIMPLE, check_names=True)
+        if conn.bind():
+            # Аутентификация прошла успешно
+                # Поиск пользователя
+            search_base = "ou=groups," + LDAP_DN  # База поиска групп в соответствии с вашим сервером
+            search_filter = '(cn=money-contract)'
+            attributes = ["memberUid"]
+
+            conn.search(LDAP_DN, search_filter, attributes=attributes)
+
+            if conn.entries:
+                group_members = conn.entries[0].memberUid.values  # Получаем список членов группы
+                if user in group_members:
+                    conn.unbind()
+                    return user
+            return -2
+        else:
+            # Неправильные учетные данные
+            return -1
+    except Exception as e:
+        # Ошибка аутентификации или подключения к серверу LDAP
+        return -1

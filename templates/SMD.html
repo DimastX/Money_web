@@ -40,46 +40,71 @@
                 <div class="form-group">
                     <input type="checkbox" id="SMD" name="SMD" value="1" onclick="check('SMD', 'SMD_off')"
                            {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD'] or session.get('tables')%} checked="checked" {% endif %} {% endif %}>
-                    <label for="SMD">Выполнять автоматический поверхностный монтаж SMT? </label>
-                    
+                    <label for="SMD">Выполнять автоматический поверхностный монтаж SMT? </label>   
                 </div>
             </fieldset>
+        <div class="form-group" id="SMD_off">        
         <table>
-            <tr>
-                <td style="width: 30%;"> 
-                    <label>Количество компонентов на стороне Top</label>
-                    <br>
-                    <input type="number" class="form-control" min="0" step="1" name="SMD1" id="SMD1"
-                    value="{{ session['tables'][0] if session.get('tables') else '0' }}">
-                    <label>Количество наименований на стороне Top</label>
-                    <br>
-                    <input type="number" class="form-control" min="0" step="1" name="SMD2" id="SMD2"
-                    value="{{ session['tables'][1] if session.get('tables') else '0' }}">
-                    <label>Количество компонентов на стороне Bot</label>
-                    <br>
-                    <input type="number" class="form-control" min="0" step="1" name="SMD3" id="SMD3"
-                    value="{{ session['tables'][2] if session.get('tables') else '0' }}">
-                    <label>Количество наименований на стороне Bot</label>
-                    <br>
-                    <input type="number" class="form-control" min="0" step="1" name="SMD4" id="SMD4"
-                    value="{{ session['tables'][3] if session.get('tables') else '0' }}">
-                    <label>Количество уникальных наименований</label>
-                    <br>
-                    <input type="number" class="form-control" min="0" step="1" name="SMD5" id="SMD5"
-                    value="{{ session['tables'][4] if session.get('tables') else '0' }}">
-                </td>
-                <td style="width: 40%;">
-                    <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
-                    <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
-                </td>
-                <td >
-                    <div class="form-group">                        
-                        <input type="text" name="money_all_f" id="money_pc_f" class="form-control" readonly> 
-                        <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
-                    </div>
-                </td>
-            </tr>
+            
+                <tr>
+                    <td style="width: 30%;"> 
+                        <label>Количество компонентов на стороне Top</label>
+                        <a href="#" data-toggle="tooltip" title="Заполняйте в том случае, если точно знаете эти значения. Иначе - подгружайте таблицу BOM и PAP, их можно будет подредактировать">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                            </svg>
+                        </a>
+                        <br>
+                        <input type="number" class="form-control" min="0" step="1" name="SMD1" id="SMD1"
+                        value="{{ session['tables'][0] if session.get('tables') else '0' }}">
+                        <label>Количество наименований на стороне Top</label>
+                        <br>
+                        <input type="number" class="form-control" min="0" step="1" name="SMD2" id="SMD2"
+                        value="{{ session['tables'][1] if session.get('tables') else '0' }}">
+                        <label>Количество компонентов на стороне Bot</label>
+                        <br>
+                        <input type="number" class="form-control" min="0" step="1" name="SMD3" id="SMD3"
+                        value="{{ session['tables'][2] if session.get('tables') else '0' }}">
+                        <label>Количество наименований на стороне Bot</label>
+                        <br>
+                        <input type="number" class="form-control" min="0" step="1" name="SMD4" id="SMD4"
+                        value="{{ session['tables'][3] if session.get('tables') else '0' }}">
+                        <label>Количество уникальных наименований</label>
+                        <br>
+                        <input type="number" class="form-control" min="0" step="1" name="SMD5" id="SMD5"
+                        value="{{ session['tables'][4] if session.get('tables') else '0' }}">
+                    </td>
+                    <td style="width: 40%;">
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
+                        <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                        <br>
+                        <div class="form-group">
+                            <input type="checkbox" id="SMD_sim" name="SMD_sim" value="1" onclick="check('SMD', 'SMD_sim_off')"
+                                {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD_sim'] %} checked="checked" {% endif %} {% endif %}>
+                            <label for="SMD_sim">Использовать симуляцию? </label>   
+                        </div>
+                        <div class="form-group" id="SMD_sim_off">
+                            <label>Время по симуляции на Top сторону</label>
+                            <br>
+                            <input type="number" class="form-control" min="0" step="1" name="Sim_top" id="Sim_top"
+                            value="{{ session['SMD_form']['Sim_top'] if session.get('SMD_form') else '0' }}">
+                            <label>Время по симуляции на Bot сторону</label>
+                            <br>
+                            <input type="number" class="form-control" min="0" step="1" name="Sim_bot" id="Sim_bot"
+                            value="{{ session['SMD_form']['Sim_bot'] if session.get('SMD_form') else '0' }}">
+                        </div>
+                    </td>
+                    <td >
+                        <div class="form-group">                        
+                            <input type="text" name="money_all_f" id="money_pc_f" class="form-control" readonly> 
+                            <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
+                        </div>
+                    </td>
+                </tr>
+            
         </table>
+        </div>
         <div class="panel-group" id="accordion_dat">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -182,6 +207,7 @@
                                         </div>
                                     </td>
                                 </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -288,17 +314,16 @@
             </div>
         </div>
         </form>
-        <div class="form-group" id="SMD_off">
 
             <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
                 <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
-                <input type="file" class="form-control-file" name="csv_file" accept=".xlsx"
+                <input type="file" class="form-control-file" name="csv_file" accept=".xls"
                 value="" onchange="submitForm()">
             </form>
-        </div>
     </div>
+
     <script>
-        ids = ["SMD", "SMD1", "SMD2", "SMD3","SMD4", "SMD5" ];
+        ids = ["SMD", "SMD1", "SMD2", "SMD3","SMD4", "SMD5", "SMD_sim", "Sim_top", "Sim_bot"];
 
         
         $(document).ready(function(){
@@ -309,10 +334,12 @@
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
                 check_all('SMD', 'SMD_off');
+                check_all('SMD_sim', 'SMD_sim_off');
             });
         }
         window.onload = function(){
             check_all('SMD', 'SMD_off');
+            check_all('SMD_sim', 'SMD_sim_off');
         }
         function check_all(master, slave){
             check(master, slave);
@@ -337,12 +364,20 @@
         SMD3 =  document.getElementById('SMD3');
         SMD4 =  document.getElementById('SMD4');
         SMD5 =  document.getElementById('SMD5');
+        SMD_top =  document.getElementById('Sim_top');
+        SMD_bot =  document.getElementById('Sim_bot');
         var chckbx = document.getElementById('SMD');
+        var chckbx2 = document.getElementById('SMD_sim');
         function SMD_amount(){
             var batch = parseInt({{ session['home_form']['field3']}});
             lines = [SMD1.value, SMD2.value, SMD3.value, SMD4.value, SMD5.value,]
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
             var pc = parseInt({{ session['second_form']['pc']}});
+            var width = parseFloat({{session['second_form']['width']}})
+            var length = parseFloat({{session['second_form']['length']}})
+            var width_AOI = parseFloat({{df['Значение'][10]}});
+            var length_AOI = parseFloat({{df['Значение'][9]}});
+            var AOI_time_add = parseFloat({{df['Значение'][11]}});
             var time_multi = 0;
             var sides = 0;
             var prev = parseInt({{ session['second_form']['prev']}});
@@ -385,6 +420,7 @@
                 const unics_b = Bot_u;
                 const speed_t = speed_amount(components_t);
                 const speed_b = speed_amount(components_b);
+                const time_AOI = parseFloat((width * length / (width_AOI * length_AOI) + 10) * multi_num / 3600);
                 var prod_t = 0;
                 var prod_b = 0;
 
@@ -414,6 +450,19 @@
                     }
                 }
                 var start = start_t + start_b;
+                if (chckbx2.checked){
+                    prod_b = parseFloat(SMD_bot.value * multi_num /3600);
+                    prod_t = SMD_top.value * multi_num/3600;
+                }
+                console.log(time_AOI);
+                console.log(prod_b);
+                console.log(prod_t);
+                if (time_AOI > prod_b && prod_b != 0){
+                    prod_b = time_AOI;
+                }
+                if (time_AOI > prod_t && prod_t != 0){
+                    prod_t = time_AOI;
+                }
                 var prod = prod_b+prod_t;
                 time_all = Math.ceil((prod)*parseFloat({{df['Значение'][0]}}));
                 time_all_t = Math.ceil((prod_t)*parseFloat({{df['Значение'][0]}}));
@@ -429,7 +478,7 @@
 
                 time_re_pc = Math.ceil(time_re_all / batch * 3600);
                 time_re_pc_t = Math.ceil(time_re_all_t / batch * 3600);
-                time_re_pc_b = Math.ceil(time_re_all_b / batch * 3600);
+                time_re_pc_b = Math.ceil(time_re_all_b / batch * 3600); 
 
                 money_all = Math.ceil(time_all * parseInt({{ df2['Стоимость, руб/ч'][0]}}));
                 money_all_t = Math.ceil(time_all_t * parseInt({{ df2['Стоимость, руб/ч'][0]}}));
@@ -447,7 +496,7 @@
                 money_re_pc_t = Math.ceil(money_re_all_t / batch);
                 money_re_pc_b = Math.ceil(money_re_all_b / batch);
 
-                document.getElementById('components').value = Top+Bot + " шт";
+                document.getElementById('components').value = components + " шт";
                 document.getElementById('components_t').value = Top + " шт";
                 document.getElementById('components_b').value = Bot + " шт";
 

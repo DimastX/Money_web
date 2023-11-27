@@ -60,7 +60,7 @@
                             <label>
                                 <input type="radio" name="THT_type" id="manual"
                                     {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                Ручной ввод
+                                Ручной ввод (для 1 ПУ)
                             </label>
                             <br>
                             <label>
@@ -93,7 +93,7 @@
                                 <label>
                                     <input type="radio" name="THT_type2" id="manual2"
                                         {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "2" %} checked {% endif %} {% endif %} value="2">
-                                    Ручной ввод
+                                    Ручной ввод (для 1 ПУ)
                                 </label>
                                 <br>
                                 <label>
@@ -337,19 +337,21 @@
                 sides = 2;
             }
             if (THT_type[0].checked){
-                time_multi =  Math.ceil(document.getElementById('DDR').value * parseFloat({{df['Значение'][1]}}) + 
+                time_multi =  Math.ceil((document.getElementById('DDR').value * parseFloat({{df['Значение'][1]}}) + 
                             document.getElementById('PCI').value * parseFloat({{df['Значение'][2]}}) + 
                             document.getElementById('points').value * parseFloat({{df['Значение'][5]}}) + 
-                            document.getElementById('points_2').value * parseFloat({{df['Значение'][11]}}));
+                            document.getElementById('points_2').value * parseFloat({{df['Значение'][11]}})) * pc+ 
+                            pc * parseFloat({{df['Значение'][11]}}));
             } else if (THT_type[1].checked){
                 time_multi = parseFloat(document.getElementById('sim_multi').value);
             }
             if (sides == 2){
                 if (THT_type2[0].checked){
-                time_multi2 +=  Math.ceil(document.getElementById('DDR2').value * parseFloat({{df['Значение'][1]}}) + 
+                time_multi2 +=  Math.ceil((document.getElementById('DDR2').value * parseFloat({{df['Значение'][1]}}) + 
                             document.getElementById('PCI2').value * parseFloat({{df['Значение'][2]}}) + 
                             document.getElementById('points2').value * parseFloat({{df['Значение'][5]}})+ 
-                            document.getElementById('points2_2').value * parseFloat({{df['Значение'][11]}}));
+                            document.getElementById('points2_2').value * parseFloat({{df['Значение'][11]}})) * pc + 
+                            pc * parseFloat({{df['Значение'][11]}}));
             } else if (THT_type2[1].checked){
                 time_multi2 += parseFloat(document.getElementById('sim_multi2').value);
                 }
