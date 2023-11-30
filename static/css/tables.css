@@ -104,8 +104,10 @@ table {
 	margin-bottom: 20px;
 
 	border-collapse: separate;
+	
 }
 
 .inner-table {
-  width: 100%;
+  	width: 100%;
+  
 }

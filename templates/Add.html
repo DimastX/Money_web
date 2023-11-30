@@ -70,7 +70,11 @@
                                     <option {% if session.get('Add_form')%} {% if session['Add_form']['area1'] == "4" %} selected {% endif %} {% endif %}
                                             value="4">
                                         Контроль качества
-                                    </option>     
+                                    </option> 
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area1'] == "5" %} selected {% endif %} {% endif %}
+                                            value="5">
+                                            ICT
+                                    </option>      
                                 </div>    
                             </td>
                             <td>
@@ -113,7 +117,11 @@
                                     <option {% if session.get('Add_form')%} {% if session['Add_form']['area2'] == "4" %} selected {% endif %} {% endif %}
                                             value="4">
                                         Контроль качества
-                                    </option>     
+                                    </option> 
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area2'] == "5" %} selected {% endif %} {% endif %}
+                                            value="5">
+                                        ICT
+                                    </option>      
                                 </div>    
                             </td>
                             <td>
@@ -156,7 +164,11 @@
                                     <option {% if session.get('Add_form')%} {% if session['Add_form']['area3'] == "4" %} selected {% endif %} {% endif %}
                                             value="4">
                                         Контроль качества
-                                    </option>     
+                                    </option> 
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area3'] == "5" %} selected {% endif %} {% endif %}
+                                            value="5">
+                                            ICT
+                                    </option>      
                                 </div>    
                             </td>
                             <td>
@@ -199,7 +211,11 @@
                                     <option {% if session.get('Add_form')%} {% if session['Add_form']['area4'] == "4" %} selected {% endif %} {% endif %}
                                             value="4">
                                         Контроль качества
-                                    </option>     
+                                    </option> 
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area4'] == "5" %} selected {% endif %} {% endif %}
+                                            value="5">
+                                            ICT
+                                    </option>      
                                 </div>    
                             </td>
                             <td>
@@ -242,7 +258,11 @@
                                     <option {% if session.get('Add_form')%} {% if session['Add_form']['area5'] == "4" %} selected {% endif %} {% endif %}
                                             value="4">
                                         Контроль качества
-                                    </option>     
+                                    </option> 
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area5'] == "5" %} selected {% endif %} {% endif %}
+                                            value="5">
+                                            ICT
+                                    </option>      
                                 </div>    
                             </td>
                             <td>
@@ -280,12 +300,16 @@
                                     </option>
                                     <option {% if session.get('Add_form')%} {% if session['Add_form']['area6'] == "3" %} selected {% endif %} {% endif %}
                                             value="3">
-                                        Линия поверхностного монтажа
+                                        Оператор линии SMT
                                     </option>
                                     <option {% if session.get('Add_form')%} {% if session['Add_form']['area6'] == "4" %} selected {% endif %} {% endif %}
                                             value="4">
                                         Контроль качества
-                                    </option>     
+                                    </option> 
+                                    <option {% if session.get('Add_form')%} {% if session['Add_form']['area6'] == "5" %} selected {% endif %} {% endif %}
+                                            value="5">
+                                            ICT
+                                    </option>      
                                 </div>    
                             </td>
                             <td>
@@ -421,6 +445,8 @@
                 coef = {{ df2['Стоимость, руб/ч'][0]}};
             } else if (area.value=="4"){
                 coef = {{ df2['Стоимость, руб/ч'][20]}};
+            } else if (area.value=="5"){
+                coef = {{ df2['Стоимость, руб/ч'][13]}};
             }
             money_pc.value = Math.ceil(time * coef / 3600);
             money_all.value = Math.ceil(time_all.value * coef); 

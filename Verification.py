@@ -118,7 +118,7 @@ def authenticate(username, password):
                 if user in group_members:
                     conn.unbind()
                     return user
-            return -2
+            return user
         else:
             # Неправильные учетные данные
             return -1

@@ -10,6 +10,7 @@ import directories
 import pickle
 import Verification as ver
 from flask_ldap3_login import LDAP3LoginManager
+from openpyxl.styles import Border, Side
 
 import time
 
@@ -59,6 +60,18 @@ def start():
 @app.route('/login2', methods=['GET'])
 def index():
     return render_template('login2.html')
+
+@app.route('/Dirs2', methods=['GET'])
+def list_directories():
+    # Указываем путь к директории, которую нужно просмотреть
+    directory = Calculations_path + '/Calculations'
+    
+    # Получаем список директорий в указанной папке
+    directories = [name for name in os.listdir(directory) if os.path.isdir(os.path.join(directory, name))]
+    
+    # Отображаем список директорий с использованием шаблона
+    return render_template('Dirs2.html', directories=directories)
+
 
 @app.route('/login3', methods=['POST'])
 def login3():

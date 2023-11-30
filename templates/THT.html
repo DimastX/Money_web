@@ -359,9 +359,9 @@
 
             let repair = 0;
                 if (prev == 1){
-                    repair = parseFloat({{df["Значение"][8]}}) * batch;
-                } else if (prev == 2){
                     repair = parseFloat({{df["Значение"][7]}}) * batch;
+                } else {
+                    repair = parseFloat({{df["Значение"][8]}}) * batch;
                 }
             repair_time_all = Math.ceil(repair * parseFloat({{df["Значение"][9]}}) / 100 / 3600);
             repair_time_pc = Math.ceil(repair_time_all / batch * 3600);

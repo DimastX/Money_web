@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Список директорий</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <input type="text" id="search" placeholder="Поиск по имени">
+    <div id="directory-list">
+      {% for directory in directories %}
+        <div class="directory-item">
+          <img src="{{ url_for('static', filename='folder-icon.png') }}" class="icon">
+          <p>{{ directory }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

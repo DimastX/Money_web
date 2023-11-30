@@ -8,34 +8,34 @@
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
-    <form method="POST">
-         <div class="container">
-             <div class="table">
-                <table>
-                    <thead>
+    <body>
+        <form method="POST">
+            <div class="container">
+                <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>{{ df.columns[0] }}</th>
+                                <th>{{ df.columns[1] }}</th>
+                            </tr>
+                        </thead>
+                        {% for row in df.iterrows(): %}
                         <tr>
-                            <th>{{ df.columns[0] }}</th>
-                            <th>{{ df.columns[1] }}</th>
+                            {% for cell in row[1] %}
+                            <td>
+                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                    <input type="number" class="form-control" min="1" name="row{{ row[0] }}" value="{{ cell }}" />
+                                {% else %} <!-- Если это не второй столбец -->
+                                    {{ cell }}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
                         </tr>
-                    </thead>
-                    {% for row in df.iterrows(): %}
-                    <tr>
-                        {% for cell in row[1] %}
-                        <td>
-                            {% if loop.index == 2 %}  <!-- Если это второй столбец -->
-                                <input type="number" class="form-control" min="1" name="row{{ row[0] }}" value="{{ cell }}" />
-                            {% else %} <!-- Если это не второй столбец -->
-                                {{ cell }}
-                            {% endif %}
-                        </td>
                         {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </table>
-             </div>
-         <button type="submit" class="btn btn-primary" name="save">Сохранить</button>
-         </div>
-    </form>
-</body>
+                    </table>
+                </div>
+            <button type="submit" class="btn btn-primary" name="save">Сохранить</button>
+            </div>
+        </form>
+    </body>
 </html>

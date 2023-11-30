@@ -242,7 +242,8 @@ def create_export(session):
             HRL_re, HRL, HRL_rep, HRL_cont, 
             Hand, Hand_cont, 
             Test, Clear, Clear_cont, Handv, 
-            Handv_cont, Sep, Xray, Add, Comp, Pack]
+            Handv_cont, Sep, Xray, Add, Pack]
+ #           , """Comp""" ]
     headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
     #Статьи расходов
     row_headers = [
@@ -279,9 +280,10 @@ def create_export(session):
         "Разделение",
         "Рентгенконтроль",
         "Доп. работы",
-        "Приёмка, отгрузка и контроль",
-        "Упаковка"
-        ]
+        "Упаковка"]
+        #"Приёмка, отгрузка и контроль",
+        #"Упаковка"
+        #]
     #Создание DataFrame со значениями выше
     df = pd.DataFrame(data, columns=headers, index=row_headers)
     df = df.drop(df[(df == "-").all(axis=1)].index)
@@ -298,7 +300,7 @@ def create_export(session):
     prep_sum_pc = int(prep_sum / batch)
     Traf = 0
     if 'prepare' in session['second_form']:
-        headers2 = ["","Стоимость"]
+        headers2 = ["Наименование","Стоимость"]
         data2 = prepare(session)
         Traf = int(str(data2[0][1]).split(" ")[0])
         for data_in_data2 in data2:
@@ -336,7 +338,7 @@ def create_export(session):
         ["Оснастки", str(cost_e) + " руб"],
         ["Итого", str(cost_p + cost_c + cost_e + prep + Traf) + " руб"]
     ]
-    headers3 = [" ", "Стоимость"]
+    headers3 = ["Наименование", "Стоимость"]
     df3 = pd.DataFrame(data3, columns=headers3)
     if 'prepare' in session['second_form']:
         df2 = pd.DataFrame(data2, columns=headers2)

@@ -20,7 +20,11 @@
             <body>
             <h1>Стоимость производства</h1>
             {% for table in tables1 %}
-                {{ table|safe }}
+                <div class="table">
+                    <table>                        
+                        {{ table|safe }}
+                    </table>
+                </div>
             {% endfor %}
             {% if table == 1%}
                 <h1>Стоимость подготовки</h1>

@@ -1,0 +1,23 @@
+#directory-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .directory-item {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    width: 200px;
+  }
+  
+  .icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  #search {
+    margin-bottom: 10px;
+  }
