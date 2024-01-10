@@ -1,20 +1,109 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Список директорий</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  </head>
-  <body>
-    <input type="text" id="search" placeholder="Поиск по имени">
-    <div id="directory-list">
-      {% for directory in directories %}
-        <div class="directory-item">
-          <img src="{{ url_for('static', filename='folder-icon.png') }}" class="icon">
-          <p>{{ directory }}</p>
+<head>
+    <title>Каталог</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div class="container">
+        <h1>Список изделий</h1>
+        <a href="{{ url_for('list_directories', path=parent_directory) }}" class="btn btn-primary">Назад</a>
+        <br>
+        <!-- Добавлен элемент для ввода даты -->
+        <table>
+            <tr>
+                <td>Начальная дата</td>
+                <td>
+                    <input type="date" id="startDateInput" placeholder="Начальная дата" class="form-control input-sm">
+                </td>
+            </tr>
+            <tr>
+                <td>Конечная дата</td>
+                <td>
+                    <input type="date" id="endDateInput" placeholder="Конечная дата" class="form-control input-sm">
+                </td>
+            </tr>
+        </table>
+
+        <div class="table">
+            {% if file_data %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Имя</th>
+                            <th>Размер партии</th>
+                            <th>Дата</th>
+                            <th>Комментарий</th>
+                            <th>Действия</th>
+                            <th>Договор</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in file_data %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.batch_size }}</td>
+                                <td>{{ item.date }}</td>
+                                <td>{{ item.comment }}</td>
+                                <td>
+                                    <form action="/copy" method="post" style="display: inline;">
+                                        <input type="hidden" name="file_path" value="{{ item.file_path }}">
+                                        <button type="submit" class="btn btn-primary">Скопировать</button>
+                                    </form>
+                                    <form action="/open"  method="post" style="display: inline;">
+                                        <input type="hidden" name="file_path" value="{{ item.file_path }}">
+                                        <button type="submit" {% if item.visibility_edit == 0 %}  disabled {% endif %} class="btn btn-primary">Открыть</button>
+                                    </form>
+                                    <form action="/download"  method="post" style="display: inline;">
+                                        <input type="hidden" name="file_path" value="{{ item.file_path }}">
+                                        <button type="submit" {% if item.visibility_download == 1 %}  disabled {% endif %} class="btn btn-primary">Скачать</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    {% if item.visibility_edit == 0 %}
+                                        &#10004;
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
-      {% endfor %}
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-  </body>
+    <script>
+        var startDateInput = document.getElementById("startDateInput");
+        var endDateInput = document.getElementById("endDateInput");
+      
+        startDateInput.addEventListener("input", filterTableByDateRange);
+        endDateInput.addEventListener("input", filterTableByDateRange);
+      
+        function filterTableByDateRange() {
+          var startDate = new Date(startDateInput.value);
+          var endDate = new Date(endDateInput.value);
+      
+          var rows = document.getElementsByTagName("tr");
+      
+          for (var i = 1; i < rows.length; i++) {
+            var dateCell = rows[i].getElementsByTagName("td")[2];
+            var cellValue = dateCell.innerHTML;
+            var cellDate = new Date(cellValue);
+      
+            // Проверяем, попадает ли дата в выбранный временной интервал
+            if (cellDate >= startDate && cellDate <= endDate) {
+              rows[i].style.display = "";
+            } else {
+              rows[i].style.display = "none";
+            }
+          }
+        }
+      </script>
+</body>
 </html>

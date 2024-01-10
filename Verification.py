@@ -77,7 +77,7 @@ def auto_save(session):
     session_data = {} 
     path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
     current_time = datetime.now()
-    name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day)
+    name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(session["date"])
     if "comm" in session["home_form"]:
         if session["home_form"] != "":
             name += "_" + session["home_form"]["comm"]       
@@ -85,6 +85,7 @@ def auto_save(session):
         session_data[key] = value
     if not os.path.exists(path):
             os.makedirs(path)
+    session["check"] = 0
     with open(path +"/" + name + '.pickle', 'wb') as file:
         pickle.dump(session_data, file)
 

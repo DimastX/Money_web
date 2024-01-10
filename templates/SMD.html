@@ -316,7 +316,7 @@
         </form>
 
             <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
-                <label for="file" class="form-label">Загрузите файл PAP и EBOM</label>
+                <label for="uploadForm" class="form-label">Загрузите файл PAP и EBOM</label>
                 <input type="file" class="form-control-file" name="csv_file" accept=".xls"
                 value="" onchange="submitForm()">
             </form>
@@ -324,8 +324,6 @@
 
     <script>
         ids = ["SMD", "SMD1", "SMD2", "SMD3","SMD4", "SMD5", "SMD_sim", "Sim_top", "Sim_bot"];
-
-        
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
         });
@@ -454,9 +452,6 @@
                     prod_b = parseFloat(SMD_bot.value * multi_num /3600);
                     prod_t = SMD_top.value * multi_num/3600;
                 }
-                console.log(time_AOI);
-                console.log(prod_b);
-                console.log(prod_t);
                 if (time_AOI > prod_b && prod_b != 0){
                     prod_b = time_AOI;
                 }

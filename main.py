@@ -10,7 +10,6 @@ import directories
 import pickle
 import Verification as ver
 from flask_ldap3_login import LDAP3LoginManager
-from openpyxl.styles import Border, Side
 
 import time
 
@@ -21,6 +20,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 password = '1234' # Пароль для редактирования констант
 Calculations_path = "Calculations/" # Путь хранения расчётов
+actual_version = "1.0"
 """ Функция для загрузки тарифов из таблицы .csv"""
 def readdata():
     return pd.read_csv('data/tarifs.csv')
@@ -53,7 +53,7 @@ def start():
             return redirect(url_for('home'))
         # Открытие каталога изделий
         if 'dirs' in request.form:
-            return redirect(url_for('dirs'))
+            return redirect(url_for('list_directories'))
     return render_template('Start.html') #Открытие стартовой станицы
 
 
@@ -63,15 +63,87 @@ def index():
 
 @app.route('/Dirs2', methods=['GET'])
 def list_directories():
-    # Указываем путь к директории, которую нужно просмотреть
-    directory = Calculations_path + '/Calculations'
-    
-    # Получаем список директорий в указанной папке
-    directories = [name for name in os.listdir(directory) if os.path.isdir(os.path.join(directory, name))]
-    
-    # Отображаем список директорий с использованием шаблона
-    return render_template('Dirs2.html', directories=directories)
+    program_directory = os.path.dirname(os.path.abspath(__file__)) + "\Calculations"
+    selected_path = request.args.get('path', program_directory)
+    items = os.listdir(selected_path)
+    #Доступ только к расчётам
+    if not selected_path.startswith(program_directory):
+        return redirect(url_for('start'))
+    if selected_path != '/':
+        # Получаем путь к родительской папке
+        parent_directory = os.path.dirname(selected_path)
+    else:
+        # Если текущий путь является корневым, то путь к родительской папке также /
+        parent_directory = '/'
+        
+    parent_relative_path = os.path.relpath(selected_path, program_directory)
+    if parent_relative_path == "..":
+        return redirect(url_for('start'))
+    dir_exists = False
+    for item in items:
+        if os.path.isdir(os.path.join(selected_path, item)):
+            dir_exists = True
+            break
+    if dir_exists:
+        return render_template('Dirsonly.html', items=items, os=os, program_directory=program_directory, 
+                               selected_path=selected_path, parent_directory=parent_directory)
+    else:
+        file_data = []
+        for item in items:
+            file_path = os.path.join(selected_path, item)
+            if not os.path.isdir(file_path):
+                file_name, file_extension = os.path.splitext(item)
+                if file_extension == ".pickle":
+                    visible = 1
+                    edit = 1
+                    with open(file_path, 'rb') as file:
+                        session_data = pickle.load(file)
+                        if ("home_form" in session_data):
+                            if ("contract" in session_data["home_form"]):
+                                edit = 0
+                        if ("version" in session_data) and ("check" in session_data):
+                            if session_data["version"] == actual_version:
+                                if (session_data["check"] == 1) or (edit == 0):
+                                    if os.path.isfile(selected_path+"\\"+file_name+".xlsx"):
+                                        visible = 0
+                    words = file_name.split("_")
+                    file_data.append({
+                        'name': words[1] if words else '',
+                        'batch_size': words[2] if len(words) > 2 else '',
+                        'date': words[3] if len(words) > 3 else '',
+                        'comment': words[4] if len(words) > 4 else '',
+                        'file_path': file_path,
+                        'visibility_download': visible,
+                        'visibility_edit': edit
+                    })
+                    
 
+    return render_template('Dirs2.html', file_data=file_data, dir_exists=dir_exists, selected_path=selected_path, os=os,
+                           parent_directory=parent_directory)
+
+@app.route('/copy', methods=['POST'])
+def copy_file():
+    with open(request.form["file_path"], 'rb') as file:
+        session_data = pickle.load(file)
+        session.update(session_data) # Задание в значение session данных из предыдущего расчёта
+        session.pop('date', None) 
+    return redirect(url_for('home'))
+
+@app.route('/open', methods=['POST'])
+def open_file():
+    with open(request.form["file_path"], 'rb') as file:
+        session_data = pickle.load(file)
+        session.update(session_data) # Задание в значение session данных из предыдущего расчёта
+    return redirect(url_for('home'))
+
+@app.route('/download', methods=['POST'])
+def download_file():
+    file_path = request.form["file_path"]
+    file_path = file_path.split(".")[0] + ".xlsx"
+    with open(file_path, 'rb') as file:
+        if os.path.exists(file_path):
+            return send_file(file_path, mimetype='text/csv', as_attachment=True) # Скачивание файла
+    return redirect(url_for('home'))
 
 @app.route('/login3', methods=['POST'])
 def login3():
@@ -180,9 +252,11 @@ def cust():
 def home():
     msg = ""
     file_tree = directories.generate_file_tree('Calculations') # Создание списка всех заказчиков
+    if not "date" in session:
+        current_time = datetime.now()
+        session["date"] = str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day)
     if request.method == 'POST':
         session['home_form'] = request.form # Сохранение всех полей в случае отправки формы
-        ver.auto_save(session)
         if 'back' in request.form:
             return redirect(url_for('start')) # Возвращение на предыдущую страницу
         if 'tariffs' in request.form:
@@ -711,20 +785,21 @@ def session_data():
         table = 0
     else:
         table = 1
-    session['check'] = 1
+    session['version'] = actual_version
     if request.method == 'POST':
         session["session_data"] = request.form
         if 'download' in request.form:
+            session['check'] = 1
             current_time = datetime.now()
             path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
-            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day)
+            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(session["date"])
             if "comm" in session["home_form"]:
                 if session["home_form"] != "":
                     name += "_" + session["home_form"]["comm"]
             if not os.path.exists(path):
                 os.makedirs(path)
 
-            with pd.ExcelWriter(path +"/" + name + ".xlsx") as writer:
+            with pd.ExcelWriter(path +"/" + name + ".xlsx", engine='xlsxwriter') as writer:
 
                 sheet_name = 'Трудозатраты'
                 df_info = pd.DataFrame([["Заказчик", session['home_form']['field1']], ["Изделие", session['home_form']['field2']], ["Партия", session['home_form']['field3']]])
@@ -732,24 +807,76 @@ def session_data():
                 #df1 = pd.concat([df[0], df[1]], keys=['Стоимость подготовки производства', 'Стоимость производства'])
                 start_row = df_info.shape[0] + 2
                 df[0].to_excel(writer, sheet_name=sheet_name, startrow= start_row, index=True)
+                
+
+                workbook = writer.book
+                worksheet = writer.sheets['Трудозатраты']
+                wrap_format = workbook.add_format({'text_wrap': True})
+                # Создаем формат с обрамлением
+                border_format = workbook.add_format({'border': 1})
+
+                # Применяем формат к каждой ячейке в DataFrame информации о заказе
+                for row_num, values in enumerate(df_info.values):
+                    for col_num, value in enumerate(values):
+                        worksheet.write(row_num, col_num, value, border_format)
+
+                # Создаем формат с автоматическим переносом строки
+                wrap_format = workbook.add_format({'text_wrap': True})
+
+                # Применяем формат к каждой ячейке в основной таблице df[0]
+                start_row += 1  # Переходим на первую строку с данными основной таблицы
+                for row_num, values in enumerate(df[0].values):
+                    for col_num, value in enumerate(values):
+                        worksheet.write(row_num + start_row, col_num + 1, value, border_format)
+                
+                    
+                # Применяем формат к каждой ячейке в дополнительной таблице df[1]
                 if table:
-                    start_row += df[0].shape[0] + 2
-                    df[1].to_excel(writer, sheet_name=sheet_name, startrow=start_row, index=False)
-                for column in df[0]:
+                    start_row += df[0].shape[0] + 2  # Переходим на первую строку с данными дополнительной таблицы
+                    for row_num, values in enumerate(df[1].values):
+                        for col_num, value in enumerate(values):
+                            worksheet.write(row_num + start_row, col_num, value, border_format)
+
+                # Настройка ширины столбцов
+                worksheet.set_column(0, 0, 45)  # Ширина первого столбца
+                for col_num, column in enumerate(df[0].columns):
                     column_length = max(df[0][column].astype(str).map(len).max(), len(column))
-                    col_idx = df[0].columns.get_loc(column)
-                    writer.sheets[sheet_name].set_column(col_idx + 1, col_idx + 1, column_length+1)
-                writer.sheets[sheet_name].set_column(0, 0, 60)
+                    worksheet.set_column(col_num + 1, col_num + 1, column_length + 1, wrap_format)
+                worksheet.set_landscape()
 
                 sheet_name = "Информация"
-                df_info.to_excel(writer, index=False, sheet_name=sheet_name, header = False)
+                df_info.to_excel(writer, index=False, sheet_name=sheet_name, header=False)
+
+                # Записываем данные df[2] в файл Excel
                 start_row = df_info.shape[0] + 2
-                df[2].to_excel(writer, sheet_name=sheet_name, startrow= start_row, index=False)
-                for column in df[2]:
+                df[2].to_excel(writer, sheet_name=sheet_name, startrow=start_row, index=False)
+
+                # Получаем объект workbook и worksheet из объекта writer
+                workbook = writer.book
+                worksheet = writer.sheets[sheet_name]
+
+                # Устанавливаем альбомную ориентацию страницы
+                worksheet.set_landscape()
+
+                # Создаем формат с обрамлением
+                border_format = workbook.add_format({'border': 1})
+
+                # Применяем формат к каждой ячейке в DataFrame информации
+                for row_num, values in enumerate(df_info.values):
+                    for col_num, value in enumerate(values):
+                        worksheet.write(row_num, col_num, value, border_format)
+
+                # Применяем формат к каждой ячейке в данных df[2]
+                start_row += 1
+                for row_num, values in enumerate(df[2].values):
+                    for col_num, value in enumerate(values):
+                        worksheet.write(row_num + start_row, col_num, value, border_format)
+
+                # Настройка ширины столбцов
+                worksheet.set_column(0, 0, 40)
+                for col_num, column in enumerate(df[2].columns):
                     column_length = max(df[2][column].astype(str).map(len).max(), len(column))
-                    col_idx = df[2].columns.get_loc(column)
-                    writer.sheets[sheet_name].set_column(col_idx + 1, col_idx + 1, column_length+1)
-                writer.sheets[sheet_name].set_column(0, 0, 40)
+                    worksheet.set_column(col_num + 1, col_num + 1, column_length + 1)
             session_data = {}
             for key, value in session.items():
                 session_data[key] = value

@@ -19,3 +19,8 @@ def generate_file_tree2(directory):
             if file[-7:] == ".pickle":
                 file_tree.append(file[:-7])
     return file_tree
+
+def split_filename(filename):
+    file_name, file_extension = os.path.splitext(filename)
+    words = file_name.split("_")
+    return words

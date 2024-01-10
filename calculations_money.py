@@ -194,26 +194,60 @@ def create_export(session):
         session['Xray_form']['money_pc'],
         session['Xray_form']['money_all']
         ]
-    Add = [
-        session['Add_form']['time_pc'],
-        session['Add_form']['time_all'],
-        session['Add_form']['money_pc'],
-        session['Add_form']['money_all']
+    
+    if "time_pc_ICT" in session['Add_form']:
+        ICT = [
+            session['Add_form']["time_pc_ICT"],
+            session['Add_form']["time_all_ICT"],
+            session['Add_form']["money_pc_ICT"],
+            session['Add_form']["money_all_ICT"],
         ]
-    if "Comp_form" in session:
-        Comp = [
-            session['Comp_form']['time_pc'],
-            session['Comp_form']['time_all'],
-            session['Comp_form']['money_pc'],
-            session['Comp_form']['money_all']
+        Add = [
+            session['Add_form']['time_pc'],
+            session['Add_form']['time_all'],
+            session['Add_form']['money_pc'],
+            session['Add_form']['money_all']
         ]
     else:
-       Comp =[
+        ICT = [
             "-",
             "-",
             "-",
             "-"
-        ]     
+        ]
+        Add = [
+            session['Add_form']['time_pc'],
+            session['Add_form']['time_all'],
+            session['Add_form']['money_pc'],
+            session['Add_form']['money_all']
+        ]
+    
+    if "Comp_form" in session:
+        Contr_out = [
+            session['Comp_form']['time_pc3'],
+            session['Comp_form']['time_all3'],
+            session['Comp_form']['money_pc3'],
+            session['Comp_form']['money_all3']
+        ]
+        End = [
+            session['Comp_form']['time_pc4'],
+            session['Comp_form']['time_all4'],
+            session['Comp_form']['money_pc4'],
+            session['Comp_form']['money_all4']
+        ]
+    else:
+       Contr_out =[
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
+       End =[
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
     if "Pack_form" in session:
         if session['Pack_form']['money_pc'] == "-":
             Pack =[
@@ -242,14 +276,14 @@ def create_export(session):
             HRL_re, HRL, HRL_rep, HRL_cont, 
             Hand, Hand_cont, 
             Test, Clear, Clear_cont, Handv, 
-            Handv_cont, Sep, Xray, Add, Pack]
+            Handv_cont, Sep, Xray, Add, ICT, Pack, Contr_out, End]
  #           , """Comp""" ]
     headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
     #Статьи расходов
     row_headers = [
-        "Автоматический поверхностный монтаж SMT Pri, переналадка",
+        "Поверхностный монтаж SMT Pri, переналадка",
         "Автоматический поверхностный монтаж SMT Pri", 
-        "Автоматический поверхностный монтаж SMT Sec, переналадка",
+        "Поверхностный монтаж SMT Sec, переналадка",
         "Автоматический поверхностный монтаж SMT Sec", 
         "Ремонт на поверхностном монтаже",
         "Контроль на поверхностном монтаже",
@@ -279,20 +313,21 @@ def create_export(session):
         "Контроль ручной лакировки",
         "Разделение",
         "Рентгенконтроль",
-        "Доп. работы",
-        "Упаковка"]
-        #"Приёмка, отгрузка и контроль",
-        #"Упаковка"
-        #]
+        "Доп. работы, в том числе ICT",
+        "ICT",
+        "Упаковка", 
+        "Выходной контроль",
+        "Отгрузка"]
     #Создание DataFrame со значениями выше
     df = pd.DataFrame(data, columns=headers, index=row_headers)
     df = df.drop(df[(df == "-").all(axis=1)].index)
     sum_time_pc, sum_money_pc, sum_time_all, sum_money_all = 0, 0, 0, 0
     for i in range(df.shape[0]):
-        sum_time_pc += int(str(df.iloc[i, 0]).split(" ")[0])
-        sum_time_all += int(str(df.iloc[i, 1]).split(" ")[0])
-        sum_money_pc += int(str(df.iloc[i, 2]).split(" ")[0])
-        sum_money_all += int(str(df.iloc[i, 3]).split(" ")[0])
+        if df.iloc[i]._name != "ICT":
+            sum_time_pc += int(str(df.iloc[i, 0]).split(" ")[0])
+            sum_time_all += int(str(df.iloc[i, 1]).split(" ")[0])
+            sum_money_pc += int(str(df.iloc[i, 2]).split(" ")[0])
+            sum_money_all += int(str(df.iloc[i, 3]).split(" ")[0])
     total = [str(sum_time_pc) + " с", str(sum_time_all) + " ч", str(sum_money_pc) + " руб", str(sum_money_all) + " руб"]
     df.loc["Cебестоимость"] = total #Строка итого
     #Создание таблицы с подоготовкой производства

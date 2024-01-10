@@ -3,8 +3,11 @@
 <head>
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -346,7 +349,44 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>    
+                </table>  
+                <div class="panel-group" id="accordion_dat">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion_data" href="#collapseOne_data">
+                                    Данные по стоимости дополнительных услуг
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne_data" class="panel-collapse collapse" >
+                            <div class="panel-body">
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Наименование</th>
+                                                <th>Значение</th>
+                                            </tr>
+                                        </thead>
+                                        <td>
+                                            <input type="text" class="form-control" readonly value="Время ICT 1 ПУ">
+                                            <input type="text" class="form-control" readonly value="Стоимость ICT 1 ПУ">
+                                            <input type="text" class="form-control" readonly value="Время ICT всей партии">
+                                            <input type="text" class="form-control" readonly value="Стоимость ICT всей партии">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="time_pc_ICT" id="time_pc_ICT" class="form-control" readonly>
+                                            <input type="text" name="money_pc_ICT" id="money_pc_ICT" class="form-control" readonly>
+                                            <input type="text" name="time_all_ICT" id="time_all_ICT" class="form-control" readonly>
+                                            <input type="text" name="money_all_ICT" id="money_all_ICT" class="form-control" readonly>                                        
+                                        </td>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
             </div>
         </form>
     </div>
@@ -403,6 +443,10 @@
         //список значений, изменения которых отслеживаются на странице
         var ids = ['time_pc1', 'time_pc2', 'time_pc3', 'time_pc4', 'time_pc5', 'time_pc6',
         'area1', 'area2', 'area3', 'area4', 'area5', 'area6'];
+        let time_all_ICT = 0;
+        let time_pc_ICT = 0;
+        let money_all_ICT = 0;
+        let money_pc_ICT = 0;
 
         //В случае изменения какого-то значения, пересчитается заполнение строк
         for (var i = 0; i < ids.length; i++) {
@@ -421,6 +465,10 @@
 
         //Расчёт стоимости для 6ти строк
         function fill_all_lines(){
+            time_all_ICT = 0;
+            time_pc_ICT = 0;
+            money_all_ICT = 0;
+            money_pc_ICT = 0;
             fill_line(time_all1, time_pc1, money_all1, money_pc1, area1);
             fill_line(time_all2, time_pc2, money_all2, money_pc2, area2);
             fill_line(time_all3, time_pc3, money_all3, money_pc3, area3);
@@ -435,8 +483,9 @@
         function fill_line(time_all, time_pc, money_all, money_pc, area){
             const time = parseInt(time_pc.value);
             let coef = 0;
-            t_all = parseInt({{ session['home_form']['field3']}}) * time;
-            time_all.value = (t_all / 3600).toFixed(1);
+            t_all = Math.ceil(parseInt({{ session['home_form']['field3']}}) * time/ 3600);
+            time_all.value = t_all;
+            let ICT = 0
             if (area.value=="1"){
                 coef = {{ df2['Стоимость, руб/ч'][9]}};
             } else if (area.value=="2"){
@@ -447,9 +496,20 @@
                 coef = {{ df2['Стоимость, руб/ч'][20]}};
             } else if (area.value=="5"){
                 coef = {{ df2['Стоимость, руб/ч'][13]}};
+                ICT = 1;
             }
-            money_pc.value = Math.ceil(time * coef / 3600);
-            money_all.value = Math.ceil(time_all.value * coef); 
+            let money_pc_temp = Math.ceil(time * coef / 3600)
+            let money_all_temp = Math.ceil(time_all.value * coef)
+            money_pc.value = money_pc_temp;
+            money_all.value = money_all_temp; 
+            if (ICT == 1){
+            time_all_ICT = t_all;
+            console.log(ICT);
+            time_pc_ICT = time;
+            money_all_ICT = money_all_temp;
+            money_pc_ICT = money_pc_temp;
+            }
+            return ICT
         }
 
         
@@ -464,11 +524,20 @@
                 parseInt(money_pc4.value) + parseInt(money_pc5.value) + parseInt(money_pc6.value) + " руб";
                 sum_money_all.value = parseInt(money_all1.value) + parseInt(money_all2.value) +parseInt(money_all3.value) +
                 parseInt(money_all4.value) + parseInt(money_all5.value) + parseInt(money_all6.value) + " руб";
+                
+                document.getElementById("time_pc_ICT").value = time_pc_ICT + " с";
+                document.getElementById("time_all_ICT").value = time_all_ICT + " ч";
+                document.getElementById("money_pc_ICT").value = money_pc_ICT + " руб";
+                document.getElementById("money_all_ICT").value = money_all_ICT + " руб";
             } else {
                 sum_time_pc.value = "-";
                 sum_time_all.value = "-";
                 sum_money_pc.value = "-";
                 sum_money_all.value = "-";
+                document.getElementById("time_pc_ICT").value = "-";
+                document.getElementById("time_all_ICT").value = "-";
+                document.getElementById("money_pc_ICT").value = "-";
+                document.getElementById("money_all_ICT").value = "-";
             }
         }
 
