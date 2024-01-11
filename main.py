@@ -69,7 +69,7 @@ def index():
 
 @app.route('/Dirs2', methods=['GET'])
 def list_directories():
-    program_directory = os.path.dirname(os.path.abspath(__file__)) + "\Calculations"
+    program_directory = os.path.dirname(os.path.abspath(__file__)) + '/Calculations'
     selected_path = request.args.get('path', program_directory)
     items = os.listdir(selected_path)
     #Доступ только к расчётам

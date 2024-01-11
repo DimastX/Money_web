@@ -124,3 +124,118 @@
 2024-01-11 09:20:14,034 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:20:14] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
 2024-01-11 09:20:14,035 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:20:14] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
 2024-01-11 09:20:17,044 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:20:17] "[33mGET /Dirs3 HTTP/1.1[0m" 404 -
+2024-01-11 09:27:05,490 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:05] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:27:05,495 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:05] "GET / HTTP/1.1" 200 -
+2024-01-11 09:27:05,510 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:05] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:06,232 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:06] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:27:06,237 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:06] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:27:06,257 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:06] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:06,259 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:06] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:15,630 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.215.0.245:5000
+2024-01-11 09:27:15,630 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-01-11 09:27:16,268 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:16] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:27:16,275 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:16] "GET / HTTP/1.1" 200 -
+2024-01-11 09:27:16,291 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:16] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:17,434 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:17] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:27:17,440 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:17] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:27:17,458 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:17] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:17,459 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:17] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:18,226 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:18] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:27:18,232 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:18] "GET / HTTP/1.1" 200 -
+2024-01-11 09:27:18,247 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:18] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:18,802 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:18] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:27:18,807 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:18] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:27:18,826 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:18] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:18,828 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:18] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:19,659 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:19] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:27:19,664 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:19] "GET / HTTP/1.1" 200 -
+2024-01-11 09:27:19,681 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:19] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:26,783 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:26] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:27:26,789 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:26] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:27:26,815 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:26,818 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:27,908 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:27] "GET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject\\Calculations\\Depo HTTP/1.1" 200 -
+2024-01-11 09:27:27,924 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:27] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:27,927 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:27] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:29,882 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:29] "GET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject\\Calculations HTTP/1.1" 200 -
+2024-01-11 09:27:29,897 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:29] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:29,900 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:29] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:30,613 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:30] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:27:30,618 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:30] "GET / HTTP/1.1" 200 -
+2024-01-11 09:27:30,636 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:38,687 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:38] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:27:38,693 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:38] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:27:38,716 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:38] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:38,718 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:38] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:39,678 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:39] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:27:39,683 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:39] "GET / HTTP/1.1" 200 -
+2024-01-11 09:27:39,699 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:39] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:49,205 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:49] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:27:49,223 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:49] "GET /home HTTP/1.1" 200 -
+2024-01-11 09:27:49,243 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:49] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:49,244 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:49] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:55,641 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:55] "[32mPOST /home HTTP/1.1[0m" 302 -
+2024-01-11 09:27:55,721 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:55] "GET /second HTTP/1.1" 200 -
+2024-01-11 09:27:55,741 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:55] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:55,742 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:55] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:58,084 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:58] "[32mPOST /second HTTP/1.1[0m" 302 -
+2024-01-11 09:27:58,089 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:58] "GET /home HTTP/1.1" 200 -
+2024-01-11 09:27:58,108 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:58] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:58,109 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:27:58,915 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:58] "[32mPOST /home HTTP/1.1[0m" 302 -
+2024-01-11 09:27:58,918 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:58] "GET / HTTP/1.1" 200 -
+2024-01-11 09:27:58,935 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:27:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:28:19,415 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.215.0.245:5000
+2024-01-11 09:28:19,416 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-01-11 09:28:21,755 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:21] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:28:21,760 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:21] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:28:21,782 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:21] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:28:21,786 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:21] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:28:22,876 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:22] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:28:22,882 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:22] "GET / HTTP/1.1" 200 -
+2024-01-11 09:28:22,898 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:22] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:28:37,148 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:37] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:28:37,155 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:37] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:28:37,172 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:37] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:28:37,176 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:28:37] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:33,151 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:33] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:50:33,156 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:33] "GET / HTTP/1.1" 200 -
+2024-01-11 09:50:33,181 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:33,882 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:33] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:50:33,889 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:33] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:50:33,908 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:33,917 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:34,685 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:34] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:50:34,689 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:34] "GET / HTTP/1.1" 200 -
+2024-01-11 09:50:34,705 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:34] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:42,518 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:42] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:50:42,524 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:42] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:50:42,542 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:42] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:42,543 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:42] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:42,970 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.215.0.245:5000
+2024-01-11 09:50:42,971 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-01-11 09:50:43,468 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:43] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:50:43,473 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:43] "GET / HTTP/1.1" 200 -
+2024-01-11 09:50:43,489 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:44,621 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:44] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-01-11 09:50:44,627 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:44] "GET /Dirs2 HTTP/1.1" 200 -
+2024-01-11 09:50:44,647 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:44,647 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:50:45,470 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:45] "[32mGET /Dirs2?path=c:\\Users\\user\\Documents\\Scripts\\pythonProject HTTP/1.1[0m" 302 -
+2024-01-11 09:50:45,475 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:45] "GET / HTTP/1.1" 200 -
+2024-01-11 09:50:45,491 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:50:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+2024-01-11 09:51:09,236 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.215.0.245:5000
+2024-01-11 09:51:09,252 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-01-11 09:51:12,234 - werkzeug - INFO - 10.215.0.245 - - [11/Jan/2024 09:51:12] "[32mPOST / HTTP/1.1[0m" 302 -
