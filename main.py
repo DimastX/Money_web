@@ -124,7 +124,7 @@ def list_directories():
                     })
                     
 
-    return render_template('Dirs4.html', file_data=file_data, dir_exists=dir_exists, selected_path=selected_path, os=os,
+    return render_template('Dirs2.html', file_data=file_data, dir_exists=dir_exists, selected_path=selected_path, os=os,
                            parent_directory=parent_directory)
 
 @app.route('/copy', methods=['POST'])
