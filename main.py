@@ -110,7 +110,7 @@ def list_directories():
                         if ("version" in session_data) and ("check" in session_data):
                             if session_data["version"] == actual_version:
                                 if (session_data["check"] == 1) or (edit == 0):
-                                    if os.path.isfile(selected_path+"\\"+file_name+".xlsx"):
+                                    if os.path.isfile(selected_path+"/"+file_name+".xlsx"):
                                         visible = 0
                     words = file_name.split("_")
                     file_data.append({
