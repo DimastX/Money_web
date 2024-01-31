@@ -59,6 +59,18 @@
                         <td style="width: 33%;">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                            <br>
+                            <div class="form-group">
+                                <input type="checkbox" id="Wave_sim" name="Wave_sim" value="1" onclick="check('SMD', 'Wave_sim_off')"
+                                    {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD_sim'] %} checked="checked" {% endif %} {% endif %}>
+                                <label for="Wave_sim">Использовать симуляцию? </label>   
+                            </div>
+                            <div class="form-group" id="Wave_sim_off">
+                                <label>Время по симуляции на 1 плату, с</label>
+                                <br>
+                                <input type="number" class="form-control" min="0" step="1" name="Wave_sim_v" id="Wave_sim_v"
+                                value="{{ session['Wave_form']['Wave_sim_v'] if session.get('Wave_form') else '0' }}">
+                            </div>
                         </td>
                         <td>
                             <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
@@ -174,6 +186,7 @@
         window.onload = function(){
             wave_amount();
             check('Wave', 'Wave_off');
+            check('Wave_sim', 'Wave_sim_off');
             wave_amount();
         }
 
@@ -187,17 +200,20 @@
         }
         
 
-        ids = ["Wave", "Wave_num", "Wave_eq_num", "Wave_type"];
+        ids = ["Wave", "Wave_num", "Wave_eq_num", "Wave_type", "Wave_sim", "Wave_sim_off"];
 
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
+                check('Wave', 'Wave_off');
+                check('Wave_sim', 'Wave_sim_off');
                 wave_amount();
             });
         }
 
         var chckbx = document.getElementById('Wave');
         var chckbx2 = document.getElementById('Wave_type');
+        var chckbx3 = document.getElementById('Wave_sim')
 
         function wave_amount(){
             var batch = parseInt({{ session['home_form']['field3']}});
@@ -236,7 +252,10 @@
             if (n_eq2 > n_eq){
                 dt = CycleTime / n_eq;
             }
-            const prod = (dt * multi_num + CycleTime)/3600 * parseFloat({{ df['Значение'][11] }});
+            var prod = (dt * multi_num + CycleTime)/3600 * parseFloat({{ df['Значение'][11] }});
+            if (chckbx3.checked){
+                prod = Math.ceil(document.getElementById("Wave_sim_v").value * batch / 3600);
+            }
             const time_all = Math.ceil(prod);
             const time_pc = Math.ceil(time_all/ batch * 3600);
             const money_all = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][4]}}));

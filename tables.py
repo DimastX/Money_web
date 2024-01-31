@@ -23,7 +23,7 @@ def tables(file):
     bot_lines = 0
     BOM.dropna(axis='index', how='all', inplace=True) #Выкидываем пустые строки. Т.к. ВОМ всегда не больше РАР, а для удобства обработки мы закидываем всё одной таблицей
     #bom_table(BOM) #Функция для замены всех - на запятые
-    unics = BOM.shape[0] #Подсчёт количества строк в ВОМ
+    unics = BOM["Name"].nunique() #Подсчёт количества строк в ВОМ
     for index, row in Bot.iterrows(): #Проходимся по по всем ссылочным указателям в Bot, чтобы проверить есть они в BOM или нет. Часто бывает, что PAP больше, чем BOM и там будут незаполненные строки
         value = str(row['Designator'])
         for index2, row2, in BOM.iterrows():

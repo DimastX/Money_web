@@ -242,16 +242,16 @@
                 }
             }
             if (chckbx.checked){
-                document.getElementById("time_pc").value = time + " c";
-                document.getElementById("time_all").value = time_all + " ч";
+                document.getElementById("time_pc").value = Math.ceil(time) + " c";
+                document.getElementById("time_all").value = Math.ceil(time_all) + " ч";
                 document.getElementById("money_all").value = Math.ceil(time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}})) + " руб";
                 document.getElementById("money_pc").value = Math.ceil(time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}}) 
                     / parseFloat({{ session['home_form']['field3'] }}))  + " руб";
                     
                 money_all_f = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}});
                 money_pc_f = Math.ceil(money_all_f / batch)    
-                document.getElementById("money_all_f").value = money_all_f  + " руб";
-                document.getElementById("money_pc_f").value = money_pc_f + " руб";
+                document.getElementById("money_all_f").value = Math.ceil(money_all_f)  + " руб";
+                document.getElementById("money_pc_f").value = Math.ceil(money_pc_f) + " руб";
             } else {
                 document.getElementById("time_pc").value = "-";
                 document.getElementById("time_all").value = "-";

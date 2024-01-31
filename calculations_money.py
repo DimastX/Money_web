@@ -324,10 +324,10 @@ def create_export(session):
     sum_time_pc, sum_money_pc, sum_time_all, sum_money_all = 0, 0, 0, 0
     for i in range(df.shape[0]):
         if df.iloc[i]._name != "ICT":
-            sum_time_pc += int(str(df.iloc[i, 0]).split(" ")[0])
-            sum_time_all += int(str(df.iloc[i, 1]).split(" ")[0])
-            sum_money_pc += int(str(df.iloc[i, 2]).split(" ")[0])
-            sum_money_all += int(str(df.iloc[i, 3]).split(" ")[0])
+            sum_time_pc += int(float(str(df.iloc[i, 0]).split(" ")[0]))
+            sum_time_all += int(float(str(df.iloc[i, 1]).split(" ")[0]))
+            sum_money_pc += int(float(str(df.iloc[i, 2]).split(" ")[0]))
+            sum_money_all += int(float(str(df.iloc[i, 3]).split(" ")[0]))
     total = [str(sum_time_pc) + " с", str(sum_time_all) + " ч", str(sum_money_pc) + " руб", str(sum_money_all) + " руб"]
     df.loc["Cебестоимость"] = total #Строка итого
     #Создание таблицы с подоготовкой производства

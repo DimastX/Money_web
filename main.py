@@ -19,8 +19,8 @@ import os
 import logging
 
 # Настройка логирования
-logging.basicConfig(filename='mylog.log', level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+#logging.basicConfig(filename='mylog.log', level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#logger = logging.getLogger(__name__)
 #Проверка
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
