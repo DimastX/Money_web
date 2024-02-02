@@ -410,7 +410,7 @@
                 control_time_pc = Math.ceil(control_time_all / batch * 3600);
                 control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
                 control_time_pc = Math.ceil(control_money_all / batch);
-                const components = (Top + Bot) * batch;
+                const components = (parseInt(Top) + parseInt(Bot)) * batch;
                 const components_t = Top * batch;
                 const components_b = Bot * batch;
                 const unics = lines[4];
