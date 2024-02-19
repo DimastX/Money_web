@@ -114,10 +114,10 @@ def list_directories():
                                         visible = 0
                     words = file_name.split("_")
                     file_data.append({
-                        'name': words[1] if words else '',
-                        'batch_size': words[2] if len(words) > 2 else '',
-                        'date': words[3] if len(words) > 3 else '',
-                        'comment': words[4] if len(words) > 4 else '',
+                        'name': session_data["home_form"]["field2"],
+                        'batch_size': session_data["home_form"]["field3"],
+                        'date': words[3],
+                        'comment': session_data["home_form"]["comm"] if "comm" in session_data["home_form"] else "",
                         'file_path': file_path,
                         'visibility_download': visible,
                         'visibility_edit': edit
@@ -248,6 +248,8 @@ def cust():
             folder_path = Calculations_path + folder_name
             if not os.path.exists(folder_path): #Если такого имени ещё нет то создаётся новая директория
                 os.makedirs(folder_path)
+            return redirect(url_for("home"))
+        if 'back' in request.form:
             return redirect(url_for("home"))
     return render_template('Cust.html')
 

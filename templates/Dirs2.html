@@ -33,7 +33,7 @@
 
         <div class="table">
             {% if file_data %}
-                <table>
+                <table id="dataTable">
                     <thead>
                         <tr>
                             <th>Имя</th>
@@ -79,31 +79,46 @@
     </div>
 
     <script>
-        var startDateInput = document.getElementById("startDateInput");
-        var endDateInput = document.getElementById("endDateInput");
-      
-        startDateInput.addEventListener("input", filterTableByDateRange);
-        endDateInput.addEventListener("input", filterTableByDateRange);
-      
-        function filterTableByDateRange() {
-          var startDate = new Date(startDateInput.value);
-          var endDate = new Date(endDateInput.value);
-      
-          var rows = document.getElementsByTagName("tr");
-      
-          for (var i = 1; i < rows.length; i++) {
-            var dateCell = rows[i].getElementsByTagName("td")[2];
-            var cellValue = dateCell.innerHTML;
-            var cellDate = new Date(cellValue);
-      
-            // Проверяем, попадает ли дата в выбранный временной интервал
-            if (cellDate >= startDate && cellDate <= endDate) {
-              rows[i].style.display = "";
-            } else {
-              rows[i].style.display = "none";
+        document.addEventListener("DOMContentLoaded", function() {
+            var table = document.getElementById("dataTable");
+            var dateColumn = document.querySelectorAll("#dataTable tbody td:nth-child(3)");
+
+            dateColumn.forEach(function(cell) {
+                var dateStr = cell.innerText;
+                cell.setAttribute("data-date", dateStr);
+            });
+
+            table.querySelector("th:nth-child(3)").addEventListener("click", function() {
+                var rows = Array.from(table.querySelectorAll("tr"));
+                var sortedRows = rows.slice(1).sort(function(a, b) {
+                    return new Date(a.querySelector("td:nth-child(3)").getAttribute("data-date")) - new Date(b.querySelector("td:nth-child(3)").getAttribute("data-date"));
+                });
+                table.querySelector("tbody").innerHTML = "";
+                sortedRows.forEach(function(row) {
+                    table.querySelector("tbody").appendChild(row);
+                });
+            });
+
+            document.getElementById("startDateInput").addEventListener("change", filterByDate);
+            document.getElementById("endDateInput").addEventListener("change", filterByDate);
+
+            function filterByDate() {
+                var startDate = new Date(document.getElementById("startDateInput").value);
+                var endDate = new Date(document.getElementById("endDateInput").value);
+
+                table.querySelectorAll("tr").forEach(function(row) {
+                    var dateCell = row.querySelector("td:nth-child(3)");
+                    if (dateCell) {
+                        var dateValue = new Date(dateCell.getAttribute("data-date"));
+                        if (dateValue >= startDate && dateValue <= endDate) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    }
+                });
             }
-          }
-        }
-      </script>
+        });
+    </script>
 </body>
 </html>
