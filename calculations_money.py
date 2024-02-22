@@ -29,46 +29,50 @@ def sep_calculations(session, df):
     
 
 
+def strtoint(string):
+    if string != "-":
+        return int(string.split(" ")[0])
+    return "-"
 """Создание итоговой таблицы"""
 def create_export(session):
     batch = int(session['home_form']['field3'])
     #Создание массивов для каждой строки затрат
     SMD_re_t = [
-        session['SMD_form']['time_re_pc_t'],
-        session['SMD_form']['time_re_all_t'],
-        session['SMD_form']['money_re_pc_t'],
-        session['SMD_form']['money_re_all_t']
+        strtoint(session['SMD_form']['time_re_pc_t']),
+        strtoint(session['SMD_form']['time_re_all_t']),
+        strtoint(session['SMD_form']['money_re_pc_t']),
+        strtoint(session['SMD_form']['money_re_all_t'])
         ]
     SMD_t = [
-        session['SMD_form']['time_pc_t'],
-        session['SMD_form']['time_all_t'],
-        session['SMD_form']['money_pc_t'],
-        session['SMD_form']['money_all_t']
+        strtoint(session['SMD_form']['time_pc_t']),
+        strtoint(session['SMD_form']['time_all_t']),
+        strtoint(session['SMD_form']['money_pc_t']),
+        strtoint(session['SMD_form']['money_all_t'])
         ]    
     SMD_re_b = [
-        session['SMD_form']['time_re_pc_b'],
-        session['SMD_form']['time_re_all_b'],
-        session['SMD_form']['money_re_pc_b'],
-        session['SMD_form']['money_re_all_b']
+        strtoint(session['SMD_form']['time_re_pc_b']),
+        strtoint(session['SMD_form']['time_re_all_b']),
+        strtoint(session['SMD_form']['money_re_pc_b']),
+        strtoint(session['SMD_form']['money_re_all_b'])
         ]
     SMD_b = [
-        session['SMD_form']['time_pc_b'],
-        session['SMD_form']['time_all_b'],
-        session['SMD_form']['money_pc_b'],
-        session['SMD_form']['money_all_b']
+        strtoint(session['SMD_form']['time_pc_b']),
+        strtoint(session['SMD_form']['time_all_b']),
+        strtoint(session['SMD_form']['money_pc_b']),
+        strtoint(session['SMD_form']['money_all_b'])
         ]
     if session['SMD_form']['repair_time_all'] != '-': #В случае если ремонт требуется расчёт значений для ремонта
         SMD_rep =[
-            str(math.ceil(int(str(session['SMD_form']['repair_time_all']).split(" ")[0]) / batch * 3600)) + " с",
-            session['SMD_form']['repair_time_all'],
-            str(math.ceil(int(str(session['SMD_form']['repair_money_all']).split(" ")[0]) / batch)) + " руб",
-            session['SMD_form']['repair_money_all']
+            math.ceil(int(str(session['SMD_form']['repair_time_all']).split(" ")[0]) / batch * 3600),
+            strtoint(session['SMD_form']['repair_time_all']),
+            math.ceil(int(str(session['SMD_form']['repair_money_all']).split(" ")[0]) / batch),
+            strtoint(session['SMD_form']['repair_money_all'])
         ]
         SMD_cont =[
-            str(math.ceil(int(str(session['SMD_form']['control_time_all']).split(" ")[0]) / batch * 3600)) + " с",
-            session['SMD_form']['control_time_all'],
-            str(math.ceil(int(str(session['SMD_form']['control_money_all']).split(" ")[0]) / batch)) + " руб",
-            session['SMD_form']['control_money_all']
+            math.ceil(int(str(session['SMD_form']['control_time_all']).split(" ")[0]) / batch * 3600),
+            strtoint(session['SMD_form']['control_time_all']),
+            math.ceil(int(str(session['SMD_form']['control_money_all']).split(" ")[0]) / batch),
+            strtoint(session['SMD_form']['control_money_all'])
         ]
     else:
         SMD_rep =[
@@ -84,49 +88,49 @@ def create_export(session):
             "-"
         ]
     THT_pri = [
-        session['THT_form']['time_pc'],
-        session['THT_form']['time_all'],
-        session['THT_form']['money_pc'],
-        session['THT_form']['money_all']
+        strtoint(session['THT_form']['time_pc']),
+        strtoint(session['THT_form']['time_all']),
+        strtoint(session['THT_form']['money_pc']),
+        strtoint(session['THT_form']['money_all'])
         ]
     THT_pri_re = [
-        session['THT_form']['time_re_pc'],
-        session['THT_form']['time_re_all'],
-        session['THT_form']['money_re_pc'],
-        session['THT_form']['money_re_all']
+        strtoint(session['THT_form']['time_re_pc']),
+        strtoint(session['THT_form']['time_re_all']),
+        strtoint(session['THT_form']['money_re_pc']),
+        strtoint(session['THT_form']['money_re_all'])
         ]    
     THT_sec = [
-        session['THT_form']['time_pc2'],
-        session['THT_form']['time_all2'],
-        session['THT_form']['money_pc2'],
-        session['THT_form']['money_all2']
+        strtoint(session['THT_form']['time_pc2']),
+        strtoint(session['THT_form']['time_all2']),
+        strtoint(session['THT_form']['money_pc2']),
+        strtoint(session['THT_form']['money_all2'])
         ]
     THT_sec_re = [
-        session['THT_form']['time_re_pc2'],
-        session['THT_form']['time_re_all2'],
-        session['THT_form']['money_re_pc2'],
-        session['THT_form']['money_re_all2']
+        strtoint(session['THT_form']['time_re_pc2']),
+        strtoint(session['THT_form']['time_re_all2']),
+        strtoint(session['THT_form']['money_re_pc2']),
+        strtoint(session['THT_form']['money_re_all2'])
         ] 
     THT_rep = data_creation(session['THT_form']['repair_time_all'], session['THT_form']['repair_money_all'], batch)
     THT_cont = data_creation(session['THT_form']['control_time_all'], session['THT_form']['control_money_all'], batch)
     Wave = [
-        session['Wave_form']['time_pc'],
-        session['Wave_form']['time_all'],
-        session['Wave_form']['money_pc'],
-        session['Wave_form']['money_all']
+        strtoint(session['Wave_form']['time_pc']),
+        strtoint(session['Wave_form']['time_all']),
+        strtoint(session['Wave_form']['money_pc']),
+        strtoint(session['Wave_form']['money_all'])
         ]
     if session['Wave_form']['repair_time_all'] != '-':
         Wave_rep =[
-            str(math.ceil(int(str(session['Wave_form']['repair_time_all']).split(" ")[0]) / batch * 3600)) + " с",
-            session['Wave_form']['repair_time_all'],
-            str(math.ceil(int(str(session['Wave_form']['repair_money_all']).split(" ")[0]) / batch)) + " руб",
-            session['Wave_form']['repair_money_all']
+            math.ceil(int(str(session['Wave_form']['repair_time_all']).split(" ")[0]) / batch * 3600),
+            strtoint(session['Wave_form']['repair_time_all']),
+            math.ceil(int(str(session['Wave_form']['repair_money_all']).split(" ")[0]) / batch),
+            strtoint(session['Wave_form']['repair_money_all'])
         ]
         Wave_cont =[
-            str(math.ceil(int(str(session['Wave_form']['control_time_all']).split(" ")[0]) / batch * 3600)) + " с",
-            session['Wave_form']['control_time_all'],
-            str(math.ceil(int(str(session['Wave_form']['control_money_all']).split(" ")[0]) / batch)) + " руб",
-            session['Wave_form']['control_money_all']
+            math.ceil(int(str(session['Wave_form']['control_time_all']).split(" ")[0]) / batch * 3600),
+            strtoint(session['Wave_form']['control_time_all']),
+            math.ceil(int(str(session['Wave_form']['control_money_all']).split(" ")[0]) / batch),
+            strtoint(session['Wave_form']['control_money_all'])
         ]
     else:
         Wave_rep =[
@@ -142,72 +146,86 @@ def create_export(session):
             "-"
         ]
     HRL = [
-        session['HRL_form']['time_pc'],
-        session['HRL_form']['time_all'],
-        session['HRL_form']['money_pc'],
-        session['HRL_form']['money_all']
+        strtoint(session['HRL_form']['time_pc']),
+        strtoint(session['HRL_form']['time_all']),
+        strtoint(session['HRL_form']['money_pc']),
+        strtoint(session['HRL_form']['money_all'])
         ]
     HRL_re = [
-        session['HRL_form']['time_re_pc'],
-        session['HRL_form']['time_re_all'],
-        session['HRL_form']['money_re_pc'],
-        session['HRL_form']['money_re_all']
+        strtoint(session['HRL_form']['time_re_pc']),
+        strtoint(session['HRL_form']['time_re_all']),
+        strtoint(session['HRL_form']['money_re_pc']),
+        strtoint(session['HRL_form']['money_re_all'])
         ]
     HRL_rep = data_creation(session['HRL_form']['repair_time_all'], session['HRL_form']['repair_money_all'], batch)
     HRL_cont = data_creation(session['HRL_form']['control_time_all'], session['HRL_form']['control_money_all'], batch)
     Hand = [
-        session['Hand_form']['time_pc'],
-        session['Hand_form']['time_all'],
-        session['Hand_form']['money_pc'],
-        session['Hand_form']['money_all']
+        strtoint(session['Hand_form']['time_pc']),
+        strtoint(session['Hand_form']['time_all']),
+        strtoint(session['Hand_form']['money_pc']),
+        strtoint(session['Hand_form']['money_all'])
         ]
     Hand_cont = data_creation(session['Hand_form']['control_time_all'], session['Hand_form']['control_money_all'], batch)
     Test = [
-        session['Test_form']['time_pc'],
-        session['Test_form']['time_all'],
-        session['Test_form']['money_pc'],
-        session['Test_form']['money_all']
+        strtoint(session['Test_form']['time_pc']),
+        strtoint(session['Test_form']['time_all']),
+        strtoint(session['Test_form']['money_pc']),
+        strtoint(session['Test_form']['money_all'])
         ]
     Clear = [
-        session['Clear_form']['time_pc'],
-        session['Clear_form']['time_all'],
-        session['Clear_form']['money_pc'],
-        session['Clear_form']['money_all']
+        strtoint(session['Clear_form']['time_pc']),
+        strtoint(session['Clear_form']['time_all']),
+        strtoint(session['Clear_form']['money_pc']),
+        strtoint(session['Clear_form']['money_all'])
         ]
     Clear_cont = data_creation(session['Clear_form']['control_time_all'], session['Clear_form']['control_money_all'], batch)
     Handv = [
-        session['Handv_form']['time_pc'],
-        session['Handv_form']['time_all'],
-        session['Handv_form']['money_pc'],
-        session['Handv_form']['money_all']
+        strtoint(session['Handv_form']['time_pc']),
+        strtoint(session['Handv_form']['time_all']),
+        strtoint(session['Handv_form']['money_pc']),
+        strtoint(session['Handv_form']['money_all'])
         ]
     Handv_cont = data_creation(session['Handv_form']['control_time_all'], session['Handv_form']['control_money_all'], batch)
     Sep = [
-        session['Sep_form']['time_pc'],
-        session['Sep_form']['time_all'],
-        session['Sep_form']['money_pc'],
-        session['Sep_form']['money_all']
+        strtoint(session['Sep_form']['time_pc']),
+        strtoint(session['Sep_form']['time_all']),
+        strtoint(session['Sep_form']['money_pc']),
+        strtoint(session['Sep_form']['money_all'])
         ]
     Xray = [
-        session['Xray_form']['time_pc'],
-        session['Xray_form']['time_all'],
-        session['Xray_form']['money_pc'],
-        session['Xray_form']['money_all']
+        strtoint(session['Xray_form']['time_pc']),
+        strtoint(session['Xray_form']['time_all']),
+        strtoint(session['Xray_form']['money_pc']),
+        strtoint(session['Xray_form']['money_all'])
         ]
     
     if "time_pc_ICT" in session['Add_form']:
-        ICT = [
-            session['Add_form']["time_pc_ICT"],
-            session['Add_form']["time_all_ICT"],
-            session['Add_form']["money_pc_ICT"],
-            session['Add_form']["money_all_ICT"],
-        ]
-        Add = [
-            session['Add_form']['time_pc'],
-            session['Add_form']['time_all'],
-            session['Add_form']['money_pc'],
-            session['Add_form']['money_all']
-        ]
+        if (session["Add_form"]["time_pc_ICT"] != "-") and (session["Add_form"]["time_pc_ICT"] != "0 с"):
+            ICT = [
+                strtoint(session['Add_form']["time_pc_ICT"]),
+                strtoint(session['Add_form']["time_all_ICT"]),
+                strtoint(session['Add_form']["money_pc_ICT"]),
+                strtoint(session['Add_form']["money_all_ICT"]),
+            ]
+            Add = [
+                strtoint(session['Add_form']['time_pc']) - ICT[0],
+                strtoint(session['Add_form']['time_all']) - ICT[1],
+                strtoint(session['Add_form']['money_pc']) - ICT[2],
+                strtoint(session['Add_form']['money_all']) - ICT[3]
+            ]
+        else:
+            ICT = [
+                "-",
+                "-",
+                "-",
+                "-"
+            ]
+            Add = [
+                strtoint(session['Add_form']['time_pc']),
+                strtoint(session['Add_form']['time_all']),
+                strtoint(session['Add_form']['money_pc']),
+                strtoint(session['Add_form']['money_all'])
+            ]
     else:
         ICT = [
             "-",
@@ -216,24 +234,24 @@ def create_export(session):
             "-"
         ]
         Add = [
-            session['Add_form']['time_pc'],
-            session['Add_form']['time_all'],
-            session['Add_form']['money_pc'],
-            session['Add_form']['money_all']
+            strtoint(session['Add_form']['time_pc']),
+            strtoint(session['Add_form']['time_all']),
+            strtoint(session['Add_form']['money_pc']),
+            strtoint(session['Add_form']['money_all'])
         ]
     
     if "Comp_form" in session:
         Contr_out = [
-            session['Comp_form']['time_pc3'],
-            session['Comp_form']['time_all3'],
-            session['Comp_form']['money_pc3'],
-            session['Comp_form']['money_all3']
+            strtoint(session['Comp_form']['time_pc3']),
+            strtoint(session['Comp_form']['time_all3']),
+            strtoint(session['Comp_form']['money_pc3']),
+            strtoint(session['Comp_form']['money_all3'])
         ]
         End = [
-            session['Comp_form']['time_pc4'],
-            session['Comp_form']['time_all4'],
-            session['Comp_form']['money_pc4'],
-            session['Comp_form']['money_all4']
+            strtoint(session['Comp_form']['time_pc4']),
+            strtoint(session['Comp_form']['time_all4']),
+            strtoint(session['Comp_form']['money_pc4']),
+            strtoint(session['Comp_form']['money_all4'])
         ]
     else:
        Contr_out =[
@@ -258,10 +276,10 @@ def create_export(session):
         ]
         else:
             Pack = [
-                "0 c",
-                "0 c",
-                session['Pack_form']['money_pc'],
-                session['Pack_form']['money_all']
+                0,
+                0,
+                strtoint(session['Pack_form']['money_pc']),
+                strtoint(session['Pack_form']['money_all'])
             ]
     else:
         Pack =[
@@ -278,7 +296,7 @@ def create_export(session):
             Test, Clear, Clear_cont, Handv, 
             Handv_cont, Sep, Xray, Add, ICT, Pack, Contr_out, End]
  #           , """Comp""" ]
-    headers = ["Время на 1 ПУ", "Время на партию", "Стоимость 1 ПУ", "Стоимость на партию"]
+    headers = ["Время на 1 ПУ, с", "Время на партию, ч", "Стоимость 1 ПУ, руб", "Стоимость на партию, руб"]
     #Статьи расходов
     row_headers = [
         "Поверхностный монтаж SMT Pri, переналадка",
@@ -313,7 +331,7 @@ def create_export(session):
         "Контроль ручной лакировки",
         "Разделение",
         "Рентгенконтроль",
-        "Доп. работы, в том числе ICT",
+        "Доп. работы",
         "ICT",
         "Упаковка", 
         "Выходной контроль",
@@ -328,32 +346,32 @@ def create_export(session):
             sum_time_all += int(float(str(df.iloc[i, 1]).split(" ")[0]))
             sum_money_pc += int(float(str(df.iloc[i, 2]).split(" ")[0]))
             sum_money_all += int(float(str(df.iloc[i, 3]).split(" ")[0]))
-    total = [str(sum_time_pc) + " с", str(sum_time_all) + " ч", str(sum_money_pc) + " руб", str(sum_money_all) + " руб"]
+    total = [sum_time_pc, sum_time_all, sum_money_pc, sum_money_all]
     df.loc["Cебестоимость"] = total #Строка итого
     #Создание таблицы с подоготовкой производства
     prep_sum = 0
     prep_sum_pc = int(prep_sum / batch)
     Traf = 0
     if 'prepare' in session['second_form']:
-        headers2 = ["Наименование","Стоимость"]
+        headers2 = ["Наименование","Стоимость, руб"]
         data2 = prepare(session)
         Traf = int(str(data2[0][1]).split(" ")[0])
         for data_in_data2 in data2:
             prep_sum += int(str(data_in_data2[1]).split(" ")[0])
-        data2.append(["Итого", str(prep_sum) + " руб" ])
+        data2.append(["Итого", prep_sum])
         prep_sum_pc = int(prep_sum / batch)
     VAT = int(session["Info_form"]["VAT"]) / 100.0 + 1
     Income = int(session["Info_form"]["Info_proc"]) / 100.0 + 1
     sum = [sum_time_pc, sum_time_all, sum_money_pc, sum_money_all]
     sum[2] = int(sum[2] * Income)
     sum[3] = int(sum[3] * Income)
-    df.loc["Стоимость с прибылью, без НДС и подготовки"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
+    df.loc["Стоимость с прибылью, без НДС и подготовки"] = [sum[0], sum[1], sum[2], sum[3]]
     sum[2] = int(sum[2] + prep_sum_pc)
     sum[3] = int(sum[3] + prep_sum)
-    df.loc["Стоимость с прибылью и подготовкой, без НДС"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
+    df.loc["Стоимость с прибылью и подготовкой, без НДС"] = [sum[0], sum[1], sum[2], sum[3]]
     sum[2] = int(sum[2] * VAT)
     sum[3] = int(sum[3] * VAT)
-    df.loc["Итоговая стоимость"] = [str(sum[0]) + " с", str(sum[1]) + " ч", str(sum[2]) + " руб", str(sum[3]) + " руб"]
+    df.loc["Итоговая стоимость"] = [sum[0], sum[1], sum[2], sum[3]]
     cost_c, cost_e, cost_p = 0, 0, 0
     if "cost_c" in session["second_form"]:
         if session["second_form"]["cost_c"] != "":
@@ -366,14 +384,14 @@ def create_export(session):
     if prep < 0:
         prep = 0
     data3 = [
-        ["Трафареты", str(Traf) + " руб"],
-        ["Подготовка производства", str(prep) + " руб"],
-        ["Печатные платы", str(cost_p) + " руб"],
-        ["Компоненты", str(cost_c) + " руб"],
-        ["Оснастки", str(cost_e) + " руб"],
-        ["Итого", str(cost_p + cost_c + cost_e + prep + Traf) + " руб"]
+        ["Трафареты", Traf],
+        ["Подготовка производства", prep],
+        ["Печатные платы", cost_p],
+        ["Компоненты", cost_c],
+        ["Оснастки", cost_e],
+        ["Итого", cost_p + cost_c + cost_e + prep + Traf]
     ]
-    headers3 = ["Наименование", "Стоимость"]
+    headers3 = ["Наименование", "Стоимость, руб"]
     df3 = pd.DataFrame(data3, columns=headers3)
     if 'prepare' in session['second_form']:
         df2 = pd.DataFrame(data2, columns=headers2)
@@ -398,10 +416,10 @@ def prepare(session):
             traf *= int(session["second_form"]["sides_SMD"])
     else:
         traf = 0
-    traf = str(traf) + " руб"
-    doc = str(df2["Стоимость, руб/ч"][23]) + " руб"
+    traf = traf
+    doc = df2["Стоимость, руб/ч"][23]
     if "tables" in session:
-        ebom = str(df2["Стоимость, руб/ч"][24] * session["tables"][4]) + " руб"
+        ebom = df2["Стоимость, руб/ч"][24] * session["tables"][4]
     else:
         ebom = "0 руб"
     return [["Трафареты", traf], ["Проверка документации", doc], ["Создание EBOM", ebom]]
@@ -418,9 +436,9 @@ def data_creation(time_all, money_all, batch):
         ]
     else:
         list1 = [
-            str(math.ceil(int(str(time_all).split(" ")[0]) / batch * 3600)) + " с",
-            time_all,
-            str(math.ceil(int(str(money_all).split(" ")[0]) / batch)) + " руб",
-            money_all
+            math.ceil(int(str(time_all).split(" ")[0]) / batch * 3600),
+            strtoint(time_all),
+            math.ceil(int(str(money_all).split(" ")[0]) / batch),
+            strtoint(money_all)
         ]
     return list1

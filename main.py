@@ -819,9 +819,9 @@ def session_data():
 
                 workbook = writer.book
                 worksheet = writer.sheets['Трудозатраты']
-                wrap_format = workbook.add_format({'text_wrap': True})
+                wrap_format = workbook.add_format({'text_wrap': False})
                 # Создаем формат с обрамлением
-                border_format = workbook.add_format({'border': 1})
+                border_format = workbook.add_format({'border': 1, 'text_wrap': False})
 
                 # Применяем формат к каждой ячейке в DataFrame информации о заказе
                 for row_num, values in enumerate(df_info.values):
@@ -829,7 +829,7 @@ def session_data():
                         worksheet.write(row_num, col_num, value, border_format)
 
                 # Создаем формат с автоматическим переносом строки
-                wrap_format = workbook.add_format({'text_wrap': True})
+                wrap_format = workbook.add_format({'text_wrap': False})
 
                 # Применяем формат к каждой ячейке в основной таблице df[0]
                 start_row += 1  # Переходим на первую строку с данными основной таблицы
@@ -841,6 +841,9 @@ def session_data():
                 # Применяем формат к каждой ячейке в дополнительной таблице df[1]
                 if table:
                     start_row += df[0].shape[0] + 2  # Переходим на первую строку с данными дополнительной таблицы
+                    for col_num, col_name in enumerate(df[1].columns):
+                        worksheet.write(start_row, col_num, col_name, border_format)
+                    start_row += 1
                     for row_num, values in enumerate(df[1].values):
                         for col_num, value in enumerate(values):
                             worksheet.write(row_num + start_row, col_num, value, border_format)
@@ -849,7 +852,7 @@ def session_data():
                 worksheet.set_column(0, 0, 45)  # Ширина первого столбца
                 for col_num, column in enumerate(df[0].columns):
                     column_length = max(df[0][column].astype(str).map(len).max(), len(column))
-                    worksheet.set_column(col_num + 1, col_num + 1, column_length + 1, wrap_format)
+                    worksheet.set_column(col_num + 1, col_num + 1, column_length - 3, wrap_format)
                 worksheet.set_landscape()
 
                 sheet_name = "Информация"
@@ -900,6 +903,9 @@ def session_data():
     if 'new' in request.form:
         clear_session()
         return redirect(url_for('home'))
+    if 'home' in request.form:
+        clear_session()
+        return redirect(url_for('start'))
     if table:
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
                            tables2=[df[1].to_html(classes='table', index=False, header="true")], 
