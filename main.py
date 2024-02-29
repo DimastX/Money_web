@@ -814,7 +814,9 @@ def session_data():
             with pd.ExcelWriter(path +"/" + name + ".xlsx", engine='xlsxwriter') as writer:
 
                 sheet_name = 'Трудозатраты'
-                df_info = pd.DataFrame([["Заказчик", session['home_form']['field1']], ["Изделие", session['home_form']['field2']], ["Партия", session['home_form']['field3']]])
+                df_info = pd.DataFrame([["Заказчик", session['home_form']['field1']], ["Изделие", session['home_form']['field2']], ["Партия", session['home_form']['field3']],
+                                        ["Количество компонентов на стороне Top", session["SMD_form"]["components_t"]],
+                                        ["Количество компонентов на стороне Bot", session["SMD_form"]["components_b"]]])
                 df_info.to_excel(writer, index=False, sheet_name=sheet_name, header = False)
                 #df1 = pd.concat([df[0], df[1]], keys=['Стоимость подготовки производства', 'Стоимость производства'])
                 start_row = df_info.shape[0] + 2
