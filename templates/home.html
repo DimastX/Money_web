@@ -45,7 +45,7 @@
                 </a>
                 <select name="field1" class="form-control">
                     <option selected hidden></option>
-                    {% for folder in file_tree %}
+                    {% for folder in file_tree | sort %}
                     <option value="{{ folder }}" {% if session.get('home_form')%} {% if session['home_form']['field1'] == folder %} selected {% endif %} {% endif %}>{{ folder }}</option>
                     {% endfor %}
                 </select>

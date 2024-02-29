@@ -118,6 +118,8 @@ def list_directories():
                         'batch_size': session_data["home_form"]["field3"],
                         'date': words[3],
                         'comment': session_data["home_form"]["comm"] if "comm" in session_data["home_form"] else "",
+                        'cost': session_data["final_cost"] if "final_cost" in session_data else "",
+                        'costpo': session_data["final_costpo"] if "final_costpo" in session_data else "",
                         'file_path': file_path,
                         'visibility_download': visible,
                         'visibility_edit': edit
@@ -789,6 +791,8 @@ def info():
 @login_required
 def session_data():
     df = cm.create_export(session) #Создание таблицы со всеми данными
+    session["final_cost"] = str(df[0]["Стоимость 1 ПУ, руб"]["Итоговая стоимость"]) + " руб"
+    session["final_costpo"] = str(df[0]["Стоимость на партию, руб"]["Итоговая стоимость"]) + " руб"
     if isinstance(df[1], int):
         table = 0
     else:
