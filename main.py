@@ -116,7 +116,7 @@ def list_directories():
                     file_data.append({
                         'name': session_data["home_form"]["field2"],
                         'batch_size': session_data["home_form"]["field3"],
-                        'date': words[3],
+                        'date': session_data["date"] if "date" in session_data else "",
                         'comment': session_data["home_form"]["comm"] if "comm" in session_data["home_form"] else "",
                         'cost': session_data["final_cost"] if "final_cost" in session_data else "",
                         'costpo': session_data["final_costpo"] if "final_costpo" in session_data else "",
@@ -143,6 +143,15 @@ def open_file():
         session_data = pickle.load(file)
         session.update(session_data) # Задание в значение session данных из предыдущего расчёта
     return redirect(url_for('home'))
+
+@app.route('/delete', methods=['POST'])
+def delete_file():
+    with open(request.form["file_path"], 'rb') as file:
+        session_data = pickle.load(file)
+        if "excel_file_name" in session_data:
+             os.remove(session_data["excel_file_name"])
+    os.remove(request.form["file_path"])    
+    return redirect(url_for('start'))
 
 @app.route('/download', methods=['POST'])
 def download_file():
@@ -791,8 +800,8 @@ def info():
 @login_required
 def session_data():
     df = cm.create_export(session) #Создание таблицы со всеми данными
-    session["final_cost"] = str(df[0]["Стоимость 1 ПУ, руб"]["Итоговая стоимость"]) + " руб"
-    session["final_costpo"] = str(df[0]["Стоимость на партию, руб"]["Итоговая стоимость"]) + " руб"
+    session["final_costpo"] = str(df[0]["Стоимость 1 ПУ, руб"]["Итоговая стоимость"]) + " руб"
+    session["final_cost"] = str(df[0]["Стоимость на партию, руб"]["Итоговая стоимость"]) + " руб"
     if isinstance(df[1], int):
         table = 0
     else:
@@ -804,13 +813,10 @@ def session_data():
             session['check'] = 1
             current_time = datetime.now()
             path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
-            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(session["date"])
-            if "comm" in session["home_form"]:
-                if session["home_form"] != "":
-                    name += "_" + session["home_form"]["comm"]
+            name = str(session["home_form"]["field1"])
             if not os.path.exists(path):
                 os.makedirs(path)
-
+            session["excel_file_name"] = path +"/" + name + ".xlsx"
             with pd.ExcelWriter(path +"/" + name + ".xlsx", engine='xlsxwriter') as writer:
 
                 sheet_name = 'Трудозатраты'

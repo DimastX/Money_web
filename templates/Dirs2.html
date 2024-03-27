@@ -68,6 +68,10 @@
                                         <input type="hidden" name="file_path" value="{{ item.file_path }}">
                                         <button type="submit" {% if item.visibility_download == 1 %}  disabled {% endif %} class="btn btn-primary">Скачать</button>
                                     </form>
+                                    <form action="/delete" method="post" style="display: inline;">
+                                        <input type="hidden" name="file_path" value="{{ item.file_path }}">
+                                        <button type="submit" class="btn btn-primary" onclick="confirmDelete()" >Удалить</button>
+                                    </form>
                                 </td>
                                 <td>
                                     {% if item.visibility_edit == 0 %}
@@ -83,6 +87,15 @@
     </div>
 
     <script>
+        function confirmDelete() {
+            console.log(1);
+            if (confirm('Вы уверены, что хотите удалить файл?')) {
+                document.getElementById('deleteForm').submit();
+            } else {
+                event.preventDefault();
+            }
+        }   
+
         document.addEventListener("DOMContentLoaded", function() {
             var table = document.getElementById("dataTable");
             var dateColumn = document.querySelectorAll("#dataTable tbody td:nth-child(3)");

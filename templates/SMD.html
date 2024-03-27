@@ -39,7 +39,7 @@
                 <legend>Автоматический поверхностный монтаж SMT</legend>
                 <div class="form-group">
                     <input type="checkbox" id="SMD" name="SMD" value="1" onclick="check('SMD', 'SMD_off')"
-                           {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD'] or session.get('tables')%} checked="checked" {% endif %} {% endif %}>
+                           {% if session.get('SMD_form')%} {% if session['SMD_form']['SMD']%} checked="checked" {% endif %} {% endif %}>
                     <label for="SMD">Выполнять автоматический поверхностный монтаж SMT? </label>   
                 </div>
             </fieldset>
