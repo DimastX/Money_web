@@ -800,8 +800,8 @@ def info():
 @login_required
 def session_data():
     df = cm.create_export(session) #Создание таблицы со всеми данными
-    session["final_costpo"] = str(df[0]["Стоимость 1 ПУ, руб"]["Итоговая стоимость"]) + " руб"
-    session["final_cost"] = str(df[0]["Стоимость на партию, руб"]["Итоговая стоимость"]) + " руб"
+    session["final_cost"] = str(df[0]["Стоимость 1 ПУ, руб"]["Итоговая стоимость"]) + " руб"
+    session["final_costpo"] = str(df[0]["Стоимость на партию, руб"]["Итоговая стоимость"]) + " руб"
     if isinstance(df[1], int):
         table = 0
     else:
@@ -813,7 +813,10 @@ def session_data():
             session['check'] = 1
             current_time = datetime.now()
             path = "Calculations/" + str(session["home_form"]["field1"]) + "/" + str(session["home_form"]["field2"])
-            name = str(session["home_form"]["field1"])
+            name = str(session["home_form"]["field1"]) + "_" + str(session["home_form"]["field2"]) + "_" + str(session["home_form"]["field3"]) + "_" + str(session["date"])
+            if "comm" in session["home_form"]:
+                if session["home_form"] != "":
+                    name += "_" + session["home_form"]["comm"]
             if not os.path.exists(path):
                 os.makedirs(path)
             session["excel_file_name"] = path +"/" + name + ".xlsx"
