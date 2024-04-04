@@ -22,7 +22,7 @@
         <br>
         <form id = "myForm" method="POST">
             <label>Имя нового заказчика:</label>
-            <input type="text" class="form-control" name="name" placeholder="Введите имя нового заказчика">
+            <input type="text" pattern="[^\\\/]*" class="form-control" name="name" placeholder="Введите имя нового заказчика">
             <br>
             <button type="submit" class="btn btn-primary" name="back">Назад</button> 
             <button type="submit" class="btn btn-primary" name="new">Добавить</button> 

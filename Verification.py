@@ -84,7 +84,7 @@ def auto_save(session):
     for key, value in session.items():
         session_data[key] = value
     if not os.path.exists(path):
-            os.makedirs(path)
+        os.makedirs(path)
     session["check"] = 0
     with open(path +"/" + name + '.pickle', 'wb') as file:
         pickle.dump(session_data, file)

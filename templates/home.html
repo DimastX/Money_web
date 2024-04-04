@@ -52,7 +52,7 @@
             </div>
             <div class="form-group">
                 <label>Изделие:</label>
-                <input type="text" class="form-control" name="field2" value="{{ session['home_form']['field2'] if session.get('home_form') else '' }}">
+                <input type="text" pattern="[^\\\/]*" class="form-control" name="field2" value="{{ session['home_form']['field2'] if session.get('home_form') else '' }}">
             </div>
             <div class="form-group">
                 <label>Партия:</label>
@@ -60,7 +60,7 @@
             </div>
             <div class="form-group">
                 <label>Комментарий:</label>
-                <input class="form-control" name="comm" id="comm"
+                <input class="form-control" pattern="[^\\\/]*" name="comm" id="comm"
                     value="{{ session['home_form']['comm'] if session.get('home_form') else '' }}">
             </div>
         </form>

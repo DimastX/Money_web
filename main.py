@@ -921,6 +921,9 @@ def session_data():
     if 'home' in request.form:
         clear_session()
         return redirect(url_for('start'))
+    if 'catalog' in request.form:
+        clear_session()
+        return redirect(url_for('Dirs2'))
     if table:
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
                            tables2=[df[1].to_html(classes='table', index=False, header="true")], 

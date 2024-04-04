@@ -47,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in file_data %}
+                        {% for item in file_data  | sort(attribute='batch_size')| sort(attribute='date')%}
                             <tr>
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.batch_size }}</td>
