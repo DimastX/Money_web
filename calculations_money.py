@@ -339,17 +339,29 @@ def create_export(session):
     #Создание DataFrame со значениями выше
     df = pd.DataFrame(data, columns=headers, index=row_headers)
     df = df.drop(df[(df == "-").all(axis=1)].index)
-    sum_time_pc, sum_money_pc, sum_time_all, sum_money_all = 0, 0, 0, 0
+    sum_time_pc, sum_money_pc, sum_time_all, sum_money_all, sum_time_mz, sum_money_mz = 0, 0, 0, 0, 0, 0
+    pc = int(session["second_form"]["pc"])
+    df["Время на мз, с"] = ""
+    df["Стоимость мз, руб"] = ""
     for i in range(df.shape[0]):
+        sum_time_pc_temp = int(float(str(df.iloc[i, 0]).split(" ")[0]))
+        sum_time_all_temp = int(float(str(df.iloc[i, 1]).split(" ")[0]))
+        sum_money_pc_temp = int(float(str(df.iloc[i, 2]).split(" ")[0]))
+        sum_money_all_temp = int(float(str(df.iloc[i, 3]).split(" ")[0]))
+        df.iloc[i,4] = sum_time_pc_temp * pc
+        df.iloc[i,5] = sum_money_pc_temp * pc
         if df.iloc[i]._name != "ICT":
-            sum_time_pc += int(float(str(df.iloc[i, 0]).split(" ")[0]))
-            sum_time_all += int(float(str(df.iloc[i, 1]).split(" ")[0]))
-            sum_money_pc += int(float(str(df.iloc[i, 2]).split(" ")[0]))
-            sum_money_all += int(float(str(df.iloc[i, 3]).split(" ")[0]))
-    total = [sum_time_pc, sum_time_all, sum_money_pc, sum_money_all]
+            sum_time_pc += sum_time_pc_temp
+            sum_time_all += sum_time_all_temp
+            sum_money_pc += sum_money_pc_temp
+            sum_money_all += sum_money_all_temp
+            sum_time_mz += df.iloc[i,4]
+            sum_money_mz += df.iloc[i,5]
+    total = [sum_time_pc, sum_time_all, sum_money_pc, sum_money_all, sum_time_mz, sum_money_mz]
     df.loc["Cебестоимость"] = total #Строка итого
     #Создание таблицы с подоготовкой производства
     prep_sum = 0
+    prep_sum_mz = 0
     prep_sum_pc = int(prep_sum / batch)
     Traf = 0
     if 'prepare' in session['second_form']:
@@ -360,18 +372,22 @@ def create_export(session):
             prep_sum += int(str(data_in_data2[1]).split(" ")[0])
         data2.append(["Итого", prep_sum])
         prep_sum_pc = int(prep_sum / batch)
+        prep_sum_mz = prep_sum_pc * pc  
     VAT = int(session["Info_form"]["VAT"]) / 100.0 + 1
     Income = int(session["Info_form"]["Info_proc"]) / 100.0 + 1
-    sum = [sum_time_pc, sum_time_all, sum_money_pc, sum_money_all]
+    sum = [sum_time_pc, sum_time_all, sum_money_pc, sum_money_all, sum_time_mz, sum_money_mz]
     sum[2] = int(sum[2] * Income)
     sum[3] = int(sum[3] * Income)
-    df.loc["Стоимость с прибылью, без НДС и подготовки"] = [sum[0], sum[1], sum[2], sum[3]]
+    sum[5] = int(sum[5] * Income)
+    df.loc["Стоимость с прибылью, без НДС и подготовки"] = [sum[0], sum[1], sum[2], sum[3], sum[4], sum[5]]
     sum[2] = int(sum[2] + prep_sum_pc)
     sum[3] = int(sum[3] + prep_sum)
-    df.loc["Стоимость с прибылью и подготовкой, без НДС"] = [sum[0], sum[1], sum[2], sum[3]]
+    sum[5] = int(sum[5] + prep_sum_mz)
+    df.loc["Стоимость с прибылью и подготовкой, без НДС"] = [sum[0], sum[1], sum[2], sum[3], sum[4], sum[5]]
     sum[2] = int(sum[2] * VAT)
     sum[3] = int(sum[3] * VAT)
-    df.loc["Итоговая стоимость"] = [sum[0], sum[1], sum[2], sum[3]]
+    sum[5] = int(sum[5] * VAT)
+    df.loc["Итоговая стоимость"] = [sum[0], sum[1], sum[2], sum[3], sum[4], sum[5]]
     cost_c, cost_e, cost_p = 0, 0, 0
     if "cost_c" in session["second_form"]:
         if session["second_form"]["cost_c"] != "":
@@ -393,6 +409,10 @@ def create_export(session):
     ]
     headers3 = ["Наименование", "Стоимость, руб"]
     df3 = pd.DataFrame(data3, columns=headers3)
+
+    columns = ["Время на 1 ПУ, с", "Время на мз, с", "Время на партию, ч", "Стоимость 1 ПУ, руб", "Стоимость мз, руб", "Стоимость на партию, руб"]
+    df = df[columns]
+
     if 'prepare' in session['second_form']:
         df2 = pd.DataFrame(data2, columns=headers2)
         return [df, df2, df3]
