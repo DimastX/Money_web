@@ -828,7 +828,7 @@ def session_data():
                                         ["Количество компонентов на стороне Bot", session["SMD_form"]["components_b"]],
                                         ["Количество наименований на стороне Top", session["SMD_form"]["unics_t"]],
                                         ["Количество наименований на стороне Bot", session["SMD_form"]["unics_b"]],
-                                        ["Количество уникальных наименований", session["SMD_form"]["components_b"]]])
+                                        ["Количество уникальных наименований", session["SMD_form"]["unics"]]])
                 df_info.to_excel(writer, index=False, sheet_name=sheet_name, header = False)
                 #df1 = pd.concat([df[0], df[1]], keys=['Стоимость подготовки производства', 'Стоимость производства'])
                 start_row = df_info.shape[0] + 2
