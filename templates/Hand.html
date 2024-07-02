@@ -42,7 +42,7 @@
                         <div class="form-group" id="Hand_off">
                             <label>Количество точек пайки</label>
                             <br>
-                            <input type="number" class="form-control" min="1" step="1" name="Hand_num" id="Hand_num"
+                            <input type="number" class="form-control" min="1" required step="1" name="Hand_num" id="Hand_num"
                                 value="{{ session['Hand_form']['Hand_num'] if session.get('Hand_form') else '1' }}">
                         </div>
                     </td>

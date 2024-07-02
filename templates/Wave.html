@@ -43,13 +43,13 @@
                             <div class="form-group">
                                 <label>Количество компонентов</label>
                                 <br>
-                                <input type="number" class="form-control" min="0" step="1" name="Wave_num" id="Wave_num"
+                                <input type="number" class="form-control" min="0" required step="1" name="Wave_num" id="Wave_num"
                                 value="{{ session['Wave_form']['Wave_num'] if session.get('Wave_form') else '1' }}">
                             </div>
                             <div class="form-group">
                                 <label>Количество оснасток</label>
                                 <br>
-                                <input type="number" class="form-control" min="0" step="1" name="Wave_eq_num" id="Wave_eq_num"
+                                <input type="number" class="form-control" min="1" required step="1" name="Wave_eq_num" id="Wave_eq_num"
                                 value="{{ session['Wave_form']['Wave_eq_num'] if session.get('Wave_form') else '1' }}">
                             </div>
                             <input type="checkbox" id="Wave_type" name="Wave_type" value="1"

@@ -56,23 +56,23 @@
                             </svg>
                         </a>
                         <br>
-                        <input type="number" class="form-control" min="0" step="1" name="SMD1" id="SMD1"
+                        <input type="number" class="form-control" min="0" required step="1" name="SMD1" id="SMD1"
                         value="{{ session['tables'][0] if session.get('tables') else '0' }}">
                         <label>Количество наименований на стороне Top</label>
                         <br>
-                        <input type="number" class="form-control" min="0" step="1" name="SMD2" id="SMD2"
+                        <input type="number" class="form-control" min="0" required step="1" name="SMD2" id="SMD2"
                         value="{{ session['tables'][1] if session.get('tables') else '0' }}">
                         <label>Количество компонентов на стороне Bot</label>
                         <br>
-                        <input type="number" class="form-control" min="0" step="1" name="SMD3" id="SMD3"
+                        <input type="number" class="form-control" min="0" required step="1" name="SMD3" id="SMD3"
                         value="{{ session['tables'][2] if session.get('tables') else '0' }}">
                         <label>Количество наименований на стороне Bot</label>
                         <br>
-                        <input type="number" class="form-control" min="0" step="1" name="SMD4" id="SMD4"
+                        <input type="number" class="form-control" min="0" required step="1" name="SMD4" id="SMD4"
                         value="{{ session['tables'][3] if session.get('tables') else '0' }}">
                         <label>Количество уникальных наименований</label>
                         <br>
-                        <input type="number" class="form-control" min="0" step="1" name="SMD5" id="SMD5"
+                        <input type="number" class="form-control" min="0" required step="1" name="SMD5" id="SMD5"
                         value="{{ session['tables'][4] if session.get('tables') else '0' }}">
                     </td>
                     <td style="width: 40%;">

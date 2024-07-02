@@ -105,7 +105,7 @@
                                     <input type="number" min="1" step="1" class="form-control" name="testing_time" id="testing_time"
                                         value="{{ session['Test_form']['testing_time'] if session.get('Test_form') else '' }}"></input>
                                     <label>Количество ПУ в тестировании одновременно</label>
-                                    <input type="number" min="1" step="1" class="form-control" name="testing_num" id="testing_num"
+                                    <input type="number" min="1" step="1" value="1" required class="form-control" name="testing_num" id="testing_num"
                                         value="{{ session['Test_form']['testing_num'] if session.get('Test_form') else '' }}"></input>
                                 </div>
                         </div>
