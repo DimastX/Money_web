@@ -66,7 +66,6 @@
                                     </form>
                                     <form action="/download"  method="post" style="display: inline;">
                                         <input type="hidden" name="file_path" value="{{ item.file_path }}">
-                                        {{ item.file_path }}
                                         <button type="submit" {% if item.visibility_download == 1 %}  disabled {% endif %} class="btn btn-primary">Скачать</button>
                                     </form>
                                     <form action="/delete" method="post" style="display: inline;">

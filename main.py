@@ -156,7 +156,7 @@ def delete_file():
 @app.route('/download', methods=['POST'])
 def download_file():
     file_path = request.form["file_path"]
-    file_path = file_path.split(".")[0] + ".xlsx"
+    file_path = "".join(map(str, file_path.split(".")[:-1])) + ".xlsx"
     with open(file_path, 'rb') as file:
         if os.path.exists(file_path):
             return send_file(file_path, mimetype='text/csv', as_attachment=True) # Скачивание файла
