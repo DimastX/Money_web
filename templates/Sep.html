@@ -31,7 +31,7 @@
             <fieldset>
                 <legend>Разделение</legend>
                 <div class="form-group">
-                    <input type="checkbox" id="Sep" name="Sep" required value="1" onclick="check_all('Sep', 'Sep_off')"
+                    <input type="checkbox" id="Sep" name="Sep" value="1" onclick="check_all('Sep', 'Sep_off')"
                            {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Sep">Выполнять разделение? </label>
                 </div>
