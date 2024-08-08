@@ -59,6 +59,7 @@ def start():
             return redirect(url_for('home'))
         # Открытие каталога изделий
         if 'dirs' in request.form:
+            clear_session()
             return redirect(url_for('list_directories'))
     return render_template('Start.html') #Открытие стартовой станицы
 
@@ -69,8 +70,12 @@ def index():
 
 @app.route('/Dirs2', methods=['GET'])
 def list_directories():
-    program_directory = os.path.dirname(os.path.abspath(__file__)) + '/Calculations'
-    selected_path = request.args.get('path', program_directory)
+    program_directory = os.path.dirname(os.path.abspath(__file__))
+    if "path_to_dir" in session:
+        selected_path = program_directory +'/'+ session["path_to_dir"]
+    else:
+        program_directory = program_directory +  '/Calculations'
+        selected_path = request.args.get('path', program_directory)
     items = os.listdir(selected_path)
     #Доступ только к расчётам
     if not selected_path.startswith(program_directory):
@@ -820,6 +825,7 @@ def session_data():
             if not os.path.exists(path):
                 os.makedirs(path)
             session["excel_file_name"] = path +"/" + name + ".xlsx"
+            session["path_to_dir"] = path
             with pd.ExcelWriter(path +"/" + name + ".xlsx", engine='xlsxwriter') as writer:
 
                 sheet_name = 'Трудозатраты'
@@ -925,8 +931,10 @@ def session_data():
         clear_session()
         return redirect(url_for('start'))
     if 'catalog' in request.form:
+        dirs = session["path_to_dir"]
         clear_session()
-        return redirect(url_for('Dirs2'))
+        session["path_to_dir"] = dirs
+        return redirect(url_for('list_directories'))
     if table:
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
                            tables2=[df[1].to_html(classes='table', index=False, header="true")], 
