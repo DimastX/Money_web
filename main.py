@@ -71,11 +71,11 @@ def index():
 @app.route('/Dirs2', methods=['GET'])
 def list_directories():
     program_directory = os.path.dirname(os.path.abspath(__file__))
-    if "path_to_dir" in session:
-        selected_path = program_directory +'/'+ session["path_to_dir"]
-    else:
-        program_directory = program_directory +  '/Calculations'
-        selected_path = request.args.get('path', program_directory)
+    #if "path_to_dir" in session:
+    #    selected_path = program_directory +'/'+ session["path_to_dir"]
+    #else:
+    program_directory = program_directory +  '/Calculations'
+    selected_path = request.args.get('path', program_directory)
     items = os.listdir(selected_path)
     #Доступ только к расчётам
     if not selected_path.startswith(program_directory):
