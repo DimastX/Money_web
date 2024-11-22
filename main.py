@@ -10,7 +10,7 @@ import directories
 import pickle
 import Verification as ver
 from flask_ldap3_login import LDAP3LoginManager
-
+import sqlite3
 import time
 
 from datetime import datetime
@@ -31,6 +31,11 @@ actual_version = "1.0"
 def readdata():
     return pd.read_csv('data/tarifs.csv')
 
+    
+def get_db():
+    db = sqlite3.connect('calculation.db')
+    db.row_factory = sqlite3.Row
+    return db
 
 def login_required(f):
     @wraps(f)
