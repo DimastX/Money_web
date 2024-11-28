@@ -1,6 +1,8 @@
 import os
 import pickle
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, inspect, text
+from werkzeug.datastructures import MultiDict
+
 
 DATABASE_URL = "sqlite:///Calculations/calculation.db"
 engine = create_engine(DATABASE_URL)
@@ -52,9 +54,12 @@ def migrate_data():
                     # При обработке session_data:
                     if 'home_form' in session_data:
                         customers.add(session_data['home_form']['field1'])
-                        home_form_data = session_data['home_form'].copy()  # удаляем home_form из основных данных
+                        home_form_data = dict(session_data['home_form'])  # удаляем home_form из основных данных
+                        session_data = {k: dict(v) if isinstance(v, MultiDict) else v for k, v in session_data.items()}  # Преобразуем все MultiDict в словари
                         session_data.update(home_form_data)  # добавляем элементы из home_form напрямую
-
+                    # if 'tables' in session_data:
+                        # session_data['tables'] = eval(session_data['tables'])
+                        
                     
                     # Добавляем столбцы для всех ключей из session
                     for key in session_data.keys():

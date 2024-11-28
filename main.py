@@ -12,6 +12,7 @@ import Verification as ver
 from flask_ldap3_login import LDAP3LoginManager
 import sqlite3
 import time
+import ast
 
 from datetime import datetime
 import os
@@ -65,13 +66,41 @@ def start():
         # Открытие каталога изделий
         if 'dirs' in request.form:
             clear_session()
-            return redirect(url_for('list_directories'))
+            return redirect(url_for('select_calculation'))
     return render_template('Start.html') #Открытие стартовой станицы
 
 
 @app.route('/login2', methods=['GET'])
 def index():
     return render_template('login2.html')
+ 
+@app.route('/select_calculation', methods=['GET', 'POST'])
+@login_required
+def select_calculation():
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()
+    
+    if request.method == 'POST':
+        if 'customer' in request.form:
+            customer = request.form['customer']
+            cursor.execute('SELECT DISTINCT field2 FROM calculations WHERE field1 = ?', (customer,))
+            products = cursor.fetchall()
+            return jsonify({'products': [p[0] for p in products if p[0]]})
+            
+        elif 'product' in request.form:
+            customer = request.form['selected_customer']
+            product = request.form['product']
+            cursor.execute('''SELECT id, field3, comm, date, final_cost, final_costpo 
+                            FROM calculations 
+                            WHERE field1 = ? AND field2 = ?''', 
+                            (customer, product))
+            batches = cursor.fetchall()
+            return jsonify({'batches': [[b[0], b[1], b[2], b[3], b[4], b[5]] for b in batches]})
+
+    cursor.execute('SELECT DISTINCT field1 FROM calculations')
+    customers = cursor.fetchall()
+    return render_template('select_calculation.html', customers=[c[0] for c in customers])
+
 
 @app.route('/Dirs2', methods=['GET'])
 def list_directories():
@@ -172,6 +201,84 @@ def download_file():
             return send_file(file_path, mimetype='text/csv', as_attachment=True) # Скачивание файла
     return redirect(url_for('home'))
 
+@app.route('/open_file', methods=['POST'])
+@login_required
+def open_file_db():
+    file_id = int(request.form["file_id"])
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()
+    
+    # Get all columns except id
+    cursor.execute('SELECT * FROM calculations WHERE id = ?', (file_id,))
+    columns = [description[0] for description in cursor.description]
+    data = cursor.fetchone()
+    
+    # Create dictionary with all columns
+    session_data = {columns[i]: eval(data[i]) if isinstance(data[i], str) and (data[i].startswith('{') or data[i].startswith('[')) else data[i] 
+                    for i in range(len(columns))}
+    session.clear()
+    session.update(session_data)
+
+    
+    return redirect(url_for('home'))
+
+
+
+@app.route('/copy_file', methods=['POST'])
+@login_required
+def copy_file_db():
+    file_id = int(request.form["file_id"])
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()
+    
+    # Get all columns except id
+    cursor.execute('SELECT * FROM calculations WHERE id = ?', (file_id,))
+    columns = [description[0] for description in cursor.description]
+    data = cursor.fetchone()
+    
+    # Create dictionary with all columns
+    session_data = {columns[i]: eval(data[i]) if isinstance(data[i], str) and data[i].startswith('{') else data[i] 
+                    for i in range(len(columns)) if columns[i] != 'id'}
+    session.clear()
+    session.update(session_data)
+    session.pop('date', None)
+    
+    return redirect(url_for('home'))
+
+@app.route('/download_file', methods=['POST'])
+@login_required
+def download_file_db():
+    file_id = int(request.form["file_id"])
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()
+    
+    # Get all columns except id
+    cursor.execute('SELECT * FROM calculations WHERE id = ?', (file_id,))
+    columns = [description[0] for description in cursor.description]
+    data = cursor.fetchone()
+    
+    # Create dictionary with all columns
+    session_data = {columns[i]: eval(data[i]) if isinstance(data[i], str) and data[i].startswith('{') else data[i] 
+                    for i in range(len(columns)) if columns[i] != 'id'}
+    
+    file_path = session_data["excel_file_name"]
+    with open(file_path, 'rb') as file:
+        if os.path.exists(file_path):
+            return send_file(file_path, mimetype='text/csv', as_attachment=True) # Скачивание файла
+
+@app.route('/delete_file', methods=['POST'])
+@login_required
+def delete_file_db():
+    file_id = int(request.form["file_id"])
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()
+        
+    cursor.execute('DELETE FROM calculations WHERE id = ?', (file_id,))
+    db.commit()
+    return redirect(url_for('start'))
+
+
+
 @app.route('/login3', methods=['POST'])
 def login3():
     username = request.form['username']
@@ -267,8 +374,14 @@ def cust():
         if 'new' in request.form:
             folder_name = request.form["name"] # Получение имени нового заказчика
             folder_path = Calculations_path + folder_name
-            if not os.path.exists(folder_path): #Если такого имени ещё нет то создаётся новая директория
-                os.makedirs(folder_path)
+            # if not os.path.exists(folder_path): #Если такого имени ещё нет то создаётся новая директория
+                # os.makedirs(folder_path)
+
+            db = sqlite3.connect('Calculations/calculation.db')
+            cursor = db.cursor()
+            cursor.execute('INSERT INTO customers (customer) VALUES (?)', (folder_name,))
+            db.commit()
+
             return redirect(url_for("home"))
         if 'back' in request.form:
             return redirect(url_for("home"))
@@ -280,7 +393,10 @@ def cust():
 @login_required
 def home():
     msg = ""
-    file_tree = directories.generate_file_tree('Calculations') # Создание списка всех заказчиков
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()
+    cursor.execute('SELECT customer FROM customers')
+    file_tree = [row[0] for row in cursor.fetchall()]
     if not "date" in session:
         current_time = datetime.now()
         session["date"] = str(current_time.year) + "-" + str(current_time.month) + "-" + str(current_time.day)
@@ -296,7 +412,27 @@ def home():
         if 'next' in request.form:
             msg = ver.home_verif(session["home_form"]) # Вызов проверки заполнения полей на первой странице
             if msg == 0:
-                return redirect(url_for('second')) #Переход на вторую страницу
+                if 'id' not in session:
+                    session_data = session.copy()
+                    if 'home_form' in session_data:
+                        home_form_data = dict(session_data['home_form'])
+                        session_data = {k: dict(v) if isinstance(v, MultiDict) else v for k, v in session_data.items()}
+                        session_data.update(home_form_data)
+                    
+                    db = sqlite3.connect('Calculations/calculation.db')
+                    cursor = db.cursor()
+                    
+                    columns = ', '.join(f'"{key}"' for key in session_data.keys())
+                    placeholders = ', '.join('?' for _ in session_data.keys())
+                    values = [str(value) for value in session_data.values()]
+                    
+                    cursor.execute(
+                        f'INSERT INTO calculations ({columns}) VALUES ({placeholders})',
+                        values
+                    )
+                    session['id'] = cursor.lastrowid
+                    db.commit()
+                return redirect(url_for('second'))
             else:
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('home.html', file_tree=file_tree)

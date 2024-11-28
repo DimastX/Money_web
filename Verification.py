@@ -1,8 +1,11 @@
 import pickle
 from datetime import datetime
 import os
+import sqlite3
 import pandas as pd
 from ldap3 import Server, Connection, SIMPLE, SYNC, ALL
+from werkzeug.datastructures import MultiDict
+
 LDAP_SERVER = 'ldap.ultrastar.ru'
 LDAP_PORT = 389
 LDAP_DN = 'dc=ultrastar,dc=ru'
@@ -86,8 +89,26 @@ def auto_save(session):
     if not os.path.exists(path):
         os.makedirs(path)
     session["check"] = 0
-    with open(path +"/" + name + '.pickle', 'wb') as file:
-        pickle.dump(session_data, file)
+    # with open(path +"/" + name + '.pickle', 'wb') as file:
+    #     pickle.dump(session_data, file)
+    
+    home_form_data = dict(session_data['home_form'])
+    session_data = {k: dict(v) if isinstance(v, MultiDict) else v for k, v in session_data.items()}  # Преобразуем все MultiDict в словари
+    session_data.update(home_form_data)
+    
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()
+    
+    columns = ', '.join(f'"{key}" = ?' for key in session_data.keys())
+    values = [str(value) for value in session_data.values()]
+            
+    cursor.execute(
+        f'''UPDATE calculations 
+            SET {columns}
+            WHERE id = ?''',
+        values + [session["id"]]
+    )
+    db.commit()
 
 def log_in(form):
     base = pd.read_csv('data/Rights.csv', header=None)

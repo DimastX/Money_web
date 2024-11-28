@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Каталог</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0">Выбор расчета</h2>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Заказчик:</label>
+                                <select id="customer" class="form-select">
+                                    <option value="">Выберите заказчика</option>
+                                    {% for customer in customers %}
+                                    <option value="{{ customer }}">{{ customer }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label">Изделие:</label>
+                                <select id="product" class="form-select">
+                                    <option value="">Сначала выберите заказчика</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="results-table" style="display: none;">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Наименование</th>
+                                        <th>Партия</th>
+                                        <th>Дата</th>
+                                        <th>Комментарий</th>
+                                        <th>Стоимость изделия</th>
+                                        <th>Стоимость партии</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="results-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-end">
+                        <form method="POST" action="{{ url_for('start') }}" class="d-inline">
+                            <button type="submit" name="back" class="btn btn-secondary">Назад</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#customer').change(function() {
+                let customer = $(this).val();
+                $.ajax({
+                    url: '/select_calculation',
+                    type: 'POST',
+                    data: {customer: customer},
+                    success: function(response) {
+                        let productSelect = $('#product');
+                        productSelect.empty();
+                        productSelect.append('<option value="">Выберите изделие</option>');
+                        if (response && response.products) {
+                            response.products.forEach(function(product) {
+                                productSelect.append(`<option value="${product}">${product}</option>`);
+                            });
+                        }
+                        $('#results-table').hide();
+                    }
+                });
+            });
+
+            $('#product').change(function() {
+                let product = $(this).val();
+                let customer = $('#customer').val();
+                $.ajax({
+                    url: '/select_calculation',
+                    type: 'POST',
+                    data: {
+                        product: product,
+                        selected_customer: customer
+                    },
+                    
+                    success: function(data) {
+                        $('#results-body').html(data.batches.map(batch =>
+                            `
+                            // <tr>
+                                <td>${product}</td>
+                                <td>${batch[1]}</td>
+                                <td>${batch[3] || ''}</td>
+                                <td>${batch[2] || ''}</td>
+                                <td>${batch[4] || ''}</td>
+                                <td>${batch[0] || ''}</td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('open_file_db') }}" style="display: inline;">
+                                        <input type="hidden" name="file_id" value="${batch[0]}">
+                                        <button type="submit" class="btn btn-sm btn-primary">Открыть</button>
+                                    </form>
+                                    <form method="POST" action="{{ url_for('copy_file_db') }}" style="display: inline;">
+                                        <input type="hidden" name="file_id" value="${batch[0]}">
+                                        <button type="submit" class="btn btn-sm btn-success">Копировать</button>
+                                    </form>
+                                    <form method="POST" action="{{ url_for('download_file_db') }}" style="display: inline;">
+                                        <input type="hidden" name="file_id" value="${batch[0]}">
+                                        <button type="submit" class="btn btn-sm btn-info">Скачать</button>
+                                    </form>
+                                    <form method="POST" action="{{ url_for('delete_file_db') }}" style="display: inline;">
+                                        <input type="hidden" name="file_id" value="${batch[0]}">
+                                        <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        `
+                        ).join(''));
+                        $('#results-table').show();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</body>
+</html>
