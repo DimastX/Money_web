@@ -216,8 +216,9 @@ def open_file_db():
     # Create dictionary with all columns
     session_data = {columns[i]: eval(data[i]) if isinstance(data[i], str) and (data[i].startswith('{') or data[i].startswith('[')) else data[i] 
                     for i in range(len(columns))}
+    cleaned_data = clean_session_data(session_data)
     session.clear()
-    session.update(session_data)
+    session.update(cleaned_data)
 
     
     return redirect(url_for('home'))
@@ -237,10 +238,12 @@ def copy_file_db():
     data = cursor.fetchone()
     
     # Create dictionary with all columns
-    session_data = {columns[i]: eval(data[i]) if isinstance(data[i], str) and data[i].startswith('{') else data[i] 
+    session_data = {columns[i]: eval(data[i]) if isinstance(data[i], str) and data[i].startswith('{') or data[i].startswith('[') else data[i] 
                     for i in range(len(columns)) if columns[i] != 'id'}
+    cleaned_data = clean_session_data(session_data)
+
     session.clear()
-    session.update(session_data)
+    session.update(cleaned_data)
     session.pop('date', None)
     
     return redirect(url_for('home'))
@@ -387,6 +390,16 @@ def cust():
             return redirect(url_for("home"))
     return render_template('Cust.html')
 
+def clean_session_data(session_data):
+    cleaned_data = {}
+    for key, value in session_data.items():
+        if isinstance(value, dict):
+            cleaned_sub = {k: v for k, v in value.items() if v and v is not None}
+            if cleaned_sub:
+                cleaned_data[key] = cleaned_sub
+        elif value and (value != "None"):
+            cleaned_data[key] = value
+    return cleaned_data
 
 """Первая страница с информацией по изделию"""
 @app.route('/home', methods=['GET', 'POST'])
@@ -1053,6 +1066,33 @@ def session_data():
                 for col_num, column in enumerate(df[2].columns):
                     column_length = max(df[2][column].astype(str).map(len).max(), len(column))
                     worksheet.set_column(col_num + 1, col_num + 1, column_length + 1)
+                
+                # Inside the if 'download' in request.form block, add a new sheet after the "Информация" sheet:
+
+                    sheet_name = "Черновая ТК"
+                    df[3].to_excel(writer, sheet_name=sheet_name, index=True)
+
+                    workbook = writer.book
+                    worksheet = writer.sheets[sheet_name]
+                    worksheet.set_landscape()
+
+                    border_format = workbook.add_format({'border': 1})
+
+                    # Write headers with border format
+                    for col_num, value in enumerate(df[3].columns):
+                        worksheet.write(0, col_num + 1, value, border_format)
+
+                    # Write data and index with border format
+                    for row_num, (idx, values) in enumerate(df[3].iterrows()):
+                        worksheet.write(row_num + 1, 0, idx, border_format)  # Write index
+                        for col_num, value in enumerate(values):
+                            worksheet.write(row_num + 1, col_num + 1, value, border_format)
+
+                    # Set column widths
+                    worksheet.set_column(0, 0, 10)  # Index column width
+                    for col_num, column in enumerate(df[3].columns):
+                        column_length = max(df[3][column].astype(str).map(len).max(), len(column))
+                        worksheet.set_column(col_num + 1, col_num + 1, column_length + 1)
             session_data = {}
             for key, value in session.items():
                 session_data[key] = value

@@ -1,5 +1,6 @@
 import math
 import pandas as pd
+import work_centers as wc
 
 
 """Расчёт затрат на отмывку"""
@@ -295,7 +296,7 @@ def create_export(session):
             Hand, Hand_cont, 
             Test, Clear, Clear_cont, Handv, 
             Handv_cont, Sep, Xray, Add, ICT, Pack, Contr_out, End]
- #           , """Comp""" ]
+ #           , """Comp""" 
     headers = ["Время на 1 ПУ, с", "Время на партию, ч", "Стоимость 1 ПУ, руб", "Стоимость на партию, руб"]
     #Статьи расходов
     row_headers = [
@@ -338,6 +339,7 @@ def create_export(session):
         "Отгрузка"]
     #Создание DataFrame со значениями выше
     df = pd.DataFrame(data, columns=headers, index=row_headers)
+    df_tech_map = tech_map(df)
     df = df.drop(df[(df == "-").all(axis=1)].index)
     sum_time_pc, sum_money_pc, sum_time_all, sum_money_all, sum_time_mz, sum_money_mz = 0, 0, 0, 0, 0, 0
     pc = int(session["second_form"]["pc"])
@@ -415,9 +417,9 @@ def create_export(session):
 
     if 'prepare' in session['second_form']:
         df2 = pd.DataFrame(data2, columns=headers2)
-        return [df, df2, df3]
+        return [df, df2, df3, df_tech_map]
     
-    return [df, 1, df3]
+    return [df, 1, df3, df_tech_map]
 
 def prepare(session):
     df = pd.read_csv('data/Traf.csv')
@@ -462,3 +464,44 @@ def data_creation(time_all, money_all, batch):
             strtoint(money_all)
         ]
     return list1
+
+def tech_map(df_calc):
+    df_wc = pd.read_csv('data/WC.csv', encoding='windows-1251', index_col=0)
+    
+    df_wc.loc['Автоматический поверхностный монтаж SMT Pri', 'Время наладки'] = df_calc.loc["Поверхностный монтаж SMT Pri, переналадка", "Время на партию, ч"]
+    df_wc.loc['Автоматический поверхностный монтаж SMT Pri', 'Машинное время'] = df_calc.loc["Автоматический поверхностный монтаж SMT Pri", "Время на 1 ПУ, с"]
+    df_wc.loc['Автоматический поверхностный монтаж SMT Sec', 'Время наладки'] = df_calc.loc["Поверхностный монтаж SMT Sec, переналадка", "Время на партию, ч"]
+    df_wc.loc['Автоматический поверхностный монтаж SMT Sec', 'Машинное время'] = df_calc.loc["Автоматический поверхностный монтаж SMT Sec", "Время на 1 ПУ, с"]
+    df_wc.loc['Ремонт после SMT', 'Машинное время'] = df_calc.loc["Ремонт на поверхностном монтаже", "Время на 1 ПУ, с"]
+    df_wc.loc['Контроль после SMT', 'Машинное время'] = df_calc.loc["Контроль на поверхностном монтаже", "Время на 1 ПУ, с"]
+    
+    df_wc.loc['Рентген-контроль', 'Машинное время'] = df_calc.loc["Рентгенконтроль", "Время на 1 ПУ, с"]
+    
+    df_wc.loc['Селективная пайка THT Pri', 'Время наладки'] = df_calc.loc["Селективная пайка THT Pri, переналадка", "Время на партию, ч"]
+    df_wc.loc['Селективная пайка THT Pri', 'Машинное время'] = df_calc.loc["Селективная пайка THT Pri", "Время на 1 ПУ, с"]
+    df_wc.loc['Селективная пайка THT Sec', 'Время наладки'] = df_calc.loc["Селективная пайка THT Sec, переналадка", "Время на партию, ч"]
+    df_wc.loc['Селективная пайка THT Sec', 'Машинное время'] = df_calc.loc["Селективная пайка THT Sec", "Время на 1 ПУ, с"]
+    df_wc.loc['Ремонт после THT', 'Машинное время'] = df_calc.loc["Ремонт на cелективной пайке THT", "Время на 1 ПУ, с"]
+    df_wc.loc['Контроль после THT', 'Машинное время'] = df_calc.loc["Контроль на cелективной пайке THT", "Время на 1 ПУ, с"]
+    
+    df_wc.loc['Набивка компонентов волна', 'Машинное время'] = 0
+    df_wc.loc['Волновая пайка', 'Машинное время'] = df_calc.loc["Волновая пайка", "Время на 1 ПУ, с"]
+    df_wc.loc['Ремонт на волновой пайке', 'Машинное время'] = df_calc.loc["Ремонт на волновой пайке", "Время на 1 ПУ, с"]
+    df_wc.loc['Контроль на волновой пайке', 'Машинное время'] = df_calc.loc["Контроль на волновой пайке", "Время на 1 ПУ, с"]
+
+    df_wc.loc['Ручная пайка', 'Машинное время'] = df_calc.loc["Ручной монтаж", "Время на 1 ПУ, с"]
+    df_wc.loc['Отмывка', 'Машинное время'] = df_calc.loc["Отмывка", "Время на 1 ПУ, с"]
+    df_wc.loc['ICT', 'Машинное время'] = df_calc.loc["ICT", "Время на 1 ПУ, с"]
+    df_wc.loc['Разделение', 'Машинное время'] = df_calc.loc["Разделение", "Время на 1 ПУ, с"]
+    df_wc.loc['Доп операции', 'Машинное время'] = df_calc.loc["Доп. работы", "Время на 1 ПУ, с"]
+    df_wc.loc['Тестирование', 'Машинное время'] = df_calc.loc["Тестирование", "Время на 1 ПУ, с"]
+    df_wc.loc['Влагозащита', 'Машинное время'] = df_calc.loc["Ручная лакировка", "Время на 1 ПУ, с"]
+    df_wc.loc['Селективная влагозащита HRL', 'Машинное время'] = df_calc.loc["Селективная лакировка HRL", "Время на 1 ПУ, с"]
+
+    df_wc.loc['Выходной контроль', 'Машинное время'] = df_calc.loc["Выходной контроль", "Время на 1 ПУ, с"]
+    df_wc.loc['Отгрузка', 'Машинное время'] = df_calc.loc["Отгрузка", "Время на 1 ПУ, с"]
+    
+    df_wc = df_wc.fillna(0)
+    df_wc = df_wc[df_wc['Машинное время'] != "-"]
+    
+    return df_wc
