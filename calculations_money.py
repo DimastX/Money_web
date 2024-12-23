@@ -1,6 +1,5 @@
 import math
 import pandas as pd
-import work_centers as wc
 
 
 """Расчёт затрат на отмывку"""
