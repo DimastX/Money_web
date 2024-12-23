@@ -1096,6 +1096,25 @@ def session_data():
             session_data = {}
             for key, value in session.items():
                 session_data[key] = value
+
+            home_form_data = dict(session_data['home_form'])
+            session_data = {k: dict(v) if isinstance(v, MultiDict) else v for k, v in session_data.items()}  # Преобразуем все MultiDict в словари
+            session_data.update(home_form_data)
+            
+            db = sqlite3.connect('Calculations/calculation.db')
+            cursor = db.cursor()
+            
+            columns = ', '.join(f'"{key}" = ?' for key in session_data.keys())
+            values = [str(value) for value in session_data.values()]
+                    
+            cursor.execute(
+                f'''UPDATE calculations 
+                    SET {columns}
+                    WHERE id = ?''',
+                values + [session["id"]]
+            )
+            db.commit()
+
             with open(path +"/" + name + '.pickle', 'wb') as file:
                 pickle.dump(session_data, file)
             return send_file(path +"/" + name + ".xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", as_attachment=True)
@@ -1112,10 +1131,8 @@ def session_data():
         clear_session()
         return redirect(url_for('start'))
     if 'catalog' in request.form:
-        dirs = session["path_to_dir"]
-        clear_session()
-        session["path_to_dir"] = dirs
-        return redirect(url_for('list_directories'))
+        # dirs = session["path_to_dir"]
+        return redirect(url_for('select_calculation'))
     if table:
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
                            tables2=[df[1].to_html(classes='table', index=False, header="true")], 

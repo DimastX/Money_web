@@ -43,6 +43,7 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
+                                        <th>№ расчета</th>
                                         <th>Наименование</th>
                                         <th>Партия</th>
                                         <th>Дата</th>
@@ -105,12 +106,13 @@
                         $('#results-body').html(data.batches.map(batch =>
                             `
                             // <tr>
+                                <td>${batch[0] || ''}</td>
                                 <td>${product}</td>
                                 <td>${batch[1]}</td>
                                 <td>${batch[3] || ''}</td>
                                 <td>${batch[2] || ''}</td>
                                 <td>${batch[4] || ''}</td>
-                                <td>${batch[0] || ''}</td>
+                                <td>${batch[5] || ''}</td>
                                 <td>
                                     <form method="POST" action="{{ url_for('open_file_db') }}" style="display: inline;">
                                         <input type="hidden" name="file_id" value="${batch[0]}">
