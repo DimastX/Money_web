@@ -3,7 +3,6 @@ import pickle
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, inspect, text
 from werkzeug.datastructures import MultiDict
 
-
 DATABASE_URL = "sqlite:///Calculations/calculation.db"
 engine = create_engine(DATABASE_URL)
 metadata = MetaData()
