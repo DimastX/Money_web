@@ -237,9 +237,17 @@ def copy_file_db():
     columns = [description[0] for description in cursor.description]
     data = cursor.fetchone()
     
-    # Create dictionary with all columns
-    session_data = {columns[i]: eval(data[i]) if isinstance(data[i], str) and data[i].startswith('{') or data[i].startswith('[') else data[i] 
-                    for i in range(len(columns)) if columns[i] != 'id'}
+    # Create dictionary with all columns, safely handling None values
+    session_data = {
+        columns[i]: (
+            eval(str(data[i]))
+            if isinstance(data[i], str) and (data[i].startswith('{') or data[i].startswith('['))
+            else data[i]
+        )
+        for i in range(len(columns)) 
+        if columns[i] != 'id' and data[i] is not None  # Skip None values
+    }
+    
     cleaned_data = clean_session_data(session_data)
 
     session.clear()
@@ -247,6 +255,7 @@ def copy_file_db():
     session.pop('date', None)
     
     return redirect(url_for('home'))
+
 
 @app.route('/download_file', methods=['POST'])
 @login_required
