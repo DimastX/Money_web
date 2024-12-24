@@ -83,7 +83,7 @@ def select_calculation():
     if request.method == 'POST':
         if 'customer' in request.form:
             customer = request.form['customer']
-            cursor.execute('SELECT DISTINCT field2 FROM calculations WHERE field1 = ?', (customer,))
+            cursor.execute('SELECT DISTINCT field2 FROM calculations WHERE field1 = ? ORDER BY field2', (customer,))
             products = cursor.fetchall()
             return jsonify({'products': [p[0] for p in products if p[0]]})
             
@@ -91,13 +91,15 @@ def select_calculation():
             customer = request.form['selected_customer']
             product = request.form['product']
             cursor.execute('''SELECT id, field3, comm, date, final_cost, final_costpo 
-                            FROM calculations 
-                            WHERE field1 = ? AND field2 = ?''', 
-                            (customer, product))
+                FROM calculations 
+                WHERE field1 = ? AND field2 = ?
+                ORDER BY CAST(field3 AS INTEGER)''', 
+                (customer, product))
+
             batches = cursor.fetchall()
             return jsonify({'batches': [[b[0], b[1], b[2], b[3], b[4], b[5]] for b in batches]})
 
-    cursor.execute('SELECT DISTINCT field1 FROM calculations')
+    cursor.execute('SELECT DISTINCT field1 FROM calculations ORDER BY field1')
     customers = cursor.fetchall()
     return render_template('select_calculation.html', customers=[c[0] for c in customers])
 
