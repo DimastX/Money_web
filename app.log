@@ -2,3 +2,26 @@ DEBUG:__main__:Request form data: ImmutableMultiDict([])
 INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:35] "GET /select_calculation HTTP/1.1" 200 -
 INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:36] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
 INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:36] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Depo')])
+DEBUG:__main__:Customer query: Depo
+DEBUG:__main__:Products found: [('DPC621-BV',), ('Плата системная DPH510S ДАЦН.469535.030',)]
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:37] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'DPC621-BV'), ('selected_customer', 'Depo')])
+DEBUG:__main__:Product query: DPC621-BV Depo
+DEBUG:__main__:Batches found: [(1, '2000', 'Расчёт для проверки', None, None, None, None), (2, '2000', 'Расчёт для проверки', None, None, None, None), (3, '2000', 'Расчёт для проверки', '2024-1-11', None, None, None), (4, '2000', 'Расчёт для проверки', '2024-2-29', None, None, None), (5, '2000', 'Расчёт для проверки', '2024-12-6', '2973 руб', '5928439 руб', None)]
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:38] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:38] "POST / HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:38] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:39] "[32mPOST / HTTP/1.1[0m" 302 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:39] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:39] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:39] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Depo')])
+DEBUG:__main__:Customer query: Depo
+DEBUG:__main__:Products found: [('DPC621-BV',), ('Плата системная DPH510S ДАЦН.469535.030',)]
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:40] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'DPC621-BV'), ('selected_customer', 'Depo')])
+DEBUG:__main__:Product query: DPC621-BV Depo
+DEBUG:__main__:Batches found: [(1, '2000', 'Расчёт для проверки', None, None, None, None), (2, '2000', 'Расчёт для проверки', None, None, None, None), (3, '2000', 'Расчёт для проверки', '2024-1-11', None, None, None), (4, '2000', 'Расчёт для проверки', '2024-2-29', None, None, None), (5, '2000', 'Расчёт для проверки', '2024-12-6', '2973 руб', '5928439 руб', None)]
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:41] "POST /select_calculation HTTP/1.1" 200 -
