@@ -9,6 +9,50 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .customer-list {
+            list-style: none;
+            padding: 0;
+            width: 300px;
+            float: left;
+        }
+        .customer-item {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .product-list {
+            list-style: none;
+            padding-left: 20px;
+            display: none;
+        }
+        .product-item {
+            padding: 8px;
+            margin: 3px 0;
+            background-color: #007bff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .active {
+            background-color: #337ab7;
+            color: white;
+        }
+        #results-table {
+            margin-left: 320px;
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: calc(100% - 340px);
+        }
+        .container {
+            width: 100%;
+            max-width: none;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4">
@@ -20,28 +64,15 @@
                     </div>
                     
                     <div class="card-body">
+                        
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <label class="form-label">Заказчик:</label>
-                                <select id="customer" class="form-select">
-                                    <option value="">Выберите заказчика</option>
-                                    {% for customer in customers %}
-                                    <option value="{{ customer }}">{{ customer }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <label class="form-label">Изделие:</label>
-                                    <select id="product" class="form-select">
-                                        <option value="">Сначала выберите заказчика</option>
-                                    </select>
+                                <div class="card-footer text-end">
+                                    <form method="POST" action="{{ url_for('start') }}" class="d-inline">
+                                        <button type="submit" name="back" class="btn btn-secondary">Назад</button>
+                                    </form>
                                 </div>
-                            </div>
-                            
-                            <div class="row mb-4">
-                                <div class="col-md-6">
+                                <div class="sap-search">
                                     <label class="form-label">Search by SAP code:</label>
                                     <div class="input-group">
                                         <input type="text" id="sapSearch" class="form-control" placeholder="Enter SAP code">
@@ -50,9 +81,20 @@
                                         </span>
                                     </div>
                                 </div>
+                                <ul class="customer-list">
+                                    {% for customer in customers %}
+                                    <li class="customer-item">
+                                        {{ customer }}
+                                        <ul class="product-list" data-customer="{{ customer }}">
+                                        </ul>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
                             </div>
-                        </div>
-
+                            
+                            <div class="container-fluid">
+                                
+                            </div>
 
                         <div id="results-table" style="display: none;">
                             <table class="table table-striped table-hover">
@@ -75,11 +117,7 @@
                         </div>
                     </div>
 
-                    <div class="card-footer text-end">
-                        <form method="POST" action="{{ url_for('start') }}" class="d-inline">
-                            <button type="submit" name="back" class="btn btn-secondary">Назад</button>
-                        </form>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -87,41 +125,51 @@
 
     <script>
         $(document).ready(function() {
-            $('#customer').change(function() {
-                let customer = $(this).val();
-                $.ajax({
-                    url: '/select_calculation',
-                    type: 'POST',
-                    data: {customer: customer},
-                    success: function(response) {
-                        let productSelect = $('#product');
-                        productSelect.empty();
-                        productSelect.append('<option value="">Выберите изделие</option>');
-                        if (response && response.products) {
-                            response.products.forEach(function(product) {
-                                productSelect.append(`<option value="${product}">${product}</option>`);
-                            });
+            $('.customer-item').click(function(e) {
+                if($(e.target).hasClass('customer-item')) {
+                    $('.customer-item').removeClass('active');
+                    $(this).addClass('active');
+                    $('.product-list').slideUp();
+                    let customerName = $(this).text().trim();
+                    let productList = $(this).find('.product-list');
+                    
+                    $.ajax({
+                        url: '/select_calculation',
+                        type: 'POST',
+                        data: {customer: customerName},
+                        success: function(response) {
+                            productList.empty();
+                            if (response && response.products) {
+                                response.products.forEach(function(product) {
+                                    productList.append(`<li class="product-item">${product}</li>`);
+                                });
+                            }
+                            productList.slideDown();
                         }
-                        $('#results-table').hide();
-                    }
-                });
+                    });
+                }
             });
 
-            $('#product').change(function() {
-                let product = $(this).val();
-                let customer = $('#customer').val();
-                $.ajax({
-                    url: '/select_calculation',
-                    type: 'POST',
-                    data: {
-                        product: product,
-                        selected_customer: customer
-                    },
-                    
-                    success: function(data) {
+            $(document).on('click', '.product-item', function() {
+            let product = $(this).text();
+            let customer = $(this).closest('.customer-item').clone()
+                .children().remove().end()
+                .text().trim();
+
+            $('.product-item').removeClass('active');
+            $(this).addClass('active');
+
+            $.ajax({
+                url: '/select_calculation',
+                type: 'POST',
+                data: {
+                    product: product,
+                    selected_customer: customer
+                },
+                success: function(data) {
+                    if (data && data.batches) {
                         $('#results-body').html(data.batches.map(batch =>
-                            `
-                            // <tr>
+                            `<tr>
                                 <td>${batch[0] || ''}</td>
                                 <td>${product}</td>
                                 <td>${batch[1]}</td>
@@ -148,13 +196,13 @@
                                         <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
                                     </form>
                                 </td>
-                            </tr>
-                        `
+                            </tr>`
                         ).join(''));
                         $('#results-table').show();
                     }
-                });
+                }
             });
+        });
 
             $('#sapSearchBtn').click(function() {
                 let sapCode = $('#sapSearch').val().trim();
@@ -206,23 +254,7 @@
                     });
                 }
             });
-
-        $('#sapSearchBtn').click(function() {
-            let sapCode = $('#sapSearch').val().trim();
-            if(sapCode) {
-                $.ajax({
-                    url: '/select_calculation',
-                    type: 'POST',
-                    data: {
-                        sap_search: sapCode
-                    },
-                    success: function(data) {
-                        // Existing success handler code...
-                    }
-                });
-            }
         });
-    });
     </script>
 </body>
 </html>

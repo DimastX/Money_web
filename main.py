@@ -77,6 +77,10 @@ def index():
 @app.route('/select_calculation', methods=['GET', 'POST'])
 @login_required
 def select_calculation():
+    logging.basicConfig(filename='app.log', level=logging.DEBUG)
+    logger = logging.getLogger(__name__)
+    logger.debug("Request form data: %s", request.form)
+
     db = sqlite3.connect('Calculations/calculation.db')
     cursor = db.cursor()
     
