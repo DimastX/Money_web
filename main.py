@@ -82,8 +82,8 @@ def select_calculation():
     logger.debug("Request form data: %s", request.form)
     
     db = sqlite3.connect('Calculations/calculation.db')
-    db.text_factory = str
     cursor = db.cursor()
+    cursor.execute('PRAGMA encoding = "UTF-8"')
     
     if request.method == 'POST':
         if 'customer' in request.form:
