@@ -90,14 +90,22 @@ def select_calculation():
         elif 'product' in request.form:
             customer = request.form['selected_customer']
             product = request.form['product']
-            cursor.execute('''SELECT id, field3, comm, date, final_cost, final_costpo 
+            cursor.execute('''SELECT id, field3, comm, date, final_cost, final_costpo, SAP_code 
                 FROM calculations 
                 WHERE field1 = ? AND field2 = ?
                 ORDER BY CAST(field3 AS INTEGER)''', 
                 (customer, product))
 
             batches = cursor.fetchall()
-            return jsonify({'batches': [[b[0], b[1], b[2], b[3], b[4], b[5]] for b in batches]})
+            return jsonify({'batches': [[b[0], b[1], b[2], b[3], b[4], b[5], b[6]] for b in batches]})
+        elif 'sap_search' in request.form:
+            sap_code = request.form['sap_search']
+            cursor.execute('''SELECT id, field3, comm, date, final_cost, final_costpo, SAP_code, field2 
+                FROM calculations 
+                WHERE SAP_code = ?''', 
+                (sap_code,))
+            batches = cursor.fetchall()
+            return jsonify({'batches': [[b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]] for b in batches]})
 
     cursor.execute('SELECT DISTINCT field1 FROM calculations ORDER BY field1')
     customers = cursor.fetchall()
@@ -434,7 +442,7 @@ def home():
         if 'new' in request.form:
             return redirect(url_for('cust')) # Открытие страницы с созданием нового заказчика
         if 'next' in request.form:
-            msg = ver.home_verif(session["home_form"]) # Вызов проверки заполнения полей на первой странице
+            msg = ver.home_verif(session) # Вызов проверки заполнения полей на первой странице
             if msg == 0:
                 if 'id' not in session:
                     session_data = session.copy()

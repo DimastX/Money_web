@@ -12,10 +12,37 @@ LDAP_DN = 'dc=ultrastar,dc=ru'
 LDAP_SEARCH_BASE = 'ou=users,dc=ultrastar,dc=ru'  # Базовый DN для поиска пользователей
 
 
-def home_verif(form):
-    if (form['field1'] != "") and (form['field2'] != "") and (form['field3'] != ""): # Проверка, что на первой странице заполнены все поля
-        return 0
-    return 'Заполните все поля'
+def home_verif(session):
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()
+
+    if 'SAP_code' in session['home_form'] and session['home_form']['SAP_code']:
+        sap_code = str(session['home_form']['SAP_code']).strip()
+        cursor.execute('''
+            SELECT COUNT(*) 
+            FROM calculations 
+            WHERE CAST(SAP_code AS TEXT) = ? 
+            AND id != ?
+        ''', (sap_code, session["id"]))
+        count = cursor.fetchone()[0]
+        if count > 0:
+            db.close()
+            return "SAP код уже существует в базе данных"
+
+        # Update SAP code in database
+        cursor.execute('''
+            UPDATE calculations 
+            SET SAP_code = ? 
+            WHERE id = ?
+        ''', (sap_code, session["id"]))
+        db.commit()
+    
+    db.close()
+    
+    if not session['home_form']['field1'] or not session['home_form']['field2'] or not session['home_form']['field3']:
+        return "Заполните все обязательные поля"
+
+    return 0
 
 def second_verif(form):
     if ('Comp' in form) and ('prod' in form) and ('prev' in form) and ('Traf' in form): # Проверка, что поля "Комплектация", "Производство", "Производилось ли ранее", "Трафареты" заполнены
@@ -98,6 +125,16 @@ def auto_save(session):
     
     db = sqlite3.connect('Calculations/calculation.db')
     cursor = db.cursor()
+
+    # cursor.execute('''
+    #     ALTER TABLE calculations 
+    #     ADD COLUMN contract INTEGER DEFAULT 0
+    # ''')
+    # cursor.execute('''
+    #     ALTER TABLE calculations 
+    #     ADD COLUMN SAP_code INTEGER
+    # ''')
+    # db.commit()
     
     columns = ', '.join(f'"{key}" = ?' for key in session_data.keys())
     values = [str(value) for value in session_data.values()]
@@ -109,6 +146,7 @@ def auto_save(session):
         values + [session["id"]]
     )
     db.commit()
+
 
 def log_in(form):
     base = pd.read_csv('data/Rights.csv', header=None)

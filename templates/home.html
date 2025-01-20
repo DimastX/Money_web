@@ -36,6 +36,13 @@
                            {% if session.get('home_form')%} {% if session['home_form']['contract']%} checked="checked" {% endif %} {% endif %}>
                     <label for="contract">По этому расчёту подписан договор? </label>   
                 </div>
+                
+                <!-- New numeric field that shows/hides based on checkbox -->
+                <div class="form-group" id="SAP_codeField" style="display: none;">
+                    <label for="SAP_code">SAP код</label>
+                    <input type="number" class="form-control" id="SAP_code" name="SAP_code" min="1" step="1"
+                           value="{{ session['home_form']['SAP_code'] if session.get('home_form') and 'SAP_code' in session['home_form'] else '' }}">
+                </div>
                 <label>Заказчик:</label>
                 <a href="#" data-toggle="tooltip" title="Выбирается из списка. В случае если заказчика нет в выпадающем меню, добавьте его через каталог изделий">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
@@ -67,9 +74,22 @@
     </div>
     <script>
         $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();   
+            $('[data-toggle="tooltip"]').tooltip();
+            
+            // Handle checkbox change
+            $('#contract').change(function() {
+                if($(this).is(':checked')) {
+                    $('#SAP_codeField').show();
+                } else {
+                    $('#SAP_codeField').hide();
+                }
+            });
+            
+            // Check initial state
+            if($('#contract').is(':checked')) {
+                $('#SAP_codeField').show();
+            }
         });
-        
     </script>
 </body>
 </html>
