@@ -424,10 +424,15 @@ def clean_session_data(session_data):
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
+    logging.basicConfig(filename='app.log', level=logging.DEBUG)
+    logger = logging.getLogger(__name__)
+    logger.debug("Request form data: %s", request.form)
+    
     msg = ""
     db = sqlite3.connect('Calculations/calculation.db')
     cursor = db.cursor()
     cursor.execute('SELECT customer FROM customers')
+    file_tree = [row[0] for row in cursor.fetchall()]
     file_tree = [row[0] for row in cursor.fetchall()]
     if not "date" in session:
         current_time = datetime.now()
