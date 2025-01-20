@@ -67,6 +67,11 @@
                         
                         <div class="row mb-4">
                             <div class="col-md-6">
+                                <div class="card-footer text-end">
+                                    <form method="POST" action="{{ url_for('start') }}" class="d-inline">
+                                        <button type="submit" name="back" class="btn btn-secondary">Назад</button>
+                                    </form>
+                                </div>
                                 <div class="sap-search">
                                     <label class="form-label">Search by SAP code:</label>
                                     <div class="input-group">
@@ -112,11 +117,7 @@
                         </div>
                     </div>
 
-                    <div class="card-footer text-end">
-                        <form method="POST" action="{{ url_for('start') }}" class="d-inline">
-                            <button type="submit" name="back" class="btn btn-secondary">Назад</button>
-                        </form>
-                    </div>
+                    
                 </div>
             </div>
         </div>

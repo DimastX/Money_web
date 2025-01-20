@@ -1,0 +1,4 @@
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:35] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:36] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:36] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
