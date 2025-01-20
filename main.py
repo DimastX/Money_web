@@ -77,35 +77,35 @@ def index():
 @app.route('/select_calculation', methods=['GET', 'POST'])
 @login_required
 def select_calculation():
-    logging.basicConfig(filename='app.log', level=logging.DEBUG)
-    logger = logging.getLogger(__name__)
-    logger.debug("Request form data: %s", request.form)
-    
     db = sqlite3.connect('Calculations/calculation.db')
     cursor = db.cursor()
-    cursor.execute('PRAGMA encoding = "UTF-8"')
     
     if request.method == 'POST':
         if 'customer' in request.form:
             customer = request.form['customer']
-            logger.debug("Customer query: %s", customer)
             cursor.execute('SELECT DISTINCT field2 FROM calculations WHERE field1 = ? ORDER BY field2', (customer,))
             products = cursor.fetchall()
-            logger.debug("Products found: %s", products)
             return jsonify({'products': [p[0] for p in products if p[0]]})
             
         elif 'product' in request.form:
             customer = request.form['selected_customer']
             product = request.form['product']
-            logger.debug("Product query: %s %s", product, customer)
             cursor.execute('''SELECT id, field3, comm, date, final_cost, final_costpo, SAP_code 
                 FROM calculations 
                 WHERE field1 = ? AND field2 = ?
                 ORDER BY CAST(field3 AS INTEGER)''', 
                 (customer, product))
+
             batches = cursor.fetchall()
-            logger.debug("Batches found: %s", batches)
             return jsonify({'batches': [[b[0], b[1], b[2], b[3], b[4], b[5], b[6]] for b in batches]})
+        elif 'sap_search' in request.form:
+            sap_code = request.form['sap_search']
+            cursor.execute('''SELECT id, field3, comm, date, final_cost, final_costpo, SAP_code, field2 
+                FROM calculations 
+                WHERE SAP_code = ?''', 
+                (sap_code,))
+            batches = cursor.fetchall()
+            return jsonify({'batches': [[b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]] for b in batches]})
 
     cursor.execute('SELECT DISTINCT field1 FROM calculations ORDER BY field1')
     customers = cursor.fetchall()
@@ -424,15 +424,10 @@ def clean_session_data(session_data):
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    logging.basicConfig(filename='app.log', level=logging.DEBUG)
-    logger = logging.getLogger(__name__)
-    logger.debug("Request form data: %s", request.form)
-    
     msg = ""
     db = sqlite3.connect('Calculations/calculation.db')
     cursor = db.cursor()
     cursor.execute('SELECT customer FROM customers')
-    file_tree = [row[0] for row in cursor.fetchall()]
     file_tree = [row[0] for row in cursor.fetchall()]
     if not "date" in session:
         current_time = datetime.now()
