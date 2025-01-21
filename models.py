@@ -15,6 +15,11 @@ def add_column(table_name, column_name):
             conn.execute(text(f'ALTER TABLE {table_name} ADD COLUMN "{column_name}" TEXT'))
             conn.commit()
 
+def get_next_id(cursor):
+    cursor.execute("SELECT MAX(id) FROM calculations")
+    max_id = cursor.fetchone()[0]
+    return (max_id or 0) + 1
+
 def migrate_data():
     # Drop existing table if it exists
     with engine.connect() as conn:
@@ -49,6 +54,11 @@ def migrate_data():
                     print(f"Обработка файла: {file_path}")
                     with open(file_path, 'rb') as f:
                         session_data = pickle.load(f)
+
+                    if 'id' in session_data:
+                        cursor.execute("SELECT id FROM calculations WHERE id = ?", (session_data['id'],))
+                        if cursor.fetchone():
+                            session_data['id'] = get_next_id(cursor)
 
                     # При обработке session_data:
                     if 'home_form' in session_data:
