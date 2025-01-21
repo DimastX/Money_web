@@ -38,6 +38,8 @@ def migrate_data():
 
     metadata.create_all(engine)
 
+    db = sqlite3.connect('Calculations/calculation.db')
+    cursor = db.cursor()  # Add this line to define cursor
 
     customers = set()
     base_path = "Calculations"
