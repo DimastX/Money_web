@@ -253,14 +253,38 @@ def create_export(session):
             strtoint(session['Comp_form']['money_pc4']),
             strtoint(session['Comp_form']['money_all4'])
         ]
+        Contr_in = [
+            strtoint(session['Comp_form']['time_pc2']),
+            strtoint(session['Comp_form']['time_all2']),
+            strtoint(session['Comp_form']['money_pc2']),
+            strtoint(session['Comp_form']['money_all2'])
+        ]
+        Start = [
+            strtoint(session['Comp_form']['time_pc1']),
+            strtoint(session['Comp_form']['time_all1']),
+            strtoint(session['Comp_form']['money_pc1']),
+            strtoint(session['Comp_form']['money_all1'])
+        ]
     else:
-       Contr_out =[
+        Contr_out =[
             "-",
             "-",
             "-",
             "-"
         ]
-       End =[
+        End =[
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
+        Contr_in =[
+            "-",
+            "-",
+            "-",
+            "-"
+        ]
+        Start =[
             "-",
             "-",
             "-",
@@ -294,7 +318,7 @@ def create_export(session):
             HRL_re, HRL, HRL_rep, HRL_cont, 
             Hand, Hand_cont, 
             Test, Clear, Clear_cont, Handv, 
-            Handv_cont, Sep, Xray, Add, ICT, Pack, Contr_out, End]
+            Handv_cont, Sep, Xray, Add, ICT, Pack, Contr_in, Contr_out, Start, End]
  #           , """Comp""" 
     headers = ["Время на 1 ПУ, с", "Время на партию, ч", "Стоимость 1 ПУ, руб", "Стоимость на партию, руб"]
     #Статьи расходов
@@ -334,7 +358,9 @@ def create_export(session):
         "Доп. работы",
         "ICT",
         "Упаковка", 
+        "Входной контроль",
         "Выходной контроль",
+        "Приемка",
         "Отгрузка"]
     #Создание DataFrame со значениями выше
     df = pd.DataFrame(data, columns=headers, index=row_headers)

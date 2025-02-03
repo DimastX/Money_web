@@ -25,3 +25,95 @@ DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'DPC621-BV'), 
 DEBUG:__main__:Product query: DPC621-BV Depo
 DEBUG:__main__:Batches found: [(1, '2000', 'Расчёт для проверки', None, None, None, None), (2, '2000', 'Расчёт для проверки', None, None, None, None), (3, '2000', 'Расчёт для проверки', '2024-1-11', None, None, None), (4, '2000', 'Расчёт для проверки', '2024-2-29', None, None, None), (5, '2000', 'Расчёт для проверки', '2024-12-6', '2973 руб', '5928439 руб', None)]
 INFO:werkzeug:10.215.0.245 - - [20/Jan/2025 18:56:41] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:06] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:06] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:06] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:07] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:09] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:12] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:12] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:12] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:12] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:13] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:13] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:13] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:13] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:13] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:14] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:14] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:14] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:14] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:14] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:14] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:14] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:15] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:15] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:15] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:15] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:15] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:15] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:16] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:16] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:16] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:16] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:16] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:16] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:17] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:17] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:17] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:17] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:17] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:17] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:17] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:17] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:18] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:19] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:20] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:20] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:20] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:20] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:20] "[32mPOST /info HTTP/1.1[0m" 302 -
+ERROR:main:Exception on /session_data [GET]
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 2192, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1488, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1471, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 45, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 984, in session_data
+    df = cm.create_export(session) #Создание таблицы со всеми данными
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 309, in create_export
+    Handv_cont, Sep, Xray, Add, ICT, Pack, Contr_in, Contr_out, Start, End]
+NameError: name 'Contr_in' is not defined
+INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:20] "[35m[1mGET /session_data HTTP/1.1[0m" 500 -
