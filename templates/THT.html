@@ -162,6 +162,10 @@
                                         </thead>
                                         <td style="width: 40%;">
                                             <div class="form-group">
+                                            <input type="text" class="form-control" readonly value="Время набивки 1 ПУ">
+                                            <input type="text" class="form-control" readonly value="Стоимость набивки 1 ПУ">
+                                            <input type="text" class="form-control" readonly value="Время набивки всей партии">
+                                            <input type="text" class="form-control" readonly value="Стоимость набивки всей партии">
                                             <input type="text" class="form-control" readonly value="Время сборки 1 ПУ">
                                             <input type="text" class="form-control" readonly value="Стоимость сборки 1 ПУ">
                                             <input type="text" class="form-control" readonly value="Время сборки всей партии">
@@ -178,6 +182,10 @@
                                         </td>
                                         <td style="width: 20%;">
                                             <div class="form-group">
+                                            <input type="text" name="time_pc_p" id="time_pc_p" class="form-control" readonly>
+                                            <input type="text" name="money_pc_p" id="money_pc_p" class="form-control" readonly>
+                                            <input type="text" name="time_all_p" id="time_all_p" class="form-control" readonly>
+                                            <input type="text" name="money_all_p" id="money_all_p" class="form-control" readonly>
                                             <input type="text" name="time_pc" id="time_pc" class="form-control" readonly>
                                             <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
                                             <input type="text" name="time_all" id="time_all" class="form-control" readonly>
@@ -190,6 +198,10 @@
                                         </td>
                                         <td style="width: 20%;">
                                             <div class="form-group">
+                                            <input type="text" name="time_pc2_p" id="time_pc2_p" class="form-control" readonly>
+                                            <input type="text" name="money_pc2_p" id="money_pc2_p" class="form-control" readonly>
+                                            <input type="text" name="time_all2_p" id="time_all2_p" class="form-control" readonly>
+                                            <input type="text" name="money_all2_p" id="money_all2_p" class="form-control" readonly>
                                             <input type="text" name="time_pc2" id="time_pc2" class="form-control" readonly>
                                             <input type="text" name="money_pc2" id="money_pc2" class="form-control" readonly>
                                             <input type="text" name="time_all2" id="time_all2" class="form-control" readonly>
@@ -202,6 +214,10 @@
                                         </td>
                                         <td>
                                             <div class="form-group">
+                                            <input type="text" name="time_pc3_p" id="time_pc3_p" class="form-control" readonly>
+                                            <input type="text" name="money_pc3_p" id="money_pc3_p" class="form-control" readonly>
+                                            <input type="text" name="time_all3_p" id="time_all3_p" class="form-control" readonly>
+                                            <input type="text" name="money_all3_p" id="money_all3_p" class="form-control" readonly>
                                             <input type="text" name="time_pc3" id="time_pc3" class="form-control" readonly>
                                             <input type="text" name="money_pc3" id="money_pc3" class="form-control" readonly>
                                             <input type="text" name="time_all3" id="time_all3" class="form-control" readonly>
@@ -378,12 +394,16 @@
             const start = parseFloat({{df['Значение'][3]}}) * prev / 3600;
             const prod = time_multi * multi_num / 3600 / 2; //2 машины
             const time_all = Math.ceil((prod));
+            const time_all_p = time_all;
             const time_re_all = Math.ceil((start));
             const money_all = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][2]}}));
+            const money_all_p = Math.ceil(prod * parseInt({{ df2['Стоимость, руб/ч'][9]}}));
             const money_re_all = Math.ceil(start * parseInt({{ df2['Стоимость, руб/ч'][3]}}));
             const money_pc = Math.ceil(money_all / batch);
+            const money_pc_p = Math.ceil(money_all_p / batch);
             const money_re_pc = Math.ceil(money_re_all / batch);
             const time_pc = Math.ceil(time_all / batch * 3600);
+            const time_pc_p = time_pc;
             const time_re_pc = Math.ceil(time_re_all / batch * 3600);
 
             let start2 = 0
@@ -395,15 +415,23 @@
             
             const prod2 = time_multi2 * multi_num / 3600 / 2; //2 машины
             const time_all2 = Math.ceil((prod2));
+            const time_all2_p = time_all2;
             const time_re_all2 = Math.ceil((start2));
             const money_all2 = Math.ceil(prod2 * parseInt({{ df2['Стоимость, руб/ч'][2]}}));
+            const money_all2_p = Math.ceil(prod2 * parseInt({{ df2['Стоимость, руб/ч'][9]}}));
             const money_re_all2 = Math.ceil(start2 * parseInt({{ df2['Стоимость, руб/ч'][3]}}));
             const money_pc2 = Math.ceil(money_all2 / batch);
+            const money_pc2_p = Math.ceil(money_all2_p / batch);
             const money_re_pc2 = Math.ceil(money_re_all2 / batch);
             const time_pc2 = Math.ceil(time_all2 / batch * 3600);
+            const time_pc2_p = time_pc2;
             const time_re_pc2 = Math.ceil(time_re_all2 / batch * 3600);
 
             if (chckbx.checked){
+                document.getElementById('time_pc_p').value = time_pc_p + " c";
+                document.getElementById('time_all_p').value = time_all_p + " ч";
+                document.getElementById('money_pc_p').value = money_pc_p + " руб";
+                document.getElementById('money_all_p').value = money_all_p + " руб";
                 document.getElementById('time_pc').value = time_pc + " c";
                 document.getElementById('time_all').value = time_all + " ч";
                 document.getElementById('money_pc').value = money_pc + " руб";
@@ -413,6 +441,10 @@
                 document.getElementById('money_re_pc').value = money_re_pc + " руб";
                 document.getElementById('money_re_all').value = money_re_all + " руб";
 
+                document.getElementById('time_pc2_p').value = time_pc2_p + " c";
+                document.getElementById('time_all2_p').value = time_all2_p + " ч";
+                document.getElementById('money_pc2_p').value = money_pc2_p + " руб";
+                document.getElementById('money_all2_p').value = money_all2_p + " руб";
                 document.getElementById('time_pc2').value = time_pc2 + " c";
                 document.getElementById('time_all2').value = time_all2 + " ч";
                 document.getElementById('money_pc2').value = money_pc2 + " руб";
@@ -422,6 +454,10 @@
                 document.getElementById('money_re_pc2').value = money_re_pc2 + " руб";
                 document.getElementById('money_re_all2').value = money_re_all2 + " руб";
 
+                document.getElementById('time_pc3_p').value = time_pc_p + time_pc2_p + " c";
+                document.getElementById('time_all3_p').value = time_all_p + time_all2_p + " ч";
+                document.getElementById('money_pc3_p').value = money_pc_p + money_pc2_p + " руб";
+                document.getElementById('money_all3_p').value = money_all_p + money_all2_p + " руб";
                 document.getElementById('time_pc3').value = time_pc + time_pc2 + " c";
                 document.getElementById('time_all3').value = time_all + time_all2 + " ч";
                 document.getElementById('money_pc3').value = money_pc + money_pc2 + " руб";
@@ -437,12 +473,16 @@
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
 
-                money_all_f = money_all + money_re_all + money_all2 + money_re_all2 + repair_money_all + control_money_all;
+                money_all_f = money_all + money_re_all + money_all2 + money_re_all2 + repair_money_all + control_money_all + money_all_p + money_all2_p;
                 money_pc_f = Math.ceil(money_all_f / batch);
                 document.getElementById("money_all_f").value = money_all_f + " руб";
                 document.getElementById("money_pc_f").value = money_pc_f + " руб";
 
             } else {
+                document.getElementById('time_pc_p').value = '-';
+                document.getElementById('time_all_p').value = '-';
+                document.getElementById('money_pc_p').value = '-';
+                document.getElementById('money_all_p').value = '-';
                 document.getElementById('time_pc').value = '-';
                 document.getElementById('time_all').value = '-';
                 document.getElementById('money_pc').value = '-';
@@ -452,6 +492,10 @@
                 document.getElementById('money_re_pc').value = '-';
                 document.getElementById('money_re_all').value = '-';
 
+                document.getElementById('time_pc2_p').value = '-';
+                document.getElementById('time_all2_p').value = '-';
+                document.getElementById('money_pc2_p').value = '-';
+                document.getElementById('money_all2_p').value = '-';
                 document.getElementById('time_pc2').value = '-';
                 document.getElementById('time_all2').value = '-';
                 document.getElementById('money_pc2').value = '-';
@@ -461,6 +505,10 @@
                 document.getElementById('money_re_pc2').value = '-';
                 document.getElementById('money_re_all2').value = '-';
                 
+                document.getElementById('time_pc3_p').value = '-';
+                document.getElementById('time_all3_p').value = '-';
+                document.getElementById('money_pc3_p').value = '-';
+                document.getElementById('money_all3_p').value = '-';
                 document.getElementById('time_pc3').value = '-';
                 document.getElementById('time_all3').value = '-';
                 document.getElementById('money_pc3').value = '-';

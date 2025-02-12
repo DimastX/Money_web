@@ -117,3 +117,1402 @@ Traceback (most recent call last):
     Handv_cont, Sep, Xray, Add, ICT, Pack, Contr_in, Contr_out, Start, End]
 NameError: name 'Contr_in' is not defined
 INFO:werkzeug:10.215.0.245 - - [03/Feb/2025 17:55:20] "[35m[1mGET /session_data HTTP/1.1[0m" 500 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:28] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:28] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:28] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:30] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:32] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:33] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:33] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:34] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:34] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:35] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:35] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:36] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:36] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:36] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:36] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:38] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:38] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:38] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:38] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:43] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:43] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:44] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:44] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:49] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:49] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:49] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:49] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:51] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:51] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:51] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:51] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:52] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:52] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:52] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:52] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:52] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:52] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:52] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:52] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:53] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:54] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:55] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:55] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:55] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:55] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:55] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:55] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:55] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:55] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:56] "[32mPOST /info HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:56] "GET /session_data HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:56] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:56] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [06/Feb/2025 19:43:58] "POST /session_data HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:29] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:31] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест7'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:33] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:35] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:35] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:36] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:36] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:39] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:39] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:39] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:39] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:21:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:25:14] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:25:14] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:25:15] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:25:15] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:25:15] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:25:15] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:25:15] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 15:25:15] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:25] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:26] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест7'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:27] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:29] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:29] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:29] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:29] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:34] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:34] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:34] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:34] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:36] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "[32mPOST /info HTTP/1.1[0m" 302 -
+ERROR:main:Exception on /session_data [GET]
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 2192, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1488, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1471, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 45, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 984, in session_data
+    df = cm.create_export(session) #Создание таблицы со всеми данными
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 367, in create_export
+    df_tech_map = tech_map(df, session)
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 497, in tech_map
+    if session['Comp']['Comp_type'] == "2":
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\sessions.py", line 79, in __getitem__
+    return super().__getitem__(key)
+KeyError: 'Comp'
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:37] "[35m[1mGET /session_data HTTP/1.1[0m" 500 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[32mPOST /info HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:47] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:48] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:49] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:50] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:50] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:50] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:50] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:50] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:50] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:50] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:50] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:51] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:51] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:51] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:51] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:57] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:57] "GET /tariffs HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:57] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:57] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:58] "[32mPOST /tariffs HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:58] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:58] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:13:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:40] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:41] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[32mPOST /info HTTP/1.1[0m" 302 -
+ERROR:main:Exception on /session_data [GET]
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 2192, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1488, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1471, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 45, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 984, in session_data
+    df = cm.create_export(session) #Создание таблицы со всеми данными
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 367, in create_export
+    df_tech_map = tech_map(df, session)
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 497, in tech_map
+    if session['Comp']['Comp_type'] == "2":
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\sessions.py", line 79, in __getitem__
+    return super().__getitem__(key)
+KeyError: 'Comp'
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:42] "[35m[1mGET /session_data HTTP/1.1[0m" 500 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:45] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:47] "[32mPOST / HTTP/1.1[0m" 302 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:47] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:47] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:47] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:48] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест7'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:49] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:50] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:50] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:51] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:51] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:51] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:51] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:51] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:51] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:51] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:52] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:53] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "[32mPOST /info HTTP/1.1[0m" 302 -
+ERROR:main:Exception on /session_data [GET]
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 2192, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1488, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1471, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 45, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 984, in session_data
+    df = cm.create_export(session) #Создание таблицы со всеми данными
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 367, in create_export
+    df_tech_map = tech_map(df, session)
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 497, in tech_map
+    if session['Comp']['Comp_type'] == "2":
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\sessions.py", line 79, in __getitem__
+    return super().__getitem__(key)
+KeyError: 'Comp'
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:54] "[35m[1mGET /session_data HTTP/1.1[0m" 500 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[32mPOST /info HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:56] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:57] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:59] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:59] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:59] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:59] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:59] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:59] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:59] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:14:59] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:00] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:00] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:00] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:00] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:02] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:03] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[32mPOST /info HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "GET /session_data HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:04] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:05] "POST /session_data HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[32mPOST /session_data HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[32mPOST /info HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:08] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:09] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:10] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:11] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:12] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:12] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:12] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:12] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:13] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:13] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:13] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:13] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:28] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:28] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:28] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:28] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:31] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:31] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [07/Feb/2025 17:15:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:32:28] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:32:28] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:32:28] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:25] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:26] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:28] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:30] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:30] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:41] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:41] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:41] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:41] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:42] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:42] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:42] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:42] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:42] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:42] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:42] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:42] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:44] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:45] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:45] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:47] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:47] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:47] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:47] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:47] "[32mPOST /info HTTP/1.1[0m" 302 -
+ERROR:main:Exception on /session_data [GET]
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\ops\array_ops.py", line 171, in _na_arithmetic_op
+    result = func(left, right)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\computation\expressions.py", line 239, in evaluate
+    return _evaluate(op, op_str, a, b)  # type: ignore[misc]
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\computation\expressions.py", line 70, in _evaluate_standard
+    return op(a, b)
+TypeError: can only concatenate str (not "int") to str
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 2192, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1488, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1471, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 45, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 984, in session_data
+    df = cm.create_export(session) #Создание таблицы со всеми данными
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 367, in create_export
+    df_tech_map = tech_map(df, session)
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 535, in tech_map
+    df_wc['Номер операции'] = (df_wc.index + 1) * 10
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\ops\common.py", line 81, in new_method
+    return method(self, other)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\arraylike.py", line 186, in __add__
+    return self._arith_method(other, operator.add)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\indexes\base.py", line 6817, in _arith_method
+    return super()._arith_method(other, op)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\base.py", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\ops\array_ops.py", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  # type: ignore[arg-type]
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\ops\array_ops.py", line 178, in _na_arithmetic_op
+    result = _masked_arith_op(left, right, op)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\ops\array_ops.py", line 135, in _masked_arith_op
+    result[mask] = op(xrav[mask], y)
+TypeError: can only concatenate str (not "int") to str
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:33:48] "[35m[1mGET /session_data HTTP/1.1[0m" 500 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:18] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:18] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:18] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:20] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:21] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:22] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:22] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:22] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:22] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:23] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:23] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:23] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:23] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:23] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:24] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:25] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:27] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:27] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:27] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:27] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:27] "[32mPOST /info HTTP/1.1[0m" 302 -
+ERROR:main:Exception on /session_data [GET]
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 2192, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1488, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\flask\app.py", line 1471, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 45, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\user\Documents\Scripts\pythonProject\main.py", line 984, in session_data
+    df = cm.create_export(session) #Создание таблицы со всеми данными
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 367, in create_export
+    df_tech_map = tech_map(df, session)
+  File "C:\Users\user\Documents\Scripts\pythonProject\calculations_money.py", line 537, in tech_map
+    df_wc = df_wc[['Номер операции'] + [col for col in df_wc.columns if col != 'Текст операции'] + ['Текст операции']]
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\indexes\base.py", line 5877, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "C:\Users\user\Documents\Scripts\pythonProject\venv\lib\site-packages\pandas\core\indexes\base.py", line 5941, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['Текст операции'] not in index"
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:37:27] "[35m[1mGET /session_data HTTP/1.1[0m" 500 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:19] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:19] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:19] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:21] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест7'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:22] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:23] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:23] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:23] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:23] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:24] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:24] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:24] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:24] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:25] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:25] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:25] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:25] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:25] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:25] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:26] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:27] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:27] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:27] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:27] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:27] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:27] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:28] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:29] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:29] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:29] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:29] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:29] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:29] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:29] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:29] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:30] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:30] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:31] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:31] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:31] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:31] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:32] "[32mPOST / HTTP/1.1[0m" 302 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:32] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:34] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:35] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:42] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:42] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:42] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:42] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:45] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "[32mPOST /info HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "GET /session_data HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 12:42:51] "POST /session_data HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:18] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:18] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:18] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тайпит')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:19] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:20] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:21] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:23] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:23] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:23] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:23] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:27] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:27] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:27] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:27] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:27] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:27] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:27] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:28] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:29] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:29] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:29] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:29] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:29] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:29] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:29] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:30] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:31] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:33] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:34] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:34] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:34] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:34] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:34] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:34] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:34] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:35] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:35] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:35] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:35] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 13:00:35] "[32mPOST /info HTTP/1.1[0m" 302 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:37] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:37] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:37] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:38] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:39] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:41] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:41] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:42] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:43] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:44] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:45] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:46] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:47] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:47] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:47] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:47] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:47] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:47] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:48] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:49] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:49] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:49] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:49] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:49] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:50] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:50] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:50] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:51] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:51] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:51] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:51] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 14:55:52] "[32mPOST /info HTTP/1.1[0m" 302 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:15:58] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:15:58] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:15:58] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:15:59] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:00] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:04] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:04] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:04] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:04] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:05] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:05] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:05] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:05] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:05] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:06] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:06] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:06] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:06] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:06] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:06] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:06] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:06] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:07] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:07] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:07] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:07] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:07] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:07] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:07] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:08] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:08] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:08] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:08] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:08] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:08] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:08] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:08] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:09] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:10] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:10] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:10] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:10] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:10] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:10] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:10] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:10] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:11] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:11] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:11] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:11] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:11] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:12] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:12] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:12] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:13] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:13] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:13] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:13] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [11/Feb/2025 15:16:13] "[32mPOST /info HTTP/1.1[0m" 302 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([])
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:26] "GET /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:26] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:26] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:27] "POST /select_calculation HTTP/1.1" 200 -
+DEBUG:__main__:Request form data: ImmutableMultiDict([('product', 'Тест6'), ('selected_customer', 'Тест')])
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:29] "POST /select_calculation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:31] "[32mPOST /open_file HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:31] "GET /home HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:31] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:31] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:32] "[32mPOST /home HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:32] "GET /second HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:32] "[32mPOST /second HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:32] "GET /SMD HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:32] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:32] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:33] "[32mPOST /SMD HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:33] "GET /Comp HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:33] "[32mPOST /Comp HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:33] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:33] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:33] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:34] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:34] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:34] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:34] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:37] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:37] "GET /THT HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:37] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:37] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:38] "[32mPOST /THT HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:38] "GET /wave HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:38] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:38] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:38] "[32mPOST /wave HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:38] "GET /HRL HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:38] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:38] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[32mPOST /HRL HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "GET /hand HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[32mPOST /hand HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "GET /test HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[32mPOST /test HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "GET /clear HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[33mGET /scripts/Checks.js HTTP/1.1[0m" 404 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:39] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[32mPOST /clear HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "GET /Handv HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[32mPOST /Handv HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "GET /separation HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[32mPOST /separation HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "GET /xray HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:40] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[32mPOST /xray HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "GET /pack HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[32mPOST /pack HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "GET /additional HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[32mPOST /additional HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "GET /info HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:41] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:42] "[32mPOST /info HTTP/1.1[0m" 302 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:42] "GET /session_data HTTP/1.1" 200 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:42] "[36mGET /static/css/button.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:42] "[36mGET /static/css/tables.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:10.215.0.245 - - [12/Feb/2025 11:39:43] "POST /session_data HTTP/1.1" 200 -
