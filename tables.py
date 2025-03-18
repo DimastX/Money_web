@@ -9,9 +9,10 @@ def tables(file):
     df = pd.read_excel(file)
     PAP = df.iloc[:, :2] #Выделяем таблицу PAP
     BOM = df.iloc[:, 2:] #Выделяем таблицу BOM 
-    PAP['Layer'] = PAP['Layer'].fillna(0)
+    PAP['Layer'] = PAP['Layer'].fillna("")
     PAP.drop_duplicates()
     Layer = PAP["Layer"].unique()
+    Layer = list(filter(None, Layer))
     if len(Layer) > 2:
         return  0
     Bot = PAP[PAP["Layer"] == Layer[0]]["Designator"] #Из таблицы PAP выделяем те компоненты, которые ставятся на сторону Bot
