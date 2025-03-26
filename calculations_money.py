@@ -398,7 +398,7 @@ def create_export(session):
         sum_money_all_temp = int(float(str(df.iloc[i, 3]).split(" ")[0]))
         df.iloc[i,4] = sum_time_pc_temp * pc
         df.iloc[i,5] = sum_money_pc_temp * pc
-        if df.iloc[i]._name != "ICT":
+        if df.iloc[i]._name:
             sum_time_pc += sum_time_pc_temp
             sum_time_all += sum_time_all_temp
             sum_money_pc += sum_money_pc_temp

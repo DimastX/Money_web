@@ -43,7 +43,7 @@
                             <label>Выберите способ разделения</label>
                             <br>
                             <label>
-                                <input type="radio" name="Sep_type" required value="1" id="Scrab" onclick="time_calculation()"
+                                <input type="radio" name="Sep_type" value="1" id="Scrab" onclick="time_calculation()"
                                     {% if session.get('Sep_form')%} {% if session['Sep_form']['Sep_type'] == "1" %} checked {% endif %} {% endif %}>
                                 Скрайбирование
                                 <div class="form-group" id="jumpers2" style="display:none">
