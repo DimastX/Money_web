@@ -267,12 +267,12 @@
                 document.getElementById('number_Xray_pt').value = coef + " шт";
                 document.getElementById('number_Xray').value = Math.ceil(multi_num * proc_value / coef);
                 if (type[0].checked){
-                    time_all = parseInt({{ df['Значение'][2]}}) * proc_value * multi_num;
+                    time_all = parseInt({{ df['Значение'][3]}}) * proc_value * multi_num;
                     time_pc = time_all / parseInt({{ session['home_form']['field3']}});
                     money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
                     money_pc = money_all / parseInt({{ session['home_form']['field3']}});
                 } else if (type[1].checked){
-                    time_all = parseInt({{ df['Значение'][3]}}) * proc_value * multi_num;
+                    time_all = parseInt({{ df['Значение'][2]}}) * proc_value * multi_num;
                     time_pc = time_all / parseInt({{ session['home_form']['field3']}});
                     money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
                     money_pc = money_all / parseInt({{ session['home_form']['field3']}});
