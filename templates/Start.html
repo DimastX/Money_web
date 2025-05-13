@@ -23,6 +23,7 @@
         <form id = "myForm" method="POST">
             <button type="submit" class="btn btn-primary" name="dirs">Каталог изделий</button>
             <button type="submit" class="btn btn-primary" name="next">Начать расчёт</button>
+            <a href="{{ url_for('download_db') }}" class="btn btn-success">Скачать базу данных</a>
         </form>
     </div>
 </body>

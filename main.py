@@ -115,6 +115,11 @@ def select_calculation():
     customers = cursor.fetchall()
     return render_template('select_calculation.html', customers=[c[0] for c in customers])
 
+@app.route('/download_db')
+def download_db():
+    db_path = os.path.join('Calculations', 'calculation.db')
+    return send_file(db_path, as_attachment=True)
+
 
 @app.route('/Dirs2', methods=['GET'])
 def list_directories():
