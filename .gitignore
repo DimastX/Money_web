@@ -1,3 +1,5 @@
 Calculations/
 mylog.log
 app.log
+.venv/
+__pycache__/

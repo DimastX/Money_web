@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response, jsonify, g
 from functools import wraps
-from flask_table import Table, Col
 import pandas as pd
 import calculations_money as cm
 from werkzeug.datastructures import MultiDict
@@ -11,8 +10,7 @@ import pickle
 import Verification as ver
 from flask_ldap3_login import LDAP3LoginManager
 import sqlite3
-import time
-import ast
+import config # Добавляем импорт config
 
 from datetime import datetime
 import os
@@ -28,14 +26,20 @@ app.secret_key = 'your_secret_key'
 password = '1234' # Пароль для редактирования констант
 Calculations_path = "Calculations/" # Путь хранения расчётов
 actual_version = "1.0"
+
+# Определение путей в начале файла (после импортов)
+# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# DB_PATH = os.path.join(BASE_DIR, 'Calculations', 'calculation.db')
+
 """ Функция для загрузки тарифов из таблицы .csv"""
 def readdata():
     return pd.read_csv('data/tarifs.csv')
 
     
 def get_db():
-    db = sqlite3.connect('calculation.db')
-    db.row_factory = sqlite3.Row
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
     return db
 
 def login_required(f):
@@ -81,7 +85,7 @@ def select_calculation():
     logger = logging.getLogger(__name__)
     logger.debug("Request form data: %s", request.form)
 
-    db = sqlite3.connect('Calculations/calculation.db')
+    db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
     cursor = db.cursor()
     
     if request.method == 'POST':
@@ -224,7 +228,7 @@ def download_file():
 @login_required
 def open_file_db():
     file_id = int(request.form["file_id"])
-    db = sqlite3.connect('Calculations/calculation.db')
+    db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
     cursor = db.cursor()
     
     # Get all columns except id
@@ -248,7 +252,7 @@ def open_file_db():
 @login_required
 def copy_file_db():
     file_id = int(request.form["file_id"])
-    db = sqlite3.connect('Calculations/calculation.db')
+    db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
     cursor = db.cursor()
     
     # Get all columns except id
@@ -280,7 +284,7 @@ def copy_file_db():
 @login_required
 def download_file_db():
     file_id = int(request.form["file_id"])
-    db = sqlite3.connect('Calculations/calculation.db')
+    db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
     cursor = db.cursor()
     
     # Get all columns except id
@@ -301,7 +305,7 @@ def download_file_db():
 @login_required
 def delete_file_db():
     file_id = int(request.form["file_id"])
-    db = sqlite3.connect('Calculations/calculation.db')
+    db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
     cursor = db.cursor()
         
     cursor.execute('DELETE FROM calculations WHERE id = ?', (file_id,))
@@ -408,7 +412,7 @@ def cust():
             # if not os.path.exists(folder_path): #Если такого имени ещё нет то создаётся новая директория
                 # os.makedirs(folder_path)
 
-            db = sqlite3.connect('Calculations/calculation.db')
+            db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
             cursor = db.cursor()
             cursor.execute('INSERT INTO customers (customer) VALUES (?)', (folder_name,))
             db.commit()
@@ -434,7 +438,7 @@ def clean_session_data(session_data):
 @login_required
 def home():
     msg = ""
-    db = sqlite3.connect('Calculations/calculation.db')
+    db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
     cursor = db.cursor()
     cursor.execute('SELECT customer FROM customers')
     file_tree = [row[0] for row in cursor.fetchall()]
@@ -460,7 +464,7 @@ def home():
                         session_data = {k: dict(v) if isinstance(v, MultiDict) else v for k, v in session_data.items()}
                         session_data.update(home_form_data)
                     
-                    db = sqlite3.connect('Calculations/calculation.db')
+                    db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
                     cursor = db.cursor()
                     
                     columns = ', '.join(f'"{key}"' for key in session_data.keys())
@@ -1129,7 +1133,7 @@ def session_data():
             session_data = {k: dict(v) if isinstance(v, MultiDict) else v for k, v in session_data.items()}  # Преобразуем все MultiDict в словари
             session_data.update(home_form_data)
             
-            db = sqlite3.connect('Calculations/calculation.db')
+            db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
             cursor = db.cursor()
             
             columns = ', '.join(f'"{key}" = ?' for key in session_data.keys())
@@ -1168,6 +1172,11 @@ def session_data():
     return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table = table,
                            tables3=[df[2].to_html(classes='table', index=False, header="true")])
 
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)

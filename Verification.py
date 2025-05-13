@@ -5,6 +5,7 @@ import sqlite3
 import pandas as pd
 from ldap3 import Server, Connection, SIMPLE, SYNC, ALL
 from werkzeug.datastructures import MultiDict
+import config # Добавляем импорт config
 
 LDAP_SERVER = 'ldap.ultrastar.ru'
 LDAP_PORT = 389
@@ -13,7 +14,7 @@ LDAP_SEARCH_BASE = 'ou=users,dc=ultrastar,dc=ru'  # Базовый DN для п�
 
 
 def home_verif(session):
-    db = sqlite3.connect('Calculations/calculation.db')
+    db = sqlite3.connect(config.DB_PATH)
     cursor = db.cursor()
 
     if 'SAP_code' in session['home_form'] and session['home_form']['SAP_code']:
@@ -123,7 +124,7 @@ def auto_save(session):
     session_data = {k: dict(v) if isinstance(v, MultiDict) else v for k, v in session_data.items()}  # Преобразуем все MultiDict в словари
     session_data.update(home_form_data)
     
-    db = sqlite3.connect('Calculations/calculation.db')
+    db = sqlite3.connect(config.DB_PATH)
     cursor = db.cursor()
 
     # cursor.execute('''
