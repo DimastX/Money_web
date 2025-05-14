@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
@@ -9,8 +10,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <!-- вывод flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -23,12 +26,15 @@
     {% endif %}
     {% endwith %}
     <div class="container">
+        <!-- Основная форма для параметров тестирования и прошивки -->
         <form id = "myForm" method="POST">
             <br>
+            <!-- Кнопки навигации -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Секция: Включение/выключение Тестирования -->
             <fieldset>
                 <legend>Тестирование</legend>
                 <div class="form-group">
@@ -37,14 +43,18 @@
                     <label for="Test">Выполнять тестирование? </label>
                 </div>
             </fieldset>
+            <!-- Таблица с основными параметрами тестирования/прошивки и итоговой стоимостью -->
             <table>
                 <tr>
+                    <!-- Левая колонка: Параметры прошивки микросхем, прошивки ПУ, тестирования ПУ -->
                     <td style="width: 50%;">
                         <div class="form-group" id="Test_off">
+                            <!-- Подсекция: Прошивка микросхем -->
                             <div class="form-group">
                                 <input type="checkbox" id="firmware_m" name="firmware_m" value="1" 
                                     {% if session.get('Test_form')%} {% if session['Test_form']['firmware_m'] %} checked="checked" {% endif %} {% endif %}>
                                 <label for="firmware_m">Выполнять прошивку микросхем? </label>
+                                <!-- Таблица для добавления микросхем для прошивки -->
                                 <div class="form-group" id="firmware_m_off">
                                     <table id="myTable">
                                         <thead>
@@ -83,6 +93,7 @@
                                     <label>Количество разных микросхем</label>
                                     <input type="text" name="rows" id="rows" class="form-control" readonly>
                                 </div>
+                                <!-- Подсекция: Прошивка ПУ -->
                                 <input type="checkbox" id="firmware" name="firmware" value="1" 
                                         {% if session.get('Test_form')%} {% if session['Test_form']['firmware'] %} checked="checked" {% endif %} {% endif %}>
                                 <label for="firmware">Выполнять прошивку? </label>
@@ -94,6 +105,7 @@
                                     <input type="number" min="1" step="1" class="form-control" name="firmware_num" id="firmware_num"
                                         value="{{ session['Test_form']['firmware_num'] if session.get('Test_form') else '' }}"></input>
                                 </div>
+                                <!-- Подсекция: Тестирование ПУ -->
                                 <input type="checkbox" id="testing" name="testing" value="1" 
                                         {% if session.get('Test_form')%} {% if session['Test_form']['testing'] %} checked="checked" {% endif %} {% endif %}>
                                 <label for="testing">Выполнять тестирование? </label>    
@@ -110,11 +122,13 @@
                                 </div>
                         </div>
                     </td>
+                    <!-- Средняя колонка: Метки для итоговой стоимости -->
                     <td style="width: 35%;">
                         
                         <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                         <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                     </td>
+                    <!-- Правая колонка: Поля для отображения итоговой стоимости (только чтение) -->
                     <td>
                         <div class="form-group">
                             <input type="text" name="money_all_f" id="money_pc_f" class="form-control" readonly> 
@@ -123,6 +137,7 @@
                     </td>
                 </tr>
             </table>
+            <!--  Данные по стоимости тестирования -->
             <div class="panel-group" id="accordion_dat">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -162,6 +177,7 @@
                     </div>
                 </div>
             </div>
+            <!--  Данные для тестирования (таблица из df и управление редактированием) -->
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -215,24 +231,30 @@
             </div>      
         </form>
     </div>
+    <!-- Начало блока JavaScript -->
     <script>
+        // Массив ID элементов формы, для которых будут установлены глобальные обработчики событий
         ids = ["Test", "firmware", "firmware_m", "testing", "firmware_time", "firmware_num", 'testing_time', 'testing_num', 'testing_proc']
         
-        let inputs = document.querySelectorAll('input');
+        let inputs = document.querySelectorAll('input'); // Коллекция всех input элементов на странице
+        // Функция, выполняемая при полной загрузке окна
         window.onload = function(){
-            check_all();
+            check_all(); // Инициализация состояния формы и первоначальный расчет
         };
 
+        // Основная функция для обновления состояния формы и перерасчета
         function check_all(){
-            updateInputs();
-            updateRowCount();
+            updateInputs();       // Обновление и назначение обработчиков для всех input
+            updateRowCount();     // Обновление счетчика строк в таблице микросхем
+            // Управление видимостью секций на основе состояния соответствующих чекбоксов
             check('Test', 'Test_off');
             check('firmware', 'firmware_off');
             check('firmware_m', 'firmware_m_off');
             check('testing', 'testing_off');
-            test_amount();
+            test_amount();        // Выполнение расчета стоимости
         };
 
+        // Функция для управления видимостью секции (дублирует логику из внешних скриптов)
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
@@ -241,7 +263,8 @@
           }
         };
 
-
+        // Функция для получения всех input элементов и назначения им обработчика 'input'
+        // При каждом изменении любого input будет вызываться handleChange
         const updateInputs = () => {
             inputs = document.querySelectorAll('input');
             inputs.forEach(input => {
@@ -249,18 +272,19 @@
         });
         };
 
-        // Создаем функцию, которая будет вызываться при изменении элементов input
+        // Обработчик события 'input' для всех полей ввода
         const handleChange = (event) => {          
-            check_all();
+            check_all(); // При любом изменении поля, полностью обновить состояние формы и пересчитать
         };
 
         
+        // Получение ссылок на ключевые чекбоксы
+        var chckbx = document.getElementById('Test');          // Чекбокс: Выполнять тестирование (общий)?
+        var chckbx_fm = document.getElementById('firmware_m'); // Чекбокс: Выполнять прошивку микросхем?
+        var chckbx_f = document.getElementById('firmware');   // Чекбокс: Выполнять прошивку (ПУ)?
+        var chckbx_t = document.getElementById('testing');    // Чекбокс: Выполнять тестирование (операция)?
 
-        var chckbx = document.getElementById('Test');
-        var chckbx_fm = document.getElementById('firmware_m'); //firmware_m
-        var chckbx_f = document.getElementById('firmware'); //firmware
-        var chckbx_t = document.getElementById('testing'); //testing
-
+        // Основная функция для расчета и отображения стоимости тестирования и прошивок
         function test_amount(){
             var batch = parseInt({{ session['home_form']['field3']}});
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
@@ -307,16 +331,19 @@
             }
         };
 
+        // Расчет времени на прошивку ПУ (не микросхем)
         function firmware_amount(){
             return Math.ceil(document.getElementById('firmware_time').value / document.getElementById('firmware_num').value *
             parseFloat({{df['Значение'][2]}})); 
         };
 
+        // Расчет времени на операцию тестирования
         function testing_amount(){
             return Math.ceil(document.getElementById('testing_time').value / document.getElementById('testing_num').value *
             document.getElementById('testing_proc').value / 100 * parseFloat({{df['Значение'][3]}})); 
         };
 
+        // Расчет времени на прошивку микросхем (по данным из таблицы myTable)
         function firmware_m_amount(){
             sum = 0;
             rows = parseInt(document.getElementById('rows').value);
@@ -330,6 +357,7 @@
             return Math.ceil(sum * parseFloat({{df['Значение'][3]}})); 
         };
 
+        // Функция для добавления новой строки в таблицу микросхем (myTable)
         function addRow() {
             var table = document.getElementById("myTable");
             var newRow = table.insertRow(table.rows.length);
@@ -344,6 +372,7 @@
             check_all();
         }
 
+        // Функция для обновления счетчика строк в таблице микросхем и обновления коллекции inputs
         function updateRowCount() {
             var table = document.getElementById("myTable");
             var rowCount = table.rows.length;
@@ -351,6 +380,7 @@
             inputs = document.querySelectorAll('input');
         }
 
+        // Функция для удаления последней строки из таблицы микросхем (myTable)
         function deleteRow() {
             var table = document.getElementById("myTable");
             var lastRow = table.rows.length - 1;
@@ -359,5 +389,6 @@
             check_all();
         }
     </script>
+    <!-- Конец блока JavaScript -->
 </body>
 </html>

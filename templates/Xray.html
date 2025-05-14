@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
@@ -8,8 +9,10 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <!-- вывод flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -22,12 +25,15 @@
     {% endif %}
     {% endwith %}
     <div class="container">
+        <!-- Основная форма для параметров рентген-контроля -->
         <form id = "myForm" method="POST"> 
             <br>
+            <!-- Кнопки навигации -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Секция: Включение/выключение рентген-контроля -->
             <fieldset>
                 <legend>Рентгенконтроль</legend>
                 <div class="form-group">
@@ -36,14 +42,18 @@
                     <label for="Xray">Выполнять рентгенконтроль? </label>
                 </div>
             </fieldset>
+            <!-- Таблица с основными параметрами рентген-контроля и итоговой стоимостью -->
             <table>
                 <tr>
+                    <!-- Левая колонка: Параметры выборки и типа изделия -->
                     <td style="width: 30%;">
                         <div class="form-group" id="Xray_off">
+                            <!-- Поле: Выборка в % -->
                             <label>Выборка в %</label>
                             <br>
                             <input type="number" class="form-control" min="0" step="1" max="100" name="Xray_proc" id="Xray_proc"
                                 value="{{ session['Xray_form']['Xray_proc'] if session.get('Xray_form') else '' }}">
+                            <!-- Радиокнопки: Тип изделия (Серверная плата, Материнская плата, Прочее) -->
                             <label>Выберите тип изделия</label>
                             <br>
                             <label>
@@ -63,6 +73,7 @@
                                     {% if session.get('Xray_form')%} {% if session['Xray_form']['Xray_type'] == "3" %} checked {% endif %} {% endif %} value="3">
                                 Прочее
                             </label>
+                            <!-- Дополнительные поля для типа "Прочее" (время на компонент, количество компонентов) -->
                             <div class="form-group" id="multi" style="display:none">
                                 <label>Время на проверку одного компонента, с:</label>
                                 <input type="number" class="form-control" name="components_time" id="components_time" min="0" step="any" 
@@ -73,12 +84,14 @@
                             </div>
                         </div>
                     </td>
+                    <!-- Средняя колонка: Метки для итоговой стоимости -->
                     <td style="width: 40%;">
                         <div class="form-group">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость всей 1 ПУ">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                             </div>
                     </td>
+                    <!-- Правая колонка: Поля для отображения итоговой стоимости (только чтение) -->
                     <td>
                         <div class="form-group">
                             <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
@@ -87,6 +100,7 @@
                     </td>
                 </tr>
             </table>
+            <!-- Данные по стоимости рентген-контроля -->
             <div class="panel-group" id="accordion_dat">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -132,6 +146,7 @@
                 </div>
             </div>
 
+            <!-- Данные для рентген-контроля (таблица из df и управление редактированием) -->
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -205,33 +220,46 @@
     </div>
         </form>
     </div>
+    <!-- Начало блока JavaScript -->
     <script>
+        // Массив ID элементов формы для установки обработчиков событий
         ids = ["MB", "SB", "misc", "Xray_proc", "components", "components_time"];
 
+        // Функция, выполняемая при полной загрузке окна
         window.onload = function(){
+            // Установка начальной видимости секции параметров рентгена
             check('Xray', 'Xray_off');
+            // Установка начальной видимости полей для типа изделия "Прочее"
             checkOption('misc', 'multi');
+            // Первоначальный расчет и отображение стоимостей
             xray_amount();
         }
 
+        // Общая функция для переключения видимости и перерасчета
         function check_all(master, slave){
-            check(master,slave);
-            xray_amount();
+            check(master,slave); // Переключение видимости
+            xray_amount();     // Перерасчет
         }
 
-        const proc_x = document.getElementById('Xray_proc');
-        const chckbx = document.getElementById('Xray');
-        const type = document.getElementsByName('Xray_type');
+        // Получение ссылок на ключевые элементы формы
+        const proc_x = document.getElementById('Xray_proc'); // Поле: Процент выборки
+        const chckbx = document.getElementById('Xray');      // Чекбокс: Выполнять рентгенконтроль?
+        const type = document.getElementsByName('Xray_type');  // Radio-кнопки: Тип изделия
 
 
+        // Добавление обработчиков события 'change' для элементов из массива ids
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
+                // При изменении типа изделия или параметров для "Прочее", обновить видимость и пересчитать
                 checkOption('misc', 'multi');
                 xray_amount();
             });
         }
 
+        // Функция для управления видимостью секции на основе состояния чекбокса (дублирует логику из внешних скриптов)
+        // master: ID чекбокса-переключателя
+        // slave: ID секции, чья видимость управляется (через класс 'disable_section')
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
@@ -240,6 +268,9 @@
           }
         }
         
+        // Функция для управления видимостью поля на основе состояния radio-кнопки/чекбокса
+        // optionId: ID управляющего radio-кнопки/чекбокса
+        // fieldId: ID поля, чья видимость управляется (через style.display)
         function checkOption(optionId, fieldId) {
             var radioOption1 = document.getElementById(optionId);
             var extraField = document.getElementById(fieldId);
@@ -251,6 +282,7 @@
             }
         }
 
+        // Основная функция для расчета и отображения стоимости рентген-контроля
         function xray_amount(){
             let coef = 1;
             var proc_value = parseFloat(proc_x.value) / 100;
@@ -305,5 +337,6 @@
             }
         }
     </script>
+    <!-- Конец блока JavaScript -->
 </body>
 </html>

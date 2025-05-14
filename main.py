@@ -17,6 +17,7 @@ import os
 
 import logging
 
+# === Инициализация Flask приложения и глобальные переменные ===
 # Настройка логирования
 logging.basicConfig(filename='mylog.log', level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -31,18 +32,48 @@ actual_version = "1.0"
 # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # DB_PATH = os.path.join(BASE_DIR, 'Calculations', 'calculation.db')
 
+# === Вспомогательные функции ===
 """ Функция для загрузки тарифов из таблицы .csv"""
 def readdata():
+    """
+    Загружает данные о тарифах из CSV-файла 'data/tarifs.csv'.
+
+    Возвращает:
+        pandas.DataFrame: Таблица с тарифами.
+    """
     return pd.read_csv('data/tarifs.csv')
 
     
 def get_db():
+    """
+    Открывает новое соединение с базой данных SQLite, если оно еще не открыто
+    для текущего контекста приложения, или возвращает существующее.
+
+    Соединение хранится в `flask.g` для повторного использования в рамках одного запроса.
+    Путь к файлу БД берется из `config.DB_PATH`.
+    Закрытие соединения обрабатывается функцией, декорированной `app.teardown_appcontext`.
+
+    Возвращает:
+        sqlite3.Connection: Объект соединения с базой данных.
+    """
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
     return db
 
 def login_required(f):
+    """
+    Декоратор для ограничения доступа к маршрутам только для аутентифицированных пользователей.
+
+    Если пользователь не аутентифицирован (т.е. ключ 'logged_in' отсутствует
+    в сессии), он будет перенаправлен на страницу входа ('login_post').
+
+    Args:
+        f (function): Функция представления (view function), которую нужно защитить.
+
+    Returns:
+        function: Обернутая функция представления.
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if "logged_in" in session:
@@ -51,6 +82,13 @@ def login_required(f):
     return decorated_function
 
 def clear_session():
+    """
+    Очищает данные текущего расчета из сессии пользователя.
+
+    Сохраняет информацию о залогиненном пользователе (`session["logged_in"]`),
+    удаляя все остальные данные из сессии. Используется для подготовки
+    к новому расчету или при переключении контекста.
+    """
     user = ""
     if "logged_in" in session:
         user = session["logged_in"]
@@ -58,10 +96,61 @@ def clear_session():
     if user != "":
         session["logged_in"] = user
 
+# === Маршруты приложения ===
+
+# --- Стартовая страница ---
 """Стартовая страница"""
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def start():
+    """
+    Стартовая страница приложения (главная страница после входа).
+
+    Назначение:
+    Предоставляет пользователю начальные опции: создать новый расчет
+    или перейти к каталогу существующих расчетов.
+
+    Методы HTTP:
+    - GET: Отображает стартовую страницу.
+    - POST: Обрабатывает выбор пользователя (создать новый расчет или открыть каталог).
+
+    Декораторы:
+    - @app.route('/', methods=['GET', 'POST']): Регистрирует эту функцию как обработчик
+      для корневого URL ('/') и разрешает методы GET и POST.
+    - @login_required: Гарантирует, что доступ к этой странице имеют только
+      аутентифицированные пользователи. Если пользователь не вошел в систему,
+      он будет перенаправлен на страницу входа.
+
+    Логика GET-запроса:
+    - Просто отображает HTML-шаблон 'Start.html'.
+
+    Логика POST-запроса:
+    - Проверяет, какая кнопка была нажата на форме в 'Start.html':
+        - Если в `request.form` присутствует ключ 'next' (например, кнопка "Создать новый расчет"):
+            1. Вызывается функция `clear_session()` для очистки данных предыдущего расчета
+               из сессии (сохраняя при этом информацию о залогиненном пользователе).
+            2. Пользователь перенаправляется на страницу создания нового расчета (маршрут 'home').
+        - Если в `request.form` присутствует ключ 'dirs' (например, кнопка "Открыть каталог изделий"):
+            1. Вызывается функция `clear_session()`.
+            2. Пользователь перенаправляется на страницу выбора существующего расчета
+               из базы данных (маршрут 'select_calculation').
+
+    Входные данные (для POST):
+    - `request.form`: Словарь, содержащий данные отправленной формы.
+        - `request.form['next']`: Если была нажата кнопка, соответствующая созданию нового расчета.
+        - `request.form['dirs']`: Если была нажата кнопка, соответствующая переходу в каталог.
+
+    Выходные данные:
+    - Для GET-запроса: Результат вызова `render_template('Start.html')`, т.е. HTML-страница.
+    - Для POST-запроса: Результат вызова `redirect()` на соответствующий URL
+      (`url_for('home')` или `url_for('select_calculation')`).
+
+    Связанные шаблоны:
+    - `templates/Start.html`: HTML-шаблон для этой страницы.
+
+    Побочные эффекты:
+    - При POST-запросе вызывается `clear_session()`, которая модифицирует объект `session`.
+    """
     if request.method == 'POST':
         # Очистка cookies и открытие формы расчёта
         if 'next' in request.form:
@@ -73,11 +162,19 @@ def start():
             return redirect(url_for('select_calculation'))
     return render_template('Start.html') #Открытие стартовой станицы
 
-
+# --- Альтернативная страница входа (GET) неактуально---
 @app.route('/login2', methods=['GET'])
 def index():
+    """
+    Отображает альтернативную страницу входа в систему (login2.html).
+
+    Маршрут: GET /login2
+    Примечание: Обработка POST-запроса для этой формы логина
+    осуществляется функцией `login3()`.
+    """
     return render_template('login2.html')
  
+# --- Выбор существующего расчета из БД ---
 @app.route('/select_calculation', methods=['GET', 'POST'])
 @login_required
 def select_calculation():
@@ -119,79 +216,31 @@ def select_calculation():
     customers = cursor.fetchall()
     return render_template('select_calculation.html', customers=[c[0] for c in customers])
 
+# --- Скачивание файла базы данных ---
 @app.route('/download_db')
+@login_required
 def download_db():
-    db_path = os.path.join('Calculations', 'calculation.db')
-    return send_file(db_path, as_attachment=True)
+    """
+    Позволяет аутентифицированному пользователю (рекомендуется) скачать файл базы данных SQLite.
 
+    Маршрут: GET /download_db
+    Внимание: Доступ к этому маршруту должен быть строго ограничен.
 
-@app.route('/Dirs2', methods=['GET'])
-def list_directories():
-    program_directory = os.path.dirname(os.path.abspath(__file__))
-    #if "path_to_dir" in session:
-    #    selected_path = program_directory +'/'+ session["path_to_dir"]
-    #else:
-    program_directory = program_directory +  '/Calculations'
-    selected_path = request.args.get('path', program_directory)
-    items = os.listdir(selected_path)
-    #Доступ только к расчётам
-    if not selected_path.startswith(program_directory):
-        return redirect(url_for('start'))
-    if selected_path != '/':
-        # Получаем путь к родительской папке
-        parent_directory = os.path.dirname(selected_path)
+    Возвращает:
+        Flask response: Файл базы данных для скачивания или redirect в случае ошибки.
+    """
+    # db_path = os.path.join('Calculations', 'calculation.db') # Старый вариант
+    db_path = config.DB_PATH # Используем config.DB_PATH для консистентности
+    if os.path.exists(db_path):
+        return send_file(db_path, as_attachment=True)
     else:
-        # Если текущий путь является корневым, то путь к родительской папке также /
-        parent_directory = '/'
-        
-    parent_relative_path = os.path.relpath(selected_path, program_directory)
-    if parent_relative_path == "..":
+        flash("Файл базы данных не найден.")
         return redirect(url_for('start'))
-    dir_exists = False
-    for item in items:
-        if os.path.isdir(os.path.join(selected_path, item)):
-            dir_exists = True
-            break
-    if dir_exists:
-        return render_template('Dirsonly.html', items=items, os=os, program_directory=program_directory, 
-                               selected_path=selected_path, parent_directory=parent_directory)
-    else:
-        file_data = []
-        for item in items:
-            file_path = os.path.join(selected_path, item)
-            if not os.path.isdir(file_path):
-                file_name, file_extension = os.path.splitext(item)
-                if file_extension == ".pickle":
-                    visible = 1
-                    edit = 1
-                    with open(file_path, 'rb') as file:
-                        session_data = pickle.load(file)
-                        if ("home_form" in session_data):
-                            if ("contract" in session_data["home_form"]):
-                                edit = 0
-                        if ("version" in session_data) and ("check" in session_data):
-                            if session_data["version"] == actual_version:
-                                if (session_data["check"] == 1) or (edit == 0):
-                                    if os.path.isfile(selected_path+"/"+file_name+".xlsx"):
-                                        visible = 0
-                    words = file_name.split("_")
-                    file_data.append({
-                        'name': session_data["home_form"]["field2"],
-                        'batch_size': session_data["home_form"]["field3"],
-                        'date': session_data["date"] if "date" in session_data else "",
-                        'comment': session_data["home_form"]["comm"] if "comm" in session_data["home_form"] else "",
-                        'cost': session_data["final_cost"] if "final_cost" in session_data else "",
-                        'costpo': session_data["final_costpo"] if "final_costpo" in session_data else "",
-                        'file_path': file_path,
-                        'visibility_download': visible,
-                        'visibility_edit': edit
-                    })
-                    
 
-    return render_template('Dirs2.html', file_data=file_data, dir_exists=dir_exists, selected_path=selected_path, os=os,
-                           parent_directory=parent_directory)
 
+# --- Копирование данных расчета из pickle в сессию (устаревшее) ---
 @app.route('/copy', methods=['POST'])
+@login_required # Добавлен декоратор
 def copy_file():
     with open(request.form["file_path"], 'rb') as file:
         session_data = pickle.load(file)
@@ -199,6 +248,7 @@ def copy_file():
         session.pop('date', None) 
     return redirect(url_for('home'))
 
+# --- Открытие данных расчета из pickle в сессию (устаревшее) ---
 @app.route('/open', methods=['POST'])
 def open_file():
     with open(request.form["file_path"], 'rb') as file:
@@ -206,7 +256,9 @@ def open_file():
         session.update(session_data) # Задание в значение session данных из предыдущего расчёта
     return redirect(url_for('home'))
 
+# --- Удаление файла расчета pickle и связанного excel (устаревшее) ---
 @app.route('/delete', methods=['POST'])
+@login_required # Добавлен декоратор
 def delete_file():
     with open(request.form["file_path"], 'rb') as file:
         session_data = pickle.load(file)
@@ -215,6 +267,7 @@ def delete_file():
     os.remove(request.form["file_path"])    
     return redirect(url_for('start'))
 
+# --- Скачивание excel файла расчета (устаревшее) ---
 @app.route('/download', methods=['POST'])
 def download_file():
     file_path = request.form["file_path"]
@@ -224,11 +277,28 @@ def download_file():
             return send_file(file_path, mimetype='text/csv', as_attachment=True) # Скачивание файла
     return redirect(url_for('home'))
 
+# --- Открытие расчета из БД по ID и загрузка в сессию ---
 @app.route('/open_file', methods=['POST'])
 @login_required
 def open_file_db():
-    file_id = int(request.form["file_id"])
-    db = sqlite3.connect(config.DB_PATH) # Используем config.DB_PATH
+    """
+    Открывает расчет из базы данных SQLite по ID и загружает его данные в сессию.
+
+    Извлекает все поля для указанного ID, обрабатывает сериализованные
+    строки как словари/списки (с использованием eval - ВНИМАНИЕ: РИСК БЕЗОПАСНОСТИ),
+    очищает текущую сессию (сохраняя пользователя) и загружает в нее новые данные.
+
+    Маршрут: POST /open_file
+    Форм-данные:
+        - file_id (int): ID расчета в базе данных.
+    """
+    file_id_str = request.form.get("file_id")
+    if not file_id_str or not file_id_str.isdigit():
+        flash("Некорректный ID файла.")
+        return redirect(url_for('select_calculation')) # или на страницу выбора
+    
+    file_id = int(file_id_str)
+    db = get_db() # Используем get_db()
     cursor = db.cursor()
     
     # Get all columns except id
@@ -246,8 +316,7 @@ def open_file_db():
     
     return redirect(url_for('home'))
 
-
-
+# --- Копирование расчета из БД по ID и загрузка в сессию (без даты) ---
 @app.route('/copy_file', methods=['POST'])
 @login_required
 def copy_file_db():
@@ -279,7 +348,7 @@ def copy_file_db():
     
     return redirect(url_for('home'))
 
-
+# --- Скачивание excel файла, связанного с расчетом из БД ---
 @app.route('/download_file', methods=['POST'])
 @login_required
 def download_file_db():
@@ -301,6 +370,7 @@ def download_file_db():
         if os.path.exists(file_path):
             return send_file(file_path, mimetype='text/csv', as_attachment=True) # Скачивание файла
 
+# --- Удаление расчета из БД по ID ---
 @app.route('/delete_file', methods=['POST'])
 @login_required
 def delete_file_db():
@@ -312,8 +382,7 @@ def delete_file_db():
     db.commit()
     return redirect(url_for('start'))
 
-
-
+# --- Обработка POST-запроса для альтернативной страницы входа неактуально---
 @app.route('/login3', methods=['POST'])
 def login3():
     username = request.form['username']
@@ -327,7 +396,7 @@ def login3():
         return 'Неправильное имя польазователя или пароль'
     return render_template('login2.html')
     
-
+# --- Основная страница входа (GET/POST) ---
 @app.route('/login', methods=['GET', 'POST'])
 def login_post():
     if request.method == 'POST':
@@ -343,65 +412,9 @@ def login_post():
             return redirect(url_for("start"))
     return render_template('login.html') #Открытие стартовой станицы
 
-"""Страница с каталогом изделий"""
-@app.route('/dirs', methods=['GET', 'POST'])
-@login_required
-def dirs():
-    file_tree = directories.generate_file_tree('Calculations')  # Путь к директории с заказчиками
-
-    clear_session()
-    if request.method == 'POST':
-        if 'prev' in request.form:
-            return redirect(url_for('start'))
-        if 'open' in request.form:
-            # Путь к файлу вида: Директория_хранения/Имя_заказчика/Наименование_изделия/Название_расчёта.pickle
-            file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder'] + ".pickle"
-            # Открытие файла полученному по этому пути
-            with open(file_path, 'rb') as file:
-                session_data = pickle.load(file)
-                session.update(session_data) # Задание в значение session данных из предыдущего расчёта
-            return redirect(url_for('home'))
-        if 'download' in request.form:
-            # Путь к файлу вида: Директория_хранения/Имя_заказчика/Наименование_изделия/Название_расчёта.csv
-            file_path = Calculations_path + request.form['parent_folder'] + "/" + request.form['child_folder'] + "/" + request.form['sub_folder']
-            if os.path.exists(file_path + ".csv") or os.path.exists(file_path + ".xlsx"):
-                with open(file_path + ".pickle", 'rb') as file:
-                    session_data = pickle.load(file)
-                    session.update(session_data)
-                if "check" not in session:
-                    flash("Расчёт был сделан в старой версии приложения. Убедитесь в его актуальности. Откройте изделие и скачайте расчёт оттуда")
-                    return render_template('Dirs.html', file_tree=file_tree)
-                elif session["check"] == 0:
-                    flash("Расчёт был недоделан, либо были внесены изменения, актуализируйте его")
-                    return redirect(url_for('home'))
-                if os.path.exists(file_path + ".xlsx"):
-                    return send_file(file_path + ".xlsx", mimetype='text/csv', as_attachment=True) # Скачивание файла
-                if os.path.exists(file_path + ".csv"):
-                    return send_file(file_path + ".csv", mimetype='text/csv', as_attachment=True) # Скачивание файла ``
-            else:
-                flash("Расчёт на такой файл ещё не был создан")
-    return render_template('Dirs.html', file_tree=file_tree)
 
 
-"""Создание списка всех заказчиков"""
-@app.route("/get_child_folders", methods=["POST"])
-def get_child_folders():
-    parent_folder = request.form["parent_folder"]
-    session["dirs1"] = parent_folder # Запись значения имени заказчика в session
-    path = Calculations_path+str(parent_folder)
-    child_folders = directories.generate_file_tree(path)
-    return jsonify({"child_folders": child_folders})
-
-
-""" Создание списка всех изделий"""
-@app.route("/get_sub_folders", methods=["POST"])
-def get_sub_folders():
-    path = Calculations_path + session['dirs1'] + "/" + str(request.form["child_folder"])
-    session["dirs2"] = str(request.form["child_folder"])# Запись значения названия изделия в session
-    sub_folders = directories.generate_file_tree2(path)
-    return jsonify({"sub_folders": sub_folders})
-
-
+# --- Страница создания нового заказчика (сохранение в БД) ---
 """ Страница с созданием нового заказчика """
 @app.route("/new_customer", methods=['GET', 'POST'])
 def cust():
@@ -422,6 +435,7 @@ def cust():
             return redirect(url_for("home"))
     return render_template('Cust.html')
 
+# --- Вспомогательная функция: очистка данных сессии ---
 def clean_session_data(session_data):
     cleaned_data = {}
     for key, value in session_data.items():
@@ -433,6 +447,7 @@ def clean_session_data(session_data):
             cleaned_data[key] = value
     return cleaned_data
 
+# --- Первая страница ввода данных по изделию ---
 """Первая страница с информацией по изделию"""
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
@@ -482,7 +497,7 @@ def home():
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('home.html', file_tree=file_tree)
 
-
+# --- Вторая страница ввода данных (производственная информация) ---
 """Страница с информацией по производству изделия"""
 @app.route('/second', methods=['GET', 'POST'])
 @login_required
@@ -504,6 +519,7 @@ def second():
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('second.html')
 
+# --- Страница просмотра тарифов ---
 """Страница с тарифами"""
 @app.route('/tariffs', methods=['GET', 'POST'])
 @login_required
@@ -521,7 +537,7 @@ def tariffs():
                 flash(msg)
     return render_template('tariffs.html', tables=[df.to_html(classes='table', index=False, header="true")])
 
-
+# --- Страница редактирования тарифов ---
 """редактируемая страница с тарифами"""
 @app.route('/edittable', methods=['POST', 'GET'])
 @login_required
@@ -540,6 +556,7 @@ def edittable():
             return redirect(url_for('tariffs'))
     return render_template('edittable.html', df = df, tables=[df.to_html(classes='table', index=False, header="true")])
 
+# --- Страница данных по SMD монтажу ---
 """Страница с смд монтажом"""
 @app.route('/SMD', methods=['GET', 'POST'])
 @login_required
@@ -592,7 +609,7 @@ def smd():
             return send_file('Documentation/Template.xls', as_attachment=True)
     return render_template('SMD.html', df=df, df2=df2, edit=edit, df3=df3, edit2=edit2, df4=df4)
 
-"""Функция обработки вызванной таблицы"""
+# --- Обработка загрузки файла (BOM/PAP для SMD) ---
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
@@ -607,7 +624,7 @@ def upload():
     else:
         return 'Файл не был загружен'
     
-"""Страница с комплектацией"""
+# --- Страница данных по комплектации ---
 @app.route('/Comp', methods=['GET', 'POST'])
 @login_required
 def comp():
@@ -634,7 +651,7 @@ def comp():
             tb.update_table("THT", request.form, df)
     return render_template('Comp.html', df=df, df2=df2, edit=edit)
     
-"""THT монтаж"""
+# --- Страница данных по THT монтажу ---
 @app.route('/THT', methods=['GET', 'POST'])
 @login_required
 def tht():
@@ -661,8 +678,7 @@ def tht():
             tb.update_table("THT", request.form, df)
     return render_template('THT.html', df=df, df2=df2, edit=edit)
 
-
-"""Волновая пайка"""
+# --- Страница данных по волновой пайке ---
 @app.route('/wave', methods=['GET', 'POST'])
 @login_required
 def wave():
@@ -689,7 +705,7 @@ def wave():
             tb.update_table("Wave", request.form, df)
     return render_template('Wave.html', df=df, df2=df2, edit=edit)
 
-"""Лакировка HRL"""
+# --- Страница данных по лакировке HRL ---
 @app.route('/HRL', methods=['GET', 'POST'])
 @login_required
 def HRL():
@@ -716,7 +732,7 @@ def HRL():
             tb.update_table("HRL", request.form, df)
     return render_template('HRL.html', df=df, df2=df2, edit=edit)
 
-"""Ручной монтаж"""
+# --- Страница данных по ручному монтажу ---
 @app.route('/hand', methods=['GET', 'POST'])
 @login_required
 def hand():    
@@ -743,8 +759,7 @@ def hand():
                 return redirect(url_for('test'))
     return render_template('Hand.html', df=df, df2=df2, edit=edit)
 
-
-"""Тестирование"""
+# --- Страница данных по тестированию ---
 @app.route('/test', methods=['GET', 'POST'])
 @login_required
 def test():
@@ -776,8 +791,7 @@ def test():
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('Test.html', df=df, df2=df2, edit=edit, rows=rows)
 
-
-"""Отмывка"""
+# --- Страница данных по отмывке ---
 @app.route('/clear', methods=['GET', 'POST'])
 @login_required
 def clear():
@@ -809,8 +823,7 @@ def clear():
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('Clear.html', df = df, edit=edit, data=data, df2=df2)
 
-
-"""Ручная лакировка"""
+# --- Страница данных по ручной лакировке ---
 @app.route('/Handv', methods=['GET', 'POST'])
 @login_required
 def handv():
@@ -841,8 +854,7 @@ def handv():
             tb.update_table("Handv", request.form, df)
     return render_template('Handv.html', df=df, df2=df2, edit=edit)
 
-
-"""Разделение"""
+# --- Страница данных по разделению плат ---
 @app.route('/separation', methods=['GET', 'POST'])
 @login_required
 def sep():
@@ -875,8 +887,7 @@ def sep():
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('Sep.html', df=df, edit=edit, time=time, df2=df2)
 
-
-"""Рентгенконтроль"""
+# --- Страница данных по рентген-контролю ---
 @app.route('/xray', methods=['GET', 'POST'])
 @login_required
 def xray():
@@ -908,6 +919,7 @@ def xray():
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('Xray.html', df=df, df2=df2, edit=edit)
 
+# --- Страница данных по упаковке ---
 @app.route('/pack', methods = ['GET', 'POST'])
 @login_required
 def pack():
@@ -939,7 +951,7 @@ def pack():
                 flash(msg) # Вывод всплывающего уведомления о некорректном заполнении
     return render_template('Pack.html', df=df, df2=df2, edit=edit)
 
-"""Дополнительные работы"""
+# --- Страница дополнительных работ ---
 @app.route('/additional', methods=['GET', 'POST'])
 @login_required
 def add():
@@ -957,8 +969,7 @@ def add():
             return redirect(url_for('info'))
     return render_template('Add.html', df2=df2)
 
-
-"""Страница с дополнительными затратами: прибыль + НДС"""
+# --- Страница дополнительных затрат (прибыль, НДС) ---
 @app.route('/info', methods=['GET', 'POST'])
 @login_required
 def info():
@@ -985,8 +996,7 @@ def info():
             return redirect(url_for('tariffs'))
     return render_template('Info.html', df=df, edit=edit, df2=df2)
 
-
-"""Финальная таблица экспорта"""
+# --- Финальная страница с итоговыми данными и экспортом в Excel ---
 @app.route('/session_data', methods=['GET', 'POST'])
 @login_required
 def session_data():
@@ -1172,6 +1182,7 @@ def session_data():
     return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table = table,
                            tables3=[df[2].to_html(classes='table', index=False, header="true")])
 
+# --- Закрытие соединения с БД после каждого запроса ---
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)

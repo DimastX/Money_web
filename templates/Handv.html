@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и внешние скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <!-- Подключение скрипта Checks.js (для управления видимостью элементов) -->
+    <script src="scripts/Checks.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <!-- вывод flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -22,22 +27,27 @@
     {% endif %}
     {% endwith %}
     <div class="container">
-        <form id = "myForm" method="POST">                
+        <!-- Основная форма для параметров ручных операций (вариант Handv) -->
+        <form id = "myForm" method="POST">
             <br>
+            <!-- Кнопки навигации: Назад, Тарифы, Вперёд -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Секция: Включение/выключение ручной установки выводных компонентов -->
             <fieldset>
                 <legend>Ручная лакировка</legend>
                 <div class="form-group">
-                    <input type="checkbox" id="Handv" name="Handv" value="1" onclick="check('Handv', 'Handv_off')"
+                    <!-- Чекбокс для активации/деактивации ручной установки -->
+                    <input type="checkbox" id="Handv" name="Handv" value="1" onclick="check('Handv', 'Handv_off')" 
                            {% if session.get('Handv_form')%} {% if session['Handv_form']['Handv'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Handv">Выполнять ручную лакировку? </label>
                 </div>
             </fieldset>
             <table>
                 <tr>
+                    <!-- Левая колонка: Ввод количества выводных компонентов -->
                     <td style="width: 30%;">
                         <div class="form-group" id="Handv_off">
                             <label>Выберите ручной лакировки</label>
@@ -87,6 +97,7 @@
                     </td>
                 </tr>
             </table>
+            <!-- Секция "аккордеон" для отображения детализированных данных по стоимости ручной установки -->
             <div class="panel-group" id="accordion_dat">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -106,6 +117,7 @@
                                             <th>Значение</th>
                                         </tr>
                                     </thead>
+                                    <!-- Поля для отображения различных расчетных параметров ручной установки (только чтение) -->
                                     <td>
                                         <input type="text" class="form-control" readonly value="Количество ПУ в партии">
                                         <input type="text" class="form-control" readonly value="Времени на лакировку ПУ">
@@ -183,8 +195,11 @@
             </div>
             <br>
         </form>
+        <!-- Конец основной формы -->
     </div>
+    <!-- Начало блока JavaScript -->
     <script>
+        // Функция, вызываемая при полной загрузке окна
         window.onload = function(){
             check('Handv', 'Handv_off');
             checkOption('brush', 'dimentions');
@@ -213,11 +228,14 @@
             }
         }
 
+        // Функция для управления видимостью секции на основе состояния чекбокса
+        // master: ID чекбокса-переключателя
+        // slave: ID секции, чья видимость управляется (через класс 'disable_section')
         function check(master, slave) {
           if (document.getElementById(master).checked) {
-            document.getElementById(slave).classList.remove('disable_section')
+            document.getElementById(slave).classList.remove('disable_section'); // Показать секцию
           } else {
-            document.getElementById(slave).classList.add('disable_section')
+            document.getElementById(slave).classList.add('disable_section');    // Скрыть секцию
           }
         }
 
@@ -286,5 +304,6 @@
             }
         }
     </script>
+    <!-- Конец блока JavaScript -->
 </body>
 </html>

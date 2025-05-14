@@ -405,8 +405,9 @@
                 time_multi =  Math.ceil((document.getElementById('DDR').value * parseFloat({{df['Значение'][1]}}) + 
                             document.getElementById('PCI').value * parseFloat({{df['Значение'][2]}}) + 
                             document.getElementById('points').value * parseFloat({{df['Значение'][5]}}) + 
-                            document.getElementById('points_2').value * parseFloat({{df['Значение'][11]}})) * pc + pc * parseFloat({{df['Значение'][11]}})); // И еще одно умножение на pc
-            } else if (THT_type[1].checked){ // Если выбраны данные симуляции для 1-й стороны
+                            document.getElementById('points_2').value * parseFloat({{df['Значение'][11]}})) * pc+ 
+                            pc * parseFloat({{df['Значение'][11]}}));
+            } else if (THT_type[1].checked){
                 time_multi = parseFloat(document.getElementById('sim_multi').value);
             }
 
@@ -443,10 +444,8 @@
             // Дополнительное время и корректировка для первой стороны
             time_multi += Math.ceil((parseFloat({{df['Значение'][4]}})));
             time_multi *= parseFloat({{df['Значение'][0]}});
-            const start = parseFloat({{df['Значение'][3]}}) * prev / 3600; // Время на переналадку для 1-й стороны
-            const prod = time_multi * multi_num / 3600 / 2; // Предполагается 2 машины
-            
-            // Расчет итоговых времен и стоимостей для 1-й стороны
+            const start = parseFloat({{df['Значение'][3]}}) * prev / 3600;
+            const prod = time_multi * multi_num / 3600 / 2; //2 машины
             const time_all = Math.ceil((prod));
             const time_all_p = time_all;
             const time_re_all = Math.ceil((start));
@@ -464,11 +463,11 @@
             let start2 = 0;
             if (sides == 2){
                 time_multi2 += Math.ceil((parseFloat({{df['Значение'][4]}})));                
-                start2 = parseFloat({{df['Значение'][3]}}) * prev / 3600; // Время на переналадку для 2-й стороны
+                start2 = parseFloat({{df['Значение'][3]}}) * prev / 3600;
             }
             time_multi2 *= parseFloat({{df['Значение'][0]}});
             
-            const prod2 = time_multi2 * multi_num / 3600 / 2; // Предполагается 2 машины
+            const prod2 = time_multi2 * multi_num / 3600 / 2; //2 машины
             const time_all2 = Math.ceil((prod2));
             const time_all2_p = time_all2;
             const time_re_all2 = Math.ceil((start2));

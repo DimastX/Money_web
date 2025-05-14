@@ -3,3 +3,5 @@ mylog.log
 app.log
 .venv/
 __pycache__/
+.cursor/
+.supercode/

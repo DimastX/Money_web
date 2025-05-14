@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и внешние скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
@@ -9,9 +10,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
-    <!-- вывод flash-сообщений -->
+    <!-- Начало тела документа -->
+    <!-- Блок для вывода flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="alert">
@@ -23,20 +26,25 @@
     {% endif %}
     {% endwith %}
     <div class="container">
+        <!-- Основная форма для ввода данных о дополнительных работах -->
         <form id = "myForm" method="POST">
             <br>
+            <!-- Кнопки навигации: Назад, Тарифы, Вперёд -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Секция: Включение/выключение дополнительных работ -->
             <fieldset>
                 <legend>Дополнительные работы</legend>
                 <div class="form-group">
+                    <!-- Чекбокс для активации/деактивации дополнительных работ -->
                     <input type="checkbox" id="Add" name="Add" value="1" onclick="check_all('Add', 'Add_off')"
                            {% if session.get('Add_form') %} {% if session['Add_form']['Add'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Add">Есть дополнительные работы? </label>
                 </div>
             </fieldset>
+            <!-- Таблица для ввода данных по дополнительным работам (видимость управляется чекбоксом Add) -->
             <div class="table" id="Add_off">
                 <table>
                     <thead>
@@ -50,6 +58,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Строка для первой дополнительной работы -->
                         <tr>
                             <td>
                                 <input type="text" name="title1" id="title1" class="form-control" 
@@ -97,6 +106,7 @@
                                         value="{{ session['Add_form']['money_all1'] if session.get('Add_form') else '' }}">
                             </td>
                         </tr>
+                        <!-- Строка для второй дополнительной работы -->
                         <tr>
                             <td>
                                 <input type="text" name="title2" id="title2" class="form-control" 
@@ -144,6 +154,7 @@
                                         value="{{ session['Add_form']['money_all2'] if session.get('Add_form') else '' }}">
                             </td>
                         </tr>     
+                        <!-- Строка для третьей дополнительной работы -->
                         <tr>
                             <td>
                                 <input type="text" name="title3" id="title3" class="form-control" 
@@ -191,6 +202,7 @@
                                         value="{{ session['Add_form']['money_all3'] if session.get('Add_form') else '' }}">
                             </td>
                         </tr>
+                        <!-- Строка для четвертой дополнительной работы -->
                         <tr>
                             <td>
                                 <input type="text" name="title4" id="title4" class="form-control" 
@@ -238,6 +250,7 @@
                                         value="{{ session['Add_form']['money_all4'] if session.get('Add_form') else '' }}">
                             </td>
                         </tr>                        
+                        <!-- Строка для пятой дополнительной работы -->
                         <tr>
                             <td>
                                 <input type="text" name="title5" id="title5" class="form-control" 
@@ -285,6 +298,7 @@
                                         value="{{ session['Add_form']['money_all5'] if session.get('Add_form') else '' }}">
                             </td>
                         </tr>
+                        <!-- Строка для шестой дополнительной работы -->
                         <tr>
                             <td>
                                 <input type="text" name="title6" id="title6" class="form-control" 
@@ -332,6 +346,7 @@
                                         value="{{ session['Add_form']['money_all6'] if session.get('Add_form') else '' }}">
                             </td>
                         </tr>
+                        <!-- Итоговая строка (только для чтения) -->
                         <tr>
                             <td></td>
                             <td></td>
@@ -350,6 +365,7 @@
                         </tr>
                     </tbody>
                 </table>  
+                <!-- Секция "аккордеон" для отображения данных по стоимости ICT (если применимо) -->
                 <div class="panel-group" id="accordion_dat">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -389,8 +405,11 @@
                 </div>  
             </div>
         </form>
+        <!-- Конец основной формы -->
     </div>
+    <!-- Начало блока JavaScript -->
     <script>
+        // Получение ссылок на элементы DOM для всех 6 строк и итоговых полей
         const time_all1 = document.getElementById("time_all1");
         const time_pc1 = document.getElementById("time_pc1");
         const money_all1 = document.getElementById("money_all1");
@@ -432,90 +451,105 @@
         const sum_money_pc = document.getElementById("money_pc");
         const sum_money_all = document.getElementById("money_all");
 
-        const chckbx = document.getElementById('Add');
+        const chckbx = document.getElementById('Add'); // Чекбокс для активации доп. работ
 
-        //ПВЫзывается при запуске
+        // Функция, вызываемая при полной загрузке окна
         window.onload = function(){
-            check_all('Add', 'Add_off');
-            fill_all_lines()
+            check_all('Add', 'Add_off'); // Управление видимостью таблицы и первоначальный расчет
+            fill_all_lines(); // Заполнение всех строк (расчет)
         }
 
-        //список значений, изменения которых отслеживаются на странице
+        // Список ID элементов, изменения в которых отслеживаются для перерасчета
         var ids = ['time_pc1', 'time_pc2', 'time_pc3', 'time_pc4', 'time_pc5', 'time_pc6',
         'area1', 'area2', 'area3', 'area4', 'area5', 'area6'];
+        // Переменные для хранения суммарных значений ICT
         let time_all_ICT = 0;
         let time_pc_ICT = 0;
         let money_all_ICT = 0;
         let money_pc_ICT = 0;
 
-        //В случае изменения какого-то значения, пересчитается заполнение строк
+        // Добавление обработчиков события 'change' для отслеживаемых элементов
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
-                fill_all_lines();
+                fill_all_lines(); // При изменении значения, пересчитать все строки
             });
         }
 
-        //Функция, вызывающая проверку нажатия на чекбокс и расчёт всех строк
+        // Функция, вызывающая проверку нажатия на чекбокс и расчёт всех строк
+        // master: ID чекбокса-переключателя
+        // slave: ID секции, чья видимость управляется
         function check_all(master, slave){
-            check(master, slave);
-            fill_all_lines();
+            check(master, slave); // Управление видимостью
+            fill_all_lines();     // Перерасчет всех строк
         }
 
 
-        //Расчёт стоимости для 6ти строк
+        // Расчёт стоимости для 6-ти строк
         function fill_all_lines(){
+            // Сброс суммарных значений ICT перед каждым перерасчетом
             time_all_ICT = 0;
             time_pc_ICT = 0;
             money_all_ICT = 0;
             money_pc_ICT = 0;
+            // Расчет для каждой из 6 строк
             fill_line(time_all1, time_pc1, money_all1, money_pc1, area1);
             fill_line(time_all2, time_pc2, money_all2, money_pc2, area2);
             fill_line(time_all3, time_pc3, money_all3, money_pc3, area3);
             fill_line(time_all4, time_pc4, money_all4, money_pc4, area4);
             fill_line(time_all5, time_pc5, money_all5, money_pc5, area5);
             fill_line(time_all6, time_pc6, money_all6, money_pc6, area6);
-            sum();
+            sum(); // Расчет итоговой суммы
         }
 
 
-        // Расчёт стоимости на партию, на 1 ПУ, а так же времени на партию по заданому времени на 1 ПУ      
+        // Расчёт стоимости на партию, на 1 ПУ, а так же времени на партию по заданному времени на 1 ПУ      
+        // time_all: элемент для времени на всю партию
+        // time_pc: элемент для времени на ПУ
+        // money_all: элемент для стоимости на всю партию
+        // money_pc: элемент для стоимости на ПУ
+        // area: элемент выбора участка
         function fill_line(time_all, time_pc, money_all, money_pc, area){
-            const time = parseInt(time_pc.value);
-            let coef = 0;
+            const time = parseInt(time_pc.value); // Время на ПУ в секундах
+            let coef = 0; // Коэффициент стоимости часа работы участка
+            // Расчет времени на всю партию (в часах), используется значение из сессии (размер партии)
             t_all = Math.ceil(parseInt({{ session['home_form']['field3']}}) * time/ 3600);
             time_all.value = t_all;
-            let ICT = 0
-            if (area.value=="1"){
+            let ICT = 0; // Флаг, указывающий, является ли участок ICT
+            // Определение коэффициента в зависимости от выбранного участка (значения из сессии df2)
+            if (area.value=="1"){ // Тестирование
                 coef = {{ df2['Стоимость, руб/ч'][9]}};
-            } else if (area.value=="2"){
+            } else if (area.value=="2"){ // Ручной монтаж
                 coef = {{ df2['Стоимость, руб/ч'][8]}};
-            } else if (area.value=="3"){
+            } else if (area.value=="3"){ // Линия поверхностного монтажа
                 coef = {{ df2['Стоимость, руб/ч'][0]}};
-            } else if (area.value=="4"){
+            } else if (area.value=="4"){ // Контроль качества
                 coef = {{ df2['Стоимость, руб/ч'][20]}};
-            } else if (area.value=="5"){
+            } else if (area.value=="5"){ // ICT
                 coef = {{ df2['Стоимость, руб/ч'][13]}};
-                ICT = 1;
+                ICT = 1; // Установка флага ICT
             }
-            let money_pc_temp = Math.ceil(time * coef / 3600)
-            let money_all_temp = Math.ceil(time_all.value * coef)
+            // Расчет стоимости на ПУ и на всю партию
+            let money_pc_temp = Math.ceil(time * coef / 3600);
+            let money_all_temp = Math.ceil(time_all.value * coef);
             money_pc.value = money_pc_temp;
             money_all.value = money_all_temp; 
+            // Если участок - ICT, сохранить его значения для отдельного отображения
             if (ICT == 1){
             time_all_ICT = t_all;
-            console.log(ICT);
+            console.log(ICT); // Отладочный вывод
             time_pc_ICT = time;
             money_all_ICT = money_all_temp;
             money_pc_ICT = money_pc_temp;
             }
-            return ICT
+            return ICT; // Возврат флага ICT (не используется далее)
         }
 
         
-        //Сложение всех строк
+        // Сложение всех строк и обновление итоговых полей
         function sum(){
-            if (chckbx.checked){
+            if (chckbx.checked){ // Если дополнительные работы активны
+                // Суммирование времени и стоимости по всем 6 строкам
                 sum_time_pc.value = parseInt(time_pc1.value) + parseInt(time_pc2.value) +parseInt(time_pc3.value) +
                 parseInt(time_pc4.value) + parseInt(time_pc5.value) +parseInt(time_pc6.value) + " с";
                 sum_time_all.value = parseInt(time_all1.value) + parseInt(time_all2.value) + parseInt(time_all3.value) +
@@ -525,11 +559,12 @@
                 sum_money_all.value = parseInt(money_all1.value) + parseInt(money_all2.value) +parseInt(money_all3.value) +
                 parseInt(money_all4.value) + parseInt(money_all5.value) + parseInt(money_all6.value) + " руб";
                 
+                // Обновление полей для суммарных значений ICT
                 document.getElementById("time_pc_ICT").value = time_pc_ICT + " с";
                 document.getElementById("time_all_ICT").value = time_all_ICT + " ч";
                 document.getElementById("money_pc_ICT").value = money_pc_ICT + " руб";
                 document.getElementById("money_all_ICT").value = money_all_ICT + " руб";
-            } else {
+            } else { // Если дополнительные работы неактивны, очистить итоговые поля
                 sum_time_pc.value = "-";
                 sum_time_all.value = "-";
                 sum_money_pc.value = "-";
@@ -542,14 +577,17 @@
         }
 
 
-        //Проверка нажатия на чекбокс. В случае, если нажат, всё остальное перестаёт быть readonly
+        //Проверка нажатия на чекбокс. В случае, если нажат, всё остальное перестаёт быть readonly (управляет классом 'disable_section')
+        // master: ID чекбокса-переключателя
+        // slave: ID секции, чья видимость управляется
         function check(master, slave) {
           if (document.getElementById(master).checked) {
-            document.getElementById(slave).classList.remove('disable_section')
+            document.getElementById(slave).classList.remove('disable_section'); // Показать секцию
           } else {
-            document.getElementById(slave).classList.add('disable_section')
+            document.getElementById(slave).classList.add('disable_section');    // Скрыть секцию
           }
         }
     </script>
+    <!-- Конец блока JavaScript -->
 </body>
 </html>

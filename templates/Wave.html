@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
@@ -8,9 +9,11 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
-    <!-- вывод flash-сообщений -->
+    <!-- Начало тела документа -->
+    <!-- Блок для вывода flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="alert">
@@ -22,12 +25,15 @@
     {% endif %}
     {% endwith %}
     <div class="container">
+        <!-- Основная форма для параметров волновой пайки -->
         <form id = "myForm" method="POST">
             <br>
+            <!-- Кнопки навигации -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Секция: Включение/выключение волновой пайки -->
             <fieldset>
                 <legend>Волновая пайка</legend>
                 <div class="form-group">
@@ -36,9 +42,11 @@
                     <label for="Wave">Выполнять волновую пайку? </label>
                 </div>
             </fieldset>
+            <!-- Основной блок с параметрами волновой пайки (видимость управляется чекбоксом Wave) -->
             <div class="form-group" name="Wave_off" id="Wave_off">
                 <table>
                     <tr>
+                        <!-- Левая колонка: Количество компонентов, оснасток, тип платы -->
                         <td style="width: 33%;">
                             <div class="form-group">
                                 <label>Количество компонентов</label>
@@ -56,6 +64,7 @@
                             {% if session.get('Wave_form')%} {% if session['Wave_form']['Wave_type'] %} checked="checked" {% endif %} {% endif %}>
                         <label for="Wave">Это материнская или серверная плата? </label>
                         </td>
+                        <!-- Средняя колонка: Итоговые стоимости (метки), опция симуляции -->
                         <td style="width: 33%;">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
@@ -72,6 +81,7 @@
                                 value="{{ session['Wave_form']['Wave_sim_v'] if session.get('Wave_form') else '0' }}">
                             </div>
                         </td>
+                        <!-- Правая колонка: Поля для отображения итоговой стоимости (только чтение) -->
                         <td>
                             <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
                             <input type="text" name="money_all_f" id="money_all_f" class="form-control" readonly> 
@@ -79,6 +89,7 @@
                     </tr>
                 </table>
             </div>
+            <!--  Данные по стоимости волновой пайки (детализированные расчетные поля) -->
             <div class="panel-group" id="accordion_dat">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -136,6 +147,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Данные для волновой пайки (таблица из df и управление редактированием) -->
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -190,15 +202,24 @@
             </div>
         </form>
     </div>
+    <!-- Начало блока JavaScript -->
     <script>
+        // Функция, выполняемая при полной загрузке окна
         window.onload = function(){
+            // Первоначальный расчет и отображение стоимостей
             wave_amount();
+            // Установка начальной видимости секции параметров волновой пайки
             check('Wave', 'Wave_off');
+            // Установка начальной видимости поля времени симуляции
             check('Wave_sim', 'Wave_sim_off');
+            // Повторный расчет (возможно, избыточен, если wave_amount учитывает начальные состояния)
             wave_amount();
         }
 
 
+        // Функция для управления видимостью секции на основе состояния чекбокса (дублирует логику из внешних скриптов)
+        // master: ID чекбокса-переключателя
+        // slave: ID секции, чья видимость управляется (через класс 'disable_section')
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
@@ -207,22 +228,26 @@
           }
         }
         
-
+        // Массив ID элементов формы, для которых будут установлены обработчики событий
         ids = ["Wave", "Wave_num", "Wave_eq_num", "Wave_type", "Wave_sim", "Wave_sim_off"];
 
+        // Добавление обработчиков события 'change' для элементов из массива ids
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
+                // При изменении любого из этих параметров, обновить видимость зависимых полей и пересчитать стоимость
                 check('Wave', 'Wave_off');
                 check('Wave_sim', 'Wave_sim_off');
                 wave_amount();
             });
         }
 
-        var chckbx = document.getElementById('Wave');
-        var chckbx2 = document.getElementById('Wave_type');
-        var chckbx3 = document.getElementById('Wave_sim')
+        // Получение ссылок на ключевые чекбоксы
+        var chckbx = document.getElementById('Wave');      // Чекбокс: Выполнять волновую пайку?
+        var chckbx2 = document.getElementById('Wave_type'); // Чекбокс: Это материнская или серверная плата?
+        var chckbx3 = document.getElementById('Wave_sim')   // Чекбокс: Использовать симуляцию?
 
+        // Основная функция для расчета и отображения стоимости волновой пайки
         function wave_amount(){
             var batch = parseInt({{ session['home_form']['field3']}});
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
@@ -335,5 +360,6 @@
             }
         }
     </script>
+    <!-- Конец блока JavaScript -->
 </body>
 </html>

@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные и подключения -->
     <title>money.contract</title>
+    <!-- Подключение стилей Bootstrap и кастомных стилей -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <!-- Подключение скриптов jQuery и Bootstrap -->
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
-    <!-- вывод flash-сообщений -->
+    <!-- Начало тела документа -->
+    <!-- Блок для вывода flash-сообщений (например, об ошибках валидации) -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="alert">
@@ -24,72 +29,101 @@
     {% endwith %}
     <div class="container">
         <br>
+        <!-- Начало основной формы для ввода данных по изделию -->
         <form id = "myForm" method="POST">
+            <!-- Кнопки навигации и действий -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button> 
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <button type="submit" class="btn btn-primary" name="new">Новый заказчик</button>
+            
             <div class="form-group">
                 <br>
+                <!-- Блок для чекбокса "Договор подписан" -->
                 <div class="form-group">
                     <input type="checkbox" id="contract" name="contract" value="1"
                            {% if session.get('home_form')%} {% if session['home_form']['contract']%} checked="checked" {% endif %} {% endif %}>
                     <label for="contract">По этому расчёту подписан договор? </label>   
                 </div>
+                <!-- Конец блока чекбокса "Договор подписан" -->
                 
-                <!-- New numeric field that shows/hides based on checkbox -->
+                <!-- Поле для ввода SAP кода, отображается если отмечен чекбокс "Договор подписан" -->
                 <div class="form-group" id="SAP_codeField" style="display: none;">
                     <label for="SAP_code">SAP код</label>
                     <input type="number" class="form-control" id="SAP_code" name="SAP_code" min="1" step="1"
                            value="{{ session['home_form']['SAP_code'] if session.get('home_form') and 'SAP_code' in session['home_form'] else '' }}">
                 </div>
+                <!-- Конец поля для SAP кода -->
+
+                <!-- Поле: Заказчик (выпадающий список) -->
+                <div class="form-group">
                 <label>Заказчик:</label>
                 <a href="#" data-toggle="tooltip" title="Выбирается из списка. В случае если заказчика нет в выпадающем меню, добавьте его через каталог изделий">
+                        <!-- Иконка подсказки -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                         <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
                     </svg>
                 </a>
                 <select name="field1" class="form-control">
-                    <option selected hidden></option>
+                        <option selected hidden></option> <!-- Пустой скрытый элемент для placeholder -->
+                        <!-- Динамическое заполнение списка заказчиков из file_tree (передается из Flask) -->
                     {% for folder in file_tree | sort %}
                     <option value="{{ folder }}" {% if session.get('home_form')%} {% if session['home_form']['field1'] == folder %} selected {% endif %} {% endif %}>{{ folder }}</option>
                     {% endfor %}
                 </select>
             </div>
+                <!-- Конец поля Заказчик -->
+
+                <!-- Поле: Изделие (текстовый ввод) -->
             <div class="form-group">
                 <label>Изделие:</label>
                 <input type="text" pattern="[^\\\/]*" class="form-control" name="field2" value="{{ session['home_form']['field2'] if session.get('home_form') else '' }}">
             </div>
+                <!-- Конец поля Изделие -->
+
+                <!-- Поле: Партия (числовой ввод) -->
             <div class="form-group">
                 <label>Партия:</label>
                 <input type="number" class="form-control" name="field3" min="1" step="1" value="{{ session['home_form']['field3'] if session.get('home_form') else '' }}">
             </div>
+                <!-- Конец поля Партия -->
+
+                <!-- Поле: Комментарий (текстовый ввод) -->
             <div class="form-group">
                 <label>Комментарий:</label>
                 <input class="form-control" pattern="[^\\\/]*" name="comm" id="comm"
                     value="{{ session['home_form']['comm'] if session.get('home_form') else '' }}">
+                </div>
+                <!-- Конец поля Комментарий -->
             </div>
         </form>
+        <!-- Конец основной формы -->
     </div>
+
+    <!-- JavaScript для инициализации всплывающих подсказок и управления видимостью поля SAP кода -->
     <script>
         $(document).ready(function(){
+            // Инициализация Bootstrap tooltips (всплывающие подсказки)
             $('[data-toggle="tooltip"]').tooltip();
             
-            // Handle checkbox change
+            // Обработчик изменения состояния чекбокса "Договор подписан"
             $('#contract').change(function() {
-                if($(this).is(':checked')) {
-                    $('#SAP_codeField').show();
-                } else {
-                    $('#SAP_codeField').hide();
+                if($(this).is(':checked')) { // Если чекбокс отмечен
+                    $('#SAP_codeField').show(); // Показать поле SAP кода
+                } else { // Если чекбокс не отмечен
+                    $('#SAP_codeField').hide(); // Скрыть поле SAP кода
                 }
             });
             
-            // Check initial state
+            // Проверка начального состояния чекбокса при загрузке страницы
+            // (для случаев, когда форма загружается с уже отмеченным чекбоксом, например, при редактировании)
             if($('#contract').is(':checked')) {
                 $('#SAP_codeField').show();
             }
         });
     </script>
+    <!-- Конец JavaScript -->
 </body>
+<!-- Конец тела документа -->
 </html>

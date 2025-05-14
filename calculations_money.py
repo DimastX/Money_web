@@ -1,38 +1,55 @@
 import math
 import pandas as pd
 
+# === Функции для калькуляции производственных затрат ===
 
-"""Расчёт затрат на отмывку"""
+# --- Расчёт параметров для операции отмывки ---
 def clear_calculations(session, df):
+    # Расчет количества мультизаготовок (МЗ), помещающихся по ширине рамки отмывки
     by_x = math.floor(df['Значение'][3] / float(session['second_form']['width']))  #Ширина рамки отмывки/ширину мз 
+    # Расчет количества мультизаготовок (МЗ), помещающихся по длине рамки отмывки
     by_y = math.floor(df['Значение'][2] / float(session['second_form']['length']))
+    # Общее количество МЗ в рамке
     number_multi = int(by_x * by_y) #Количество мультизаготовок, помещающихся в рамке отмывки одновременно
+    # Количество плат в одной МЗ
     number_items = int(session['second_form']['length_num']) * int(session['second_form']['width_num']) #Количество плат в мз
+    # Общее количество плат в рамке отмывки
     number_smallitems = int(number_items * number_multi) #Количество плат в рамке отмывки одновременно
+    
+    # Корректировка, если размер партии меньше, чем вместимость рамки
     if int(session['home_form']['field3']) < number_smallitems: #Если размер партии меньше, чем количество плат в отмывке одновременно
         number_smallitems = int(session['home_form']['field3'])
-        number_multi = number_smallitems / number_items
+        number_multi = number_smallitems / number_items # Пересчитываем количество МЗ исходя из размера партии
     return [number_multi, number_items, number_smallitems] #Количество мз в рамке отмывки, количество плат в мз, количество плат в рамке отмывки
 
 
-"""Расчёт времени на разделение одной мз"""
+# --- Расчёт времени на операцию разделения мультизаготовок ---
 def sep_calculations(session, df):
+    # Расстояние, проходимое инструментом по оси X для одной МЗ
     by_x = float(session['second_form']['width']) * (int(session['second_form']['length_num']) + 1) #ширина мз * (количество плат в длину + 1) = расстояние пройденное по х
+    # Расстояние, проходимое инструментом по оси Y для одной МЗ
     by_y = float(session['second_form']['length']) * (int(session['second_form']['width_num']) + 1) 
+    # Количество плат в одной МЗ
     number_items = int(session['second_form']['length_num']) * int(session['second_form']['width_num']) #Количество пп в мз
+    # Общее количество МЗ в партии
     number_multi = int(session['home_form']['field3']) /  number_items #Количество мз
+    # Время скрайбирования на одну плату
     time_scrub = math.ceil((by_x + by_y) / df['Значение'][0] * df['Значение'][3] / number_items) #(Расстояние / скорость скрайбирования) * поправочный коэф-т / количество пп в мз
+    # Время на перемычки (учитывается как константа)
     time_jump = df['Значение'][1] * df['Значение'][4] #
+    # Время SAR на одну плату
     time_sar = math.ceil((by_x + by_y) / df['Значение'][2]  * df['Значение'][5]/ number_items) #(Расстояние / скорость SAR) * поправочный коэф-т / количество пп в мз
     time = [time_scrub, time_jump, time_sar, number_multi, number_items]
     return time
     
 
-
+# --- Вспомогательная функция: преобразование строки с числом и единицей измерения в целое число ---
+# Пример: "100 руб" -> 100
 def strtoint(string):
-    if string != "-":
-        return int(string.split(" ")[0])
-    return "-"
+    if string != "-": # Проверка на пустое значение (обозначенное как "-")
+        return int(string.split(" ")[0]) # Берем первую часть строки до пробела и преобразуем в int
+    return "-" # Возвращаем "-", если исходная строка была такой
+
 """Создание итоговой таблицы"""
 def create_export(session):
     batch = int(session['home_form']['field3'])

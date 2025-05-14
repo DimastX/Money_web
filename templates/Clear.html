@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и внешние скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <!-- Подключение скрипта Checks.js (вероятно, для управления видимостью элементов) -->
     <script src="scripts/Checks.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <!-- вывод flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -23,22 +27,28 @@
     {% endif %}
     {% endwith %}
     <div class="container">
+        <!-- Основная форма для параметров отмывки -->
         <form id = "myForm" method="POST">
             <br>
+            <!-- Кнопки навигации: Назад, Тарифы, Вперёд -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Секция: Включение/выключение отмывки -->
             <fieldset>
                 <legend>Отмывка</legend>
                 <div class="form-group">
+                    <!-- Чекбокс для активации/деактивации отмывки -->
                     <input type="checkbox" id="Clear" name="Clear" value="1" onclick="check_all('Clear', 'Clear_off')" 
                            {% if session.get('Clear_form')%} {% if session['Clear_form']['Clear'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Clear">Выполнять отмывку? </label>
                 </div>
             </fieldset>
+            <!-- Таблица с основными параметрами отмывки и итоговой стоимостью -->
             <table>
                 <tr>
+                    <!-- Левая колонка: Выбор программы отмывки -->
                     <td style="width: 30%;">
                         <div class="form-group" id="Clear_off">
                             <label>Выберите программу отмывки</label>
@@ -57,10 +67,12 @@
                             <br>
                         </div>
                     </td>
+                    <!-- Средняя колонка: Метки для итоговой стоимости -->
                     <td style="width: 40%;">
                         <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                         <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                     </td>
+                    <!-- Правая колонка: Поля для отображения итоговой стоимости (только чтение) -->
                     <td>
                         <div class="form-group">
                             
@@ -70,6 +82,7 @@
                     </td>
                 </tr>
             </table>
+            <!-- Секция "аккордеон" для отображения детализированных данных по стоимости отмывки -->
             <div class="panel-group" id="accordion_dat">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -89,6 +102,7 @@
                                             <th>Значение</th>
                                         </tr>
                                     </thead>
+                                    <!-- Поля для отображения различных расчетных параметров отмывки (только чтение) -->
                                     <td>
                                         <input type="text" class="form-control" readonly value="Количество компонентов">
                                         <input type="text" class="form-control" readonly value="Количество заготовок в отмывке">
@@ -187,70 +201,82 @@
         </form>
     </div>
     <script>
+        // Функция для управления видимостью секции на основе состояния чекбокса
+        // master_box: ID чекбокса-переключателя
+        // slave: ID секции, чья видимость управляется (через класс 'disable_section')
         function check(master_box, slave) {
             if (document.getElementById(master_box).checked) {
-            document.getElementById(slave).classList.remove('disable_section')
+            document.getElementById(slave).classList.remove('disable_section'); // Показать секцию
             } else {
-            document.getElementById(slave).classList.add('disable_section')
+            document.getElementById(slave).classList.add('disable_section');    // Скрыть секцию
             }
         }
+        // Функция, вызываемая при полной загрузке окна
         window.onload = function(){
-            check_all('Clear', 'Clear_off');
+            check_all('Clear', 'Clear_off'); // Управление видимостью таблицы и первоначальный расчет
         }
         
         
-        // Вызывает пересчёт, затем проверку нажатия, затем ещё раз пересчёт
+        // Вызывает пересчёт, затем проверку нажатия чекбокса, затем ещё раз пересчёт
+        // master: ID чекбокса-переключателя
+        // slave: ID секции, чья видимость управляется
         function check_all(master, slave){
-            multiply()
-            check(master, slave)
-            multiply()
+            multiply();          // Первоначальный расчет
+            check(master, slave); // Управление видимостью
+            multiply();          // Повторный расчет (для учета изменения видимости/состояния)
         }
         
-        const opt = document.getElementsByName("Clear_type");
-        // Эти значения считаются в calculations_money.py
+        // Получение ссылок на элементы DOM
+        const opt = document.getElementsByName("Clear_type");        // Radio-кнопки выбора программы отмывки
+        // Константы для значений, которые, как указано в комментарии, считаются в calculations_money.py
         const number_multi = document.getElementById("number_multi"); //Количество мз
-        const number_items = document.getElementById("number_items"); //Количество плат в мз
+        const number_items = document.getElementById("number_items"); //Количество плат в мз (не используется в multiply())
         const number_smallitems = document.getElementById("number_pcb"); // Количество плат в рамке отмывки
-        const chckbx = document.getElementById("Clear")
+        const chckbx = document.getElementById("Clear");             // Чекбокс активации отмывки
 
-        //функция пересчёта значений
+        // Функция пересчёта значений стоимости отмывки
         function multiply(){
-            var batch = parseInt({{ session['home_form']['field3']}});
-            const num = parseInt(number_smallitems.value); 
-            const num1 = parseInt(number_multi.value);
-            const num2 = parseInt(number_item.value);
-            const master = chckbx.checked
-            //расчёт количества циклов отмывки
+            var batch = parseInt({{ session['home_form']['field3']}}); // Размер партии из сессии
+            const num = parseInt(number_smallitems.value);  // Количество плат в рамке отмывки
+            const num1 = parseInt(number_multi.value);      // Количество мультизаготовок
+            const num2 = parseInt(number_item.value);       // Количество плат в мультизаготовке (не используется далее)
+            const master = chckbx.checked;                  // Состояние чекбокса отмывки
+            
+            // Расчёт количества циклов отмывки
             var result = parseFloat({{ session['home_form']['field3'] }}) / parseFloat(num); 
-            //Выбор программы отмывки
-            if (opt[0].checked && master){
+            // Выбор программы отмывки и корректировка времени (значения из сессии df)
+            if (opt[0].checked && master){ // Укороченная программа
                 result = result * parseFloat({{ df['Значение'][0] }}) * parseFloat({{ df['Значение'][4] }}) / 60;
-            } else if(opt[1].checked && master){
+            } else if(opt[1].checked && master){ // Полная программа
                 result = result * parseFloat({{ df['Значение'][1] }}) * parseFloat({{ df['Значение'][4] }}) / 60;
-            } else {
+            } else { // Отмывка не выбрана
                 result = 0;
             }
-            result = Number(result).toFixed(2)
-            //Стоимость, исходя из тарифов
-            var costs = Math.ceil(result * parseInt({{ df2['Стоимость, руб/ч'][12]}}))
+            result = Number(result).toFixed(2); // Округление до 2 знаков после запятой
             
+            // Расчет стоимости, исходя из тарифов (значение из сессии df2)
+            var costs = Math.ceil(result * parseInt({{ df2['Стоимость, руб/ч'][12]}}));
+            
+            // Обновление полей на странице в зависимости от состояния чекбокса
             if (chckbx.checked){
-                
+                // Обновление полей времени и стоимости отмывки
                 document.getElementById("time_all").value = Math.ceil(result) + " ч";
                 document.getElementById("time_pc").value = Math.ceil(result*3600 / parseFloat({{ session['home_form']['field3'] }}))+ " c";
                 document.getElementById("money_pc").value = Math.ceil(costs / parseFloat({{ session['home_form']['field3'] }})) + " руб";
                 document.getElementById("money_all").value = Math.ceil(costs) + " руб";
+                // Расчет и обновление полей времени и стоимости контроля ремонта
                 control_time_all = Math.ceil(batch * parseFloat({{df['Значение'][5]}}) / num1 / 3600);
                 control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
 
+                // Расчет и обновление итоговых полей стоимости
                 money_all_f = costs + control_money_all;
                 money_pc_f = Math.ceil(money_all_f / batch);
                 document.getElementById("money_all_f").value = money_all_f + " руб";
                 document.getElementById("money_pc_f").value = money_pc_f + " руб";
 
-            } else {
+            } else { // Если отмывка не выбрана, очистить поля
                 document.getElementById("time_all").value = "-";
                 document.getElementById("time_pc").value = "-";
                 document.getElementById("money_pc").value = "-";
@@ -261,11 +287,12 @@
                 document.getElementById("money_pc_f").value = '-';
             }
             
-            if (master){
+            // Обновление полей количества плат в зависимости от состояния чекбокса (данные из data)
+            if (master){ // Если отмывка выбрана
                 document.getElementById("number_pcb").value = {{ data[2]}};
                 document.getElementById("number_multi").value = {{ data[0] }};
                 document.getElementById("number_item").value = {{ data[1] }};
-            } else {
+            } else { // Если отмывка не выбрана, обнулить поля
                 document.getElementById("number_pcb").value = "0";
                 document.getElementById("number_multi").value = "0";
                 document.getElementById("number_item").value = "0";

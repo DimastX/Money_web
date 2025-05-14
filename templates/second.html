@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
@@ -9,9 +10,11 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
-        <!-- вывод flash-сообщений -->
+    <!-- Начало тела документа -->
+    <!-- Блок для вывода flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="alert">
@@ -25,13 +28,17 @@
     <div class="container">
         <form method="POST">
             <br>
+            <!-- Кнопки навигации -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Начало таблицы с основными параметрами расчета -->
             <table>
                 <tr>
+                    <!-- Левая колонка таблицы: Комплектация, Производство, Трафареты, Стоимости -->
                     <td style="width: 50%;">
+                        <!-- Секция: Комплектация -->
                         <div class="form-group">
                             <label>Комплектация:</label>
                             <br>
@@ -84,8 +91,10 @@
                             </label>
                             <br>
                         </div>
+                        <!-- Конец секции: Комплектация -->
                     </td>
                     <td>
+                        <!-- Чекбокс: Выполнять подготовку производства? -->
                         <div class="form-group">
                             <input type="checkbox" id="prepare" name="prepare" value="1"
                            {% if session.get('second_form')%} {% if session['second_form']['prepare'] %} checked="checked" {% endif %} {% endif %}>
@@ -102,6 +111,7 @@
                 </tr>
                 <tr>
                     <td>
+                        <!-- Секция: Производство -->
                         <div class="form-group">
                             <label>Производство:</label>
                             <br>
@@ -117,6 +127,7 @@
                                 Победит 5
                             </label>
                         </div>
+                        <!-- Секция: Производилось ранее? -->
                         <div class="form-group">
                             <label>Производилось ранее?
                                 
@@ -140,6 +151,7 @@
                                 Нет
                             </label>
                         </div>
+                        <!-- Секция: Трафареты и их стоимость -->
                         <div class="form-group">
                             <label>Трафареты:</label>
                             <br>
@@ -219,6 +231,8 @@
                                 </table>
                             </div>
                         </div>
+                        <!-- Конец секции: Трафареты -->
+                        <!-- Секция: Стоимость компонентов, ПП, оснасток -->
                         <div class="form-group">
                             <div class="form-group">
                                 <label>Стоимость компонентов:</label>
@@ -232,8 +246,11 @@
                                     value="{{ session['second_form']['cost_e'] if session.get('second_form') else '0' }}">
                             </div>
                         </div>
+                        <!-- Конец секции: Стоимости -->
                     </td>
+                    <!-- Правая колонка таблицы: Размеры ПП и мультизаготовок, автоматические расчеты -->
                     <td>
+                        <!-- Секция: Количество плат в мультизаготовке по осям -->
                         <div class="form-group">
                             <div class="form-group">
                                 <label>Количество плат по Y:</label>
@@ -244,6 +261,7 @@
                                     value="{{ session['second_form']['length_num'] if session.get('second_form') else '' }}">
                             </div>
                         </div>
+                        <!-- Секция: Размеры исходной печатной платы -->
                         <div class="form-group">
                             <div class="form-group">
                                 <label>Ширина исходной печатной платы в мм:</label>
@@ -253,6 +271,7 @@
                                 <input type="number" class="form-control" min="1" step="any" name="length_pp" id="length_pp" 
                                     value="{{ session['second_form']['length_pp'] if session.get('second_form') else '' }}">
                             </div>
+                            <!-- Секция: Размеры мультизаготовки -->
                             <div class="form-group">
                                 <label>Ширина мультзаготовки в мм:</label>
                                 <input type="number" class="form-control" min="1" step="any" name="width" id="width" 
@@ -262,23 +281,31 @@
                                     value="{{ session['second_form']['length'] if session.get('second_form') else '' }}">
                             </div>
                         </div>
+                        <!-- Конец секции: Размеры мультизаготовки -->
+                        <!-- Секция: Автоматически рассчитываемые поля (только для чтения) -->
                         <div class="form-group">
                             <label>Всего плат в мультизаготовке:</label>
                             <input type="number" min="1" class="form-control" name="pc" id ="pc" readonly>
                             <label>Всего мультизаготовок:</label>
                             <input type="number" min="1" class="form-control" name="multi_num" id ="multi_num" readonly>
                         </div>
+                        <!-- Конец секции автоматически рассчитываемых полей -->
                     </td>
                 </tr>
             </table>
+            <!-- Конец таблицы с основными параметрами -->
         </form>
     </div>
+    <!-- Начало блока JavaScript -->
     <script>
+        // Инициализация всплывающих подсказок Bootstrap
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
         });
         let num_x = document.getElementById('length_num');
         let num_y = document.getElementById('width_num');
+        
+        // Функция для отображения/скрытия элемента в зависимости от состояния radio-кнопки
         function checkOption(optionId, fieldId) {
             var radioOption1 = document.getElementById(optionId);
             var extraField = document.getElementById(fieldId);
@@ -290,12 +317,14 @@
             }
         }
 
+        // Вызов checkOption при загрузке страницы для установки начальной видимости полей трафаретов
         window.onload = function(){
             checkOption('Traf_Y', 'Traf_costs');
             checkOption('Trafs_costs_select1', 'Traf_costs1');
             checkOption('Trafs_costs_select2', 'Traf_costs2');
             pc_number();
         }
+        // Обработчики событий изменения для radio-кнопок выбора трафаретов (Давальческие/Starline)
         document.getElementById('Traf_Y').addEventListener('change', function() {
             checkOption('Traf_Y', 'Traf_costs');
         });
@@ -304,10 +333,12 @@
             checkOption('Traf_Y', 'Traf_costs');
         });
 
+        // Обработчики событий изменения для radio-кнопок выбора стоимости трафаретов (Тарифная/Ручная)
+        // Существует некоторая избыточность в этих обработчиках, можно оптимизировать.
         document.getElementById('Trafs_costs_select1').addEventListener('change', function() {
             checkOption('Trafs_costs_select1', 'Traf_costs1');
         });
-
+        
         document.getElementById('Trafs_costs_select2').addEventListener('change', function() {
             checkOption('Trafs_costs_select2', 'Traf_costs2');
         });
@@ -320,11 +351,12 @@
             checkOption('Trafs_costs_select2', 'Traf_costs2');
         });
         
+        // Обработчики событий изменения для полей, влияющих на расчет количества плат и мультизаготовок
         document.getElementById('length_num').addEventListener('change', function() {
             pc_number();
         });
-
         
+        // Расчет ширины мультизаготовки при изменении ширины ПП или количества плат по Y
         document.getElementById('width_pp').addEventListener('change', function() {
             let width_pp = parseFloat(document.getElementById("width_pp").value);
             let y = parseFloat(document.getElementById("width_num").value);
@@ -335,6 +367,7 @@
             }
         });
         
+        // (Аналогично предыдущему, но для события изменения width_num)
         document.getElementById('width_num').addEventListener('change', function() {
             let width_pp = parseFloat(document.getElementById("width_pp").value);
             let y = parseFloat(document.getElementById("width_num").value);
@@ -345,6 +378,7 @@
             }
         });
         
+        // Расчет длины мультизаготовки при изменении длины ПП или количества плат по X
         document.getElementById('length_pp').addEventListener('change', function() {
             let length_pp = parseFloat(document.getElementById("length_pp").value);
             let x = parseFloat(document.getElementById("length_num").value);
@@ -354,6 +388,7 @@
                 pc_number();
             }
         });
+        // (Аналогично предыдущему, но для события изменения length_num)
         document.getElementById('length_num').addEventListener('change', function() {
             let length_pp = parseFloat(document.getElementById("length_pp").value);
             let x = parseFloat(document.getElementById("length_num").value);
@@ -364,6 +399,7 @@
             }
         });
 
+        // Расчет ширины исходной ПП при изменении ширины мультизаготовки
         document.getElementById('width').addEventListener('change', function() {
             let width_pp = parseFloat(document.getElementById("width").value);
             let y = parseFloat(document.getElementById("width_num").value);
@@ -374,6 +410,7 @@
             }
         });
 
+        // Расчет длины исходной ПП при изменении длины мультизаготовки
         document.getElementById('length').addEventListener('change', function() {
             let length_pp = parseFloat(document.getElementById("length").value);
             let x = parseFloat(document.getElementById("length_num").value);
@@ -384,6 +421,7 @@
             }
         });
         
+        // Функция для расчета и обновления общего количества плат в МЗ и общего количества МЗ
         function pc_number(){
             const pc_x = parseInt(num_x.value);
             const pc_y = parseInt(num_y.value);
@@ -391,5 +429,7 @@
             document.getElementById('multi_num').value = Math.ceil({{session['home_form']['field3']}} / (pc_x * pc_y));
         }
     </script>
+    <!-- Конец блока JavaScript -->
 </body>
+<!-- Конец тела документа -->
 </html>

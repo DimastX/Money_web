@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, не используется -->
     <title>Аутентификация</title>
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <h1>Аутентификация</h1>
+    <!-- Форма аутентификации, отправляющая данные на /login3 -->
     <form action="/login3" method="post">
+        <!-- Поле для ввода имени пользователя -->
         <label for="username">Имя пользователя:</label>
         <input type="text" id="username" name="username">
         <br>
+        <!-- Поле для ввода пароля -->
         <label for="password">Пароль:</label>
         <input type="password" id="password" name="password">
         <br>
+        <!-- Кнопка отправки формы -->
         <input type="submit" value="Войти">
     </form>
+    <!-- Конец формы аутентификации -->
+    <!-- Конец тела документа -->
 </body>
 </html>

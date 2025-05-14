@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и внешние скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
@@ -9,8 +10,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <!-- вывод flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -23,17 +26,22 @@
     {% endif %}
     {% endwith %}
     <div class="container">
+        <!-- Основная форма для параметров комплектации -->
         <form id = "myForm" method="POST">
             <br>
+            <!-- Кнопки навигации: Назад, Тарифы, Вперёд -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Секция: Легенда -->
             <fieldset>
                 <legend>Комплектация</legend>
             </fieldset>
+            <!-- Таблица с основными параметрами комплектации и итоговой стоимостью -->
             <table>
                 <tr>
+                    <!-- Левая колонка: Количество наименований и тип изделия -->
                     <td style="width: 30%;">
                         <div class="form-group">
                             <label>Количество наименований по накладной</label>
@@ -69,11 +77,13 @@
                         </div>
                         
                     </td>
+                    <!-- Средняя колонка: Метки для итоговой стоимости -->
                     <td style="width: 40%;">                        
                         <div class="form-group">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                     </td>
+                    <!-- Правая колонка: Поля для отображения итоговой стоимости (только чтение) -->
                     <td style="width: 40%;">
                         <div class="form-group">                            
                             <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
@@ -82,6 +92,7 @@
                     </td>
                 </tr>
             </table>
+            <!-- Секция "аккордеон" для отображения детализированных данных по стоимости приемки комплектации -->
             <div class="panel-group" id="accordion_dat">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -101,6 +112,7 @@
                                             <th>Значение</th>
                                         </tr>
                                     </thead>
+                                    <!-- Поля для отображения различных расчетных параметров приемки (только чтение) -->
                                     <td>
                                         <input type="text" class="form-control" readonly value="Количество ПУ в партии">
                                         <input type="text" class="form-control" readonly value="Времени на приёмку ПУ">
@@ -149,6 +161,17 @@
                                     </td>
                                 </table>
                             </div>
+                            <!-- Управление редактированием таблицы (кнопки Изменить/Сохранить и поле для пароля) -->
+                            <label>Пароль:</label>
+                            <input type="password" class="form-control" name="password" 
+                                    onkeydown="return event.key != 'Enter';">                
+                            <br>
+                            <button {% if edit != "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save" 
+                                    onkeydown="return event.key != 'Enter';">Изменить</button>
+                            <button {% if edit == "0" %} disabled {% endif %}
+                                    type="submit" class="btn btn-primary" name="save2" 
+                                    onkeydown="return event.key != 'Enter';">Сохранить</button>
                         </div>
                     </div>
                 </div>
@@ -209,23 +232,32 @@
         </form>
     </div>
     <script>
+        // Массив ID элементов формы, для которых будут установлены обработчики событий
         ids = ["Comp_num", "SB", "MB", "S", "M", "Comp_type", "Comp_type_sel"];
 
+        // Функция, вызываемая при полной загрузке окна
         window.onload = function(){
-            value_start();
-            Comp_amount();
+            value_start(); // Инициализация начального значения для количества наименований
+            Comp_amount(); // Первоначальный расчет и отображение стоимостей
         }
 
-        const points = document.getElementById('Comp_num');
+        const points = document.getElementById('Comp_num'); // Поле: Количество наименований
+        
+        // Функция для установки начального значения поля Comp_num
+        // Использует данные из сессии (Comp_form или tables), если они доступны, иначе 0
         function value_start(){
-            if ("{{'Comp_form' in session}}" == "True"){
+            if ("{{'Comp_form' in session}}" == "True"){ // Проверка наличия Comp_form в сессии
                 points.value = {{session['Comp_form']["Comp_num"] if session.get('Comp_form') else '0'}};
-            } else if("{{'tables' in session}}" == "True"){
+            } else if("{{'tables' in session}}" == "True"){ // Проверка наличия tables в сессии (альтернативный источник)
                 points.value = {{session['tables'][4] if session.get('tables') else '0'}};
             } else{
                 points.value = '0';
             }
         }
+        
+        // Функция для управления видимостью секции на основе состояния чекбокса (не используется в данном файле, но определена)
+        // master: ID чекбокса-переключателя
+        // slave: ID секции, чья видимость управляется
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
@@ -234,59 +266,69 @@
           }
         }
 
+        // Добавление обработчиков события 'change' для элементов из массива ids
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
-                Comp_amount();
+                Comp_amount(); // При изменении любого из этих параметров, пересчитать стоимость
             });
         }
 
+        // Основная функция для расчета и отображения стоимости комплектации
         function Comp_amount(){
-            var batch = parseInt({{ session['home_form']['field3']}});
-            var names = points.value;
-            var coef = 1;
-            var add = 0;
+            var batch = parseInt({{ session['home_form']['field3']}}); // Размер партии из сессии
+            var names = points.value; // Количество наименований
+            var coef = 1; // Коэффициент (не используется)
+            var add = 0;  // Добавочное время (не используется)
 
+            // Расчет времени и стоимости приемки (time_all1, money_all1 и т.д.)
+            // Используются значения из сессии df (тарифы для комплектации) и df2 (общие тарифы)
             var time_all1 = Math.ceil(names * coef * parseInt({{df['Значение'][0]}}) / 3600);
             var money_all1 = time_all1 * parseInt({{df2['Стоимость, руб/ч'][22]}});
             var money_pc1 = Math.ceil(money_all1 / batch);
             var time_pc1 = Math.ceil(time_all1 / batch * 3600);
-            const type = document.getElementsByName('Comp_type');
-            var time_control = 0
-            if (type[0].checked){
+            
+            const type = document.getElementsByName('Comp_type'); // Radio-кнопки: Тип изделия
+            var time_control = 0; // Время на контроль в зависимости от типа изделия
+            if (type[0].checked){ // Серверная плата
                 time_control = parseInt({{df['Значение'][2]}});
-            } else if (type[1].checked){
+            } else if (type[1].checked){ // Материнская плата
                 time_control = parseInt({{df['Значение'][6]}});
-            } else if (type[2].checked){
+            } else if (type[2].checked){ // Маленькая плата
                 time_control = parseInt({{df['Значение'][7]}});
-            } else if (type[3].checked){
+            } else if (type[3].checked){ // Средняя плата
                 time_control = parseInt({{df['Значение'][8]}});
             }
-            time_control = time_control + parseInt({{df['Значение'][9]}});
+            time_control = time_control + parseInt({{df['Значение'][9]}}); // Добавление базового времени контроля
+            
+            // Расчет времени и стоимости входного контроля (time_all2, money_all2 и т.д.)
             var time_all2 = Math.ceil(names * (parseInt({{df['Значение'][1]}}) + add) / 3600);
-            if ((time_all2 * 3600)< parseInt({{df['Значение'][4]}})){
+            if ((time_all2 * 3600)< parseInt({{df['Значение'][4]}})){ // Минимальное время входного контроля
                 time_all2 = Math.ceil(parseInt({{df['Значение'][4]}}) / 3600);
             }
-            time_pc2 = Math.ceil(time_pc2 / 3600);
-            var time_pc2 = Math.ceil(time_all2 / batch * 3600);
+            var time_pc2 = Math.ceil(time_all2 / batch * 3600); // Переопределение time_pc2
             var money_all2 = time_all2 * parseInt({{df2['Стоимость, руб/ч'][19]}});
             var money_pc2 = Math.ceil(money_all2 / batch);
             
+            // Расчет времени и стоимости выходного контроля (time_all3, money_all3 и т.д.)
             var time_all3 = Math.ceil(batch * time_control / 3600);
             var time_pc3 = Math.ceil(time_all3 / batch * 3600);
             var money_all3 = time_all3 * parseInt({{df2['Стоимость, руб/ч'][21]}});
             var money_pc3 = Math.ceil(money_all3 / batch);
             
+            // Расчет времени и стоимости отгрузки (time_all4, money_all4 и т.д.)
             var time_all4 = Math.ceil(batch * parseInt({{df['Значение'][3]}}) / 3600);
             var time_pc4 = Math.ceil(time_all4 / batch * 3600);
             var money_all4 = time_all4 * parseInt({{df2['Стоимость, руб/ч'][22]}});
             var money_pc4 = Math.ceil(money_all4 / batch);
 
+            // Суммирование всех времен и стоимостей
             var time_all = time_all1 + time_all2 + time_all3 + time_all4;
             var time_pc = Math.ceil(time_all / batch * 3600);
             var money_all = money_all1 + money_all2 + money_all3 + money_all4;
             var money_pc = Math.ceil(money_all / batch);
 
+            // Обновление полей на странице (детализированные данные)
             document.getElementById('PCB').value = batch + " шт";
             document.getElementById('time_pc1').value = time_pc1 + " c";
             document.getElementById('time_all1').value = time_all1 + " ч";
@@ -313,6 +355,7 @@
             document.getElementById('money_pc').value = money_pc + " руб";
             document.getElementById('money_all').value = money_all + " руб";
             
+            // Обновление итоговых полей стоимости
             document.getElementById("money_pc_f").value = money_pc + " руб";
             document.getElementById("money_all_f").value = money_all + " руб";
 

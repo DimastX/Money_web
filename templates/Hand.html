@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные, стили и внешние скрипты -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <!-- Подключение скрипта Checks.js (для управления видимостью элементов) -->
+    <script src="scripts/Checks.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <!-- вывод flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -22,22 +27,28 @@
     {% endif %}
     {% endwith %}
     <div class="container">
+        <!-- Основная форма для параметров ручных операций -->
         <form id = "myForm" method="POST">
             <br>
+            <!-- Кнопки навигации: Назад, Тарифы, Вперёд -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
+            <!-- Секция: Включение/выключение ручной пайки -->
             <fieldset>
                 <legend>Ручной монтаж</legend>
                 <div class="form-group">
+                    <!-- Чекбокс для активации/деактивации ручной пайки -->
                     <input type="checkbox" id="Hand" name="Hand" value="1" onclick="check('Hand', 'Hand_off')"
                            {% if session.get('Hand_form')%} {% if session['Hand_form']['Hand'] %} checked="checked" {% endif %} {% endif %}>
                     <label for="Hand">Выполнять ручной монтаж? </label>
                 </div>
             </fieldset>
-            <table>
+            <!-- Таблица с основными параметрами ручной пайки и итоговой стоимостью -->
+            <table id="Hand_off">
                 <tr>
+                    <!-- Левая колонка: Ввод количества THT и SMD компонентов -->
                     <td style="width: 30%;">
                         <div class="form-group" id="Hand_off">
                             <label>Количество точек пайки</label>
@@ -46,11 +57,14 @@
                                 value="{{ session['Hand_form']['Hand_num'] if session.get('Hand_form') else '1' }}">
                         </div>
                     </td>
+                    <!-- Средняя колонка: Метки для итоговой стоимости -->
                     <td style="width: 40%;">                        
                         <div class="form-group">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость 1 ПУ">
                             <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
+                        </div>
                     </td>
+                    <!-- Правая колонка: Поля для отображения итоговой стоимости (только чтение) -->
                     <td style="width: 40%;">
                         <div class="form-group">                            
                             <input type="text" name="money_pc_f" id="money_pc_f" class="form-control" readonly> 
@@ -59,6 +73,7 @@
                     </td>
                 </tr>
             </table>
+            <!-- Секция "аккордеон" для отображения детализированных данных по стоимости ручной пайки -->
             <div class="panel-group" id="accordion_dat">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -78,6 +93,7 @@
                                             <th>Значение</th>
                                         </tr>
                                     </thead>
+                                    <!-- Поля для отображения различных расчетных параметров ручной пайки (только чтение) -->
                                     <td>
                                         <input type="text" class="form-control" readonly value="Количество ПУ в партии">
                                         <input type="text" class="form-control" readonly value="Времени на пайку ПУ">
@@ -157,6 +173,7 @@
             <br>
         </form>
     </div>
+    <!-- Начало блока JavaScript -->
     <script>
         ids = ["Hand", "Hand_num"];
 
@@ -223,5 +240,6 @@
             }
         }
     </script>
+    <!-- Конец блока JavaScript -->
 </body>
 </html>

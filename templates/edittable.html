@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Начало секции head: метаданные и подключения CSS -->
     <meta charset="UTF-8">
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
     <body>
+        <!-- Начало тела документа -->
         <form method="POST">
+            <!-- Форма для отправки изменений таблицы -->
             <div class="container">
                 <div class="table">
                     <table>
+                        <!-- Заголовок таблицы, генерируется из названий столбцов DataFrame -->
                         <thead>
                             <tr>
-                                <th>{{ df.columns[0] }}</th>
-                                <th>{{ df.columns[1] }}</th>
+                                <th>{{ df.columns[0] }}</th> <!-- Первый столбец -->
+                                <th>{{ df.columns[1] }}</th> <!-- Второй столбец -->
                             </tr>
                         </thead>
+                        <!-- Тело таблицы, генерируется из строк DataFrame -->
                         {% for row in df.iterrows(): %}
                         <tr>
                             {% for cell in row[1] %}
                             <td>
-                                {% if loop.index == 2 %}  <!-- Если это второй столбец -->
+                                <!-- Если это второй столбец (индекс 2), делаем его редактируемым -->
+                                {% if loop.index == 2 %}  
                                     <input type="number" class="form-control" min="1" name="row{{ row[0] }}" value="{{ cell }}" />
-                                {% else %} <!-- Если это не второй столбец -->
+                                {% else %} <!-- Для остальных столбцов просто отображаем значение -->
                                     {{ cell }}
                                 {% endif %}
                             </td>
@@ -34,8 +41,10 @@
                         {% endfor %}
                     </table>
                 </div>
+            <!-- Кнопка для сохранения изменений -->
             <button type="submit" class="btn btn-primary" name="save">Сохранить</button>
             </div>
         </form>
+        <!-- Конец тела документа -->
     </body>
 </html>

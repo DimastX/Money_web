@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Начало секции head: метаданные, стили и скрипты. Не нужен этот файл, он не используется-->
     <title>Каталог</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
@@ -9,8 +10,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-10">
@@ -20,7 +23,9 @@
                     </div>
                     
                     <div class="card-body">
+                        <!-- Форма с фильтрами для выбора расчета -->
                         <div class="row mb-4">
+                            <!-- Выпадающий список для выбора заказчика -->
                             <div class="col-md-6">
                                 <label class="form-label">Заказчик:</label>
                                 <select id="customer" class="form-select">
@@ -30,7 +35,9 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <!-- Конец выбора заказчика -->
                             
+                            <!-- Выпадающий список для выбора изделия (заполняется динамически) -->
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="form-label">Изделие:</label>
@@ -39,7 +46,9 @@
                                     </select>
                                 </div>
                             </div>
+                            <!-- Конец выбора изделия -->
                             
+                            <!-- Поле для поиска по SAP-коду -->
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="form-label">Search by SAP code:</label>
@@ -51,9 +60,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Конец поиска по SAP -->
                         </div>
+                        <!-- Конец формы с фильтрами -->
 
-
+                        <!-- Таблица для отображения результатов выбора/поиска (скрыта по умолчанию) -->
                         <div id="results-table" style="display: none;">
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -73,8 +84,10 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Конец таблицы результатов -->
                     </div>
 
+                    <!-- Кнопка "Назад" -->
                     <div class="card-footer text-end">
                         <form method="POST" action="{{ url_for('start') }}" class="d-inline">
                             <button type="submit" name="back" class="btn btn-secondary">Назад</button>
@@ -85,8 +98,10 @@
         </div>
     </div>
 
+    <!-- Начало блока JavaScript (jQuery) -->
     <script>
         $(document).ready(function() {
+            // Обработчик изменения значения в выпадающем списке заказчиков
             $('#customer').change(function() {
                 let customer = $(this).val();
                 $.ajax({
@@ -107,6 +122,7 @@
                 });
             });
 
+            // Обработчик изменения значения в выпадающем списке изделий
             $('#product').change(function() {
                 let product = $(this).val();
                 let customer = $('#customer').val();
@@ -156,6 +172,7 @@
                 });
             });
 
+            // Обработчик клика по кнопке поиска по SAP-коду
             $('#sapSearchBtn').click(function() {
                 let sapCode = $('#sapSearch').val().trim();
                 if(sapCode) {
@@ -206,23 +223,9 @@
                     });
                 }
             });
-
-        $('#sapSearchBtn').click(function() {
-            let sapCode = $('#sapSearch').val().trim();
-            if(sapCode) {
-                $.ajax({
-                    url: '/select_calculation',
-                    type: 'POST',
-                    data: {
-                        sap_search: sapCode
-                    },
-                    success: function(data) {
-                        // Existing success handler code...
-                    }
-                });
-            }
         });
-    });
     </script>
+    <!-- Конец блока JavaScript -->
 </body>
+<!-- Конец тела документа -->
 </html>

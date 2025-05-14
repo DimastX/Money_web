@@ -5,13 +5,16 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
+    <!-- Подключение скрипта Checks.js (вероятно, для управления видимостью элементов) -->
+    <script src="scripts/Checks.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-        <!-- вывод flash-сообщений -->
+    <!-- Начало тела документа -->
+    <!-- Блок для вывода flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="alert">
@@ -23,8 +26,10 @@
     {% endif %}
     {% endwith %}
     <div class="container">
-        <form method="POST">
+        <!-- Основная форма для параметров упаковки -->
+        <form id = "myForm" method="POST">
             <br>
+            <!-- Кнопки навигации: Назад, Тарифы, Вперёд -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>

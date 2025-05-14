@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные и подключения -->
     <meta charset="UTF-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
     <title>money.contract</title>
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <div class="container">
         <form id = "myForm" method="POST">
             <br>
+            <!-- Блок кнопок навигации и действий -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="download">Скачать таблицу</button>
@@ -20,6 +24,7 @@
             <br>
             <p></p>
             <body>
+            <!-- Блок отображения таблиц с результатами расчета -->
             <h1>Стоимость производства</h1>
             {% for table in tables1 %}
                 <div class="table">
@@ -28,18 +33,22 @@
                     </table>
                 </div>
             {% endfor %}
+            <!-- Условный блок для отображения стоимости подготовки -->
             {% if table == 1%}
                 <h1>Стоимость подготовки</h1>
                 {% for table in tables2 %}
                     {{ table|safe }}
                 {% endfor %}
             {%endif%}
+            <!-- Конец условного блока -->
             <h1>Доп. информация</h1>
             {% for table in tables3 %}
                 {{ table|safe }}
             {% endfor %}
+            <!-- Конец блока отображения таблиц -->
             </body>
         </form>
     </div>
 </body>
+<!-- Конец тела документа -->
 </html>

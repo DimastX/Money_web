@@ -1,13 +1,19 @@
+<!-- НАЧАЛО ПЕРВОГО HTML-ФРАГМЕНТА НЕ ИСПОЛЬЗУЕТСЯ -->
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head первого HTML-фрагмента -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head первого HTML-фрагмента -->
 </head>
 <body>
+    <!-- Начало тела документа первого HTML-фрагмента -->
+    <!-- Примечание: Отсутствует открывающий тег <table>. Этот фрагмент, вероятно, предназначен для вставки в существующую таблицу. -->
                 <tr>
+                    <!-- Радиокнопки: Количество сторон SMD -->
                     <td>
                         <div class="form-group">
                             <label>Количество сторон SMD:</label>
@@ -27,6 +33,7 @@
                     </td>
                 </tr>
                 <tr>
+                    <!-- Радиокнопки: Количество сторон THT -->
                     <td>
                         <div class="form-group">
                             <label>Количество сторон THT:</label>
@@ -46,6 +53,7 @@
                     </td>
                 </tr>
                 <tr>
+                    <!-- Радиокнопки: Количество сторон лакировки -->
                     <td>
                         <div class="form-group">
                             <label>Количество сторон лакировки:</label>
@@ -64,19 +72,25 @@
                         </div>
                     </td>
                 </tr>
+    <!-- Конец тела документа первого HTML-фрагмента -->
 </body>
 </html>
+<!-- КОНЕЦ ПЕРВОГО HTML-ФРАГМЕНТА -->
 
+<!-- НАЧАЛО ВТОРОГО HTML-ФРАГМЕНТА (возможно, отдельная страница или шаблон) -->
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head второго HTML-фрагмента -->
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Конец секции head второго HTML-фрагмента -->
 </head>
 <body>
-    <!-- вывод flash-сообщений -->
+    <!-- Начало тела документа второго HTML-фрагмента -->
+    <!-- Блок для вывода flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="alert">
@@ -91,15 +105,19 @@
         <form id = "myForm" method="POST">
             <fieldset>
                 <legend>Селективная пайка THT</legend>
+                <!-- Чекбокс: Выполнять селективную пайку THT? -->
                 <div class="form-group">
                     <input type="checkbox" id="THT" name="THT" value="{{ session['THT_form']['THT'] if session.get('SMD_form') else '' }}">
                     <label for="THT">Выполнять cелективную пайку THT? </label>
                 </div>
             </fieldset>
+            <!-- Кнопки навигации и действий -->
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
         </form>
     </div>
+    <!-- Конец тела документа второго HTML-фрагмента -->
 </body>
 </html>
+<!-- КОНЕЦ ВТОРОГО HTML-ФРАГМЕНТА -->

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Начало секции head: метаданные и подключения -->
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/button.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
+    <!-- Конец секции head -->
 </head>
 <body>
+    <!-- Начало тела документа -->
     <!-- вывод flash-сообщений -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -21,18 +24,24 @@
     <div class="container">
         <form method="POST">
             <br>
+            <!-- Кнопка навигации "Назад" -->
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <p></p>
+            <!-- Блок для отображения таблиц с тарифами -->
         {% for table in tables %}
                 {{ table|safe }}
         {% endfor %}
+            <!-- Конец блока отображения таблиц -->
+            <!-- Форма для ввода пароля и редактирования тарифов -->
             <div class="form-group">
                 <label>Password:</label>
                 <input type="password" class="form-control" name="password">
                 <br>
                 <button type="submit" class="btn btn-primary" name="check">Редактировать</button>
             </div>
+            <!-- Конец формы для редактирования -->
         </form>
     </div>
 </body>
+<!-- Конец тела документа -->
 </html>
