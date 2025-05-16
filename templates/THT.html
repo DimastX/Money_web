@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Начало секции head: метаданные, стили и скрипты -->
+
     <title>money.contract</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/tables.css') }}" rel="stylesheet" type="text/css" >
@@ -10,11 +10,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Конец секции head -->
+
 </head>
 <body>
-    <!-- Начало тела документа -->
-    <!-- Блок для вывода flash-сообщений -->
+    <!-- вывод flash-сообщений -->
+
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="alert">
@@ -26,15 +26,15 @@
     {% endif %}
     {% endwith %}
     <div class="container">
-        <!-- Основная форма для параметров селективной пайки THT -->
+
         <form id = "myForm" method="POST">
             <br>
-            <!-- Кнопки навигации -->
+
             <button type="submit" class="btn btn-primary" name="back">Назад</button>
             <button type="submit" class="btn btn-primary" name="tariffs">Тарифы</button>
             <button type="submit" class="btn btn-primary" name="next">Вперёд</button>
             <p></p>
-            <!-- Секция: Включение/выключение селективной пайки THT -->
+
             <fieldset>
                 <legend>Селективная пайка THT</legend>
                 <div class="form-group">
@@ -43,13 +43,13 @@
                     <label for="THT">Выполнять cелективную пайку THT? </label>
                 </div>
             </fieldset>
-            <!-- Таблица с основными параметрами селективной пайки и итоговой стоимостью -->
+
             <table>
                 <tr>
-                    <!-- Левая колонка: Детальные параметры пайки для первой и второй стороны -->
+
                     <td style="width: 40%;">
                         <div class="form-group" id="THT_off">
-                            <!-- Выбор количества сторон для пайки -->
+
                             <label>Выберите количество сторон для селектиной пайки</label>
                             <br>
                             <label>
@@ -64,7 +64,7 @@
                                 Двустронняя
                             </label>
                             <br>
-                            <!-- Выбор способа расчета для первой стороны (ручной/симуляция) -->
+
                             <label>Выберите способ рассчёта времени на первую сторону селективной пайки</label>
                             <br>
                             <label>
@@ -78,7 +78,7 @@
                                     {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "3" %} checked {% endif %} {% endif %} value="3">
                                 Данные симуляции
                             </label>
-                            <!-- Поля для ручного ввода (первая сторона) -->
+
                             <div class="form-group" id="manual_input" style="display:none">
                                 <label>Количество компонентов до 10 рядов точек пайки (за один проход):</label>
                                 <input type="number" class="form-control" name="points" id="points" min="0" step="1"
@@ -93,15 +93,15 @@
                                 <input type="number" class="form-control" name="PCI" id="PCI" min="0" step="1"
                                     value="{{ session['THT_form']['PCI'] if session.get('THT_form') else '0' }}"></input>
                             </div>
-                            <!-- Поле для ввода данных симуляции (первая сторона) -->
+
                             <div class="form-group" id="sim_input" style="display:none">
                                 <label>Время на пайку мультизаготовки на первой стороне, с</label>
                                 <input type="number" class="form-control" name="sim_multi" id="sim_multi" min="0" step="1"
                                     value="{{ session['THT_form']['sim_multi'] if session.get('THT_form') else '0' }}"></input>
                             </div>
-                            <!-- Блок для параметров второй стороны (если выбрана двусторонняя пайка) -->
+
                             <div class="form-group" id="second" style="display:none">
-                                <!-- Выбор способа расчета для второй стороны (ручной/симуляция) -->
+
                                 <label>Выберите способ рассчёта времени на вторую сторону селективной пайки</label>
                                 <br>
                                 <label>
@@ -115,7 +115,7 @@
                                         {% if session.get('THT_form')%} {% if session['THT_form']['THT_type'] == "3" %} checked {% endif %} {% endif %} value="3">
                                     Данные симуляции
                                 </label>
-                                <!-- Поля для ручного ввода (вторая сторона) -->
+
                                 <div class="form-group" id="manual_input2" style="display:none">
                                     <label>Количество компонентов до 10 рядов точек пайки (за один проход) на второй стороне:</label>
                                     <input type="number" class="form-control" name="points2" id="points2" min="0" step="1"
@@ -130,7 +130,7 @@
                                     <input type="number" class="form-control" name="PCI2" id="PCI2" min="0" step="1"
                                         value="{{ session['THT_form']['PCI2'] if session.get('THT_form') else '0' }}"></input>
                                 </div>
-                                <!-- Поле для ввода данных симуляции (вторая сторона) -->
+
                                 <div class="form-group" id="sim_input2" style="display:none">
                                     <label>Время на пайку мультизаготовки на второй стороне, с</label>
                                     <input type="number" class="form-control" name="sim_multi2" id="sim_multi2" min="0" step="1"
@@ -154,8 +154,8 @@
                     </td>
                 </tr>
             </table> 
-            <!--  Детализированные данные по стоимости селективной пайки -->
-            <!-- Содержит таблицу с расчетными значениями времени и стоимости для различных этапов на Primary и Secondary сторонах, а также для всего ПУ. -->
+
+
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -257,8 +257,8 @@
                 </div>
             </div>
             <br>
-            <!--  Данные для селективной пайки (таблица из df и управление редактированием) -->
-            <!-- Содержит редактируемую таблицу тарифов/коэффициентов (из df), поле для пароля и кнопки для изменения/сохранения. -->
+
+
             <div class="panel-group" id="accordion2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -313,37 +313,37 @@
             <br>
         </form>
     </div>
-    <!-- Начало блока JavaScript -->
+
     <script>
-        // Функция, выполняемая при полной загрузке окна
+
          window.onload = function(){
-            check_all('THT', 'THT_off'); // Инициализация состояния формы и первоначальный расчет
+            check_all('THT', 'THT_off');
         }
-        // Массив ID элементов формы, для которых будут установлены обработчики событий
+
         ids = ["THT", "manual", "sim", "THT_sides_1", "THT_sides_2", "manual2", "sim2", "sim_multi", "points", "points_2", "points2_2", "DDR", "PCI", "sim_multi2", "points2", "DDR2", "PCI2"];
 
-        // Добавление обработчиков события 'change' для элементов из массива ids
+
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
             element.addEventListener('change', function(){
-                // При изменении любого из этих параметров, полностью обновить состояние формы и пересчитать
+
                 check_all('THT', 'THT_off');
             });
         }
-        // Основная функция для обновления состояния формы и перерасчета
+
         function check_all(master, slave){
-            check(master, slave); // Управление видимостью основной секции THT
-            // Управление видимостью подсекций в зависимости от выбора пользователя
-            checkOption('manual', 'manual_input');    // Показать/скрыть поля ручного ввода для 1-й стороны
-            checkOption('sim', 'sim_input');          // Показать/скрыть поле симуляции для 1-й стороны
-            checkOption('manual2', 'manual_input2');  // Показать/скрыть поля ручного ввода для 2-й стороны
-            checkOption('sim2', 'sim_input2');        // Показать/скрыть поле симуляции для 2-й стороны
-            checkOption('THT_sides_2', 'second'); // Показать/скрыть блок для второй стороны
-            THT_amount(); // Выполнение расчета стоимости
+            check(master, slave);
+            checkOption('manual', 'manual_input');
+            checkOption('sim', 'sim_input');
+            checkOption('manual2', 'manual_input2');
+            checkOption('sim2', 'sim_input2');
+            checkOption('THT_sides_2', 'second');
+            THT_amount();
+
         }
-        // Функция для управления видимостью поля на основе состояния radio-кнопки/чекбокса (по id)
-        // optionId: ID radio-кнопки или чекбокса
-        // fieldId: ID элемента, чья видимость управляется (через style.display)
+
+
+
         function checkOption(optionId, fieldId) {
             var radioOption1 = document.getElementById(optionId);
             var extraField = document.getElementById(fieldId);
@@ -354,10 +354,10 @@
                 extraField.style.display = 'none';
             }
         }
-        // Функция для управления видимостью секции на основе состояния чекбокса (по id и классу disable_section)
-        // master: ID чекбокса-переключателя
-        // slave: ID секции, чья видимость управляется
-        // (дублирует логику из внешних скриптов)
+
+
+
+
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
@@ -365,65 +365,69 @@
             document.getElementById(slave).classList.add('disable_section')
           }
         }
-        // Получение ссылок на ключевые элементы формы
-        var chckbx = document.getElementById('THT');              // Чекбокс: Выполнять селективную пайку THT?
-        const THT_type = document.getElementsByName('THT_type');    // Radio: Способ расчета для 1-й стороны (ручной/симуляция)
-        const THT_type2 = document.getElementsByName('THT_type2');  // Radio: Способ расчета для 2-й стороны
-        const THT_sides = document.getElementsByName('THT_sides');  // Radio: Количество сторон пайки (1/2)
+        var chckbx = document.getElementById('THT');
+        const THT_type = document.getElementsByName('THT_type')
+        const THT_type2 = document.getElementsByName('THT_type2')
+        const THT_sides = document.getElementsByName('THT_sides');
 
-        // Основная функция для расчета и отображения стоимости селективной пайки THT
+
+
         function THT_amount(){
-            // ПРИМЕЧАНИЕ: В этой функции активно используются Jinja2-переменные ({{...}}).
-            // Это может вызывать ошибки JavaScript и затруднять отладку.
-            // Рекомендуется передавать эти значения в JavaScript через data-атрибуты HTML-элементов или специальный JSON-объект.
 
-            // Получение основных данных из сессии Flask
+
+
+
+
             var batch = parseInt({{ session['home_form']['field3']}});
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
             var pc = parseInt({{ session['second_form']['pc']}});
+            var time_multi = 0;
+            var time_multi2 = 0;
+            var sides = 1;
             var prev = parseInt({{ session['second_form']['prev']}});
 
-            // Инициализация переменных для расчета
-            var time_multi = 0;  // Расчетное время на мультизаготовку для первой стороны
-            var time_multi2 = 0; // Расчетное время на мультизаготовку для второй стороны
-            var sides = 1;       // Количество сторон пайки (по умолчанию 1)
 
-            // Корректировка коэффициента `prev` на основе данных из df (тарифы)
+
+
+
+
+
             if (prev == 1){
                 prev = 1 - parseFloat({{ df['Значение'][6] }});
             } else if (prev == 2){
                 prev = 1;
             }
 
-            // Определение количества сторон пайки
+
             if (THT_sides[1].checked){ 
                 sides = 2;
             }
+            if (THT_type[0].checked){
 
-            // Расчет времени для первой стороны (time_multi)
-            if (THT_type[0].checked){ // Если выбран ручной ввод для 1-й стороны
+
                 time_multi =  Math.ceil((document.getElementById('DDR').value * parseFloat({{df['Значение'][1]}}) + 
                             document.getElementById('PCI').value * parseFloat({{df['Значение'][2]}}) + 
                             document.getElementById('points').value * parseFloat({{df['Значение'][5]}}) + 
-                            document.getElementById('points_2').value * parseFloat({{df['Значение'][11]}})) * pc + pc * parseFloat({{df['Значение'][11]}})); // И еще одно умножение на pc
-            } else if (THT_type[1].checked){ // Если выбраны данные симуляции для 1-й стороны
+                            document.getElementById('points_2').value * parseFloat({{df['Значение'][11]}})) * pc+ 
+                            pc * parseFloat({{df['Значение'][11]}}));
+            } else if (THT_type[1].checked){
                 time_multi = parseFloat(document.getElementById('sim_multi').value);
             }
 
-            // Расчет времени для второй стороны (time_multi2), если выбрана двусторонняя пайка
+
             if (sides == 2){
-                if (THT_type2[0].checked){ // Если выбран ручной ввод для 2-й стороны
+                if (THT_type2[0].checked){
                 time_multi2 +=  Math.ceil((document.getElementById('DDR2').value * parseFloat({{df['Значение'][1]}}) + 
                             document.getElementById('PCI2').value * parseFloat({{df['Значение'][2]}}) + 
                             document.getElementById('points2').value * parseFloat({{df['Значение'][5]}})+ 
                             document.getElementById('points2_2').value * parseFloat({{df['Значение'][11]}})) * pc + 
                             pc * parseFloat({{df['Значение'][11]}}));
-            } else if (THT_type2[1].checked){ // Если выбраны данные симуляции для 2-й стороны
+            } else if (THT_type2[1].checked){
                 time_multi2 += parseFloat(document.getElementById('sim_multi2').value);
                 }
             }
 
-            // Расчет времени и стоимости ремонта и контроля
+
             let repair = 0;
                 if (prev == 1){
                     repair = parseFloat({{df["Значение"][7]}}) * batch;
@@ -440,13 +444,13 @@
             control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
             control_time_pc = Math.ceil(control_money_all / batch);
 
-            // Дополнительное время и корректировка для первой стороны
+
             time_multi += Math.ceil((parseFloat({{df['Значение'][4]}})));
             time_multi *= parseFloat({{df['Значение'][0]}});
-            const start = parseFloat({{df['Значение'][3]}}) * prev / 3600; // Время на переналадку для 1-й стороны
-            const prod = time_multi * multi_num / 3600 / 2; // Предполагается 2 машины
-            
-            // Расчет итоговых времен и стоимостей для 1-й стороны
+            const start = parseFloat({{df['Значение'][3]}}) * prev / 3600;
+            const prod = time_multi * multi_num / 3600 / 2; //2 машины
+
+
             const time_all = Math.ceil((prod));
             const time_all_p = time_all;
             const time_re_all = Math.ceil((start));
@@ -460,15 +464,15 @@
             const time_pc_p = time_pc;
             const time_re_pc = Math.ceil(time_re_all / batch * 3600);
 
-            // Расчет итоговых времен и стоимостей для 2-й стороны (если применимо)
-            let start2 = 0;
+            let start2 = 0
+
             if (sides == 2){
                 time_multi2 += Math.ceil((parseFloat({{df['Значение'][4]}})));                
-                start2 = parseFloat({{df['Значение'][3]}}) * prev / 3600; // Время на переналадку для 2-й стороны
+                start2 = parseFloat({{df['Значение'][3]}}) * prev / 3600;
             }
             time_multi2 *= parseFloat({{df['Значение'][0]}});
-            
-            const prod2 = time_multi2 * multi_num / 3600 / 2; // Предполагается 2 машины
+
+            const prod2 = time_multi2 * multi_num / 3600 / 2; //2 машины
             const time_all2 = Math.ceil((prod2));
             const time_all2_p = time_all2;
             const time_re_all2 = Math.ceil((start2));
@@ -482,9 +486,9 @@
             const time_pc2_p = time_pc2;
             const time_re_pc2 = Math.ceil(time_re_all2 / batch * 3600);
 
-            // Обновление полей на форме
-            if (chckbx.checked){ // Если селективная пайка включена
-                // Обновление полей для 1-й стороны (Primary)
+            if (chckbx.checked){
+
+
                 document.getElementById('time_pc_p').value = time_pc_p + " c";
                 document.getElementById('time_all_p').value = time_all_p + " ч";
                 document.getElementById('money_pc_p').value = money_pc_p + " руб";
@@ -498,7 +502,7 @@
                 document.getElementById('money_re_pc').value = money_re_pc + " руб";
                 document.getElementById('money_re_all').value = money_re_all + " руб";
 
-                // Обновление полей для 2-й стороны (Secondary)
+
                 document.getElementById('time_pc2_p').value = time_pc2_p + " c";
                 document.getElementById('time_all2_p').value = time_all2_p + " ч";
                 document.getElementById('money_pc2_p').value = money_pc2_p + " руб";
@@ -527,17 +531,19 @@
 
                 document.getElementById('repair_time_all').value = repair_time_all + " ч";
                 document.getElementById('repair_money_all').value = repair_money_all + " руб";
+
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
 
-                // Расчет и обновление итоговых стоимостей
-                money_all_f = money_all + money_all_p + money_re_all + money_all2 + money_all2_p + money_re_all2 + repair_money_all + control_money_all;
-                money_pc_f = Math.ceil(money_all_f / batch);
-                document.getElementById("money_pc_f").value = money_pc_f + " руб";
-                document.getElementById("money_all_f").value = money_all_f + " руб";
+                money_all_f = money_all + money_re_all + money_all2 + money_re_all2 + repair_money_all + control_money_all + money_all_p + money_all2_p;
 
-            } else { // Если селективная пайка выключена, очистить все поля
-                // Очистка полей для 1-й стороны
+                money_pc_f = Math.ceil(money_all_f / batch);
+                document.getElementById("money_all_f").value = money_all_f + " руб";
+                document.getElementById("money_pc_f").value = money_pc_f + " руб";
+
+
+            } else {
+
                 document.getElementById('time_pc_p').value = '-';
                 document.getElementById('time_all_p').value = '-';
                 document.getElementById('money_pc_p').value = '-';
@@ -551,7 +557,7 @@
                 document.getElementById('money_re_pc').value = '-';
                 document.getElementById('money_re_all').value = '-';
 
-                 // Очистка полей для 2-й стороны
+
                 document.getElementById('time_pc2_p').value = '-';
                 document.getElementById('time_all2_p').value = '-';
                 document.getElementById('money_pc2_p').value = '-';
@@ -564,7 +570,7 @@
                 document.getElementById('time_re_all2').value = '-';
                 document.getElementById('money_re_pc2').value = '-';
                 document.getElementById('money_re_all2').value = '-';
-
+                
                 document.getElementById('time_pc3_p').value = '-';
                 document.getElementById('time_all3_p').value = '-';
                 document.getElementById('money_pc3_p').value = '-';
@@ -580,15 +586,17 @@
 
                 document.getElementById('repair_time_all').value = '-';
                 document.getElementById('repair_money_all').value = '-';
+
                 document.getElementById('control_time_all').value = '-';
                 document.getElementById('control_money_all').value = '-';
 
-                // Очистка итоговых стоимостей
+
                 document.getElementById("money_all_f").value = '-';
                 document.getElementById("money_pc_f").value = '-';
+
             }
         }
     </script>
-    <!-- Конец блока JavaScript -->
+
 </body>
 </html>
