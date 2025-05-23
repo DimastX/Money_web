@@ -5,3 +5,4 @@ app.log
 __pycache__/
 .cursor/
 .supercode/
+documentation_md/
