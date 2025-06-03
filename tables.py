@@ -34,6 +34,10 @@ def tables(file):
             logging.error("Некорректный формат: больше 2 слоев")
             return 0 # Возвращаем 0 как признак ошибки
         
+        if len(Layer) == 0:
+            logging.error("Не найдено ни одного слоя")
+            return 0
+        
         logging.info(f"Найдено слоев: {len(Layer)}, слои: {Layer}")
         
         # Выделение компонентов для стороны BOT (первый слой в списке Layer)
@@ -74,30 +78,31 @@ def tables(file):
         bot_lines_count = 0
         if not Bot_df.empty:
             Bot_df['Name'] = Bot_df['Designator'].astype(str).map(designator_to_name)
-            bot_lines_count = Bot_df['Name'].notna().sum()
+            bot_lines_count = int(Bot_df['Name'].notna().sum())
         
         # Быстрое сопоставление для TOP компонентов  
         top_lines_count = 0
         if not Top_df.empty:
             Top_df['Name'] = Top_df['Designator'].astype(str).map(designator_to_name)
-            top_lines_count = Top_df['Name'].notna().sum()
+            top_lines_count = int(Top_df['Name'].notna().sum())
                     
         # Подсчет уникальных наименований для каждой стороны
         top_lines_unique_count = 0
         if not Top_df.empty and 'Name' in Top_df.columns: # Проверка на существование столбца Name
-            top_lines_unique_count = Top_df["Name"].nunique()
+            top_lines_unique_count = int(Top_df["Name"].nunique())
             
         bot_lines_unique_count = 0
         if not Bot_df.empty and 'Name' in Bot_df.columns: # Проверка на существование столбца Name
-            bot_lines_unique_count = Bot_df["Name"].nunique()
+            bot_lines_unique_count = int(Bot_df["Name"].nunique())
 
         # Формирование списка с результатами подсчета
+        # Важно: конвертируем все в обычные Python int для JSON сериализации
         result_counts = [
-            top_lines_count,      # Общее количество компонентов на стороне Top 
-            top_lines_unique_count, # Количество уникальных наименований на стороне Top
-            bot_lines_count,      # Общее количество компонентов на стороне Bot
-            bot_lines_unique_count, # Количество уникальных наименований на стороне Bot
-            unique_names_bom      # Общее количество уникальных наименований в BOM
+            int(top_lines_count),      # Общее количество компонентов на стороне Top 
+            int(top_lines_unique_count), # Количество уникальных наименований на стороне Top
+            int(bot_lines_count),      # Общее количество компонентов на стороне Bot
+            int(bot_lines_unique_count), # Количество уникальных наименований на стороне Bot
+            int(unique_names_bom)      # Общее количество уникальных наименований в BOM
         ]
         
         end_time = time.time()
