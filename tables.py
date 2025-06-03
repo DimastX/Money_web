@@ -1,4 +1,6 @@
 import pandas as pd
+import logging
+import time
 
 # === ОБРАБОТКА СПЕЦИФИКАЦИЙ PAP И BOM ===
 """ 
@@ -7,87 +9,108 @@ import pandas as pd
 Позже по количеству наименований считается количество уникальных компонентов, устанавливаемых на разные стороны
 """
 def tables(file):
-    # Чтение данных из Excel файла
-    # df = pd.read_csv(file, encoding='utf-8', sep=',') # Старый вариант с CSV
-    df = pd.read_excel(file)
+    start_time = time.time()
+    logging.info("Начало обработки таблицы")
     
-    # Разделение исходного DataFrame на PAP (первые 2 столбца) и BOM (следующие столбцы)
-    PAP = df.iloc[:, :2] 
-    BOM = df.iloc[:, 2:] 
-    
-    # Обработка таблицы PAP
-    PAP['Layer'] = PAP['Layer'].fillna("") # Заполнение пустых значений в столбце 'Layer' пустой строкой
-    PAP.drop_duplicates() # Удаление дубликатов в PAP
-    
-    # Определение уникальных слоев (сторон установки) из PAP
-    Layer = PAP["Layer"].unique()
-    Layer = list(filter(None, Layer)) # Удаление пустых значений из списка слоев
-    
-    # Проверка: если слоев больше двух, формат некорректен
-    if len(Layer) > 2:
-        return  0 # Возвращаем 0 как признак ошибки
-    
-    # Выделение компонентов для стороны BOT (первый слой в списке Layer)
-    Bot_components_pap = PAP[PAP["Layer"] == Layer[0]]["Designator"]
-    Bot_df = pd.DataFrame(Bot_components_pap) # Создание DataFrame для компонентов BOT
-    Bot_df.rename(columns={'Designator': 'Designator'}, inplace=True) # Явное именование столбца
-
-    Top_df = pd.DataFrame() # Инициализация DataFrame для TOP компонентов
-    if len(Layer) == 2:
-        # Выделение компонентов для стороны TOP (второй слой в списке Layer), если он есть
-        Top_components_pap = PAP[PAP["Layer"] == Layer[1]]["Designator"]
-        Top_df = pd.DataFrame(Top_components_pap)
-        Top_df.rename(columns={'Designator': 'Designator'}, inplace=True) # Явное именование столбца
-
-    top_lines_count = 0 # Счетчик компонентов на стороне TOP
-    bot_lines_count = 0 # Счетчик компонентов на стороне BOT
-    
-    # Обработка таблицы BOM
-    BOM.dropna(axis='index', how='all', inplace=True) # Удаление полностью пустых строк из BOM
-    # bom_table(BOM) # Вызов функции для замены диапазонов (например, C1-C5) на отдельные позиционные обозначения - сейчас закомментировано. 
-    # ПОЧЕМУ?????
-    unique_names_bom = BOM["Name"].nunique() # Подсчет количества уникальных наименований в BOM
-    
-    # Сопоставление компонентов BOT из PAP с BOM
-    for index_bot, row_bot in Bot_df.iterrows():
-        designator_bot = str(row_bot['Designator'])
-        for index_bom, row_bom in BOM.iterrows():
-            # Преобразование строки с позиционными обозначениями из BOM в список
-            designators_bom_list = str(row_bom['Designators (BOM)']).replace(" ","").split(",")
-            if designator_bot in designators_bom_list:
-                Bot_df.at[index_bot, 'Name'] = row_bom["Name"] # Добавление наименования компонента из BOM
-                bot_lines_count += 1
-                break # Переход к следующему компоненту BOT после нахождения соответствия
-    
-    # Сопоставление компонентов TOP из PAP с BOM (если сторона TOP существует)
-    if not Top_df.empty:        
-        for index_top, row_top in Top_df.iterrows():
-            designator_top = str(row_top['Designator'])
-            for index_bom, row_bom in BOM.iterrows():
-                designators_bom_list = str(row_bom['Designators (BOM)']).replace(" ","").split(",")
-                if designator_top in designators_bom_list:
-                    Top_df.at[index_top, 'Name'] = row_bom["Name"]
-                    top_lines_count += 1
-                    break
-                    
-    # Подсчет уникальных наименований для каждой стороны
-    top_lines_unique_count = 0
-    if not Top_df.empty and 'Name' in Top_df.columns: # Проверка на существование столбца Name
-        top_lines_unique_count = Top_df["Name"].nunique()
+    try:
+        # Чтение данных из Excel файла
+        df = pd.read_excel(file)
+        logging.info(f"Файл прочитан, размер: {df.shape}")
         
-    bot_lines_unique_count = 0
-    if not Bot_df.empty and 'Name' in Bot_df.columns: # Проверка на существование столбца Name
-        bot_lines_unique_count = Bot_df["Name"].nunique()
+        # Разделение исходного DataFrame на PAP (первые 2 столбца) и BOM (следующие столбцы)
+        PAP = df.iloc[:, :2] 
+        BOM = df.iloc[:, 2:] 
+        
+        # Обработка таблицы PAP
+        PAP['Layer'] = PAP['Layer'].fillna("") # Заполнение пустых значений в столбце 'Layer' пустой строкой
+        PAP = PAP.drop_duplicates() # Удаление дубликатов в PAP
+        
+        # Определение уникальных слоев (сторон установки) из PAP
+        Layer = PAP["Layer"].unique()
+        Layer = list(filter(None, Layer)) # Удаление пустых значений из списка слоев
+        
+        # Проверка: если слоев больше двух, формат некорректен
+        if len(Layer) > 2:
+            logging.error("Некорректный формат: больше 2 слоев")
+            return 0 # Возвращаем 0 как признак ошибки
+        
+        logging.info(f"Найдено слоев: {len(Layer)}, слои: {Layer}")
+        
+        # Выделение компонентов для стороны BOT (первый слой в списке Layer)
+        Bot_components_pap = PAP[PAP["Layer"] == Layer[0]]["Designator"]
+        Bot_df = pd.DataFrame(Bot_components_pap) # Создание DataFrame для компонентов BOT
+        Bot_df.rename(columns={'Designator': 'Designator'}, inplace=True) # Явное именование столбца
 
-    # Формирование списка с результатами подсчета
-    result_counts = [
-        top_lines_count,      # Общее количество компонентов на стороне Top 
-        top_lines_unique_count, # Количество уникальных наименований на стороне Top
-        bot_lines_count,      # Общее количество компонентов на стороне Bot
-        bot_lines_unique_count, # Количество уникальных наименований на стороне Bot
-        unique_names_bom      # Общее количество уникальных наименований в BOM
-    ]
-    return result_counts
+        Top_df = pd.DataFrame() # Инициализация DataFrame для TOP компонентов
+        if len(Layer) == 2:
+            # Выделение компонентов для стороны TOP (второй слой в списке Layer), если он есть
+            Top_components_pap = PAP[PAP["Layer"] == Layer[1]]["Designator"]
+            Top_df = pd.DataFrame(Top_components_pap)
+            Top_df.rename(columns={'Designator': 'Designator'}, inplace=True) # Явное именование столбца
+
+        # Обработка таблицы BOM
+        BOM = BOM.dropna(axis='index', how='all') # Удаление полностью пустых строк из BOM
+        unique_names_bom = BOM["Name"].nunique() # Подсчет количества уникальных наименований в BOM
+        
+        logging.info(f"BOT компонентов: {len(Bot_df)}, TOP компонентов: {len(Top_df)}, BOM строк: {len(BOM)}")
+        
+        # === ОПТИМИЗИРОВАННОЕ СОПОСТАВЛЕНИЕ ===
+        # Вместо вложенных циклов используем операции pandas
+        
+        # Создаем словарь для быстрого поиска имен по designator
+        designator_to_name = {}
+        
+        for index_bom, row_bom in BOM.iterrows():
+            designators_bom_str = str(row_bom['Designators (BOM)']).replace(" ", "")
+            if designators_bom_str != 'nan' and designators_bom_str:
+                designators_list = designators_bom_str.split(",")
+                for designator in designators_list:
+                    if designator.strip():
+                        designator_to_name[designator.strip()] = row_bom["Name"]
+        
+        logging.info(f"Создан словарь с {len(designator_to_name)} соответствиями")
+        
+        # Быстрое сопоставление для BOT компонентов
+        bot_lines_count = 0
+        if not Bot_df.empty:
+            Bot_df['Name'] = Bot_df['Designator'].astype(str).map(designator_to_name)
+            bot_lines_count = Bot_df['Name'].notna().sum()
+        
+        # Быстрое сопоставление для TOP компонентов  
+        top_lines_count = 0
+        if not Top_df.empty:
+            Top_df['Name'] = Top_df['Designator'].astype(str).map(designator_to_name)
+            top_lines_count = Top_df['Name'].notna().sum()
+                    
+        # Подсчет уникальных наименований для каждой стороны
+        top_lines_unique_count = 0
+        if not Top_df.empty and 'Name' in Top_df.columns: # Проверка на существование столбца Name
+            top_lines_unique_count = Top_df["Name"].nunique()
+            
+        bot_lines_unique_count = 0
+        if not Bot_df.empty and 'Name' in Bot_df.columns: # Проверка на существование столбца Name
+            bot_lines_unique_count = Bot_df["Name"].nunique()
+
+        # Формирование списка с результатами подсчета
+        result_counts = [
+            top_lines_count,      # Общее количество компонентов на стороне Top 
+            top_lines_unique_count, # Количество уникальных наименований на стороне Top
+            bot_lines_count,      # Общее количество компонентов на стороне Bot
+            bot_lines_unique_count, # Количество уникальных наименований на стороне Bot
+            unique_names_bom      # Общее количество уникальных наименований в BOM
+        ]
+        
+        end_time = time.time()
+        processing_time = end_time - start_time
+        logging.info(f"Обработка завершена за {processing_time:.2f} секунд. Результат: {result_counts}")
+        
+        return result_counts
+        
+    except Exception as e:
+        end_time = time.time()
+        processing_time = end_time - start_time
+        logging.error(f"Ошибка при обработке таблицы за {processing_time:.2f} секунд: {e}")
+        return 0
 
 # === ОБНОВЛЕНИЕ ТАБЛИЦ КОЭФФИЦИЕНТОВ ===
 
