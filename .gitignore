@@ -6,3 +6,4 @@ __pycache__/
 .cursor/
 .supercode/
 documentation_md/
+block/config.js

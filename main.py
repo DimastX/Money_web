@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response, jsonify, g
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response, jsonify, g, send_from_directory
 from functools import wraps
 import pandas as pd
 import calculations_money as cm
@@ -568,7 +568,7 @@ def smd():
     df3 = pd.read_csv('data/SMD2.csv').values.tolist() #Скорость монтажа на смд линии для удобной обработки в JS
     df4 = pd.read_csv('data/SMD2.csv') #Скорость монтажа на смд линии
     if "tables" in session:
-        if session["tables"] == 0: #Если ошибка 0, т.е в РАР не 2 разных позиции
+        if session["tables"] == 0: #Если ошибка 0, т.е в РАР не 2 разных позиций
             flash("PAP файл заполнен некорректно. Неправильно введён столбец Layer")
     if request.method == 'POST': 
         session['SMD_form'] = request.form
@@ -1188,6 +1188,14 @@ def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+@app.route('/block/')
+def block_index():
+    return send_from_directory('block', 'index.html')
+
+@app.route('/block/<path:filename>')
+def block_files(filename):
+    return send_from_directory('block', filename)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)

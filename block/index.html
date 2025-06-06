@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Система отслеживания материалов в SAP блоке</title>
+    <link rel="stylesheet" href="style.css?v=1.3">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Система отслеживания материалов в SAP блоке</h1>
+            <div class="header-controls">
+                <span class="last-update">Последнее обновление: <span id="lastUpdateTime">--:--</span></span>
+                <button class="btn btn--primary" id="refreshBtn">
+                    <span class="btn-icon">🔄</span>
+                    Обновить данные
+                </button>
+            </div>
+        </header>
+
+        <!-- Statistics Cards -->
+        <section class="stats-grid">
+            <!-- Первый ряд - группы времени -->
+            <div class="card stats-card stats-card--success">
+                <div class="stats-card__icon">📋</div>
+                <div class="stats-card__content">
+                    <div class="stats-card__value" id="stats-0-10">0</div>
+                    <div class="stats-card__label">0-10 дней</div>
+                </div>
+            </div>
+            <div class="card stats-card stats-card--warning">
+                <div class="stats-card__icon">⚠️</div>
+                <div class="stats-card__content">
+                    <div class="stats-card__value" id="stats-10-30">0</div>
+                    <div class="stats-card__label">10-30 дней</div>
+                </div>
+            </div>
+            <div class="card stats-card stats-card--error">
+                <div class="stats-card__icon">🔥</div>
+                <div class="stats-card__content">
+                    <div class="stats-card__value" id="stats-30-60">0</div>
+                    <div class="stats-card__label">30-60 дней</div>
+                </div>
+            </div>
+            <div class="card stats-card stats-card--critical">
+                <div class="stats-card__icon">⛔</div>
+                <div class="stats-card__content">
+                    <div class="stats-card__value" id="stats-60-90">0</div>
+                    <div class="stats-card__label">60-90 дней</div>
+                </div>
+            </div>
+            
+            <!-- Второй ряд - итоговые показатели -->
+            <div class="card stats-card stats-card--critical">
+                <div class="stats-card__icon">🚨</div>
+                <div class="stats-card__content">
+                    <div class="stats-card__value" id="stats-90-plus">0</div>
+                    <div class="stats-card__label">Более 90 дней</div>
+                </div>
+            </div>
+            <div class="card stats-card stats-card--info">
+                <div class="stats-card__icon">📝</div>
+                <div class="stats-card__content">
+                    <div class="stats-card__value" id="stats-unique-items">0</div>
+                    <div class="stats-card__label">Уникальных материалов</div>
+                </div>
+            </div>
+            <div class="card stats-card stats-card--total">
+                <div class="stats-card__icon">📦</div>
+                <div class="stats-card__content">
+                    <div class="stats-card__value" id="stats-total-qty">0</div>
+                    <div class="stats-card__label">Всего в блоке</div>
+                </div>
+            </div>
+            <div class="card stats-card stats-card--sum">
+                <div class="stats-card__icon">💰</div>
+                <div class="stats-card__content">
+                    <div class="stats-card__value" id="stats-total-cost">0 ₽</div>
+                    <div class="stats-card__label">Общая стоимость</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chart Section -->
+        <section class="chart-section">
+            <div class="card">
+                <div class="card__body">
+                    <h3>Распределение материалов по группам</h3>
+                    <div class="chart-container">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Transitions Table -->
+        <section class="transitions-section">
+            <div class="card">
+                <div class="card__body">
+                    <h3>Предстоящие переходы</h3>
+                    <div class="table-container">
+                        <table class="data-table" id="transitionsTable">
+                            <thead>
+                                <tr>
+                                    <th data-sort="id">ID материала</th>
+                                    <th data-sort="name">Наименование</th>
+                                    <th data-sort="quantity">Количество</th>
+                                    <th data-sort="warehouse">Склад</th>
+                                    <th data-sort="documentNumber">Номер документа</th>
+                                    <th data-sort="daysToNext">Дней до перехода</th>
+                                    <th data-sort="nextGroup">Следующая группа</th>
+                                    <th data-sort="totalCost">Стоимость</th>
+                                    <th data-sort="responsible">Поместил в блок</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transitionsTableBody">
+                                <!-- Будет заполнено JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Materials Table -->
+        <section class="materials-section">
+            <div class="card">
+                <div class="card__body">
+                    <h3>Все материалы</h3>
+                    <div class="table-container">
+                        <table class="data-table" id="materialsTable">
+                            <thead>
+                                <tr>
+                                    <th data-sort="id">ID материала</th>
+                                    <th data-sort="name">Наименование</th>
+                                    <th data-sort="quantity">Количество</th>
+                                    <th data-sort="warehouse">Склад</th>
+                                    <th data-sort="documentNumber">Номер документа</th>
+                                    <th data-sort="daysInBlock">Дней в блоке</th>
+                                    <th data-sort="timeGroup">Группа</th>
+                                    <th data-sort="totalCost">Стоимость</th>
+                                    <th data-sort="responsible">Поместил в блок</th>
+                                </tr>
+                            </thead>
+                            <tbody id="materialsTableBody">
+                                <!-- Будет заполнено JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification__content">
+            <span class="notification__icon">✅</span>
+            <span class="notification__text">Данные обновлены</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
