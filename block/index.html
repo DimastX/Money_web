@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Система отслеживания материалов в SAP блоке</title>
-    <link rel="stylesheet" href="style.css?v=1.3">
+    <link rel="stylesheet" href="style.css?v=1.6">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -26,42 +26,26 @@
 
         <!-- Statistics Cards -->
         <section class="stats-grid">
-            <!-- Первый ряд - группы времени -->
+            <!-- Обновленные группы времени -->
             <div class="card stats-card stats-card--success">
                 <div class="stats-card__icon">📋</div>
                 <div class="stats-card__content">
-                    <div class="stats-card__value" id="stats-0-10">0</div>
-                    <div class="stats-card__label">0-10 дней</div>
+                    <div class="stats-card__value" id="stats-0-30">0</div>
+                    <div class="stats-card__label">0-30 дней</div>
                 </div>
             </div>
             <div class="card stats-card stats-card--warning">
                 <div class="stats-card__icon">⚠️</div>
                 <div class="stats-card__content">
-                    <div class="stats-card__value" id="stats-10-30">0</div>
-                    <div class="stats-card__label">10-30 дней</div>
+                    <div class="stats-card__value" id="stats-30-plus">0</div>
+                    <div class="stats-card__label">Более 30 дней</div>
                 </div>
             </div>
             <div class="card stats-card stats-card--error">
-                <div class="stats-card__icon">🔥</div>
+                <div class="stats-card__icon">📅</div>
                 <div class="stats-card__content">
-                    <div class="stats-card__value" id="stats-30-60">0</div>
-                    <div class="stats-card__label">30-60 дней</div>
-                </div>
-            </div>
-            <div class="card stats-card stats-card--critical">
-                <div class="stats-card__icon">⛔</div>
-                <div class="stats-card__content">
-                    <div class="stats-card__value" id="stats-60-90">0</div>
-                    <div class="stats-card__label">60-90 дней</div>
-                </div>
-            </div>
-            
-            <!-- Второй ряд - итоговые показатели -->
-            <div class="card stats-card stats-card--critical">
-                <div class="stats-card__icon">🚨</div>
-                <div class="stats-card__content">
-                    <div class="stats-card__value" id="stats-90-plus">0</div>
-                    <div class="stats-card__label">Более 90 дней</div>
+                    <div class="stats-card__value" id="stats-before-2024">0</div>
+                    <div class="stats-card__label">До 2024 года</div>
                 </div>
             </div>
             <div class="card stats-card stats-card--info">
@@ -71,6 +55,8 @@
                     <div class="stats-card__label">Уникальных материалов</div>
                 </div>
             </div>
+            
+            <!-- Второй ряд - итоговые показатели -->
             <div class="card stats-card stats-card--total">
                 <div class="stats-card__icon">📦</div>
                 <div class="stats-card__content">
@@ -99,11 +85,33 @@
             </div>
         </section>
 
-        <!-- Upcoming Transitions Table -->
-        <section class="transitions-section">
+        <!-- Tabs Section -->
+        <section class="tabs-section">
             <div class="card">
-                <div class="card__body">
-                    <h3>Предстоящие переходы</h3>
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="transitions">Предстоящие переходы</button>
+                    <button class="tab-button" data-tab="materials">Все материалы</button>
+                </div>
+
+                <!-- Transitions Tab -->
+                <div class="tab-content active" id="transitions-tab">
+                    <div class="table-controls">
+                        <div class="filters">
+                            <input type="text" id="transitions-filter-id" placeholder="Фильтр по ID материала" class="filter-input">
+                            <input type="text" id="transitions-filter-name" placeholder="Фильтр по наименованию" class="filter-input">
+                            <input type="text" id="transitions-filter-warehouse" placeholder="Фильтр по складу" class="filter-input">
+                            <select id="transitions-filter-group" class="filter-select">
+                                <option value="">Все группы</option>
+                                <option value="Более 30 дней">Более 30 дней</option>
+                                <option value="До 2024 года">До 2024 года</option>
+                                <option value="Критично">Критично</option>
+                            </select>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn--secondary" id="clear-transitions-filters">Очистить фильтры</button>
+                            <button class="btn btn--primary" id="export-transitions">📊 Экспорт таблицы</button>
+                        </div>
+                    </div>
                     <div class="table-container">
                         <table class="data-table" id="transitionsTable">
                             <thead>
@@ -125,14 +133,26 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- All Materials Table -->
-        <section class="materials-section">
-            <div class="card">
-                <div class="card__body">
-                    <h3>Все материалы</h3>
+                <!-- Materials Tab -->
+                <div class="tab-content" id="materials-tab">
+                    <div class="table-controls">
+                        <div class="filters">
+                            <input type="text" id="materials-filter-id" placeholder="Фильтр по ID материала" class="filter-input">
+                            <input type="text" id="materials-filter-name" placeholder="Фильтр по наименованию" class="filter-input">
+                            <input type="text" id="materials-filter-warehouse" placeholder="Фильтр по складу" class="filter-input">
+                            <select id="materials-filter-group" class="filter-select">
+                                <option value="">Все группы</option>
+                                <option value="0-30 дней">0-30 дней</option>
+                                <option value="Более 30 дней">Более 30 дней</option>
+                                <option value="До 2024 года">До 2024 года</option>
+                            </select>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn--secondary" id="clear-materials-filters">Очистить фильтры</button>
+                            <button class="btn btn--primary" id="export-materials">📊 Экспорт таблицы</button>
+                        </div>
+                    </div>
                     <div class="table-container">
                         <table class="data-table" id="materialsTable">
                             <thead>
@@ -167,7 +187,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="config.js?v=1.7"></script>
+    <script src="app.js?v=1.7"></script>
 </body>
 </html>

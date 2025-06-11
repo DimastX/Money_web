@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Time Groups</title>
+</head>
+<body>
+    <h1>Test Time Groups</h1>
+    <div id="results"></div>
+
+    <script>
+        // Copy the exact getTimeGroup function from app.js
+        function getTimeGroup(days) {
+            if (days <= 30) {
+                return '0-30 дней';
+            } else {
+                // Для материалов, которые в блоке более 30 дней, нужно определить, 
+                // попали ли они в блок в 2024 году или раньше
+                const today = new Date();
+                const entryDate = new Date(today.getTime() - (days * 24 * 60 * 60 * 1000));
+                
+                if (entryDate.getFullYear() >= 2024) {
+                    return 'Более 30 дней';
+                } else {
+                    return 'До 2024 года';
+                }
+            }
+        }
+
+        // Test various day values
+        const testValues = [1, 15, 30, 45, 60, 90, 120, 365, 400];
+        const results = document.getElementById('results');
+        
+        testValues.forEach(days => {
+            const group = getTimeGroup(days);
+            const entryDate = new Date();
+            entryDate.setDate(entryDate.getDate() - days);
+            
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <p><strong>Дней в блоке: ${days}</strong></p>
+                <p>Дата попадания в блок: ${entryDate.toLocaleDateString('ru-RU')}</p>
+                <p>Группа времени: <strong>${group}</strong></p>
+                <hr>
+            `;
+            results.appendChild(div);
+        });
+    </script>
+</body>
+</html> 

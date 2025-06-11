@@ -1192,3 +1192,214 @@ select.form-control {
   font-size: var(--font-size-lg);
   padding: var(--space-12) var(--space-24);
 }
+
+.sign-in-prompt .btn {
+  width: 100%;
+}
+
+/* === TABS SYSTEM === */
+.tabs-section {
+  margin-top: var(--space-32);
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-24);
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: var(--space-12) var(--space-24);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  border-bottom: 2px solid transparent;
+  transition: all var(--duration-fast) var(--ease-standard);
+  position: relative;
+}
+
+.tab-button:hover {
+  color: var(--color-text);
+  background-color: var(--color-secondary);
+}
+
+.tab-button.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  background-color: transparent;
+}
+
+.tab-button:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* === TABLE CONTROLS === */
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-16);
+  margin-bottom: var(--space-20);
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+  flex-grow: 1;
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--space-12);
+  flex-shrink: 0;
+}
+
+.filter-input,
+.filter-select {
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  transition: all var(--duration-fast) var(--ease-standard);
+  min-width: 150px;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+}
+
+.filter-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.filter-select {
+  background-image: var(--select-caret-light);
+  background-repeat: no-repeat;
+  background-position: right var(--space-8) center;
+  background-size: 16px;
+  padding-right: var(--space-32);
+  appearance: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .filter-select {
+    background-image: var(--select-caret-dark);
+  }
+}
+
+[data-color-scheme="dark"] .filter-select {
+  background-image: var(--select-caret-dark);
+}
+
+[data-color-scheme="light"] .filter-select {
+  background-image: var(--select-caret-light);
+}
+
+/* === UPDATED TIME GROUP BADGES === */
+.time-group-0-30 {
+  background-color: rgba(var(--color-success-rgb), var(--status-bg-opacity));
+  border: 1px solid rgba(var(--color-success-rgb), var(--status-border-opacity));
+  color: var(--color-success);
+}
+
+.time-group-30-plus {
+  background-color: rgba(var(--color-warning-rgb), var(--status-bg-opacity));
+  border: 1px solid rgba(var(--color-warning-rgb), var(--status-border-opacity));
+  color: var(--color-warning);
+}
+
+.time-group-before-2024 {
+  background-color: rgba(var(--color-error-rgb), var(--status-bg-opacity));
+  border: 1px solid rgba(var(--color-error-rgb), var(--status-border-opacity));
+  color: var(--color-error);
+}
+
+/* Remove old time group styles that conflict */
+.time-group-0-10,
+.time-group-10-30,
+.time-group-30-60,
+.time-group-60-90,
+.time-group-90-plus {
+  display: none;
+}
+
+/* === FILTERED ROW STYLE === */
+.data-table tbody tr.filtered-out {
+  display: none;
+}
+
+/* === RESPONSIVE ADJUSTMENTS FOR NEW LAYOUT === */
+@media (max-width: 768px) {
+  .table-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filters {
+    flex-direction: column;
+  }
+  
+  .filter-input,
+  .filter-select {
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .table-actions {
+    justify-content: stretch;
+  }
+  
+  .table-actions .btn {
+    flex: 1;
+  }
+  
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tab-button {
+    white-space: nowrap;
+    min-width: max-content;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-controls {
+    gap: var(--space-12);
+  }
+  
+  .filters {
+    gap: var(--space-8);
+  }
+  
+  .table-actions {
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+  
+  .filter-input,
+  .filter-select {
+    font-size: var(--font-size-sm);
+    padding: var(--space-6) var(--space-10);
+  }
+}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test</title>
+</head>
+<body>
+    <h1>Тестирование приложения</h1>
+    <p>Время: <span id="time"></span></p>
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+        
+        // Redirect to main app after 2 seconds
+        setTimeout(() => {
+            window.location.href = '/index.html';
+        }, 2000);
+    </script>
+</body>
+</html> 
