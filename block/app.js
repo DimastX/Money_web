@@ -182,8 +182,8 @@ function exportTableData(tableType) {
     }
 
     const headers = isTransitions 
-        ? ['ID материала', 'Наименование', 'Количество', 'Склад', 'Номер документа', 'Дней до перехода', 'Следующая группа', 'Стоимость', 'Поместил в блок']
-        : ['ID материала', 'Наименование', 'Количество', 'Склад', 'Номер документа', 'Дней в блоке', 'Группа', 'Стоимость', 'Поместил в блок'];
+        ? ['ID материала', 'Наименование', 'Количество', 'Склад', 'Номер документа', 'Дней до перехода', 'Следующая группа', 'Стоимость', 'Поместил в блок', 'BKTXT', 'СПП', 'Текст СПП']
+        : ['ID материала', 'Наименование', 'Количество', 'Склад', 'Номер документа', 'Дней в блоке', 'Группа', 'Стоимость', 'Поместил в блок', 'BKTXT', 'СПП', 'Текст СПП'];
 
     // Функция для получения числового значения стоимости
     function getCostAsNumber(cost) {
@@ -205,7 +205,10 @@ function exportTableData(tableType) {
             isTransitions ? item.daysToNext : item.daysInBlock,
             isTransitions ? item.nextGroup : item.timeGroup,
             getCostAsNumber(item.totalCost),
-            item.responsible
+            item.responsible,
+            item.bktxt,
+            item.spp,
+            item.sppText
         ])
     ];
 
@@ -246,7 +249,10 @@ function exportTableData(tableType) {
             { wch: 15 }, // Дней до перехода
             { wch: 18 }, // Следующая группа
             { wch: 18 }, // Стоимость
-            { wch: 25 }  // Поместил в блок
+            { wch: 25 },  // Поместил в блок
+            { wch: 15 }, // BKTXT
+            { wch: 15 }, // СПП
+            { wch: 25 }  // Текст СПП
         ]
         : [
             { wch: 12 }, // ID материала
@@ -257,7 +263,10 @@ function exportTableData(tableType) {
             { wch: 15 }, // Дней в блоке
             { wch: 18 }, // Группа
             { wch: 18 }, // Стоимость
-            { wch: 25 }  // Поместил в блок
+            { wch: 25 },  // Поместил в блок
+            { wch: 15 }, // BKTXT
+            { wch: 15 }, // СПП
+            { wch: 25 }  // Текст СПП
         ];
     
     ws['!cols'] = colWidths;
@@ -336,7 +345,7 @@ async function loadDataInChunks() {
     while (currentRow < MAX_ROWS) {
         try {
             const endRow = Math.min(currentRow + CHUNK_SIZE - 1, MAX_ROWS);
-            const range = `${sheetName}!A${currentRow}:K${endRow}`;
+            const range = `${sheetName}!A${currentRow}:N${endRow}`;
             
             console.log(`Загружаем строки ${currentRow}-${endRow}...`);
             
@@ -391,45 +400,45 @@ async function simulateGoogleSheetsLoad() {
             // Симуляция данных с движениями по разным складам и FIFO логикой для новых групп времени
             const rawData = [
                 // Материал 3103197 на складе 4749 - поступило недавно, в группе "0-30 дней"
-                ['DOC001', '3103197', '320-00169.B Центр. часть брелка RM-E96', '25.12.2024', '344', '5000', '4749', '11576', 'Мяндин Алексей Юрьевич', '717.18', '3585900.00'],
-                ['DOC002', '3103197', '320-00169.B Центр. часть брелка RM-E96', '28.12.2024', '344', '3000', '4749', '11576', 'Мяндин Алексей Юрьевич', '717.18', '2151540.00'],
-                ['DOC003', '3103197', '320-00169.B Центр. часть брелка RM-E96', '02.01.2025', '343', '1000', '4749', '11576', 'Мяндин Алексей Юрьевич', '717.18', '717180.00'],
+                ['DOC001', '3103197', '320-00169.B Центр. часть брелка RM-E96', '25.12.2024', '344', '5000', '4749', '11576', 'Мяндин Алексей Юрьевич', '717.18', '3585900.00', 'BKTXT001', 'SPP001', 'Текст СПП 001'],
+                ['DOC002', '3103197', '320-00169.B Центр. часть брелка RM-E96', '28.12.2024', '344', '3000', '4749', '11576', 'Мяндин Алексей Юрьевич', '717.18', '2151540.00', 'BKTXT002', 'SPP002', 'Текст СПП 002'],
+                ['DOC003', '3103197', '320-00169.B Центр. часть брелка RM-E96', '02.01.2025', '343', '1000', '4749', '11576', 'Мяндин Алексей Юрьевич', '717.18', '717180.00', 'BKTXT003', 'SPP003', 'Текст СПП 003'],
                 
                 // Тот же материал на другом складе - отдельный учет
-                ['DOC004', '3103197', '320-00169.B Центр. часть брелка RM-E96', '30.12.2024', '344', '2000', '4750', '11576', 'Мяндин Алексей Юрьевич', '717.18', '1434360.00'],
+                ['DOC004', '3103197', '320-00169.B Центр. часть брелка RM-E96', '30.12.2024', '344', '2000', '4750', '11576', 'Мяндин Алексей Юрьевич', '717.18', '1434360.00', 'BKTXT004', 'SPP004', 'Текст СПП 004'],
                 
                 // Материал 3100596 - группа "0-30 дней"
-                ['DOC005', '3100596', '320-00149.A Стекло ЖКИ брелока A96', '20.12.2024', '344', '20000', '4749', '11576', 'Мяндин Алексей Юрьевич', '256.66', '5133200.00'],
-                ['DOC006', '3100596', '320-00149.A Стекло ЖКИ брелока A96', '25.12.2024', '343', '5000', '4749', '11576', 'Мяндин Алексей Юрьевич', '256.66', '1283300.00'],
-                ['DOC007', '3100596', '320-00149.A Стекло ЖКИ брелока A96', '05.01.2025', '344', '15000', '4749', '11576', 'Мяндин Алексей Юрьевич', '256.66', '3849900.00'],
+                ['DOC005', '3100596', '320-00149.A Стекло ЖКИ брелока A96', '20.12.2024', '344', '20000', '4749', '11576', 'Мяндин Алексей Юрьевич', '256.66', '5133200.00', 'BKTXT005', 'SPP005', 'Текст СПП 005'],
+                ['DOC006', '3100596', '320-00149.A Стекло ЖКИ брелока A96', '25.12.2024', '343', '5000', '4749', '11576', 'Мяндин Алексей Юрьевич', '256.66', '1283300.00', 'BKTXT006', 'SPP006', 'Текст СПП 006'],
+                ['DOC007', '3100596', '320-00149.A Стекло ЖКИ брелока A96', '05.01.2025', '344', '15000', '4749', '11576', 'Мяндин Алексей Юрьевич', '256.66', '3849900.00', 'BKTXT007', 'SPP007', 'Текст СПП 007'],
                 
                 // Материал 3105617 - группа "0-30 дней" 
-                ['DOC008', '3105617', '320-00167.D Стекло ЖКИ RM-E96', '15.12.2024', '344', '5000', '4749', '11576', 'Мяндин Алексей Юрьевич', '2119.00', '10595000.00'],
-                ['DOC009', '3105617', '320-00167.D Стекло ЖКИ RM-E96', '20.12.2024', '344', '10000', '4749', '11576', 'Мяндин Алексей Юрьевич', '2119.00', '21190000.00'],
-                ['DOC010', '3105617', '320-00167.D Стекло ЖКИ RM-E96', '03.01.2025', '343', '3000', '4749', '11576', 'Мяндин Алексей Юрьевич', '2119.00', '6357000.00'],
+                ['DOC008', '3105617', '320-00167.D Стекло ЖКИ RM-E96', '15.12.2024', '344', '5000', '4749', '11576', 'Мяндин Алексей Юрьевич', '2119.00', '10595000.00', 'BKTXT008', 'SPP008', 'Текст СПП 008'],
+                ['DOC009', '3105617', '320-00167.D Стекло ЖКИ RM-E96', '20.12.2024', '344', '10000', '4749', '11576', 'Мяндин Алексей Юрьевич', '2119.00', '21190000.00', 'BKTXT009', 'SPP009', 'Текст СПП 009'],
+                ['DOC010', '3105617', '320-00167.D Стекло ЖКИ RM-E96', '03.01.2025', '343', '3000', '4749', '11576', 'Мяндин Алексей Юрьевич', '2119.00', '6357000.00', 'BKTXT010', 'SPP010', 'Текст СПП 010'],
                 
                 // Материал группы "Более 30 дней" - попал в блок в ноябре 2024
-                ['DOC011', '3100595', 'Стекло ЖК-брелка A96 (cт.2)', '10.11.2024', '344', '131000', '4749', '11576', 'Мяндин Алексей Юрьевич', '167.76', '21976560.00'],
+                ['DOC011', '3100595', 'Стекло ЖК-брелка A96 (cт.2)', '10.11.2024', '344', '131000', '4749', '11576', 'Мяндин Алексей Юрьевич', '167.76', '21976560.00', 'BKTXT011', 'SPP011', 'Текст СПП 011'],
                 
                 // Материал группы "Более 30 дней" - попал в блок в октябре 2024
-                ['DOC012', '3107699', '911-00036.A RMV-E96 V8510 Si4463 б/к', '01.10.2024', '344', '7200', '4757', '23154', 'Кочетков Евгений Николаевич', '7258.30', '52259760.00'],
+                ['DOC012', '3107699', '911-00036.A RMV-E96 V8510 Si4463 б/к', '01.10.2024', '344', '7200', '4757', '23154', 'Кочетков Евгений Николаевич', '7258.30', '52259760.00', 'BKTXT012', 'SPP012', 'Текст СПП 012'],
                 
                 // Материал группы "До 2024 года" - попал в блок в декабре 2023
-                ['DOC013', '3108001', '320-00120.B Печатная плата брелка A96', '15.12.2023', '344', '4500', '4749', '11576', 'Мяндин Алексей Юрьевич', '1254.00', '5643000.00'],
+                ['DOC013', '3108001', '320-00120.B Печатная плата брелка A96', '15.12.2023', '344', '4500', '4749', '11576', 'Мяндин Алексей Юрьевич', '1254.00', '5643000.00', 'BKTXT013', 'SPP013', 'Текст СПП 013'],
                 
                 // Материал группы "До 2024 года" - попал в блок в августе 2023
-                ['DOC014', '3109003', 'Микросхема обработки сигналов', '10.08.2023', '344', '25', '4757', '23154', 'Кочетков Евгений Николаевич', '850.00', '21250.00'],
+                ['DOC014', '3109003', 'Микросхема обработки сигналов', '10.08.2023', '344', '25', '4757', '23154', 'Кочетков Евгений Николаевич', '850.00', '21250.00', 'BKTXT014', 'SPP014', 'Текст СПП 014'],
                 
                 // Материал с движениями на разных складах группы "0-30 дней"
-                ['DOC015', '3107779', '320-00356.A Вер.крыш.кор ES96TRX4LIN MIC', '18.12.2024', '344', '100', '4749', '11576', 'Мяндин Алексей Юрьевич', '11.17', '1117.00'],
-                ['DOC016', '3107779', '320-00356.A Вер.крыш.кор ES96TRX4LIN MIC', '19.12.2024', '343', '50', '4750', '11576', 'Мяндин Алексей Юрьевич', '11.17', '558.50'], // Не влияет на склад 4749
+                ['DOC015', '3107779', '320-00356.A Вер.крыш.кор ES96TRX4LIN MIC', '18.12.2024', '344', '100', '4749', '11576', 'Мяндин Алексей Юрьевич', '11.17', '1117.00', 'BKTXT015', 'SPP015', 'Текст СПП 015'],
+                ['DOC016', '3107779', '320-00356.A Вер.крыш.кор ES96TRX4LIN MIC', '19.12.2024', '343', '50', '4750', '11576', 'Мяндин Алексей Юрьевич', '11.17', '558.50', 'BKTXT016', 'SPP016', 'Текст СПП 016'], // Не влияет на склад 4749
                 
                 // Дополнительные материалы для группы "0-30 дней"
-                ['DOC017', '3100594', 'Стекло ЖК-брелка A96 (cт.1)', '20.12.2024', '344', '300', '4749', '11576', 'Мяндин Алексей Юрьевич', '5.43', '1629.00'],
+                ['DOC017', '3100594', 'Стекло ЖК-брелка A96 (cт.1)', '20.12.2024', '344', '300', '4749', '11576', 'Мяндин Алексей Юрьевич', '5.43', '1629.00', 'BKTXT017', 'SPP017', 'Текст СПП 017'],
                 
                 // Дополнительные материалы для группы "Более 30 дней"
-                ['DOC018', '3109001', 'Резистор 0805 10кОм', '25.10.2024', '344', '1000', '4749', '11576', 'Мяндин Алексей Юрьевич', '0.15', '150.00'],
-                ['DOC019', '3109002', 'Конденсатор керамический 100нФ', '20.09.2024', '344', '500', '4750', '23154', 'Кочетков Евгений Николаевич', '0.25', '125.00']
+                ['DOC018', '3109001', 'Резистор 0805 10кОм', '25.10.2024', '344', '1000', '4749', '11576', 'Мяндин Алексей Юрьевич', '0.15', '150.00', 'BKTXT018', 'SPP018', 'Текст СПП 018'],
+                ['DOC019', '3109002', 'Конденсатор керамический 100нФ', '20.09.2024', '344', '500', '4750', '23154', 'Кочетков Евгений Николаевич', '0.25', '125.00', 'BKTXT019', 'SPP019', 'Текст СПП 019']
             ];
 
             materialsData.materials = transformGoogleSheetsData(rawData);
@@ -448,7 +457,7 @@ function transformGoogleSheetsData(rawData) {
         const [
             documentNumber, materialCode, materialName, entryDate, 
             statusCode, quantity, warehouse, userId, userName, 
-            pricePerUnit, totalCost
+            pricePerUnit, totalCost, bktxt, spp, sppText
         ] = row;
 
         if (!materialCode || !statusCode || !quantity || !warehouse) return;
@@ -471,7 +480,10 @@ function transformGoogleSheetsData(rawData) {
             statusCode: statusCode,
             quantity: parseInt(quantity) || 0,
             documentNumber: documentNumber,
-            totalCost: parseFloat(totalCost) || 0
+            totalCost: parseFloat(totalCost) || 0,
+            bktxt: bktxt || '',
+            spp: spp || '',
+            sppText: sppText || ''
         });
     });
 
@@ -504,12 +516,15 @@ function transformGoogleSheetsData(rawData) {
                     dateString: movement.dateString,
                     quantity: movement.quantity,
                     cost: movement.totalCost,
-                    documentNumber: movement.documentNumber
+                    documentNumber: movement.documentNumber,
+                    bktxt: movement.bktxt,
+                    spp: movement.spp,
+                    sppText: movement.sppText
                 });
                 
                 totalCostInBlock += movement.totalCost;
                 
-            } else if (movement.statusCode === '343') {
+            } else if (movement.statusCode === '343' || movement.statusCode === '161') {
                 // Материал выпущен из блока - убираем по FIFO (сначала старые)
                 let quantityToRemove = movement.quantity;
                 let costToRemove = movement.totalCost;
@@ -577,7 +592,10 @@ function transformGoogleSheetsData(rawData) {
                     pricePerUnit: materialWarehouse.pricePerUnit,
                     totalCost: totalCostInBlock,
                     statusCode: '344', // Все материалы в результате находятся в блоке
-                    documentNumber: incomingStack[0].documentNumber // Номер первого документа в стеке
+                    documentNumber: incomingStack[0].documentNumber, // Номер первого документа в стеке
+                    bktxt: incomingStack[0].bktxt,
+                    spp: incomingStack[0].spp,
+                    sppText: incomingStack[0].sppText
                 });
             }
         }
@@ -847,7 +865,7 @@ function populateTransitionsTable(dataToShow = null) {
 
     if (upcomingTransitions.length === 0) {
         const row = document.createElement('tr');
-        row.innerHTML = '<td colspan="9" class="no-data">Нет предстоящих переходов</td>';
+        row.innerHTML = '<td colspan="12" class="no-data">Нет предстоящих переходов</td>';
         tbody.appendChild(row);
         return;
     }
@@ -864,6 +882,9 @@ function populateTransitionsTable(dataToShow = null) {
             <td><span class="${getTimeGroupClass(material.nextGroup)}">${material.nextGroup}</span></td>
             <td>${formatCost(material.totalCost)}</td>
             <td title="${material.responsible}">${truncateText(material.responsible, 20)}</td>
+            <td>${material.bktxt}</td>
+            <td>${material.spp}</td>
+            <td title="${material.sppText}">${truncateText(material.sppText, 25)}</td>
         `;
         tbody.appendChild(row);
     });
@@ -882,7 +903,7 @@ function populateAllMaterialsTable(dataToShow = null) {
 
     if (materialsToShow.length === 0) {
         const row = document.createElement('tr');
-        row.innerHTML = '<td colspan="9" class="no-data">Нет материалов для отображения</td>';
+        row.innerHTML = '<td colspan="12" class="no-data">Нет материалов для отображения</td>';
         tbody.appendChild(row);
         return;
     }
@@ -899,6 +920,9 @@ function populateAllMaterialsTable(dataToShow = null) {
             <td><span class="${getTimeGroupClass(material.timeGroup)}">${material.timeGroup}</span></td>
             <td>${formatCost(material.totalCost)}</td>
             <td title="${material.responsible}">${truncateText(material.responsible, 20)}</td>
+            <td>${material.bktxt}</td>
+            <td>${material.spp}</td>
+            <td title="${material.sppText}">${truncateText(material.sppText, 25)}</td>
         `;
         tbody.appendChild(row);
     });
@@ -920,93 +944,70 @@ function getTimeGroupClass(timeGroup) {
 
 function setupTableSorting(tableId) {
     const table = document.getElementById(tableId);
-    const headers = table.querySelectorAll('th[data-sort]');
+    if (!table) return;
 
-    headers.forEach(header => {
-        header.classList.add('sortable');
-        header.addEventListener('click', () => {
-            const field = header.getAttribute('data-sort');
+    table.querySelectorAll('th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+            const field = th.dataset.sort;
             sortTable(tableId, field);
-            updateSortIndicators(tableId, field);
         });
     });
 }
 
 function sortTable(tableId, field) {
-    const table = document.getElementById(tableId);
-    const tbody = table.querySelector('tbody');
-
-    // Determine sort direction
     if (currentSortField === field) {
         currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
     } else {
-        currentSortDirection = 'asc';
         currentSortField = field;
+        currentSortDirection = 'asc';
     }
 
-    // Get data source
-    const dataSource = tableId === 'transitionsTable' 
-        ? getTransitionsData() // Используем ту же логику фильтрации
-        : materialsData.materials;
+    const isTransitions = tableId === 'transitionsTable';
+    
+    // Определяем, есть ли активные фильтры для текущей таблицы
+    const prefix = isTransitions ? 'transitions' : 'materials';
+    const idFilter = document.getElementById(`${prefix}-filter-id`)?.value || '';
+    const nameFilter = document.getElementById(`${prefix}-filter-name`)?.value || '';
+    const warehouseFilter = document.getElementById(`${prefix}-filter-warehouse`)?.value || '';
+    const groupFilter = document.getElementById(`${prefix}-filter-group`)?.value || '';
+    const hasActiveFilters = idFilter || nameFilter || warehouseFilter || groupFilter;
 
-    // Sort data
-    const sortedData = [...dataSource].sort((a, b) => {
-        let valueA = a[field];
-        let valueB = b[field];
+    let dataToSort;
 
-        // Handle numeric fields
-        if (['daysToNext', 'daysInBlock', 'quantity', 'pricePerUnit', 'totalCost'].includes(field)) {
-            valueA = parseFloat(valueA) || 0;
-            valueB = parseFloat(valueB) || 0;
-        } else {
-            valueA = valueA ? valueA.toString().toLowerCase() : '';
-            valueB = valueB ? valueB.toString().toLowerCase() : '';
+    if (isTransitions) {
+        // Для таблицы переходов используем отфильтрованные данные, если фильтры активны
+        dataToSort = hasActiveFilters ? [...filteredTransitions] : getTransitionsData();
+    } else {
+        // Для таблицы материалов используем отфильтрованные данные, если фильтры активны,
+        // иначе используем копию всех материалов, чтобы избежать изменения исходного массива.
+        dataToSort = hasActiveFilters ? [...filteredMaterials] : [...materialsData.materials];
+    }
+
+    dataToSort.sort((a, b) => {
+        let valA = a[field];
+        let valB = b[field];
+
+        // Custom logic for specific fields
+        if (field === 'totalCost' || field === 'quantity' || field === 'daysToNext' || field === 'daysInBlock') {
+            valA = parseFloat(valA) || 0;
+            valB = parseFloat(valB) || 0;
+        } else if (typeof valA === 'string' && typeof valB === 'string') {
+            valA = valA.toLowerCase();
+            valB = valB.toLowerCase();
         }
 
-        if (valueA < valueB) return currentSortDirection === 'asc' ? -1 : 1;
-        if (valueA > valueB) return currentSortDirection === 'asc' ? 1 : -1;
+        if (valA < valB) return currentSortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return currentSortDirection === 'asc' ? 1 : -1;
         return 0;
     });
 
-    // Rebuild table
-    tbody.innerHTML = '';
-    
-    if (sortedData.length === 0 && tableId === 'transitionsTable') {
-        const row = document.createElement('tr');
-        row.innerHTML = '<td colspan="9" class="no-data">Нет предстоящих переходов в ближайшие 30 дней</td>';
-        tbody.appendChild(row);
-        return;
+    if (isTransitions) {
+        populateTransitionsTable(dataToSort);
+    } else {
+        populateAllMaterialsTable(dataToSort);
     }
-
-    sortedData.forEach(material => {
-        const row = document.createElement('tr');
-        if (tableId === 'transitionsTable') {
-            row.innerHTML = `
-                <td>${material.id}</td>
-                <td>${material.name}</td>
-                <td>${material.quantity} ${material.unit}</td>
-                <td>${material.warehouse}</td>
-                <td>${material.documentNumber}</td>
-                <td>${material.daysToNext}</td>
-                <td><span class="${getTimeGroupClass(material.nextGroup)}">${material.nextGroup}</span></td>
-                <td>${formatCost(material.totalCost)}</td>
-                <td>${material.responsible}</td>
-            `;
-        } else {
-            row.innerHTML = `
-                <td>${material.id}</td>
-                <td title="${material.name}">${truncateText(material.name, 40)}</td>
-                <td>${material.quantity} ${material.unit}</td>
-                <td>${material.warehouse}</td>
-                <td>${material.documentNumber}</td>
-                <td>${material.daysInBlock}</td>
-                <td><span class="${getTimeGroupClass(material.timeGroup)}">${material.timeGroup}</span></td>
-                <td>${formatCost(material.totalCost)}</td>
-                <td title="${material.responsible}">${truncateText(material.responsible, 20)}</td>
-            `;
-        }
-        tbody.appendChild(row);
-    });
+    
+    updateSortIndicators(tableId, field);
 }
 
 function updateSortIndicators(tableId, field) {
