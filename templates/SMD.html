@@ -482,7 +482,7 @@
                 // Расчет времени и стоимости контроля ремонта
                 // df["Значение"][7] - норматив времени на контроль 1% брака
                 // df2['Стоимость, руб/ч'][21] - стоимость часа контролера
-                control_time_all = Math.ceil((repair+batch) * parseFloat({{df["Значение"][7]}}) / 100 / 3600); // Общее время контроля (ч)
+                control_time_all = Math.ceil((repair+ 100* batch) * parseFloat({{df["Значение"][7]}}) / 100 / 3600); // Общее время контроля (ч)
                 control_time_pc = Math.ceil(control_time_all / batch * 3600); // Время контроля на 1 ПУ (с) - аналогично ремонту, возможно, стоимость.
                 control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) ); // Общая стоимость контроля
                 control_money_pc = Math.ceil(control_money_all / batch); // Стоимость контроля на 1 ПУ
@@ -501,7 +501,7 @@
                 
                 // Расчет времени АОИ (Автоматической Оптической Инспекции)
                 // df['Значение'][10] - width_AOI, df['Значение'][9] - length_AOI
-                const time_AOI = parseFloat((width * length / (width_AOI * length_AOI) + AOI_time_add) * multi_num); // Время АОИ на 1 ПУ в c (AOI_time_add было извлечено ранее)
+                const time_AOI = parseFloat((width * length / (width_AOI * length_AOI) + AOI_time_add) * multi_num / 3600); // Время АОИ на 1 ПУ в c (AOI_time_add было извлечено ранее)
 
                 var prod_t = 0; // Производственное время Top (c)
                 var prod_b = 0; // Производственное время Bot (c)
@@ -543,6 +543,8 @@
                 if (chckbx2.checked){
                     prod_b = parseFloat(SMD_bot.value); // Время симуляции Bot (с)
                     prod_t = parseFloat(SMD_top.value); // Время симуляции Top (с)
+                    prod_b = prod_b * batch;
+                    prod_t = prod_t * batch;
                 }
                 
                 // Корректировка производственного времени с учетом времени АОИ (если АОИ дольше)
@@ -552,8 +554,6 @@
                 if (time_AOI > prod_t && prod_t != 0){
                     prod_t = time_AOI;
                 }
-                prod_b = prod_b * batch;
-                prod_t = prod_t * batch;
                 var prod = prod_b+prod_t; // Общее производственное время (c)
                 
                 // Расчет общего времени сборки партии (с учетом коэффициента из df['Значение'][0])

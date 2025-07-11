@@ -309,7 +309,7 @@
             repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) );
             repair_time_pc = Math.ceil(repair_money_all / batch);
 
-            control_time_all = Math.ceil((repair+batch) * parseFloat({{df["Значение"][6]}}) / 100 / 3600);
+            control_time_all = Math.ceil((repair+ 100* batch) * parseFloat({{df["Значение"][6]}}) / 100 / 3600);
             control_time_pc = Math.ceil(control_time_all / batch * 3600);
             control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
             control_time_pc = Math.ceil(control_money_all / batch)
