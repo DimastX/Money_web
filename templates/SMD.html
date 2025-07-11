@@ -468,9 +468,9 @@
                 // Расчет времени и стоимости ремонта
                 let repair = 0; // Количество изделий для ремонта
                 if (prev == 1){ // В зависимости от предыдущей операции используется разный % брака из df
-                    repair = (parseFloat({{df["Значение"][5]}}) + 100) * batch;
+                    repair = parseFloat({{df["Значение"][5]}}) * batch;
                 } else if (prev == 2){
-                    repair = (parseFloat({{df["Значение"][4]}}) + 100) * batch;
+                    repair = parseFloat({{df["Значение"][4]}}) * batch;
                 }
                 // df["Значение"][6] - норматив времени на ремонт 1% брака
                 // df2['Стоимость, руб/ч'][8] - стоимость часа ремонтника
@@ -482,7 +482,7 @@
                 // Расчет времени и стоимости контроля ремонта
                 // df["Значение"][7] - норматив времени на контроль 1% брака
                 // df2['Стоимость, руб/ч'][21] - стоимость часа контролера
-                control_time_all = Math.ceil((repair) * parseFloat({{df["Значение"][7]}}) / 100 / 3600); // Общее время контроля (ч)
+                control_time_all = Math.ceil((repair+batch) * parseFloat({{df["Значение"][7]}}) / 100 / 3600); // Общее время контроля (ч)
                 control_time_pc = Math.ceil(control_time_all / batch * 3600); // Время контроля на 1 ПУ (с) - аналогично ремонту, возможно, стоимость.
                 control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) ); // Общая стоимость контроля
                 control_money_pc = Math.ceil(control_money_all / batch); // Стоимость контроля на 1 ПУ
@@ -501,10 +501,10 @@
                 
                 // Расчет времени АОИ (Автоматической Оптической Инспекции)
                 // df['Значение'][10] - width_AOI, df['Значение'][9] - length_AOI
-                const time_AOI = parseFloat((width * length / (width_AOI * length_AOI) + AOI_time_add) * multi_num / 3600); // Время АОИ на 1 ПУ в часах (AOI_time_add было извлечено ранее)
+                const time_AOI = parseFloat((width * length / (width_AOI * length_AOI) + AOI_time_add) * multi_num); // Время АОИ на 1 ПУ в c (AOI_time_add было извлечено ранее)
 
-                var prod_t = 0; // Производственное время Top (ч)
-                var prod_b = 0; // Производственное время Bot (ч)
+                var prod_t = 0; // Производственное время Top (c)
+                var prod_b = 0; // Производственное время Bot (c)
 
                 // Расчет времени переналадки и производственного времени для Top стороны
                 if (unics_t != 0){
@@ -552,17 +552,19 @@
                 if (time_AOI > prod_t && prod_t != 0){
                     prod_t = time_AOI;
                 }
-                var prod = prod_b+prod_t; // Общее производственное время (ч)
+                prod_b = prod_b * batch;
+                prod_t = prod_t * batch;
+                var prod = prod_b+prod_t; // Общее производственное время (c)
                 
                 // Расчет общего времени сборки партии (с учетом коэффициента из df['Значение'][0])
-                time_all = Math.ceil((prod)*parseFloat({{df['Значение'][0]}}));
-                time_all_t = Math.ceil((prod_t)*parseFloat({{df['Значение'][0]}}));
-                time_all_b = Math.ceil((prod_b)*parseFloat({{df['Значение'][0]}}));
+                time_all = Math.ceil((prod)*parseFloat({{df['Значение'][0]}}) / 3600);
+                time_all_t = Math.ceil((prod_t)*parseFloat({{df['Значение'][0]}}) / 3600);
+                time_all_b = Math.ceil((prod_b)*parseFloat({{df['Значение'][0]}}) / 3600);
 
                 // Расчет общего времени переналадки партии (с учетом коэффициента)
-                time_re_all = Math.ceil((start)*parseFloat({{df['Значение'][0]}}));
-                time_re_all_t = Math.ceil((start_t)*parseFloat({{df['Значение'][0]}}));
-                time_re_all_b = Math.ceil((start_b)*parseFloat({{df['Значение'][0]}}));
+                time_re_all = Math.ceil((start)*parseFloat({{df['Значение'][0]}}) / 3600);
+                time_re_all_t = Math.ceil((start_t)*parseFloat({{df['Значение'][0]}}) / 3600);
+                time_re_all_b = Math.ceil((start_b)*parseFloat({{df['Значение'][0]}}) / 3600);
 
                 // Расчет времени сборки на 1 ПУ (с)
                 time_pc = Math.ceil(time_all / batch * 3600);
