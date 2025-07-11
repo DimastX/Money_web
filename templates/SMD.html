@@ -468,9 +468,9 @@
                 // Расчет времени и стоимости ремонта
                 let repair = 0; // Количество изделий для ремонта
                 if (prev == 1){ // В зависимости от предыдущей операции используется разный % брака из df
-                    repair = parseFloat({{df["Значение"][5]}}) * batch;
+                    repair = (parseFloat({{df["Значение"][5]}}) + 100) * batch;
                 } else if (prev == 2){
-                    repair = parseFloat({{df["Значение"][4]}}) * batch;
+                    repair = (parseFloat({{df["Значение"][4]}}) + 100) * batch;
                 }
                 // df["Значение"][6] - норматив времени на ремонт 1% брака
                 // df2['Стоимость, руб/ч'][8] - стоимость часа ремонтника
@@ -482,7 +482,7 @@
                 // Расчет времени и стоимости контроля ремонта
                 // df["Значение"][7] - норматив времени на контроль 1% брака
                 // df2['Стоимость, руб/ч'][21] - стоимость часа контролера
-                control_time_all = Math.ceil((repair+100) * parseFloat({{df["Значение"][7]}}) / 100 / 3600); // Общее время контроля (ч)
+                control_time_all = Math.ceil((repair) * parseFloat({{df["Значение"][7]}}) / 100 / 3600); // Общее время контроля (ч)
                 control_time_pc = Math.ceil(control_time_all / batch * 3600); // Время контроля на 1 ПУ (с) - аналогично ремонту, возможно, стоимость.
                 control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) ); // Общая стоимость контроля
                 control_money_pc = Math.ceil(control_money_all / batch); // Стоимость контроля на 1 ПУ
@@ -527,22 +527,22 @@
                 // Корректировка производственного времени с учетом минимального времени на мультизаготовку
                 // df['Значение'][8] - минимальное время на мультизаготовку
                 if (unics_t != 0){
-                    if (prod_t < parseFloat({{df['Значение'][8]}}) / 3600){
-                        prod_t = parseFloat({{df['Значение'][8]}})/ 3600
+                        if ( (multi_num * prod_t) < parseFloat({{df['Значение'][8]}}) / 3600){
+                        prod_t = (parseFloat({{df['Значение'][8]}}) / 3600) / multi_num
                     }
                 }
                 
                 if (unics_b != 0){
-                    if (prod_b < parseFloat({{df['Значение'][8]}}) / 3600){
-                        prod_b = parseFloat({{df['Значение'][8]}}) / 3600
+                    if ( (multi_num * prod_b) < parseFloat({{df['Значение'][8]}}) / 3600){
+                        prod_b = (parseFloat({{df['Значение'][8]}}) / 3600) / multi_num
                     }
                 }
                 var start = start_t + start_b; // Общее время переналадки (ч)
                 
                 // Если используется симуляция, производственное время берется из полей ввода
                 if (chckbx2.checked){
-                    prod_b = parseFloat(SMD_bot.value / 3600); // Время симуляции Bot (ч)
-                    prod_t = parseFloat(SMD_top.value / 3600); // Время симуляции Top (ч)
+                    prod_b = parseFloat(SMD_bot.value); // Время симуляции Bot (с)
+                    prod_t = parseFloat(SMD_top.value); // Время симуляции Top (с)
                 }
                 
                 // Корректировка производственного времени с учетом времени АОИ (если АОИ дольше)
