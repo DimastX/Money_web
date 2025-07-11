@@ -432,7 +432,7 @@
             // Получение данных из сессии Flask (Jinja2 шаблоны)
             var batch = parseInt({{ session['home_form']['field3']}}); // Размер партии
             lines = [SMD1.value, SMD2.value, SMD3.value, SMD4.value, SMD5.value,] // Данные по компонентам
-            var multi_num = parseInt({{ session['second_form']['multi_num']}}); // Количество в мультизаготовке
+            var multi_num = parseInt({{ session['second_form']['multi_num']}}); // Количество мультизаготовок
             var pc = parseInt({{ session['second_form']['pc']}}); // Не используется явно в этой функции, но может быть для контекста
             var width = parseFloat({{session['second_form']['width']}}) // Ширина платы
             var length = parseFloat({{session['second_form']['length']}}) // Длина платы
@@ -496,8 +496,8 @@
                 const unics_b = Bot_u; // Уникальные наименования Bot
                 
                 // Определение скорости монтажа для Top и Bot сторон
-                const speed_t = speed_amount(components_t);
-                const speed_b = speed_amount(components_b);
+                const speed_t = speed_amount(components_t / multi_num);
+                const speed_b = speed_amount(components_b / multi_num);
                 
                 // Расчет времени АОИ (Автоматической Оптической Инспекции)
                 // df['Значение'][10] - width_AOI, df['Значение'][9] - length_AOI
@@ -510,7 +510,7 @@
                 if (unics_t != 0){
                     // df['Значение'][2] - время на 1 наименование, df['Значение'][3] - постоянное время на сторону, df['Значение'][1] - минимальное время на сторону
                     var start_t = Math.max(unics_t * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}})) /3600; // Время переналадки Top (ч)
-                    prod_t = Math.ceil(components_t / speed_t); // Производственное время Top (ч), если speed_t - это компоненты/час
+                    prod_t = Math.ceil(3600 * components_t / speed_t); // Производственное время Top (ч), если speed_t - это компоненты/час
                 } else {
                     var start_t = 0;
                     prod_t = 0;
@@ -518,23 +518,23 @@
                 // Расчет времени переналадки и производственного времени для Bot стороны
                 if (unics_b != 0){
                     var start_b = Math.max(unics_b * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}})) /3600; // Время переналадки Bot (ч)
-                    prod_b = Math.ceil(components_b / speed_b); // Производственное время Bot (ч)
+                    prod_b = Math.ceil(3600 * components_b / speed_b); // Производственное время Bot (ч)
                 } else{
                     var start_b = 0;
                     prod_b = 0;
                 }
-                
+                console.log(pc, prod_t, prod_b);
                 // Корректировка производственного времени с учетом минимального времени на мультизаготовку
                 // df['Значение'][8] - минимальное время на мультизаготовку
                 if (unics_t != 0){
-                        if ( (multi_num * prod_t) < parseFloat({{df['Значение'][8]}}) / 3600){
-                        prod_t = (parseFloat({{df['Значение'][8]}}) / 3600) / multi_num
+                        if ( (prod_t / multi_num) < parseFloat({{df['Значение'][8]}})){
+                        prod_t = (parseFloat({{df['Значение'][8]}})) * multi_num
                     }
                 }
                 
                 if (unics_b != 0){
-                    if ( (multi_num * prod_b) < parseFloat({{df['Значение'][8]}}) / 3600){
-                        prod_b = (parseFloat({{df['Значение'][8]}}) / 3600) / multi_num
+                    if ( (prod_b / multi_num) < parseFloat({{df['Значение'][8]}})){
+                        prod_b = (parseFloat({{df['Значение'][8]}})) * multi_num
                     }
                 }
                 var start = start_t + start_b; // Общее время переналадки (ч)
@@ -554,6 +554,7 @@
                 if (time_AOI > prod_t && prod_t != 0){
                     prod_t = time_AOI;
                 }
+                console.log(prod_t, prod_b);
                 var prod = prod_b+prod_t; // Общее производственное время (c)
                 
                 // Расчет общего времени сборки партии (с учетом коэффициента из df['Значение'][0])
