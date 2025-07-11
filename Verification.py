@@ -209,7 +209,6 @@ def auto_save(session):
 # --- Аутентификация пользователя через LDAP --- 
 # Пытается аутентифицировать пользователя на LDAP сервере и проверить его членство в группе 'money-contract'.
 def authenticate(username_ldap, password_ldap):
-    return username_ldap
     try:
         server = Server(LDAP_SERVER, port=LDAP_PORT, get_info=ALL)
         # Формирование полного имени пользователя для LDAP (uid=username,dc=ultrastar,dc=ru)
