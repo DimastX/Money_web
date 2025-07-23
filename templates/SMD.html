@@ -509,7 +509,7 @@
                 // Расчет времени переналадки и производственного времени для Top стороны
                 if (unics_t != 0){
                     // df['Значение'][2] - время на 1 наименование, df['Значение'][3] - постоянное время на сторону, df['Значение'][1] - минимальное время на сторону
-                    var start_t = Math.max(unics_t * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}})) /3600; // Время переналадки Top (ч)
+                    var start_t = Math.max(unics_t * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}})); // Время переналадки Top (ч)
                     prod_t = Math.ceil(3600 * components_t / speed_t); // Производственное время Top (ч), если speed_t - это компоненты/час
                 } else {
                     var start_t = 0;
@@ -517,7 +517,8 @@
                 }
                 // Расчет времени переналадки и производственного времени для Bot стороны
                 if (unics_b != 0){
-                    var start_b = Math.max(unics_b * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}})) /3600; // Время переналадки Bot (ч)
+                    var start_b = Math.max(unics_b * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}})); // Время переналадки Bot (ч)
+                    console.log(unics_b * parseFloat({{df['Значение'][2]}}) + parseFloat({{df['Значение'][3]}}), parseFloat({{df['Значение'][1]}}), start_b);
                     prod_b = Math.ceil(3600 * components_b / speed_b); // Производственное время Bot (ч)
                 } else{
                     var start_b = 0;
@@ -538,7 +539,7 @@
                     }
                 }
                 var start = start_t + start_b; // Общее время переналадки (ч)
-                
+                console.log("start_t", start_t, "start_b", start_b);
                 // Если используется симуляция, производственное время берется из полей ввода
                 if (chckbx2.checked){
                     prod_b = parseFloat(SMD_bot.value); // Время симуляции Bot (с)
