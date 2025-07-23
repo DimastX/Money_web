@@ -543,8 +543,8 @@
                 if (chckbx2.checked){
                     prod_b = parseFloat(SMD_bot.value); // Время симуляции Bot (с)
                     prod_t = parseFloat(SMD_top.value); // Время симуляции Top (с)
-                    prod_b = prod_b * batch;
-                    prod_t = prod_t * batch;
+                    prod_b = prod_b * multi_num;
+                    prod_t = prod_t * multi_num;
                 }
                 
                 // Корректировка производственного времени с учетом времени АОИ (если АОИ дольше)
