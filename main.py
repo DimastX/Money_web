@@ -1193,6 +1193,10 @@ def close_connection(exception):
 def block_index():
     return send_from_directory('block', 'index.html')
 
+@app.route('/dashboard_production/')
+def block_index():
+    return send_from_directory('block', 'index.html')
+
 @app.route('/block/<path:filename>')
 def block_files(filename):
     return send_from_directory('block', filename)

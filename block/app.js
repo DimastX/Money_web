@@ -564,24 +564,19 @@ function transformGoogleSheetsData(rawData) {
 
         // Если есть остаток в блоке, добавляем в результат
         if (incomingStack.length > 0 && firstBlockDate) {
-            const totalQuantityInBlock = incomingStack.reduce((sum, entry) => sum + entry.quantity, 0);
-            
-            if (totalQuantityInBlock > 0) {
-                const today = new Date();
-                const daysInBlock = Math.floor((today - firstBlockDate) / (1000 * 60 * 60 * 24));
-                
-                // Определяем временную группу
+            const today = new Date();
+            // Итерируем по каждой записи, оставшейся в incomingStack
+            incomingStack.forEach(remainingEntry => {
+                const daysInBlock = Math.floor((today - remainingEntry.date) / (1000 * 60 * 60 * 24)); // Используем дату самой партии
                 const timeGroup = getTimeGroup(daysInBlock);
-                
-                // Определяем следующую группу и дни до перехода
                 const { nextGroup, daysToNext } = getNextGroupInfo(daysInBlock);
 
                 result.push({
                     id: materialWarehouse.code,
                     name: materialWarehouse.name,
-                    quantity: totalQuantityInBlock,
+                    quantity: remainingEntry.quantity, // Количество конкретной партии
                     unit: 'шт',
-                    entryDate: firstBlockDateString,
+                    entryDate: remainingEntry.dateString, // Дата поступления конкретной партии
                     daysInBlock,
                     timeGroup,
                     status: 'В блоке',
@@ -589,15 +584,15 @@ function transformGoogleSheetsData(rawData) {
                     nextGroup,
                     responsible: materialWarehouse.responsible,
                     warehouse: materialWarehouse.warehouse,
-                    pricePerUnit: materialWarehouse.pricePerUnit,
-                    totalCost: totalCostInBlock,
-                    statusCode: '344', // Все материалы в результате находятся в блоке
-                    documentNumber: incomingStack[0].documentNumber, // Номер первого документа в стеке
-                    bktxt: incomingStack[0].bktxt,
-                    spp: incomingStack[0].spp,
-                    sppText: incomingStack[0].sppText
+                    pricePerUnit: materialWarehouse.pricePerUnit, // Цена за единицу берется из materialWarehouse
+                    totalCost: remainingEntry.cost, // Стоимость конкретной партии
+                    statusCode: '344',
+                    documentNumber: remainingEntry.documentNumber, // Номер документа конкретной партии
+                    bktxt: remainingEntry.bktxt,
+                    spp: remainingEntry.spp,
+                    sppText: remainingEntry.sppText
                 });
-            }
+            });
         }
     });
 
