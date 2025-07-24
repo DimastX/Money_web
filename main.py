@@ -1193,13 +1193,17 @@ def close_connection(exception):
 def block_index():
     return send_from_directory('block', 'index.html')
 
-@app.route('/dashboard_production/')
-def block_index():
-    return send_from_directory('block', 'index.html')
-
 @app.route('/block/<path:filename>')
 def block_files(filename):
     return send_from_directory('block', filename)
+
+@app.route('/dashboard_production/')
+def dashboard_production_index():
+    return send_from_directory('prod', 'index.html')
+
+@app.route('/dashboard_production/<path:filename>')
+def dashboard_production_files(filename):
+    return send_from_directory('prod', filename)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
