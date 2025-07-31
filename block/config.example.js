@@ -11,5 +11,8 @@ const APP_CONFIG = {
     SPREADSHEET_ID: 'YOUR_SPREADSHEET_ID_HERE',
     
     // Диапазон для чтения. Например, 'Имя Листа!A3:K'
-    RANGE: 'Export Worksheet!A3:K' 
+    RANGE: 'Export Worksheet!A3:N',
+    
+    // Диапазон для чтения остатков. Например, 'Имя Листа!A2:J'
+    TEMP_DB_RANGE: 'Temp_db!A2:J'
 }; 

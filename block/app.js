@@ -304,13 +304,16 @@ async function loadDataFromGoogleSheets() {
             return;
         }
 
-        // For large datasets, load data in chunks
-        const allData = await loadDataInChunks();
+        // Загружаем данные о движениях и остатках параллельно
+        const [movementsData, tempData] = await Promise.all([
+            loadDataInChunks(APP_CONFIG.RANGE),
+            fetchGoogleSheetData(APP_CONFIG.TEMP_DB_RANGE)
+        ]);
         
-        if (allData && allData.length > 0) {
-            materialsData.materials = transformGoogleSheetsData(allData);
+        if (movementsData && movementsData.length > 0) {
+            materialsData.materials = transformGoogleSheetsData(movementsData, tempData);
             initializeApp();
-            showNotification(`Данные успешно загружены: ${allData.length} записей`);
+            showNotification(`Данные успешно загружены: ${movementsData.length} записей`);
         } else {
             throw new Error('Нет данных в таблице');
         }
@@ -328,16 +331,30 @@ async function loadDataFromGoogleSheets() {
     }
 }
 
+// Helper function to fetch data from a specific range
+async function fetchGoogleSheetData(range) {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${APP_CONFIG.SPREADSHEET_ID}/values/${range}?key=${APP_CONFIG.API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.error) {
+        throw new Error(`Ошибка API при загрузке диапазона ${range}: ${data.error.message}`);
+    }
+
+    return data.values || [];
+}
+
+
 // Load large dataset in chunks to avoid API limits
-async function loadDataInChunks() {
+async function loadDataInChunks(rangeConfig) {
     const CHUNK_SIZE = 1000; // Загружаем по 1000 строк за раз
     const MAX_ROWS = 60000;   // Максимум строк для обработки
     let allData = [];
     let currentRow = 3; // Начинаем с 3 строки (пропускаем заголовки)
     
-    const sheetName = APP_CONFIG.RANGE.split('!')[0];
+    const sheetName = rangeConfig.split('!')[0];
     if (!sheetName) {
-        throw new Error('Некорректный формат диапазона в config.js. Пример: "Export Worksheet!A3:K"');
+        throw new Error('Некорректный формат диапазона в config.js. Пример: "Export Worksheet!A3:N"');
     }
     
     console.log(`Начинаем загрузку данных частями с листа "${sheetName}"...`);
@@ -349,23 +366,15 @@ async function loadDataInChunks() {
             
             console.log(`Загружаем строки ${currentRow}-${endRow}...`);
             
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${APP_CONFIG.SPREADSHEET_ID}/values/${range}?key=${APP_CONFIG.API_KEY}`;
+            const chunkData = await fetchGoogleSheetData(range);
             
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            if (data.error) {
-                console.error(`Ошибка загрузки диапазона ${range}:`, data.error.message);
-                break;
-            }
-            
-            if (!data.values || data.values.length === 0) {
+            if (chunkData.length === 0) {
                 console.log(`Нет данных в диапазоне ${range}, завершаем загрузку`);
                 break;
             }
             
             // Добавляем данные к общему массиву
-            allData = allData.concat(data.values);
+            allData = allData.concat(chunkData);
             
             // Показываем прогресс
             updateLoadingProgress(allData.length);
@@ -448,12 +457,27 @@ async function simulateGoogleSheetsLoad() {
 }
 
 // Transform raw Google Sheets data to application format
-function transformGoogleSheetsData(rawData) {
-    // Группируем все движения по материалам и складам
+function transformGoogleSheetsData(rawData, tempData) {
+    // 1. Обрабатываем данные из Temp_db для быстрого доступа
+    const tempDbBalances = {};
+    if (tempData) {
+        tempData.forEach(row => {
+            const [sap, name, spStock, spp, sppName, plant, warehouse, quantity, price, cost] = row;
+            if (sap && warehouse && quantity) {
+                const key = `${sap}_${warehouse}`;
+                tempDbBalances[key] = {
+                    name: name,
+                    quantity: parseInt(quantity.replace(/\s/g, '')) || 0,
+                    cost: parseFloat(cost.replace(/\s/g, '').replace(',', '.')) || 0
+                };
+            }
+        });
+    }
+
+    // 2. Группируем все движения по материалам и складам
     const materialWarehouseMovements = {};
     
-    // Сначала собираем все движения
-    rawData.forEach((row, index) => {
+    rawData.forEach((row) => {
         const [
             documentNumber, materialCode, materialName, entryDate, 
             statusCode, quantity, warehouse, userId, userName, 
@@ -462,7 +486,7 @@ function transformGoogleSheetsData(rawData) {
 
         if (!materialCode || !statusCode || !quantity || !warehouse) return;
 
-        const key = `${materialCode}_${warehouse}`; // Ключ: материал + склад
+        const key = `${materialCode}_${warehouse}`;
         if (!materialWarehouseMovements[key]) {
             materialWarehouseMovements[key] = {
                 code: materialCode,
@@ -487,30 +511,16 @@ function transformGoogleSheetsData(rawData) {
         });
     });
 
-    // Обрабатываем каждый материал на каждом складе
+    // 3. Обрабатываем движения и сравниваем с остатками из Temp_db
     const result = [];
     
     Object.values(materialWarehouseMovements).forEach(materialWarehouse => {
-        // Сортируем движения по дате
         materialWarehouse.movements.sort((a, b) => a.date - b.date);
         
-        // Создаем стек поступлений (FIFO) - сначала убираем старые
-        let incomingStack = []; // [{ date, quantity, cost, documentNumber }]
-        let totalCostInBlock = 0;
-        let firstBlockDate = null;
-        let firstBlockDateString = null;
+        let incomingStack = [];
         
-        // Обрабатываем все движения
         materialWarehouse.movements.forEach(movement => {
             if (movement.statusCode === '344') {
-                // Материал попал в блок
-                if (incomingStack.length === 0) {
-                    // Это первое попадание в блок (или после полного освобождения)
-                    firstBlockDate = movement.date;
-                    firstBlockDateString = movement.dateString;
-                }
-                
-                // Добавляем в стек поступлений
                 incomingStack.push({
                     date: movement.date,
                     dateString: movement.dateString,
@@ -521,62 +531,79 @@ function transformGoogleSheetsData(rawData) {
                     spp: movement.spp,
                     sppText: movement.sppText
                 });
-                
-                totalCostInBlock += movement.totalCost;
-                
             } else if (movement.statusCode === '343' || movement.statusCode === '161') {
-                // Материал выпущен из блока - убираем по FIFO (сначала старые)
                 let quantityToRemove = movement.quantity;
-                let costToRemove = movement.totalCost;
-                
-                // Убираем из стека начиная с самых старых
                 while (quantityToRemove > 0 && incomingStack.length > 0) {
                     const oldestEntry = incomingStack[0];
-                    
                     if (oldestEntry.quantity <= quantityToRemove) {
-                        // Убираем всю партию
                         quantityToRemove -= oldestEntry.quantity;
-                        totalCostInBlock -= oldestEntry.cost;
-                        incomingStack.shift(); // Удаляем из начала массива
+                        incomingStack.shift();
                     } else {
-                        // Убираем частично
-                        const proportionalCost = (oldestEntry.cost / oldestEntry.quantity) * quantityToRemove;
+                        const originalQuantity = oldestEntry.quantity;
                         oldestEntry.quantity -= quantityToRemove;
-                        oldestEntry.cost -= proportionalCost;
-                        totalCostInBlock -= proportionalCost;
+                        // Стоимость пересчитываем пропорционально
+                        oldestEntry.cost = (oldestEntry.cost / originalQuantity) * oldestEntry.quantity;
                         quantityToRemove = 0;
                     }
-                }
-                
-                // Если стек пуст, сбрасываем дату первого попадания
-                if (incomingStack.length === 0) {
-                    firstBlockDate = null;
-                    firstBlockDateString = null;
-                    totalCostInBlock = 0;
-                } else if (firstBlockDate) {
-                    // Обновляем дату первого попадания на дату самой старой оставшейся записи
-                    const oldestRemaining = incomingStack[0];
-                    firstBlockDate = oldestRemaining.date;
-                    firstBlockDateString = oldestRemaining.dateString;
                 }
             }
         });
 
-        // Если есть остаток в блоке, добавляем в результат
-        if (incomingStack.length > 0 && firstBlockDate) {
-            const today = new Date();
-            // Итерируем по каждой записи, оставшейся в incomingStack
+        // 4. Сравниваем и корректируем остатки
+        const key = `${materialWarehouse.code}_${materialWarehouse.warehouse}`;
+        const calculatedQuantity = incomingStack.reduce((sum, item) => sum + item.quantity, 0);
+        const tempDbBalance = tempDbBalances[key];
+        const actualQuantity = tempDbBalance ? tempDbBalance.quantity : 0;
+        
+        const difference = actualQuantity - calculatedQuantity;
+
+        if (difference > 0) {
+            // Если в Temp_db больше, добавляем фиктивное движение
+            const calculatedCost = incomingStack.reduce((sum, item) => sum + item.cost, 0);
+            const unitPrice = calculatedQuantity > 0 ? (calculatedCost / calculatedQuantity) : (tempDbBalance.cost / tempDbBalance.quantity);
+            const costOfDifference = unitPrice * difference;
+            
+            incomingStack.unshift({ // Добавляем в начало, как самое старое
+                date: new Date(2000, 0, 1), 
+                dateString: '01.01.2000',
+                quantity: difference,
+                cost: isNaN(costOfDifference) ? 0 : costOfDifference,
+                documentNumber: '1',
+                bktxt: 'Коррекция остатков',
+                spp: '',
+                sppText: ''
+            });
+        } else if (difference < 0) {
+            // Если в Temp_db меньше (или нет вообще), убираем излишки из стека по FIFO
+            let quantityToRemove = Math.abs(difference);
+            while (quantityToRemove > 0 && incomingStack.length > 0) {
+                const oldestEntry = incomingStack[0];
+                if (oldestEntry.quantity <= quantityToRemove) {
+                    quantityToRemove -= oldestEntry.quantity;
+                    incomingStack.shift();
+                } else {
+                    const originalQuantity = oldestEntry.quantity;
+                    oldestEntry.quantity -= quantityToRemove;
+                    oldestEntry.cost = (oldestEntry.cost / originalQuantity) * oldestEntry.quantity;
+                    quantityToRemove = 0;
+                }
+            }
+        }
+
+        // 5. Формируем итоговый результат
+        if (incomingStack.length > 0) {
             incomingStack.forEach(remainingEntry => {
-                const daysInBlock = Math.floor((today - remainingEntry.date) / (1000 * 60 * 60 * 24)); // Используем дату самой партии
+                const today = new Date();
+                const daysInBlock = Math.floor((today - remainingEntry.date) / (1000 * 60 * 60 * 24));
                 const timeGroup = getTimeGroup(daysInBlock);
                 const { nextGroup, daysToNext } = getNextGroupInfo(daysInBlock);
 
                 result.push({
                     id: materialWarehouse.code,
                     name: materialWarehouse.name,
-                    quantity: remainingEntry.quantity, // Количество конкретной партии
+                    quantity: remainingEntry.quantity,
                     unit: 'шт',
-                    entryDate: remainingEntry.dateString, // Дата поступления конкретной партии
+                    entryDate: remainingEntry.dateString,
                     daysInBlock,
                     timeGroup,
                     status: 'В блоке',
@@ -584,15 +611,51 @@ function transformGoogleSheetsData(rawData) {
                     nextGroup,
                     responsible: materialWarehouse.responsible,
                     warehouse: materialWarehouse.warehouse,
-                    pricePerUnit: materialWarehouse.pricePerUnit, // Цена за единицу берется из materialWarehouse
-                    totalCost: remainingEntry.cost, // Стоимость конкретной партии
+                    pricePerUnit: materialWarehouse.pricePerUnit,
+                    totalCost: remainingEntry.cost,
                     statusCode: '344',
-                    documentNumber: remainingEntry.documentNumber, // Номер документа конкретной партии
+                    documentNumber: remainingEntry.documentNumber,
                     bktxt: remainingEntry.bktxt,
                     spp: remainingEntry.spp,
                     sppText: remainingEntry.sppText
                 });
             });
+        }
+    });
+
+    // 6. Добавляем материалы из Temp_db, по которым не было движений
+    Object.keys(tempDbBalances).forEach(key => {
+        if (!materialWarehouseMovements[key]) {
+            const [sap, warehouse] = key.split('_');
+            const balance = tempDbBalances[key];
+
+            if (balance.quantity > 0) {
+                const today = new Date();
+                const pseudoEntryDate = new Date(2000, 0, 1);
+                const daysInBlock = Math.floor((today - pseudoEntryDate) / (1000 * 60 * 60 * 24));
+
+                 result.push({
+                    id: sap,
+                    name: balance.name || `(Нет наименования)`,
+                    quantity: balance.quantity,
+                    unit: 'шт',
+                    entryDate: '01.01.2000',
+                    daysInBlock: daysInBlock,
+                    timeGroup: getTimeGroup(daysInBlock),
+                    status: 'В блоке',
+                    daysToNext: null,
+                    nextGroup: null,
+                    responsible: 'Система',
+                    warehouse: warehouse,
+                    pricePerUnit: balance.quantity > 0 ? balance.cost / balance.quantity : 0,
+                    totalCost: balance.cost,
+                    statusCode: '344',
+                    documentNumber: '1',
+                    bktxt: 'Остатки из Temp_db',
+                    spp: '',
+                    sppText: ''
+                });
+            }
         }
     });
 
