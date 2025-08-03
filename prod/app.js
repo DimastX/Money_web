@@ -26,73 +26,142 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Новая функция для загрузки данных из Google Sheets
 async function loadDataFromGoogleSheets() {
-    // !!! ВАЖНО: Замените эти значения на свои в файле config.js !!!
     const SPREADSHEET_ID = CONFIG.SPREADSHEET_ID;
-    const RANGE = 'Расчёт стоимости изделий!A:G'; // Загружаем все данные из таблицы
     const API_KEY = CONFIG.API_KEY;
 
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    const sheet1_Range = 'Расчёт стоимости изделий!A:H';
+    const sheet2_Range = 'Расчёт стоимости изделий THT!A:H';
+
+    const url1 = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${sheet1_Range}?key=${API_KEY}`;
+    const url2 = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${sheet2_Range}?key=${API_KEY}`;
 
     try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        const [response1, response2] = await Promise.all([
+            fetch(url1),
+            fetch(url2)
+        ]);
+
+        if (!response1.ok) throw new Error(`HTTP error for Sheet 1! status: ${response1.status}`);
+        if (!response2.ok) throw new Error(`HTTP error for Sheet 2! status: ${response2.status}`);
+
+        const data1 = await response1.json();
+        const data2 = await response2.json();
+
+        console.log("--- THT Debug Start ---");
+        console.log("Raw response from THT sheet:", data2);
+
+
+        let smtData = [];
+        if (data1.values && data1.values.length >= 2) {
+            const headers = data1.values[0];
+            const rawGoogleData = data1.values.slice(1);
+            smtData = rawGoogleData.map(row => {
+                const item = {};
+                headers.forEach((header, index) => {
+                    const value = row[index];
+                    if (!value) return;
+                    switch (header) {
+                        case 'Дата выполнения':
+                            const parts = value.split('.');
+                            if (parts.length === 3) {
+                                item['Дата выполнения'] = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                            } else {
+                                item['Дата выполнения'] = value;
+                            }
+                            break;
+                        case 'Участок':
+                            item['Участок'] = value.trim();
+                            break;
+                        case 'Операция':
+                            item['Операция'] = value;
+                            break;
+                        case 'RM':
+                            item['RM'] = value;
+                            break;
+                        case 'Выполненная операция и изделие':
+                            item['Выполненная операция и изделие'] = value.trim();
+                            break;
+                        case 'Часы в целых числах':
+                            item['Часы в целых числах'] = parseFloat(String(value).replace(/\s/g, '').replace(',', '.')) || 0;
+                            break;
+                        case 'Тип операции для контроля себестоимости':
+                            item['Тип операции для контроля себестоимости'] = value.trim();
+                            break;
+                        case 'Стоимость операции в рублях':
+                            item['Стоимость операции в рублях'] = parseFloat(String(value).replace(/\s/g, '').replace(',', '.')) || 0;
+                            break;
+                    }
+                });
+                return item;
+            }).filter(item => item['Дата выполнения']);
+        } else {
+            console.warn('Нет данных или только заголовки в Google Таблице "Расчёт стоимости изделий".');
         }
-        const data = await response.json();
-        
-        if (!data.values || data.values.length < 2) {
-            console.warn('Нет данных или только заголовки в Google Таблице.');
-            return;
+
+        let thtData = [];
+        if (data2.values && data2.values.length >= 2) {
+            console.log("THT data has enough rows. Processing...");
+            const headers = data2.values[0];
+            console.log("THT Headers found:", headers);
+            const rawGoogleData = data2.values.slice(1);
+            thtData = rawGoogleData.map(row => {
+                const item = {};
+                let lineHours = 0;
+                headers.forEach((header, index) => {
+                    const value = row[index];
+                    if (!value) return;
+                    switch (header) {
+                        case 'Дата выполнения':
+                            const parts = value.split('.');
+                            if (parts.length === 3) {
+                                item['Дата выполнения'] = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                            } else {
+                                item['Дата выполнения'] = value;
+                            }
+                            break;
+                        case 'Линия':
+                            item['Участок'] = value.trim();
+                            break;
+                        case 'Изделие':
+                            item['Выполненная операция и изделие'] = value.trim();
+                            break;
+                        case 'Задача RM':
+                            item['RM'] = value.trim();
+                            break;
+                        case 'Время работы линии, ч':
+                            const parsedValue = parseFloat(String(value).replace(/\s/g, '').replace(',', '.')) || 0;
+                            console.log(`Original THT hours value: "${value}", Parsed as: ${parsedValue}`); // Временная отладка
+                            lineHours = parsedValue;
+                            break;
+                        case 'Ручные операции в смену, сек':
+                            // Игнорируем этот столбец по требованию
+                            break;
+                        case 'Стоимость операции в рублях':
+                            item['Стоимость операции в рублях'] = parseFloat(String(value).replace(/\s/g, '').replace(',', '.')) || 0;
+                            break;
+                    }
+                });
+                item['Операция'] = 'THT';
+                item['Часы в целых числах'] = lineHours; // Данные уже в часах
+                if (!item['Участок']) item['Участок'] = 'Не указано';
+                if (!item['Выполненная операция и изделие']) item['Выполненная операция и изделие'] = 'Не указано';
+                if (!item['Стоимость операции в рублях']) item['Стоимость операции в рублях'] = 0;
+                if (!item.hasOwnProperty('RM')) item['RM'] = null;
+                item['Тип операции для контроля себестоимости'] = 'THT';
+                return item;
+            }).filter(item => item['Дата выполнения']);
+        } else {
+            console.warn('Warning: No data or only headers in THT sheet ("Расчёт стоимости изделий THT").');
+            if (data2.values) {
+                console.warn(`THT sheet only has ${data2.values.length} row(s).`);
+            } else {
+                console.warn("The 'values' property is missing in the THT sheet response.");
+            }
         }
+        console.log("--- THT Debug End ---");
 
-        // Предполагаем, что первая строка - это заголовки
-        const headers = data.values[0];
-        const rawGoogleData = data.values.slice(1);
-
-        rawData = rawGoogleData.map(row => {
-            const item = {};
-            // Сопоставление данных Google Sheets с ожидаемыми ключами
-            // Убедитесь, что заголовки в вашей Google Таблице точно соответствуют этим строкам
-            headers.forEach((header, index) => {
-                const value = row[index];
-                switch (header) {
-                    case 'Дата выполнения':
-                        // Преобразуем дату из ДД.ММ.ГГГГ в ГГГГ-ММ-ДД для корректного парсинга
-                        const parts = value.split('.');
-                        if (parts.length === 3) {
-                            item['Дата выполнения'] = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                        } else {
-                            item['Дата выполнения'] = value; // Оставляем как есть, если формат не ДД.ММ.ГГГГ
-                        }
-                        break;
-                    case 'Участок':
-                        item['Участок'] = value.trim();
-                        break;
-                    case 'Операция':
-                        item['Операция'] = value;
-                        break;
-                    case 'Выполненная операция и изделие':
-                        item['Выполненная операция и изделие'] = value.trim();
-                        break;
-                    case 'Часы в целых числах':
-                        item['Часы в целых числах'] = parseFloat(value.replace(/\s/g, '').replace(',', '.')) || 0; // Преобразуем в число, 0 если NaN
-                        break;
-                    case 'Тип операции для контроля себестоимости':
-                        item['Тип операции для контроля себестоимости'] = value.trim();
-                        break;
-                    case 'Стоимость операции в рублях':
-                        item['Стоимость операции в рублях'] = parseFloat(value.replace(/\s/g, '').replace(',', '.')) || 0; // Преобразуем в число, 0 если NaN
-                        break;
-                    default:
-                        // Если есть другие столбцы, которые вы хотите включить, добавьте их здесь
-                        // item[header] = value;
-                        break;
-                }
-            });
-            return item;
-        });
-
-        filteredData = [...rawData]; // Инициализируем filteredData после загрузки
+        rawData = [...smtData, ...thtData];
+        filteredData = [...rawData];
         // console.log('Пример загруженных данных (первые 10 элементов): ', rawData.slice(0, 10));
 
     } catch (error) {
@@ -116,7 +185,7 @@ function initializeFilters() {
     // Инициализация Select2 для поля продукта
     $(document).ready(function() {
         $('#productFilter').select2({
-            placeholder: "Выберите изделие или начните печатать",
+            placeholder: "Выберите одно или несколько изделий",
             allowClear: true, // Позволяет очищать выбор
             language: {
                 noResults: function() {
@@ -173,7 +242,7 @@ function setupEventListeners() {
 function applyFilters() {
     const dateFrom = document.getElementById('dateFrom').value;
     const dateTo = document.getElementById('dateTo').value;
-    const product = document.getElementById('productFilter').value;
+    const selectedProducts = $('#productFilter').val(); // Получаем массив выбранных продуктов
     const section = document.getElementById('sectionFilter').value;
 
     filteredData = rawData.filter(item => {
@@ -192,7 +261,7 @@ function applyFilters() {
         return (
             itemDate >= fromDate &&
             itemDate < toDateFilter &&
-            (product === '' || item['Выполненная операция и изделие'] === product.trim()) && // Обрезаем пробелы при сравнении
+            (selectedProducts.length === 0 || selectedProducts.includes(item['Выполненная операция и изделие'])) &&
             (section === '' || item['Участок'] === section.trim()) // Обрезаем пробелы при сравнении
         );
     });
@@ -204,7 +273,7 @@ function applyFilters() {
 function resetFilters() {
     document.getElementById('dateFrom').value = '';
     document.getElementById('dateTo').value = '';
-    document.getElementById('productFilter').value = '';
+    $('#productFilter').val(null).trigger('change'); // Очистка Select2
     document.getElementById('sectionFilter').value = '';
     
     filteredData = [...rawData];
