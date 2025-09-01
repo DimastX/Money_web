@@ -78,32 +78,17 @@ def create_export(session):
         strtoint(session['SMD_form']['money_pc_b']),
         strtoint(session['SMD_form']['money_all_b'])
         ]
-    if session['SMD_form']['repair_time_all'] != '-': #В случае если ремонт требуется расчёт значений для ремонта
-        SMD_rep =[
-            math.ceil(int(str(session['SMD_form']['repair_time_all']).split(" ")[0]) / batch * 3600),
-            strtoint(session['SMD_form']['repair_time_all']),
-            math.ceil(int(str(session['SMD_form']['repair_money_all']).split(" ")[0]) / batch),
-            strtoint(session['SMD_form']['repair_money_all'])
-        ]
-        SMD_cont =[
-            math.ceil(int(str(session['SMD_form']['control_time_all']).split(" ")[0]) / batch * 3600),
-            strtoint(session['SMD_form']['control_time_all']),
-            math.ceil(int(str(session['SMD_form']['control_money_all']).split(" ")[0]) / batch),
-            strtoint(session['SMD_form']['control_money_all'])
-        ]
+    if session['SMD_form'].get('repair_time_all_t', "-") != '-':
+        SMD_rep_t = data_creation(session['SMD_form'].get('repair_time_all_t', "-"), session['SMD_form'].get('repair_money_all_t', "-"), batch)
+        SMD_cont_t = data_creation(session['SMD_form'].get('control_time_all_t', "-"), session['SMD_form'].get('control_money_all_t', "-"), batch)
+        SMD_rep_b = data_creation(session['SMD_form'].get('repair_time_all_b', "-"), session['SMD_form'].get('repair_money_all_b', "-"), batch)
+        SMD_cont_b = data_creation(session['SMD_form'].get('control_time_all_b', "-"), session['SMD_form'].get('control_money_all_b', "-"), batch)
     else:
-        SMD_rep =[
-            "-",
-            "-",
-            "-",
-            "-"
-        ]
-        SMD_cont =[
-            "-",
-            "-",
-            "-",
-            "-"
-        ]
+        SMD_rep_t =["-", "-", "-", "-"]
+        SMD_cont_t =["-", "-", "-", "-"]
+        SMD_rep_b =["-", "-", "-", "-"]
+        SMD_cont_b =["-", "-", "-", "-"]
+
     THT_pri = [
         strtoint(session['THT_form']['time_pc']),
         strtoint(session['THT_form']['time_all']),
@@ -140,8 +125,10 @@ def create_export(session):
         strtoint(session['THT_form']['money_pc2_p']),
         strtoint(session['THT_form']['money_all2_p'])
         ]
-    THT_rep = data_creation(session['THT_form']['repair_time_all'], session['THT_form']['repair_money_all'], batch)
-    THT_cont = data_creation(session['THT_form']['control_time_all'], session['THT_form']['control_money_all'], batch)
+    THT_rep_p = data_creation(session['THT_form'].get('repair_time_all_p', "-"), session['THT_form'].get('repair_money_all_p', "-"), batch)
+    THT_cont_p = data_creation(session['THT_form'].get('control_time_all_p', "-"), session['THT_form'].get('control_money_all_p', "-"), batch)
+    THT_rep_s = data_creation(session['THT_form'].get('repair_time_all_s', "-"), session['THT_form'].get('repair_money_all_s', "-"), batch)
+    THT_cont_s = data_creation(session['THT_form'].get('control_time_all_s', "-"), session['THT_form'].get('control_money_all_s', "-"), batch)
     Wave = [
         strtoint(session['Wave_form']['time_pc']),
         strtoint(session['Wave_form']['time_all']),
@@ -347,8 +334,8 @@ def create_export(session):
             "-",
             "-"
         ]
-    data = [ SMD_re_t, SMD_t, SMD_re_b, SMD_b, SMD_rep, SMD_cont,
-            THT_pri_re, THT_pri_p, THT_pri, THT_sec_re, THT_sec_p, THT_sec, THT_rep, THT_cont, 
+    data = [ SMD_re_t, SMD_t, SMD_rep_t, SMD_cont_t, SMD_re_b, SMD_b, SMD_rep_b, SMD_cont_b,
+            THT_pri_re, THT_pri_p, THT_pri, THT_rep_p, THT_cont_p, THT_sec_re, THT_sec_p, THT_sec, THT_rep_s, THT_cont_s,
             Wave_p, Wave, Wave_rep, Wave_cont, 
             HRL_re, HRL, HRL_rep, HRL_cont, 
             Hand, Hand_cont, 
@@ -360,19 +347,23 @@ def create_export(session):
     row_headers = [
         "Поверхностный монтаж SMT Pri, переналадка",
         "Автоматический поверхностный монтаж SMT Pri", 
+        "Ремонт на поверхностном монтаже Pri",
+        "Контроль на поверхностном монтаже Pri",
         "Поверхностный монтаж SMT Sec, переналадка",
         "Автоматический поверхностный монтаж SMT Sec", 
-        "Ремонт на поверхностном монтаже",
-        "Контроль на поверхностном монтаже",
+        "Ремонт на поверхностном монтаже Sec",
+        "Контроль на поверхностном монтаже Sec",
 
         "Селективная пайка THT Pri, переналадка",
         "Селективная пайка THT Pri, набивка",
         "Селективная пайка THT Pri", 
+        "Ремонт на cелективной пайке THT Pri",
+        "Контроль на cелективной пайке THT Pri",
         "Селективная пайка THT Sec, переналадка",
         "Селективная пайка THT Sec, набивка",
-        "Селективная пайка THT Sec", 
-        "Ремонт на cелективной пайке THT",
-        "Контроль на cелективной пайке THT",
+        "Селективная пайка THT Sec",
+        "Ремонт на cелективной пайке THT Sec",
+        "Контроль на cелективной пайке THT Sec",
 
         "Волновая пайка, набивка",
         "Волновая пайка",
@@ -550,12 +541,17 @@ def tech_map(df_calc, session, pc):
     df_wc.loc['Автоматический поверхностный монтаж SMT Sec', 'Машинное время (время работы)'] = get_calculated_machine_time("Автоматический поверхностный монтаж SMT Sec")
     df_wc.loc['Автоматический поверхностный монтаж SMT Sec', 'Базовое количество'] = pc
 
-    df_wc.loc['Ремонт после SMT', 'Машинное время (время работы)'] = get_calculated_machine_time("Ремонт на поверхностном монтаже")
-    df_wc.loc['Ремонт после SMT', 'Базовое количество'] = pc    
+    df_wc.loc['Ремонт после SMT Pri', 'Машинное время (время работы)'] = get_calculated_machine_time("Ремонт на поверхностном монтаже Pri")
+    df_wc.loc['Ремонт после SMT Pri', 'Базовое количество'] = pc    
     
-    df_wc.loc['Контроль после SMT', 'Машинное время (время работы)'] = get_calculated_machine_time("Контроль на поверхностном монтаже")
-    df_wc.loc['Контроль после SMT', 'Базовое количество'] = pc    
+    df_wc.loc['Контроль после SMT Pri', 'Машинное время (время работы)'] = get_calculated_machine_time("Контроль на поверхностном монтаже Pri")
+    df_wc.loc['Контроль после SMT Pri', 'Базовое количество'] = pc    
     
+    df_wc.loc['Ремонт после SMT Sec', 'Машинное время (время работы)'] = get_calculated_machine_time("Ремонт на поверхностном монтаже Sec")
+    df_wc.loc['Ремонт после SMT Sec', 'Базовое количество'] = pc    
+    
+    df_wc.loc['Контроль после SMT Sec', 'Машинное время (время работы)'] = get_calculated_machine_time("Контроль на поверхностном монтаже Sec")
+    df_wc.loc['Контроль после SMT Sec', 'Базовое количество'] = pc    
     
     df_wc.loc['Рентген-контроль', 'Машинное время (время работы)'] = get_calculated_machine_time("Рентгенконтроль")
     df_wc.loc['Рентген-контроль', 'Базовое количество'] = pc    
@@ -570,11 +566,17 @@ def tech_map(df_calc, session, pc):
     df_wc.loc['Селективная пайка THT Sec', 'Базовое количество'] = pc    
     
     
-    df_wc.loc['Ремонт после THT', 'Машинное время (время работы)'] = get_calculated_machine_time("Ремонт на cелективной пайке THT")
-    df_wc.loc['Ремонт после THT', 'Базовое количество'] = pc    
+    df_wc.loc['Ремонт после THT Pri', 'Машинное время (время работы)'] = get_calculated_machine_time("Ремонт на cелективной пайке THT Pri")
+    df_wc.loc['Ремонт после THT Pri', 'Базовое количество'] = pc    
     
-    df_wc.loc['Контроль после THT', 'Машинное время (время работы)'] = get_calculated_machine_time("Контроль на cелективной пайке THT")
-    df_wc.loc['Контроль после THT', 'Базовое количество'] = pc
+    df_wc.loc['Контроль после THT Pri', 'Машинное время (время работы)'] = get_calculated_machine_time("Контроль на cелективной пайке THT Pri")
+    df_wc.loc['Контроль после THT Pri', 'Базовое количество'] = pc
+
+    df_wc.loc['Ремонт после THT Sec', 'Машинное время (время работы)'] = get_calculated_machine_time("Ремонт на cелективной пайке THT Sec")
+    df_wc.loc['Ремонт после THT Sec', 'Базовое количество'] = pc    
+    
+    df_wc.loc['Контроль после THT Sec', 'Машинное время (время работы)'] = get_calculated_machine_time("Контроль на cелективной пайке THT Sec")
+    df_wc.loc['Контроль после THT Sec', 'Базовое количество'] = pc
 
     df_wc.loc['Набивка компонентов Pri', 'Машинное время (время работы)'] = get_calculated_machine_time("Селективная пайка THT Pri, набивка")
     df_wc.loc['Набивка компонентов Pri', 'Базовое количество'] = pc
@@ -619,6 +621,7 @@ def tech_map(df_calc, session, pc):
     df_wc[['Время наладки', 'Машинное время (время работы)']] = df_wc[['Время наладки', 'Машинное время (время работы)']].fillna(0)
     df_wc = df_wc.fillna("")
     df_wc = df_wc[df_wc['Машинное время (время работы)'] != "-"]
+    df_wc = df_wc[df_wc['Машинное время (время работы)'] != 0]
     df_wc = df_wc.reset_index()   # Сбрасываем индекс
     df_wc['Номер операции'] = (df_wc.index + 1) * 10  # Создаем новый столбец с номерами операций
 

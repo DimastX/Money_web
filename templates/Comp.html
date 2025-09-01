@@ -317,7 +317,11 @@
             var money_pc3 = Math.ceil(money_all3 / batch);
             
             // Расчет времени и стоимости отгрузки (time_all4, money_all4 и т.д.)
-            var time_all4 = Math.ceil(batch * parseInt({{df['Значение'][3]}}) / 3600);
+            var shipping_time = parseInt({{df['Значение'][3]}});
+            if (type[0].checked || type[1].checked) { // Если выбрана Серверная плата или Материнская плата
+                shipping_time += parseInt({{df['Значение'][10]}});
+            }
+            var time_all4 = Math.ceil(batch * shipping_time / 3600);
             var time_pc4 = Math.ceil(time_all4 / batch * 3600);
             var money_all4 = time_all4 * parseInt({{df2['Стоимость, руб/ч'][22]}});
             var money_pc4 = Math.ceil(money_all4 / batch);

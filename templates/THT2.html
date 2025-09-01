@@ -482,6 +482,17 @@
             const time_pc2_p = time_pc2;
             const time_re_pc2 = Math.ceil(time_re_all2 / batch * 3600);
 
+            repair_time_all = time_all + time_all2;
+            repair_time_pc = Math.ceil(repair_time_all / batch * 3600);
+            repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) );
+            repair_time_pc = Math.ceil(repair_money_all / batch);
+
+            control_time_all = Math.ceil((repair+ 100* batch) * parseFloat({{df["Значение"][10]}}) / 100 / 3600);
+            control_time_all = repair_time_all * 0.5;
+            control_time_pc = Math.ceil(control_time_all / batch * 3600);
+            control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
+            control_time_pc = Math.ceil(control_money_all / batch);
+
             // Обновление полей на форме
             if (chckbx.checked){ // Если селективная пайка включена
                 // Обновление полей для 1-й стороны (Primary)

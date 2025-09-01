@@ -58,7 +58,7 @@
                 <tr>
                     <!-- Левая колонка: ввод количества компонентов и наименований -->
                     <td style="width: 30%;"> 
-                        <label>Количество компонентов на стороне Top</label>
+                        <label>Количество компонентов на стороне Primary</label>
                         <a href="#" data-toggle="tooltip" title="Заполняйте в том случае, если точно знаете эти значения. Иначе - подгружайте таблицу BOM и PAP, их можно будет подредактировать">
                             <!-- Иконка-подсказка Bootstrap -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
@@ -70,15 +70,15 @@
                         <!-- Поля для ввода данных. Значения берутся из сессии или устанавливаются в '0' -->
                         <input type="number" class="form-control" min="0" required step="1" name="SMD1" id="SMD1"
                         value="{{ session['tables'][0] if session.get('tables') else '0' }}">
-                        <label>Количество наименований на стороне Top</label>
+                        <label>Количество наименований на стороне Primary</label>
                         <br>
                         <input type="number" class="form-control" min="0" required step="1" name="SMD2" id="SMD2"
                         value="{{ session['tables'][1] if session.get('tables') else '0' }}">
-                        <label>Количество компонентов на стороне Bot</label>
+                        <label>Количество компонентов на стороне Secondary</label>
                         <br>
                         <input type="number" class="form-control" min="0" required step="1" name="SMD3" id="SMD3"
                         value="{{ session['tables'][2] if session.get('tables') else '0' }}">
-                        <label>Количество наименований на стороне Bot</label>
+                        <label>Количество наименований на стороне Secondary</label>
                         <br>
                         <input type="number" class="form-control" min="0" required step="1" name="SMD4" id="SMD4"
                         value="{{ session['tables'][3] if session.get('tables') else '0' }}">
@@ -179,10 +179,10 @@
                                             <input type="text" name="money_re_pc_t" id="money_re_pc_t" class="form-control" readonly>
                                             <input type="text" name="time_re_all_t" id="time_re_all_t" class="form-control" readonly>
                                             <input type="text" name="money_re_all_t" id="money_re_all_t" class="form-control" readonly>
-                                            <input type="text" class="form-control" readonly>
-                                            <input type="text" class="form-control" readonly>
-                                            <input type="text" class="form-control" readonly>
-                                            <input type="text" class="form-control" readonly>
+                                            <input type="text" name="repair_time_all_t" id="repair_time_all_t" class="form-control" readonly>
+                                            <input type="text" name="repair_money_all_t" id="repair_money_all_t" class="form-control" readonly>
+                                            <input type="text" name="control_time_all_t" id="control_time_all_t" class="form-control" readonly>
+                                            <input type="text" name="control_money_all_t" id="control_money_all_t" class="form-control" readonly>
                                             <br>
                                             <input type="text" name="money_all_f_t" id="money_all_f_t" class="form-control" readonly>
                                         </div>
@@ -200,10 +200,10 @@
                                             <input type="text" name="money_re_pc_b" id="money_re_pc_b" class="form-control" readonly>
                                             <input type="text" name="time_re_all_b" id="time_re_all_b" class="form-control" readonly>
                                             <input type="text" name="money_re_all_b" id="money_re_all_b" class="form-control" readonly>
-                                            <input type="text" class="form-control" readonly>
-                                            <input type="text" class="form-control" readonly>
-                                            <input type="text" class="form-control" readonly>
-                                            <input type="text" class="form-control" readonly>
+                                            <input type="text" name="repair_time_all_b" id="repair_time_all_b" class="form-control" readonly>
+                                            <input type="text" name="repair_money_all_b" id="repair_money_all_b" class="form-control" readonly>
+                                            <input type="text" name="control_time_all_b" id="control_time_all_b" class="form-control" readonly>
+                                            <input type="text" name="control_money_all_b" id="control_money_all_b" class="form-control" readonly>
                                             <br>
                                             <input type="text" name="money_all_f_b" id="money_all_f_b" class="form-control" readonly>
                                         </div>
@@ -474,18 +474,51 @@
                 }
                 // df["Значение"][6] - норматив времени на ремонт 1% брака
                 // df2['Стоимость, руб/ч'][8] - стоимость часа ремонтника
-                repair_time_all = Math.ceil(repair * parseFloat({{df["Значение"][6]}}) / 100 / 3600); // Общее время ремонта (ч)
-                repair_time_pc = Math.ceil(repair_time_all / batch * 3600); // Время ремонта на 1 ПУ (с) - вероятно, ошибка, должно быть repair_money_all / batch для стоимости или repair_time_all * 3600 / batch для времени в секундах. Но ниже есть repair_money_pc, так что это, видимо, стоимость.
-                repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) ); // Общая стоимость ремонта
-                repair_money_pc = Math.ceil(repair_money_all / batch); // Стоимость ремонта на 1 ПУ
+                // Новые формулы для расчета времени ремонта и контроля
+                repair = batch;
+                const smd_comps_t = (parseInt(Top) || 0);
+                const smd_comps_b = (parseInt(Bot) || 0);
 
-                // Расчет времени и стоимости контроля ремонта
-                // df["Значение"][7] - норматив времени на контроль 1% брака
-                // df2['Стоимость, руб/ч'][21] - стоимость часа контролера
-                control_time_all = Math.ceil((repair+ 100* batch) * parseFloat({{df["Значение"][7]}}) / 100 / 3600); // Общее время контроля (ч)
-                control_time_pc = Math.ceil(control_time_all / batch * 3600); // Время контроля на 1 ПУ (с) - аналогично ремонту, возможно, стоимость.
-                control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) ); // Общая стоимость контроля
-                control_money_pc = Math.ceil(control_money_all / batch); // Стоимость контроля на 1 ПУ
+                let repair_time_seconds_t = repair * smd_comps_t * 0.05;
+                let repair_time_seconds_b = repair * smd_comps_b * 0.05;
+
+                let repair_time_seconds = repair_time_seconds_t + repair_time_seconds_b;
+                if ((repair_time_seconds / batch) < 3){
+                    repair_time_seconds = batch * 3;
+                }
+                
+                // Пропорциональное распределение общего времени ремонта
+                if (smd_comps_t + smd_comps_b > 0) {
+                    repair_time_seconds_t = repair_time_seconds * (smd_comps_t / (smd_comps_t + smd_comps_b));
+                    repair_time_seconds_b = repair_time_seconds * (smd_comps_b / (smd_comps_t + smd_comps_b));
+                } else {
+                    repair_time_seconds_t = 0;
+                    repair_time_seconds_b = 0;
+                }
+                
+                repair_time_all = Math.ceil(repair_time_seconds / 3600); // Общее время ремонта (ч)
+                repair_time_pc = Math.ceil(repair_time_all / batch * 3600); 
+                repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) ); 
+                repair_money_pc = Math.ceil(repair_money_all / batch);
+
+                let repair_time_all_t = Math.ceil(repair_time_seconds_t / 3600);
+                let repair_money_all_t = Math.ceil(repair_time_all_t * parseInt({{ df2['Стоимость, руб/ч'][8]}}));
+                let repair_time_all_b = Math.ceil(repair_time_seconds_b / 3600);
+                let repair_money_all_b = Math.ceil(repair_time_all_b * parseInt({{ df2['Стоимость, руб/ч'][8]}}));
+                
+                const control_time_seconds_t = repair_time_seconds_t * 0.6;
+                const control_time_seconds_b = repair_time_seconds_b * 0.6;
+                const control_time_seconds = control_time_seconds_t + control_time_seconds_b;
+                
+                control_time_all = Math.ceil(control_time_seconds / 3600); // Общее время контроля (ч)
+                control_time_pc = Math.ceil(control_time_all / batch * 3600); 
+                control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) ); 
+                control_money_pc = Math.ceil(control_money_all / batch);
+
+                let control_time_all_t = Math.ceil(control_time_seconds_t / 3600);
+                let control_money_all_t = Math.ceil(control_time_all_t * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
+                let control_time_all_b = Math.ceil(control_time_seconds_b / 3600);
+                let control_money_all_b = Math.ceil(control_time_all_b * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
                 
                 // Общее количество компонентов и наименований
                 const components = (parseInt(Top) + parseInt(Bot)) * batch; // Общее количество компонентов на партию
@@ -639,9 +672,16 @@
 
                 document.getElementById('repair_time_all').value = repair_time_all + " ч";
                 document.getElementById('repair_money_all').value = repair_money_all + " руб";
-
+                document.getElementById('repair_time_all_t').value = repair_time_all_t + " ч";
+                document.getElementById('repair_money_all_t').value = repair_money_all_t + " руб";
+                document.getElementById('repair_time_all_b').value = repair_time_all_b + " ч";
+                document.getElementById('repair_money_all_b').value = repair_money_all_b + " руб";
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
+                document.getElementById('control_time_all_t').value = control_time_all_t + " ч";
+                document.getElementById('control_money_all_t').value = control_money_all_t + " руб";
+                document.getElementById('control_time_all_b').value = control_time_all_b + " ч";
+                document.getElementById('control_money_all_b').value = control_money_all_b + " руб";
                 
                 // Итоговая стоимость по сторонам и общая
                 document.getElementById("money_all_f_t").value = (money_all_t + money_re_all_t) + " руб";
@@ -698,9 +738,16 @@
 
                 document.getElementById('repair_time_all').value = '-';
                 document.getElementById('repair_money_all').value = '-';
-
+                document.getElementById('repair_time_all_t').value = '-';
+                document.getElementById('repair_money_all_t').value = '-';
+                document.getElementById('repair_time_all_b').value = '-';
+                document.getElementById('repair_money_all_b').value = '-';
                 document.getElementById('control_time_all').value = '-';
                 document.getElementById('control_money_all').value = '-';
+                document.getElementById('control_time_all_t').value = '-';
+                document.getElementById('control_money_all_t').value = '-';
+                document.getElementById('control_time_all_b').value = '-';
+                document.getElementById('control_money_all_b').value = '-';
             }
         }
 

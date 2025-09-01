@@ -212,6 +212,10 @@
                                             <input type="text" name="money_re_pc" id="money_re_pc" class="form-control" readonly>
                                             <input type="text" name="time_re_all" id="time_re_all" class="form-control" readonly>
                                             <input type="text" name="money_re_all" id="money_re_all" class="form-control" readonly>
+                                            <input type="text" name="repair_time_all_p" id="repair_time_all_p" class="form-control" readonly>
+                                            <input type="text" name="repair_money_all_p" id="repair_money_all_p" class="form-control" readonly>
+                                            <input type="text" name="control_time_all_p" id="control_time_all_p" class="form-control" readonly>
+                                            <input type="text" name="control_money_all_p" id="control_money_all_p" class="form-control" readonly>
                                             </div>
                                         </td>
                                         <td style="width: 20%;">
@@ -228,6 +232,10 @@
                                             <input type="text" name="money_re_pc2" id="money_re_pc2" class="form-control" readonly>
                                             <input type="text" name="time_re_all2" id="time_re_all2" class="form-control" readonly>
                                             <input type="text" name="money_re_all2" id="money_re_all2" class="form-control" readonly>
+                                            <input type="text" name="repair_time_all_s" id="repair_time_all_s" class="form-control" readonly>
+                                            <input type="text" name="repair_money_all_s" id="repair_money_all_s" class="form-control" readonly>
+                                            <input type="text" name="control_time_all_s" id="control_time_all_s" class="form-control" readonly>
+                                            <input type="text" name="control_money_all_s" id="control_money_all_s" class="form-control" readonly>
                                             </div>
                                         </td>
                                         <td>
@@ -373,11 +381,6 @@
 
 
         function THT_amount(){
-
-
-
-
-
             var batch = parseInt({{ session['home_form']['field3']}});
             var multi_num = parseInt({{ session['second_form']['multi_num']}});
             var pc = parseInt({{ session['second_form']['pc']}});
@@ -385,12 +388,6 @@
             var time_multi2 = 0;
             var sides = 1;
             var prev = parseInt({{ session['second_form']['prev']}});
-
-
-
-
-
-
 
             if (prev == 1){
                 prev = 1 - parseFloat({{ df['Значение'][6] }});
@@ -403,8 +400,6 @@
                 sides = 2;
             }
             if (THT_type[0].checked){
-
-
                 time_multi =  Math.ceil((document.getElementById('DDR').value * parseFloat({{df['Значение'][1]}}) + 
                             document.getElementById('PCI').value * parseFloat({{df['Значение'][2]}}) + 
                             document.getElementById('points').value * parseFloat({{df['Значение'][5]}}) + 
@@ -412,6 +407,7 @@
                             pc * parseFloat({{df['Значение'][11]}}));
             } else if (THT_type[1].checked){
                 time_multi = parseFloat(document.getElementById('sim_multi').value);
+                console.log(time_multi);
             }
 
 
@@ -435,20 +431,14 @@
                     repair = parseFloat({{df["Значение"][8]}}) * batch;
                 }
             repair_time_all = Math.ceil(repair * parseFloat({{df["Значение"][9]}}) / 100 / 3600);
-            repair_time_pc = Math.ceil(repair_time_all / batch * 3600);
-            repair_money_all = Math.ceil(repair_time_all * parseInt({{ df2['Стоимость, руб/ч'][8]}}) );
-            repair_time_pc = Math.ceil(repair_money_all / batch);
-
-            control_time_all = Math.ceil((repair+ 100* batch) * parseFloat({{df["Значение"][10]}}) / 100 / 3600);
-            control_time_pc = Math.ceil(control_time_all / batch * 3600);
-            control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
-            control_time_pc = Math.ceil(control_money_all / batch);
 
 
-            time_multi += Math.ceil((parseFloat({{df['Значение'][4]}})));
+            //time_multi += Math.ceil((parseFloat({{df['Значение'][4]}})));
             time_multi *= parseFloat({{df['Значение'][0]}});
+            console.log(time_multi);
             const start = parseFloat({{df['Значение'][3]}}) * prev / 3600;
-            const prod = time_multi * multi_num / 3600 / 2; //2 машины
+            const prod = time_multi * multi_num / 3600; //2 машины
+            console.log(prod);
 
 
             const time_all = Math.ceil((prod));
@@ -472,7 +462,7 @@
             }
             time_multi2 *= parseFloat({{df['Значение'][0]}});
 
-            const prod2 = time_multi2 * multi_num / 3600 / 2; //2 машины
+            const prod2 = time_multi2 * multi_num / 3600; //2 машины
             const time_all2 = Math.ceil((prod2));
             const time_all2_p = time_all2;
             const time_re_all2 = Math.ceil((start2));
@@ -485,6 +475,34 @@
             const time_pc2 = Math.ceil(time_all2 / batch * 3600);
             const time_pc2_p = time_pc2;
             const time_re_pc2 = Math.ceil(time_re_all2 / batch * 3600);
+            
+            let repair_time_all_p = 0;
+            let repair_money_all_p = 0;
+            let control_time_all_p = 0;
+            let control_money_all_p = 0;
+
+            let repair_time_all_s = 0;
+            let repair_money_all_s = 0;
+            let control_time_all_s = 0;
+            let control_money_all_s = 0;
+
+            if (time_multi + time_multi2 > 0) {
+                const total_repair_time = time_all + time_all2;
+                repair_time_all_p = Math.ceil(total_repair_time * (time_multi / (time_multi + time_multi2)));
+                repair_money_all_p = Math.ceil(repair_time_all_p * parseInt({{ df2['Стоимость, руб/ч'][8]}}));
+                control_time_all_p = Math.ceil(repair_time_all_p * 0.5);
+                control_money_all_p = Math.ceil(control_time_all_p * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
+
+                repair_time_all_s = Math.ceil(total_repair_time * (time_multi2 / (time_multi + time_multi2)));
+                repair_money_all_s = Math.ceil(repair_time_all_s * parseInt({{ df2['Стоимость, руб/ч'][8]}}));
+                control_time_all_s = Math.ceil(repair_time_all_s * 0.5);
+                control_money_all_s = Math.ceil(control_time_all_s * parseInt({{ df2['Стоимость, руб/ч'][21]}}));
+            }
+
+            repair_time_all = repair_time_all_p + repair_time_all_s;
+            repair_money_all = repair_money_all_p + repair_money_all_s;
+            control_time_all = control_time_all_p + control_time_all_s;
+            control_money_all = control_money_all_p + control_money_all_s;
 
             if (chckbx.checked){
 
@@ -515,6 +533,16 @@
                 document.getElementById('time_re_all2').value = time_re_all2 + " ч";
                 document.getElementById('money_re_pc2').value = money_re_pc2 + " руб";
                 document.getElementById('money_re_all2').value = money_re_all2 + " руб";
+
+                document.getElementById('repair_time_all_p').value = repair_time_all_p + " ч";
+                document.getElementById('repair_money_all_p').value = repair_money_all_p + " руб";
+                document.getElementById('control_time_all_p').value = control_time_all_p + " ч";
+                document.getElementById('control_money_all_p').value = control_money_all_p + " руб";
+
+                document.getElementById('repair_time_all_s').value = repair_time_all_s + " ч";
+                document.getElementById('repair_money_all_s').value = repair_money_all_s + " руб";
+                document.getElementById('control_time_all_s').value = control_time_all_s + " ч";
+                document.getElementById('control_money_all_s').value = control_money_all_s + " руб";
 
                 document.getElementById('time_pc3_p').value = time_pc_p + time_pc2_p + " c";
                 document.getElementById('time_all3_p').value = time_all_p + time_all2_p + " ч";
@@ -571,6 +599,16 @@
                 document.getElementById('money_re_pc2').value = '-';
                 document.getElementById('money_re_all2').value = '-';
                 
+                document.getElementById('repair_time_all_p').value = '-';
+                document.getElementById('repair_money_all_p').value = '-';
+                document.getElementById('control_time_all_p').value = '-';
+                document.getElementById('control_money_all_p').value = '-';
+
+                document.getElementById('repair_time_all_s').value = '-';
+                document.getElementById('repair_money_all_s').value = '-';
+                document.getElementById('control_time_all_s').value = '-';
+                document.getElementById('control_money_all_s').value = '-';
+
                 document.getElementById('time_pc3_p').value = '-';
                 document.getElementById('time_all3_p').value = '-';
                 document.getElementById('money_pc3_p').value = '-';

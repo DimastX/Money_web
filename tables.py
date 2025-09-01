@@ -25,32 +25,41 @@ def tables(file):
         PAP['Layer'] = PAP['Layer'].fillna("") # Заполнение пустых значений в столбце 'Layer' пустой строкой
         PAP = PAP.drop_duplicates() # Удаление дубликатов в PAP
         
-        # Определение уникальных слоев (сторон установки) из PAP
-        Layer = PAP["Layer"].unique()
-        Layer = list(filter(None, Layer)) # Удаление пустых значений из списка слоев
+        # Приведение названий слоев к нижнему регистру для унификации
+        PAP['Layer_lower'] = PAP['Layer'].str.lower()
+
+        # Проверка на наличие некорректных слоев
+        all_layers = PAP['Layer_lower'].unique()
+        # Удаляем пустые строки и валидные слои, чтобы найти некорректные
+        invalid_layers = [layer for layer in all_layers if layer and layer not in ['top', 'bot']]
         
-        # Проверка: если слоев больше двух, формат некорректен
-        if len(Layer) > 2:
-            logging.error("Некорректный формат: больше 2 слоев")
-            return 0 # Возвращаем 0 как признак ошибки
+        if invalid_layers:
+            logging.error(f"Найдены некорректные слои: {', '.join(invalid_layers)}. Допускаются только 'Top' и 'Bot'.")
+            return 0
+
+        # Отбор только строк, где слой 'top' или 'bot'
+        valid_layers_df = PAP[PAP['Layer_lower'].isin(['top', 'bot'])]
         
-        if len(Layer) == 0:
-            logging.error("Не найдено ни одного слоя")
+        if valid_layers_df.empty:
+            logging.error("Не найдены слои 'Top' или 'Bot' в файле.")
             return 0
         
-        logging.info(f"Найдено слоев: {len(Layer)}, слои: {Layer}")
-        
-        # Выделение компонентов для стороны BOT (первый слой в списке Layer)
-        Bot_components_pap = PAP[PAP["Layer"] == Layer[0]]["Designator"]
-        Bot_df = pd.DataFrame(Bot_components_pap) # Создание DataFrame для компонентов BOT
-        Bot_df.rename(columns={'Designator': 'Designator'}, inplace=True) # Явное именование столбца
+        found_layers = valid_layers_df['Layer_lower'].unique()
+        logging.info(f"Найдены слои: {found_layers}")
 
-        Top_df = pd.DataFrame() # Инициализация DataFrame для TOP компонентов
-        if len(Layer) == 2:
-            # Выделение компонентов для стороны TOP (второй слой в списке Layer), если он есть
-            Top_components_pap = PAP[PAP["Layer"] == Layer[1]]["Designator"]
+        # Выделение компонентов для стороны BOT
+        Bot_df = pd.DataFrame()
+        if 'bot' in found_layers:
+            Bot_components_pap = valid_layers_df[valid_layers_df["Layer_lower"] == 'bot']["Designator"]
+            Bot_df = pd.DataFrame(Bot_components_pap)
+            Bot_df.rename(columns={'Designator': 'Designator'}, inplace=True)
+
+        # Выделение компонентов для стороны TOP
+        Top_df = pd.DataFrame()
+        if 'top' in found_layers:
+            Top_components_pap = valid_layers_df[valid_layers_df["Layer_lower"] == 'top']["Designator"]
             Top_df = pd.DataFrame(Top_components_pap)
-            Top_df.rename(columns={'Designator': 'Designator'}, inplace=True) # Явное именование столбца
+            Top_df.rename(columns={'Designator': 'Designator'}, inplace=True)
 
         # Обработка таблицы BOM
         BOM = BOM.dropna(axis='index', how='all') # Удаление полностью пустых строк из BOM
@@ -98,10 +107,10 @@ def tables(file):
         # Формирование списка с результатами подсчета
         # Важно: конвертируем все в обычные Python int для JSON сериализации
         result_counts = [
-            int(top_lines_count),      # Общее количество компонентов на стороне Top 
-            int(top_lines_unique_count), # Количество уникальных наименований на стороне Top
             int(bot_lines_count),      # Общее количество компонентов на стороне Bot
             int(bot_lines_unique_count), # Количество уникальных наименований на стороне Bot
+            int(top_lines_count),      # Общее количество компонентов на стороне Top 
+            int(top_lines_unique_count), # Количество уникальных наименований на стороне Top
             int(unique_names_bom)      # Общее количество уникальных наименований в BOM
         ]
         
