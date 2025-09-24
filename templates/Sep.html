@@ -114,6 +114,7 @@
                                         <input type="text" class="form-control" readonly value="Стоимость разделения ПУ">
                                         <input type="text" class="form-control" readonly value="Времени на разделение партии">
                                         <input type="text" class="form-control" readonly value="Стоимость разделения партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость разделения в руб/комп">
                                     </td>
                                     <td>
                                                     
@@ -121,6 +122,7 @@
                                         <input class="form-control" name="money_pc" id="money_pc" readonly></input>
                                         <input class="form-control" name="time_all" id="time_all" readonly></input>
                                         <input class="form-control" name="money_all" id="money_all" readonly></input>
+                                        <input class="form-control" name="sep_comp" id="sep_comp" readonly></input>
                                     </td>
                                 </table>
                             </div>
@@ -250,8 +252,20 @@
                     
                 money_all_f = time_all * parseFloat({{df2['Стоимость, руб/ч'][15]}});
                 money_pc_f = Math.ceil(money_all_f / batch)    
+
+                var smd1_comps = parseInt({{ session['tables'][0] | default(0) }});
+                var smd3_comps = parseInt({{ session['tables'][2] | default(0) }});
+                var total_smd_comps = (smd1_comps + smd3_comps) * batch;
+                
+                let sep_comp_val = 0;
+
+                if (total_smd_comps > 0) {
+                    sep_comp_val = money_all_f / total_smd_comps;
+                }
+
                 document.getElementById("money_all_f").value = Math.ceil(money_all_f)  + " руб";
                 document.getElementById("money_pc_f").value = Math.ceil(money_pc_f) + " руб";
+                document.getElementById("sep_comp").value = sep_comp_val > 0 ? sep_comp_val.toFixed(4) + " руб/комп" : "-";
             } else {
                 document.getElementById("time_pc").value = "-";
                 document.getElementById("time_all").value = "-";
@@ -259,6 +273,7 @@
                 document.getElementById("money_pc").value = "-";
                 document.getElementById("money_pc_f").value = "-";
                 document.getElementById("money_all_f").value = "-";
+                document.getElementById("sep_comp").value = "-";
             }
         }
 

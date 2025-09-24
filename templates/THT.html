@@ -196,6 +196,9 @@
                                             <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
                                             <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
                                             <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
+                                            <input type="text" class="form-control" readonly value="Стоимость селективной пайки в руб/комп">
+                                            <input type="text" class="form-control" readonly value="Стоимость ремонта в руб/комп">
+                                            <input type="text" class="form-control" readonly value="Стоимость контроля в руб/комп">
                                             </div>
                                         </td>
                                         <td style="width: 20%;">
@@ -216,6 +219,9 @@
                                             <input type="text" name="repair_money_all_p" id="repair_money_all_p" class="form-control" readonly>
                                             <input type="text" name="control_time_all_p" id="control_time_all_p" class="form-control" readonly>
                                             <input type="text" name="control_money_all_p" id="control_money_all_p" class="form-control" readonly>
+                                            <input type="text" name="selective_comp_p" id="selective_comp_p" class="form-control" readonly>
+                                            <input type="text" name="repair_comp_p" id="repair_comp_p" class="form-control" readonly>
+                                            <input type="text" name="control_comp_p" id="control_comp_p" class="form-control" readonly>
                                             </div>
                                         </td>
                                         <td style="width: 20%;">
@@ -236,6 +242,9 @@
                                             <input type="text" name="repair_money_all_s" id="repair_money_all_s" class="form-control" readonly>
                                             <input type="text" name="control_time_all_s" id="control_time_all_s" class="form-control" readonly>
                                             <input type="text" name="control_money_all_s" id="control_money_all_s" class="form-control" readonly>
+                                            <input type="text" name="selective_comp_s" id="selective_comp_s" class="form-control" readonly>
+                                            <input type="text" name="repair_comp_s" id="repair_comp_s" class="form-control" readonly>
+                                            <input type="text" name="control_comp_s" id="control_comp_s" class="form-control" readonly>
                                             </div>
                                         </td>
                                         <td>
@@ -256,6 +265,9 @@
                                             <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
                                             <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
                                             <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                                            <input type="text" name="selective_comp" id="selective_comp" class="form-control" readonly>
+                                            <input type="text" name="repair_comp" id="repair_comp" class="form-control" readonly>
+                                            <input type="text" name="control_comp" id="control_comp" class="form-control" readonly>
                                             </div>
                                         </td>
                                     </table>
@@ -333,10 +345,12 @@
 
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
-            element.addEventListener('change', function(){
-
-                check_all('THT', 'THT_off');
-            });
+            if (element) {
+                const eventType = element.type === 'radio' || element.type === 'checkbox' ? 'change' : 'input';
+                element.addEventListener(eventType, function(){
+                    check_all('THT', 'THT_off');
+                });
+            }
         }
 
         function check_all(master, slave){
@@ -504,6 +518,57 @@
             control_time_all = control_time_all_p + control_time_all_s;
             control_money_all = control_money_all_p + control_money_all_s;
 
+            // Расчет стоимости на компонент
+            let selective_comp_p_val = 0;
+            const components_p = (parseInt(document.getElementById('points').value) || 0) + 
+                                 (parseInt(document.getElementById('points_2').value) || 0) + 
+                                 (parseInt(document.getElementById('DDR').value) || 0) + 
+                                 (parseInt(document.getElementById('PCI').value) || 0);
+
+            if (components_p > 0 && batch > 0) {
+                selective_comp_p_val = (money_all) / (components_p * batch);
+            }
+
+            let selective_comp_s_val = 0;
+            let components_s = 0;
+            if (sides == 2) {
+                components_s = (parseInt(document.getElementById('points2').value) || 0) + 
+                               (parseInt(document.getElementById('points2_2').value) || 0) + 
+                               (parseInt(document.getElementById('DDR2').value) || 0) + 
+                               (parseInt(document.getElementById('PCI2').value) || 0);
+                if (components_s > 0 && batch > 0) {
+                    selective_comp_s_val = (money_all2) / (components_s * batch);
+                }
+            }
+
+            let selective_comp_total_val = 0;
+            const total_components = components_p + components_s;
+            if (total_components > 0 && batch > 0) {
+                selective_comp_total_val = (money_all + money_all2) / (total_components * batch);
+            }
+
+            // Расчеты для ремонта и контроля
+            let repair_comp_p_val = 0;
+            let control_comp_p_val = 0;
+            if (components_p > 0 && batch > 0) {
+                repair_comp_p_val = repair_money_all_p / (components_p * batch);
+                control_comp_p_val = control_money_all_p / (components_p * batch);
+            }
+
+            let repair_comp_s_val = 0;
+            let control_comp_s_val = 0;
+            if (components_s > 0 && batch > 0) {
+                repair_comp_s_val = repair_money_all_s / (components_s * batch);
+                control_comp_s_val = control_money_all_s / (components_s * batch);
+            }
+
+            let repair_comp_total_val = 0;
+            let control_comp_total_val = 0;
+            if (total_components > 0 && batch > 0) {
+                repair_comp_total_val = repair_money_all / (total_components * batch);
+                control_comp_total_val = control_money_all / (total_components * batch);
+            }
+
             if (chckbx.checked){
 
 
@@ -562,6 +627,18 @@
 
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
+
+                document.getElementById('selective_comp_p').value = selective_comp_p_val > 0 ? selective_comp_p_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('selective_comp_s').value = selective_comp_s_val > 0 ? selective_comp_s_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('selective_comp').value = selective_comp_total_val > 0 ? selective_comp_total_val.toFixed(4) + " руб/комп" : "-";
+
+                document.getElementById('repair_comp_p').value = repair_comp_p_val > 0 ? repair_comp_p_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('repair_comp_s').value = repair_comp_s_val > 0 ? repair_comp_s_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('repair_comp').value = repair_comp_total_val > 0 ? repair_comp_total_val.toFixed(4) + " руб/комп" : "-";
+
+                document.getElementById('control_comp_p').value = control_comp_p_val > 0 ? control_comp_p_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('control_comp_s').value = control_comp_s_val > 0 ? control_comp_s_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('control_comp').value = control_comp_total_val > 0 ? control_comp_total_val.toFixed(4) + " руб/комп" : "-";
 
                 money_all_f = money_all + money_re_all + money_all2 + money_re_all2 + repair_money_all + control_money_all + money_all_p + money_all2_p;
 
@@ -631,6 +708,18 @@
 
                 document.getElementById("money_all_f").value = '-';
                 document.getElementById("money_pc_f").value = '-';
+
+                document.getElementById('selective_comp_p').value = '-';
+                document.getElementById('selective_comp_s').value = '-';
+                document.getElementById('selective_comp').value = '-';
+
+                document.getElementById('repair_comp_p').value = '-';
+                document.getElementById('repair_comp_s').value = '-';
+                document.getElementById('repair_comp').value = '-';
+
+                document.getElementById('control_comp_p').value = '-';
+                document.getElementById('control_comp_s').value = '-';
+                document.getElementById('control_comp').value = '-';
 
             }
         }

@@ -126,6 +126,8 @@
                                         <input type="text" class="form-control" readonly value="Стоимость лакировки партии">
                                         <input type="text" class="form-control" readonly value="Времени на контроль партии">
                                         <input type="text" class="form-control" readonly value="Стоимость контроля партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость лакировки в руб/комп">
+                                        <input type="text" class="form-control" readonly value="Стоимость контроля в руб/комп">
                                     </td>
                                     <td>
                                         <input type="text" name="PCB" id="PCB" class="form-control" readonly>
@@ -135,6 +137,8 @@
                                         <input type="text" name="money_all" id="money_all" class="form-control" readonly>
                                         <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
                                         <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>                                        
+                                        <input type="text" name="handv_comp" id="handv_comp" class="form-control" readonly>
+                                        <input type="text" name="control_comp" id="control_comp" class="form-control" readonly>
                                     </td>
                                 </table>
                             </div>
@@ -288,8 +292,24 @@
 
                 money_all_f = money_all + control_money_all;
                 money_pc_f = Math.ceil(money_all_f / batch);
+
+                var smd1_comps = parseInt({{ session['tables'][0] | default(0) }});
+                var smd3_comps = parseInt({{ session['tables'][2] | default(0) }});
+                var total_smd_comps = (smd1_comps + smd3_comps) * batch;
+                
+                let handv_comp_val = 0;
+                let control_comp_val = 0;
+
+                if (total_smd_comps > 0) {
+                    handv_comp_val = money_all / total_smd_comps;
+                    control_comp_val = control_money_all / total_smd_comps;
+                }
+
                 document.getElementById("money_all_f").value = money_all_f + " руб";
                 document.getElementById("money_pc_f").value = money_pc_f + " руб";
+
+                document.getElementById('handv_comp').value = handv_comp_val > 0 ? handv_comp_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('control_comp').value = control_comp_val > 0 ? control_comp_val.toFixed(4) + " руб/комп" : "-";
             } else {
                 document.getElementById('PCB').value = '-';
                 document.getElementById('time_pc').value = '-';
@@ -300,6 +320,8 @@
                 document.getElementById('control_money_all').value = '-';
                 document.getElementById("money_all_f").value = '-';
                 document.getElementById("money_pc_f").value = '-';
+                document.getElementById("handv_comp").value = '-';
+                document.getElementById("control_comp").value = '-';
 
             }
         }

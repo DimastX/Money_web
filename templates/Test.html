@@ -163,6 +163,7 @@
                                         <input type="text" class="form-control" readonly value="Стоимость тестирования 1 ПУ">
                                         <input type="text" class="form-control" readonly value="Время тестирования всей партии">
                                         <input type="text" class="form-control" readonly value="Стоимость тестирования всей партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость тестирования в руб/комп">
                                     </td>
                                     <td>
                                         <input type="text" name="PCB" id="PCB" class="form-control" readonly>
@@ -170,6 +171,7 @@
                                         <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
                                         <input type="text" name="time_all" id="time_all" class="form-control" readonly>
                                         <input type="text" name="money_all" id="money_all" class="form-control" readonly>                                        
+                                        <input type="text" name="test_comp" id="test_comp" class="form-control" readonly>
                                     </td>
                                 </table>
                             </div>
@@ -315,8 +317,19 @@
 
                 money_all_f = money_all;
                 money_pc_f = Math.ceil(money_all_f / batch);
+
+                var smd1_comps = parseInt({{ session['tables'][0] | default(0) }});
+                var smd3_comps = parseInt({{ session['tables'][2] | default(0) }});
+                var total_smd_comps = (smd1_comps + smd3_comps) * batch;
+                
+                let test_comp_val = 0;
+                if (total_smd_comps > 0) {
+                    test_comp_val = money_all / total_smd_comps;
+                }
+
                 document.getElementById("money_pc_f").value = money_pc_f + " руб";
                 document.getElementById("money_all_f").value = money_all_f + " руб";
+                document.getElementById('test_comp').value = test_comp_val > 0 ? test_comp_val.toFixed(4) + " руб/комп" : "-";
 
             } else {
                 document.getElementById('PCB').value = '-';
@@ -327,6 +340,7 @@
                 
                 document.getElementById("money_pc_f").value = '-';
                 document.getElementById("money_all_f").value = '-';
+                document.getElementById('test_comp').value = '-';
 
             }
         };

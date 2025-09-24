@@ -162,6 +162,9 @@
                                             <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
                                             <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
                                             <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">                                            
+                                            <input type="text" class="form-control" readonly value="Стоимость SMT в руб/комп">
+                                            <input type="text" class="form-control" readonly value="Стоимость ремонта в руб/комп">
+                                            <input type="text" class="form-control" readonly value="Стоимость контроля в руб/комп">
                                             <br>
                                             <input type="text" class="form-control" readonly value="Итоговая стоимость всей партии">
                                         </div>
@@ -183,6 +186,9 @@
                                             <input type="text" name="repair_money_all_t" id="repair_money_all_t" class="form-control" readonly>
                                             <input type="text" name="control_time_all_t" id="control_time_all_t" class="form-control" readonly>
                                             <input type="text" name="control_money_all_t" id="control_money_all_t" class="form-control" readonly>
+                                            <input type="text" name="smt_comp_t" id="smt_comp_t" class="form-control" readonly>
+                                            <input type="text" name="repair_comp_t" id="repair_comp_t" class="form-control" readonly>
+                                            <input type="text" name="control_comp_t" id="control_comp_t" class="form-control" readonly>
                                             <br>
                                             <input type="text" name="money_all_f_t" id="money_all_f_t" class="form-control" readonly>
                                         </div>
@@ -204,6 +210,9 @@
                                             <input type="text" name="repair_money_all_b" id="repair_money_all_b" class="form-control" readonly>
                                             <input type="text" name="control_time_all_b" id="control_time_all_b" class="form-control" readonly>
                                             <input type="text" name="control_money_all_b" id="control_money_all_b" class="form-control" readonly>
+                                            <input type="text" name="smt_comp_b" id="smt_comp_b" class="form-control" readonly>
+                                            <input type="text" name="repair_comp_b" id="repair_comp_b" class="form-control" readonly>
+                                            <input type="text" name="control_comp_b" id="control_comp_b" class="form-control" readonly>
                                             <br>
                                             <input type="text" name="money_all_f_b" id="money_all_f_b" class="form-control" readonly>
                                         </div>
@@ -225,6 +234,9 @@
                                             <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
                                             <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
                                             <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                                            <input type="text" name="smt_comp" id="smt_comp" class="form-control" readonly>
+                                            <input type="text" name="repair_comp" id="repair_comp" class="form-control" readonly>
+                                            <input type="text" name="control_comp" id="control_comp" class="form-control" readonly>
                                             <br>
                                         </div>
                                     </td>
@@ -690,6 +702,46 @@
                 money_pc_f = Math.ceil(money_all_f/batch); // Итоговая стоимость на 1 ПУ
                 document.getElementById("money_pc_f").value = money_pc_f + " руб";
                 document.getElementById("money_all_f").value = money_all_f + " руб";
+                
+                // Расчеты в руб/комп с учетом размера партии
+                let smt_comp_val = 0;
+                let repair_comp_val = 0;
+                let control_comp_val = 0;
+
+                if (components > 0) {
+                    smt_comp_val = money_all / (components * 0.98);
+                    repair_comp_val = repair_money_all / components;
+                    control_comp_val = control_money_all / components;
+                }
+                
+                let smt_comp_val_t = 0;
+                let repair_comp_val_t = 0;
+                let control_comp_val_t = 0;
+                if (components_t > 0) {
+                    smt_comp_val_t = (money_all_t) / (components_t * 0.98);
+                    repair_comp_val_t = repair_money_all_t / components_t;
+                    control_comp_val_t = control_money_all_t / components_t;
+                }
+
+                let smt_comp_val_b = 0;
+                let repair_comp_val_b = 0;
+                let control_comp_val_b = 0;
+                if (components_b > 0) {
+                    smt_comp_val_b = (money_all_b) / (components_b * 0.98);
+                    repair_comp_val_b = repair_money_all_b / components_b;
+                    control_comp_val_b = control_money_all_b / components_b;
+                }
+                
+                // Заполнение полей руб/комп
+                document.getElementById('smt_comp').value = smt_comp_val.toFixed(4) + " руб/комп";
+                document.getElementById('repair_comp').value = repair_comp_val.toFixed(4) + " руб/комп";
+                document.getElementById('control_comp').value = control_comp_val.toFixed(4) + " руб/комп";
+                document.getElementById('smt_comp_t').value = smt_comp_val_t.toFixed(4) + " руб/комп";
+                document.getElementById('repair_comp_t').value = repair_comp_val_t.toFixed(4) + " руб/комп";
+                document.getElementById('control_comp_t').value = control_comp_val_t.toFixed(4) + " руб/комп";
+                document.getElementById('smt_comp_b').value = smt_comp_val_b.toFixed(4) + " руб/комп";
+                document.getElementById('repair_comp_b').value = repair_comp_val_b.toFixed(4) + " руб/комп";
+                document.getElementById('control_comp_b').value = control_comp_val_b.toFixed(4) + " руб/комп";
 
             } else {
                 // Если SMT неактивен или нет данных, очистить поля (заполнить прочерками)
@@ -748,6 +800,16 @@
                 document.getElementById('control_money_all_t').value = '-';
                 document.getElementById('control_time_all_b').value = '-';
                 document.getElementById('control_money_all_b').value = '-';
+
+                document.getElementById('smt_comp').value = '-';
+                document.getElementById('repair_comp').value = '-';
+                document.getElementById('control_comp').value = '-';
+                document.getElementById('smt_comp_t').value = '-';
+                document.getElementById('repair_comp_t').value = '-';
+                document.getElementById('control_comp_t').value = '-';
+                document.getElementById('smt_comp_b').value = '-';
+                document.getElementById('repair_comp_b').value = '-';
+                document.getElementById('control_comp_b').value = '-';
             }
         }
 

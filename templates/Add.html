@@ -390,12 +390,14 @@
                                             <input type="text" class="form-control" readonly value="Стоимость ICT 1 ПУ">
                                             <input type="text" class="form-control" readonly value="Время ICT всей партии">
                                             <input type="text" class="form-control" readonly value="Стоимость ICT всей партии">
+                                            <input type="text" class="form-control" readonly value="Стоимость доп. работ в руб/комп">
                                         </td>
                                         <td>
                                             <input type="text" name="time_pc_ICT" id="time_pc_ICT" class="form-control" readonly>
                                             <input type="text" name="money_pc_ICT" id="money_pc_ICT" class="form-control" readonly>
                                             <input type="text" name="time_all_ICT" id="time_all_ICT" class="form-control" readonly>
                                             <input type="text" name="money_all_ICT" id="money_all_ICT" class="form-control" readonly>                                        
+                                            <input type="text" name="add_comp" id="add_comp" class="form-control" readonly>
                                         </td>
                                     </table>
                                 </div>
@@ -559,11 +561,22 @@
                 sum_money_all.value = parseInt(money_all1.value) + parseInt(money_all2.value) +parseInt(money_all3.value) +
                 parseInt(money_all4.value) + parseInt(money_all5.value) + parseInt(money_all6.value) + " руб";
                 
+                var smd1_comps = parseInt({{ session['tables'][0] | default(0) }});
+                var smd3_comps = parseInt({{ session['tables'][2] | default(0) }});
+                var total_smd_comps = (smd1_comps + smd3_comps) * parseInt({{ session['home_form']['field3']}});
+                
+                let add_comp_val = 0;
+                if (total_smd_comps > 0) {
+                    add_comp_val = (parseInt(money_all1.value) + parseInt(money_all2.value) +parseInt(money_all3.value) +
+                parseInt(money_all4.value) + parseInt(money_all5.value) + parseInt(money_all6.value)) / total_smd_comps;
+                }
+
                 // Обновление полей для суммарных значений ICT
                 document.getElementById("time_pc_ICT").value = time_pc_ICT + " с";
                 document.getElementById("time_all_ICT").value = time_all_ICT + " ч";
                 document.getElementById("money_pc_ICT").value = money_pc_ICT + " руб";
                 document.getElementById("money_all_ICT").value = money_all_ICT + " руб";
+                document.getElementById("add_comp").value = add_comp_val > 0 ? add_comp_val.toFixed(4) + " руб/комп" : "-";
             } else { // Если дополнительные работы неактивны, очистить итоговые поля
                 sum_time_pc.value = "-";
                 sum_time_all.value = "-";
@@ -573,6 +586,7 @@
                 document.getElementById("time_all_ICT").value = "-";
                 document.getElementById("money_pc_ICT").value = "-";
                 document.getElementById("money_all_ICT").value = "-";
+                document.getElementById("add_comp").value = "-";
             }
         }
 

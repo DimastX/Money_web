@@ -128,6 +128,7 @@
                                         <input type="text" class="form-control" readonly value="Стоимость рентгенконтроля ПУ">
                                         <input type="text" class="form-control" readonly value="Времени на рентгенконтроль партии">
                                         <input type="text" class="form-control" readonly value="Стоимость рентгенконтроля партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость в руб/комп">
                                     </td>
                                     <td>
                                         
@@ -138,6 +139,7 @@
                                         <input type="text" name="money_pc" id="money_pc" class="form-control" readonly>
                                         <input type="text" name="time_all" id="time_all" class="form-control" readonly>
                                         <input type="text" name="money_all" id="money_all" class="form-control" readonly>
+                                        <input type="text" name="xray_comp" id="xray_comp" class="form-control" readonly>
                                     </td>
                                 </table>
                             </div>
@@ -257,9 +259,19 @@
             });
         }
 
-        // Функция для управления видимостью секции на основе состояния чекбокса (дублирует логику из внешних скриптов)
-        // master: ID чекбокса-переключателя
-        // slave: ID секции, чья видимость управляется (через класс 'disable_section')
+        const input_ids = ["Xray_proc", "components", "components_time"];
+        for (let id of input_ids) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('input', xray_amount);
+            }
+        }
+
+        document.getElementById('Xray').addEventListener('change', function() {
+            check_all('Xray', 'Xray_off');
+        });
+
+        // Функция для управления видимостью секции на основе состояния чекбокса
         function check(master, slave) {
           if (document.getElementById(master).checked) {
             document.getElementById(slave).classList.remove('disable_section')
@@ -269,8 +281,6 @@
         }
         
         // Функция для управления видимостью поля на основе состояния radio-кнопки/чекбокса
-        // optionId: ID управляющего radio-кнопки/чекбокса
-        // fieldId: ID поля, чья видимость управляется (через style.display)
         function checkOption(optionId, fieldId) {
             var radioOption1 = document.getElementById(optionId);
             var extraField = document.getElementById(fieldId);
@@ -284,43 +294,82 @@
 
         // Основная функция для расчета и отображения стоимости рентген-контроля
         function xray_amount(){
+            // --- Начало блока извлечения данных из Jinja2 ---
+            // Извлекаем все необходимые значения из сессии и DataFrame в константы
+            // Это позволяет избежать ошибок парсинга Jinja2 в JavaScript
+            const batch = parseInt("{{ session['home_form']['field3'] | default(1) }}") || 1;
+            const multi_num = parseInt("{{ session['second_form']['multi_num'] | default(0) }}") || 0;
+            const df_value_0 = parseFloat("{{df['Значение'][0] | default(0)}}") || 0;
+            const session_width = parseFloat("{{session['second_form']['width'] | default(1)}}") || 1;
+            const df_value_1 = parseFloat("{{df['Значение'][1] | default(0)}}") || 0;
+            const session_length = parseFloat("{{session['second_form']['length'] | default(1)}}") || 1;
+            const time_sb = parseInt("{{ df['Значение'][3] | default(0) }}") || 0;
+            const time_mb = parseInt("{{ df['Значение'][2] | default(0) }}") || 0;
+            const cost_xray_hour = parseFloat("{{ df2['Стоимость, руб/ч'][16] | default(0) }}") || 0;
+            const smd1 = parseInt("{{ session['SMD_form']['SMD1'] | default(0) }}") || 0;
+            const smd3 = parseInt("{{ session['SMD_form']['SMD3'] | default(0) }}") || 0;
+            const total_smd_components = smd1 + smd3;
+            // --- Конец блока извлечения данных ---
+
             let coef = 1;
-            var proc_value = parseFloat(proc_x.value) / 100;
+            var proc_value = parseFloat(proc_x.value) / 100 || 0;
             var money_all = 0;
             var money_pc = 0;
             var time_all = 0;
             var time_pc = 0;
-            var batch = parseInt({{ session['home_form']['field3']}});
-            var multi_num = parseInt({{ session['second_form']['multi_num'] }});
-            coef = Math.max(Math.floor(parseFloat({{df['Значение'][0]}}) / parseFloat({{session['second_form']['width']}})) * 
-            Math.floor(parseFloat({{df['Значение'][1]}}) / parseFloat({{session['second_form']['length']}})), 1);
+
+            // Выполняем расчет coef
+            if (session_width > 0 && session_length > 0) {
+                var coef_calc = Math.floor(df_value_0 / session_width) * Math.floor(df_value_1 / session_length);
+                coef = Math.max(coef_calc, 1);
+            }
+
             if (chckbx.checked){
                 document.getElementById('number_multi').value = multi_num + " шт";
                 document.getElementById('number_Xray_pt').value = coef + " шт";
                 document.getElementById('number_Xray').value = Math.ceil(multi_num * proc_value / coef);
-                if (type[0].checked){
-                    time_all = parseInt({{ df['Значение'][3]}}) * proc_value * multi_num;
-                    time_pc = time_all / parseInt({{ session['home_form']['field3']}});
-                    money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
-                    money_pc = money_all / parseInt({{ session['home_form']['field3']}});
-                } else if (type[1].checked){
-                    time_all = parseInt({{ df['Значение'][2]}}) * proc_value * multi_num;
-                    time_pc = time_all / parseInt({{ session['home_form']['field3']}});
-                    money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
-                    money_pc = money_all / parseInt({{ session['home_form']['field3']}});
-                } else if (type[2].checked){
-                    time_pc = parseInt(document.getElementById('components').value) * parseFloat(document.getElementById('components_time').value) * proc_value;
-                    time_all = time_pc * parseInt({{ session['home_form']['field3']}});
-                    money_all = time_all * parseFloat( {{df2['Стоимость, руб/ч'][16]}} ) / 3600;
-                    money_pc = money_all / parseInt({{ session['home_form']['field3']}});
+                
+                if (type[0].checked){ // Серверная плата
+                    time_all = time_sb * proc_value * multi_num;
+                    time_pc = time_all / batch;
+                    money_all = time_all * cost_xray_hour / 3600;
+                    money_pc = money_all / batch;
+                } else if (type[1].checked){ // Материнская плата
+                    time_all = time_mb * proc_value * multi_num;
+                    time_pc = time_all / batch;
+                    money_all = time_all * cost_xray_hour / 3600;
+                    money_pc = money_all / batch;
+                } else if (type[2].checked){ // Прочее
+                    time_pc = (parseInt(document.getElementById('components').value) || 0) * (parseFloat(document.getElementById('components_time').value) || 0) * proc_value;
+                    time_all = time_pc * batch;
+                    money_all = time_all * cost_xray_hour / 3600;
+                    money_pc = money_all / batch;
                 } 
+
+                let xray_comp_val = 0;
+                if (type[0].checked || type[1].checked) {
+                    if (total_smd_components > 0 && batch > 0 && proc_value > 0) {
+                        xray_comp_val = money_all / (total_smd_components * batch * proc_value);
+                    }
+                }
+                else if (type[2].checked){
+                    const components = parseInt(document.getElementById('components').value) || 0;
+                    if (components > 0 && proc_value > 0 && batch > 0) {
+                        xray_comp_val = money_all / (components * batch * proc_value);
+                    }
+                }
+
+                document.getElementById('xray_comp').value = xray_comp_val > 0 ? xray_comp_val.toFixed(4) + " руб/комп" : "-";
                 document.getElementById('time_all').value = Math.ceil(time_all / 3600) + " ч";
                 document.getElementById('time_pc').value = Math.ceil(time_pc) +" c";
                 document.getElementById('money_all').value = Math.ceil(money_all) + " руб";
                 document.getElementById('money_pc').value = Math.ceil(money_pc) + " руб";
 
-                money_all_f = Math.ceil(money_all);
-                money_pc_f = Math.ceil(money_all_f / batch);
+                let money_all_f = Math.ceil(money_all);
+                let money_pc_f = 0;
+                if (batch > 0) {
+                    money_pc_f = Math.ceil(money_all_f / batch);
+                }
                 document.getElementById('money_all_f').value = money_all_f + " руб";
                 document.getElementById('money_pc_f').value = money_pc_f + " руб";
 
@@ -334,6 +383,7 @@
                 document.getElementById('money_pc').value = "-";
                 document.getElementById("money_all_f").value = '-';
                 document.getElementById("money_pc_f").value = '-';
+                document.getElementById('xray_comp').value = '-';
             }
         }
     </script>

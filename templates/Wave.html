@@ -124,6 +124,9 @@
                                         <input type="text" class="form-control" readonly value="Стоимость ремонта партии">
                                         <input type="text" class="form-control" readonly value="Время контроля ремонта партии">
                                         <input type="text" class="form-control" readonly value="Стоимость контроля ремонта партии">
+                                        <input type="text" class="form-control" readonly value="Стоимость пайки волной в руб/комп">
+                                        <input type="text" class="form-control" readonly value="Стоимость ремонта в руб/комп">
+                                        <input type="text" class="form-control" readonly value="Стоимость контроля в руб/комп">
                                     </td>
                                     <td>
                                         <input type="text" name="PCB" id="PCB" class="form-control" readonly>
@@ -140,6 +143,9 @@
                                         <input type="text" name="repair_money_all" id="repair_money_all" class="form-control" readonly>
                                         <input type="text" name="control_time_all" id="control_time_all" class="form-control" readonly>
                                         <input type="text" name="control_money_all" id="control_money_all" class="form-control" readonly>
+                                        <input type="text" name="wave_comp" id="wave_comp" class="form-control" readonly>
+                                        <input type="text" name="repair_comp" id="repair_comp" class="form-control" readonly>
+                                        <input type="text" name="control_comp" id="control_comp" class="form-control" readonly>
                                     </td>
                                 </table>
                             </div>
@@ -229,17 +235,20 @@
         }
         
         // Массив ID элементов формы, для которых будут установлены обработчики событий
-        ids = ["Wave", "Wave_num", "Wave_eq_num", "Wave_type", "Wave_sim", "Wave_sim_off"];
+        ids = ["Wave", "Wave_num", "Wave_eq_num", "Wave_type", "Wave_sim", "Wave_sim_v"];
 
-        // Добавление обработчиков события 'change' для элементов из массива ids
+        // Добавление обработчиков событий
         for (var i = 0; i < ids.length; i++) {
             var element = document.getElementById(ids[i]);
-            element.addEventListener('change', function(){
-                // При изменении любого из этих параметров, обновить видимость зависимых полей и пересчитать стоимость
-                check('Wave', 'Wave_off');
-                check('Wave_sim', 'Wave_sim_off');
-                wave_amount();
-            });
+            if (element) {
+                const eventType = element.type === 'radio' || element.type === 'checkbox' ? 'change' : 'input';
+                element.addEventListener(eventType, function(){
+                    // При изменении любого из этих параметров, обновить видимость зависимых полей и пересчитать стоимость
+                    check('Wave', 'Wave_off');
+                    check('Wave_sim', 'Wave_sim_off');
+                    wave_amount();
+                });
+            }
         }
 
         // Получение ссылок на ключевые чекбоксы
@@ -315,6 +324,19 @@
             control_time_pc = Math.ceil(control_time_all / batch * 3600);
             control_money_all = Math.ceil(control_time_all * parseInt({{ df2['Стоимость, руб/ч'][21]}}) );
             control_time_pc = Math.ceil(control_money_all / batch)
+
+            // Расчеты в руб/комп
+            let wave_comp_val = 0;
+            let repair_comp_val = 0;
+            let control_comp_val = 0;
+            const wave_components = parseInt(document.getElementById('Wave_num').value) || 0;
+
+            if (wave_components > 0 && batch > 0) {
+                wave_comp_val = money_all / (wave_components * batch);
+                repair_comp_val = repair_money_all / (wave_components * batch);
+                control_comp_val = control_money_all / (wave_components * batch);
+            }
+
             if (chckbx.checked){
                 document.getElementById('PCB').value = batch + " шт";
                 document.getElementById('PCB_m').value = pc + " шт";
@@ -333,6 +355,10 @@
                 document.getElementById('control_time_all').value = control_time_all + " ч";
                 document.getElementById('control_money_all').value = control_money_all + " руб";
                 
+                document.getElementById('wave_comp').value = wave_comp_val > 0 ? wave_comp_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('repair_comp').value = repair_comp_val > 0 ? repair_comp_val.toFixed(4) + " руб/комп" : "-";
+                document.getElementById('control_comp').value = control_comp_val > 0 ? control_comp_val.toFixed(4) + " руб/комп" : "-";
+
                 money_all_f = money_all + money_all_p + repair_money_all + control_money_all;
                 money_pc_f = Math.ceil(money_all_f / batch);
                 document.getElementById("money_all_f").value = money_all_f + " руб";
@@ -359,6 +385,9 @@
                 document.getElementById('control_time_all').value = '-';
                 document.getElementById('control_money_all').value = '-';
 
+                document.getElementById('wave_comp').value = '-';
+                document.getElementById('repair_comp').value = '-';
+                document.getElementById('control_comp').value = '-';
             }
         }
     </script>
