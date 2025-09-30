@@ -1003,6 +1003,22 @@ def session_data():
     df = cm.create_export(session) #Создание таблицы со всеми данными
     session["final_cost"] = str(df[0]["Стоимость 1 ПУ, руб"]["Итоговая стоимость"]) + " руб"
     session["final_costpo"] = str(df[0]["Стоимость на партию, руб"]["Итоговая стоимость"]) + " руб"
+    
+    # Извлечение данных из df[4] и добавление в сессию
+    if len(df) > 4 and not df[4].empty:
+        df_comp = df[4]
+        try:
+            difference_row = df_comp.loc[df_comp['Наименование'] == 'Разница']
+            if not difference_row.empty:
+                session['difference'] = str(difference_row['Стоимость, руб'].iloc[0])
+
+            difference_percent_row = df_comp.loc[df_comp['Наименование'] == 'Разница в %']
+            if not difference_percent_row.empty:
+                session['difference_percent'] = str(difference_percent_row['Стоимость, руб'].iloc[0])
+        except (IndexError, KeyError):
+            # Обработка случая, если строки не найдены
+            pass
+
     if isinstance(df[1], int):
         table = 0
     else:
@@ -1178,9 +1194,11 @@ def session_data():
     if table:
         return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table=table,
                            tables2=[df[1].to_html(classes='table', index=False, header="true")], 
-                           tables3=[df[2].to_html(classes='table', index=False, header="true")])
+                           tables3=[df[2].to_html(classes='table', index=False, header="true")],
+                           tables4=[df[4].to_html(classes='table', index=False, header="true")])
     return render_template('session_data.html', tables1=[df[0].to_html(classes='table', index=True, header="true")], table = table,
-                           tables3=[df[2].to_html(classes='table', index=False, header="true")])
+                           tables3=[df[2].to_html(classes='table', index=False, header="true")],
+                           tables4=[df[4].to_html(classes='table', index=False, header="true")])
 
 # --- Закрытие соединения с БД после каждого запроса ---
 @app.teardown_appcontext

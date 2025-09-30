@@ -50,6 +50,105 @@ def strtoint(string):
         return int(string.split(" ")[0]) # Берем первую часть строки до пробела и преобразуем в int
     return "-" # Возвращаем "-", если исходная строка была такой
 
+def calculate_component_based_cost(session):
+    """
+    Рассчитывает стоимость изготовления на основе количества компонентов.
+    """
+    
+    try:
+        batch = int(session.get('home_form', {}).get('field3', 0))
+    except (ValueError, TypeError):
+        batch = 0
+        
+    if batch == 0:
+        return 0, pd.DataFrame()
+
+    # Получение данных из сессии с преобразованием в int и обработкой отсутствующих ключей
+    smd_form = session.get('SMD_form', {})
+    smd1 = int(smd_form.get('SMD1', 0) or 0)
+    smd3 = int(smd_form.get('SMD3', 0) or 0)
+    
+    comp_form = session.get('Comp_form', {})
+    # SMD5 - количество наименований
+    smd5 = int(comp_form.get('Comp_num', 0) or 0)
+
+    tht_form = session.get('THT_form', {})
+    points = int(tht_form.get('points', 0) or 0) 
+    points_2 = int(tht_form.get('points_2', 0) or 0)
+    points2 = int(tht_form.get('points2', 0) or 0)
+    points2_2 = int(tht_form.get('points2_2', 0) or 0)
+    ddr = int(tht_form.get('DDR', 0) or 0)
+    ddr_2 = int(tht_form.get('DDR2', 0) or 0)
+    pci = int(tht_form.get('PCI', 0) or 0)
+    pci_2 = int(tht_form.get('PCI2', 0) or 0)
+    
+    hand_form = session.get('Hand_form', {})
+    hand_num = int(hand_form.get('Hand_num', 0) or 0)
+
+    test_form = session.get('Test_form', {})
+    num_0 = int(test_form.get('num_0', 0) or 0)
+
+    comp_type_str = comp_form.get('Comp_type', '0')
+    comp_type = int(comp_type_str) if comp_type_str.isdigit() else 0
+
+    # Начало расчёта
+    costs = {}
+
+    # 1. Стоимость SMD
+    is_server_or_mb = comp_type in [1, 2]
+    smd_components = (smd1 + smd3) * batch
+    if is_server_or_mb:
+        costs['SMD'] = smd_components * 0.3
+    else:  # Обычная плата (типы 3, 4 или другие)
+        costs['SMD'] = smd_components * 0.3
+
+    # 2. Стоимость переналадки SMD
+    costs['SMD переналадка'] = smd5 * 504.0
+
+    # 3. Стоимость THT
+    costs['THT (pin)'] = (points + points2) * batch * 12.7
+    costs['THT (pin2)'] = (points_2 + points2_2) * batch * 30.0
+    costs['THT (DDR)'] = (ddr + ddr_2) * batch * 72.0
+    costs['THT (PCI)'] = (pci + pci_2) * batch * 37.0
+
+    # 4. Стоимость ручных операций
+    costs['Ручные операции'] = hand_num * batch * 3.5
+
+    # 5. Стоимость прошивки
+    costs['Прошивка'] = num_0 * batch * 9.0
+
+    # Тестирование
+    # if comp_type == 1:  # Сервер
+    #     costs['Тестирование'] = smd_components * 0.18
+    # elif comp_type == 2:  # Материнская плата
+    #     costs['Тестирование'] = smd_components * 0.11
+    # else:  # Обычная плата
+    #     costs['Тестирование'] = smd_components * 0.75
+
+    total_cost_before_markup = sum(costs.values())
+
+    # 6. Наценка
+    if is_server_or_mb:
+        markup = total_cost_before_markup * 0.48
+        total_cost = total_cost_before_markup + markup
+        costs['Наценка (30%)'] = markup
+    else:
+        markup = total_cost_before_markup * 0.4
+        total_cost = total_cost_before_markup + markup
+        costs['Наценка (20%)'] = markup
+
+    costs['Итого'] = total_cost
+    
+    # Округление до целых чисел
+    for key in costs:
+        costs[key] = int(round(costs[key], 0))
+    
+    # Создание DataFrame для вывода
+    df_costs = pd.DataFrame(costs.items(), columns=['Наименование', 'Стоимость, руб'])
+
+
+    return int(round(total_cost, 0)), df_costs
+
 """Создание итоговой таблицы"""
 def create_export(session):
     batch = int(session['home_form']['field3'])
@@ -455,6 +554,23 @@ def create_export(session):
     prep = prep_sum - Traf
     if prep < 0:
         prep = 0
+    
+    component_cost, df_component_cost = calculate_component_based_cost(session)
+    
+    prime_cost_batch = df.loc["Cебестоимость", "Стоимость на партию, руб"]
+    difference = component_cost - prime_cost_batch
+    if prime_cost_batch > 0:
+        difference_percent = f"{round((difference / prime_cost_batch) * 100, 2)}%"
+    else:
+        difference_percent = "-"
+        
+    new_rows = pd.DataFrame([
+        {'Наименование': 'Разница', 'Стоимость, руб': difference},
+        {'Наименование': 'Разница в %', 'Стоимость, руб': difference_percent}
+    ])
+    df_component_cost = pd.concat([df_component_cost, new_rows], ignore_index=True)
+
+
     data3 = [
         ["Трафареты", Traf],
         ["Подготовка производства", prep],
@@ -471,9 +587,9 @@ def create_export(session):
 
     if 'prepare' in session['second_form']:
         df2 = pd.DataFrame(data2, columns=headers2)
-        return [df, df2, df3, df_tech_map]
+        return [df, df2, df3, df_tech_map, df_component_cost]
     
-    return [df, 1, df3, df_tech_map]
+    return [df, 1, df3, df_tech_map, df_component_cost]
 
 def prepare(session):
     df = pd.read_csv('data/Traf.csv')

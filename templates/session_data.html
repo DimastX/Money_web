@@ -45,6 +45,14 @@
             {% for table in tables3 %}
                 {{ table|safe }}
             {% endfor %}
+            <h1>Стоимость по компонентам</h1>
+            {% for table in tables4 %}
+                <div class="table">
+                    <table>
+                        {{ table|safe }}
+                    </table>
+                </div>
+            {% endfor %}
             <!-- Конец блока отображения таблиц -->
             </body>
         </form>
