@@ -128,14 +128,26 @@ def calculate_component_based_cost(session):
     total_cost_before_markup = sum(costs.values())
 
     # 6. Наценка
-    if is_server_or_mb:
-        markup = total_cost_before_markup * 0.48
+    if comp_type == 1:  # Серверная плата
+        markup = total_cost_before_markup * 0.3
         total_cost = total_cost_before_markup + markup
-        costs['Наценка (30%)'] = markup
-    else:
-        markup = total_cost_before_markup * 0.4
+        # Дополнительная корректировка: уменьшить на 10% от итогового значения
+        total_cost = total_cost * 0.9
+    elif comp_type == 2:  # Материнская плата
+        markup = total_cost_before_markup * 0.3
         total_cost = total_cost_before_markup + markup
-        costs['Наценка (20%)'] = markup
+        # Дополнительная корректировка: увеличить на 36% от итогового значения
+        total_cost = total_cost * 1.36
+    elif comp_type == 3:  # Обычная плата (тип 3)
+        markup = total_cost_before_markup * 0.2
+        total_cost = total_cost_before_markup + markup
+        # Дополнительная корректировка: увеличить на 38% от итогового значения
+        total_cost = total_cost * 1.38
+    elif comp_type == 4:  # Маленькая плата (тип 4)
+        markup = total_cost_before_markup * 0.2
+        total_cost = total_cost_before_markup + markup
+        # Дополнительная корректировка: увеличить на 22% от итогового значения
+        total_cost = total_cost * 1.22
 
     costs['Итого'] = total_cost
     
