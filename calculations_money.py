@@ -129,27 +129,26 @@ def calculate_component_based_cost(session):
 
     # 6. Наценка
     if comp_type == 1:  # Серверная плата
-        markup = total_cost_before_markup * 0.3
+        markup = total_cost_before_markup * 0.48
         total_cost = total_cost_before_markup + markup
         # Дополнительная корректировка: уменьшить на 10% от итогового значения
-        total_cost = total_cost * 0.9
+        total_cost = total_cost / 1.09
     elif comp_type == 2:  # Материнская плата
-        markup = total_cost_before_markup * 0.3
+        markup = total_cost_before_markup * 0.48
         total_cost = total_cost_before_markup + markup
         # Дополнительная корректировка: увеличить на 36% от итогового значения
-        total_cost = total_cost * 1.36
+        total_cost = total_cost / 0.64
     elif comp_type == 3:  # Обычная плата (тип 3)
-        markup = total_cost_before_markup * 0.2
+        markup = total_cost_before_markup * 0.4
         total_cost = total_cost_before_markup + markup
         # Дополнительная корректировка: увеличить на 38% от итогового значения
-        total_cost = total_cost * 1.38
+        total_cost = total_cost / 0.62
     elif comp_type == 4:  # Маленькая плата (тип 4)
-        markup = total_cost_before_markup * 0.2
+        markup = total_cost_before_markup * 0.4
         total_cost = total_cost_before_markup + markup
         # Дополнительная корректировка: увеличить на 22% от итогового значения
-        total_cost = total_cost * 1.22
-
-    costs['Итого'] = total_cost
+        total_cost = total_cost / 0.78
+    costs['Итого, с остальными операциями'] = total_cost
     
     # Округление до целых чисел
     for key in costs:
