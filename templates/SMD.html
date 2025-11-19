@@ -100,11 +100,11 @@
                         </div>
                         <!-- Секция с полями для времени симуляции, управляется чекбоксом "SMD_sim" -->
                         <div class="form-group" id="SMD_sim_off">
-                            <label>Время по симуляции на Top сторону</label>
+                            <label>Время по симуляции на Bot сторону</label>
                             <br>
                             <input type="number" class="form-control" min="0" step="1" name="Sim_top" id="Sim_top"
                             value="{{ session['SMD_form']['Sim_top'] if session.get('SMD_form') else '0' }}">
-                            <label>Время по симуляции на Bot сторону</label>
+                            <label>Время по симуляции на Top сторону</label>
                             <br>
                             <input type="number" class="form-control" min="0" step="1" name="Sim_bot" id="Sim_bot"
                             value="{{ session['SMD_form']['Sim_bot'] if session.get('SMD_form') else '0' }}">

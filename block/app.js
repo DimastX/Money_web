@@ -182,8 +182,8 @@ function exportTableData(tableType) {
     }
 
     const headers = isTransitions 
-        ? ['ID материала', 'Наименование', 'Количество', 'Склад', 'Номер документа', 'Дней до перехода', 'Следующая группа', 'Стоимость', 'Поместил в блок', 'BKTXT', 'СПП', 'Текст СПП']
-        : ['ID материала', 'Наименование', 'Количество', 'Склад', 'Номер документа', 'Дней в блоке', 'Группа', 'Стоимость', 'Поместил в блок', 'BKTXT', 'СПП', 'Текст СПП'];
+        ? ['ID материала', 'Наименование', 'Количество', 'Склад', 'Номер документа', 'Дата блокировки', 'Дней до перехода', 'Следующая группа', 'Стоимость', 'Поместил в блок', 'BKTXT', 'СПП', 'Текст СПП']
+        : ['ID материала', 'Наименование', 'Количество', 'Склад', 'Номер документа', 'Дата блокировки', 'Группа', 'Стоимость', 'Поместил в блок', 'BKTXT', 'СПП', 'Текст СПП'];
 
     // Функция для получения числового значения стоимости
     function getCostAsNumber(cost) {
@@ -196,20 +196,38 @@ function exportTableData(tableType) {
     // Подготавливаем данные в формате массива массивов
     const wsData = [
         headers, // Заголовки
-        ...data.map(item => [
-            item.id,
-            item.name,
-            `${item.quantity} ${item.unit}`,
-            item.warehouse,
-            item.documentNumber,
-            isTransitions ? item.daysToNext : item.daysInBlock,
-            isTransitions ? item.nextGroup : item.timeGroup,
-            getCostAsNumber(item.totalCost),
-            item.responsible,
-            item.bktxt,
-            item.spp,
-            item.sppText
-        ])
+        ...data.map(item => (
+            isTransitions
+            ? [
+                item.id,
+                item.name,
+                `${item.quantity} ${item.unit}`,
+                item.warehouse,
+                item.documentNumber,
+                item.entryDate,
+                item.daysToNext,
+                item.nextGroup,
+                getCostAsNumber(item.totalCost),
+                item.responsible,
+                item.bktxt,
+                item.spp,
+                item.sppText
+            ]
+            : [
+                item.id,
+                item.name,
+                `${item.quantity} ${item.unit}`,
+                item.warehouse,
+                item.documentNumber,
+                item.entryDate,
+                item.timeGroup,
+                getCostAsNumber(item.totalCost),
+                item.responsible,
+                item.bktxt,
+                item.spp,
+                item.sppText
+            ]
+        ))
     ];
 
     // Создаем рабочую книгу
@@ -219,9 +237,8 @@ function exportTableData(tableType) {
     const ws = XLSX.utils.aoa_to_sheet(wsData);
     
     // Форматируем числовые столбцы
-    const costColumnIndex = isTransitions ? 7 : 7; // Столбец "Стоимость" 
+    const costColumnIndex = isTransitions ? 8 : 7; // Столбец "Стоимость" 
     const quantityColumnIndex = 2; // Столбец "Количество"
-    const daysColumnIndex = isTransitions ? 5 : 5; // Столбец "Дней до перехода/в блоке"
     
     // Применяем числовое форматирование для столбца стоимости
     for (let row = 1; row < wsData.length; row++) { // Начинаем с 1, пропуская заголовки
@@ -230,14 +247,19 @@ function exportTableData(tableType) {
             ws[costCellAddress].t = 'n'; // Устанавливаем тип ячейки как число
             ws[costCellAddress].z = '#,##0'; // Формат числа с разделителями тысяч
         }
-        
-        // Форматируем столбец дней как число
-        const daysCellAddress = XLSX.utils.encode_cell({ r: row, c: daysColumnIndex });
-        if (ws[daysCellAddress]) {
-            ws[daysCellAddress].t = 'n';
-        }
     }
     
+    // Форматируем столбец дней как число только для таблицы переходов
+    if (isTransitions) {
+        const daysColumnIndex = 6; // "Дней до перехода"
+        for (let row = 1; row < wsData.length; row++) { // Начинаем с 1, пропуская заголовки
+             const daysCellAddress = XLSX.utils.encode_cell({ r: row, c: daysColumnIndex });
+             if (ws[daysCellAddress]) {
+                 ws[daysCellAddress].t = 'n';
+             }
+        }
+    }
+
     // Настраиваем ширину столбцов
     const colWidths = isTransitions 
         ? [
@@ -246,6 +268,7 @@ function exportTableData(tableType) {
             { wch: 15 }, // Количество
             { wch: 10 }, // Склад
             { wch: 15 }, // Номер документа
+            { wch: 15 }, // Дата блокировки
             { wch: 15 }, // Дней до перехода
             { wch: 18 }, // Следующая группа
             { wch: 18 }, // Стоимость
@@ -260,7 +283,7 @@ function exportTableData(tableType) {
             { wch: 15 }, // Количество
             { wch: 10 }, // Склад
             { wch: 15 }, // Номер документа
-            { wch: 15 }, // Дней в блоке
+            { wch: 15 }, // Дата блокировки
             { wch: 18 }, // Группа
             { wch: 18 }, // Стоимость
             { wch: 25 },  // Поместил в блок
@@ -923,7 +946,7 @@ function populateTransitionsTable(dataToShow = null) {
 
     if (upcomingTransitions.length === 0) {
         const row = document.createElement('tr');
-        row.innerHTML = '<td colspan="12" class="no-data">Нет предстоящих переходов</td>';
+        row.innerHTML = '<td colspan="13" class="no-data">Нет предстоящих переходов</td>';
         tbody.appendChild(row);
         return;
     }
@@ -936,6 +959,7 @@ function populateTransitionsTable(dataToShow = null) {
             <td>${material.quantity} ${material.unit}</td>
             <td>${material.warehouse}</td>
             <td>${material.documentNumber}</td>
+            <td>${material.entryDate}</td>
             <td>${material.daysToNext}</td>
             <td><span class="${getTimeGroupClass(material.nextGroup)}">${material.nextGroup}</span></td>
             <td>${formatCost(material.totalCost)}</td>
@@ -974,7 +998,7 @@ function populateAllMaterialsTable(dataToShow = null) {
             <td>${material.quantity} ${material.unit}</td>
             <td>${material.warehouse}</td>
             <td>${material.documentNumber}</td>
-            <td>${material.daysInBlock}</td>
+            <td>${material.entryDate}</td>
             <td><span class="${getTimeGroupClass(material.timeGroup)}">${material.timeGroup}</span></td>
             <td>${formatCost(material.totalCost)}</td>
             <td title="${material.responsible}">${truncateText(material.responsible, 20)}</td>
@@ -1049,6 +1073,9 @@ function sortTable(tableId, field) {
         if (field === 'totalCost' || field === 'quantity' || field === 'daysToNext' || field === 'daysInBlock') {
             valA = parseFloat(valA) || 0;
             valB = parseFloat(valB) || 0;
+        } else if (field === 'entryDate') {
+            valA = parseDate(valA);
+            valB = parseDate(valB);
         } else if (typeof valA === 'string' && typeof valB === 'string') {
             valA = valA.toLowerCase();
             valB = valB.toLowerCase();
