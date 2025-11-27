@@ -17,6 +17,8 @@ import os
 
 import logging
 
+from RM_checklist.checklist_blueprint import checklist_bp
+
 # === Инициализация Flask приложения и глобальные переменные ===
 # Настройка логирования
 logging.basicConfig(filename='mylog.log', level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -1222,6 +1224,8 @@ def dashboard_production_index():
 @app.route('/dashboard_production/<path:filename>')
 def dashboard_production_files(filename):
     return send_from_directory('prod', filename)
+
+app.register_blueprint(checklist_bp, url_prefix='/checklist')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
